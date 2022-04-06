@@ -1,0 +1,21 @@
+Package: pedbp
+Title: Pediatric Blood Pressure
+Version: 0.0.0.9000
+Authors@R: c(
+    person(given = "Peter", family = "DeWitt",  email = "peter.dewitt@cuanschutz.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6391-0795")),
+    person(given = "Blake", family = "Martin",  email = "blake.martin@childrenscolorado.org", role = c("ctb"), comment = c(ORCID = "0000-0001-5683-8310"))
+    person(given = "Tell",  family = "Bennett", email = "tell.bennett@cuanschutz.edu", role = c("ctb"),        comment = c(ORCID = "0000-0003-1483-4236"))
+    )
+Description: 
+Depends:
+    R (>= 3.5.0)
+License: GPL-2
+Encoding: UTF-8
+URL: https://github.com/dewittpe/pedbp/
+Language: en-us
+LazyData: true
+Imports:
+Suggests:
+    covr,
+    data.table
+VignetteBuilder: knitr
