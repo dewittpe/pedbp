@@ -1,0 +1,6 @@
+*.tar.gz
+pedbp.Rcheck/
+inst/doc
+*.Rout
+covr-report.html
+lib/*
