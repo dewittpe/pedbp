@@ -26,7 +26,7 @@ DATATARGETS  = $(PKG_ROOT)/data/bp_age_height.rda
 
 all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 
-$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS)
+$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS)
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
 
 .install_dev_deps.Rout : $(PKG_ROOT)/DESCRIPTION
@@ -57,7 +57,7 @@ $(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R
 #
 $(DATATARGETS) &: .data-export.Rout
 
-.data-export.Rout : data-raw/bp-males-by-age-and-height.R
+.data-export.Rout : data-raw/bp_age_height.R
 	R CMD BATCH --vanilla $< $@
 
 ################################################################################
@@ -85,5 +85,5 @@ clean:
 	$(RM) -rf $(PKG_NAME).Rcheck
 	$(RM) -f .document.Rout
 	$(RM) -f .install_dev_deps.Rout
-	$(RM) -f $(DATATARGETS)
+	$(RM) -f .data-export.Rout
 
