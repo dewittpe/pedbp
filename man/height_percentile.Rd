@@ -4,9 +4,15 @@
 \alias{height_percentile}
 \title{Height Percentile}
 \usage{
-height_percentile(age, male, sex, height, height_unit, ...)
+height_percentile(height, height_unit, age, male = NULL, sex = NULL, ...)
 }
 \arguments{
+\item{height}{numeric value for the height of the subject}
+
+\item{height_unit}{character string indicating if the \code{height} value is
+in inches or centimeters.  Acceptable inputs are form the set \code{c("in",
+"inches", "cm", "centimeters")}.}
+
 \item{age}{In years, expected integer value, will round to nearest integer
 value if non-integer value is passed in.}
 
@@ -15,12 +21,6 @@ value if non-integer value is passed in.}
 \item{sex}{an alternative to using the \code{male} argument, expecting a
 character string of length one within the case insensitive set, \code{c("m",
 "male", "f", "female")}.}
-
-\item{height}{numeric value for the height of the subject}
-
-\item{height_unit}{character string indicating if the \code{height} value is
-in inches or centimeters.  Acceptable inputs are form the set \code{c("in",
-"inches", "cm", "centimeters")}.}
 
 \item{...}{Pass through}
 }
@@ -31,7 +31,7 @@ data provided in Flynn et.al. (2017).
 }
 \examples{
 
-height_percentile(12, sex = "M", 83.2, "cm")
+height_percentile(83.2, "cm", age = 12, sex = "M")
 
 }
 \references{

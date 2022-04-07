@@ -10,24 +10,24 @@
 #' Screening and Management of High Blood Pressure in Children and Adolescents.
 #' Pediatrics. 2017;140(3):e20171904
 #'
+#' @param height numeric value for the height of the subject
+#' @param height_unit character string indicating if the \code{height} value is
+#' in inches or centimeters.  Acceptable inputs are form the set \code{c("in",
+#' "inches", "cm", "centimeters")}.
 #' @param age In years, expected integer value, will round to nearest integer
 #' value if non-integer value is passed in.
 #' @param male an integer value (1 = male, 0 = female)
 #' @param sex an alternative to using the \code{male} argument, expecting a
 #' character string of length one within the case insensitive set, \code{c("m",
 #' "male", "f", "female")}.
-#' @param height numeric value for the height of the subject
-#' @param height_unit character string indicating if the \code{height} value is
-#' in inches or centimeters.  Acceptable inputs are form the set \code{c("in",
-#' "inches", "cm", "centimeters")}.
 #' @param ... Pass through
 #'
 #' @examples
 #'
-#' height_percentile(12, sex = "M", 83.2, "cm")
+#' height_percentile(83.2, "cm", age = 12, sex = "M")
 #'
 #' @export
-height_percentile <- function(age, male, sex, height, height_unit, ...) {
+height_percentile <- function(height, height_unit, age, male = NULL, sex = NULL, ...) {
   e <- new.env()
   utils::data(list = "bp_age_height", package = "pedbp", envir = e)
 
@@ -39,8 +39,17 @@ height_percentile <- function(age, male, sex, height, height_unit, ...) {
     warning(paste("rounding age to:", age))
   }
 
-  if (missing(male) & missing(sex)) {
+  if (is.null(male) & is.null(sex)) {
     stop("`male` or `sex` need to specified.")
+  } else if (!is.null(male) & !is.null(sex)) {
+    stop("only one of `male` or `sex` should be specified.")
+  } else if (is.null(male)) {
+    stopifnot(length(sex) == 1L)
+    stopifnot(tolower(sex) %in% c("m", "male", "f", "female"))
+  } else {
+    stopifnot(length(male) == 1L)
+    male <- as.integer(male)
+    stopifnot(male %in% 0:1)
   }
 
 }
