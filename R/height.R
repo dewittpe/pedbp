@@ -39,5 +39,9 @@ height_percentile <- function(age, male, sex, height, height_unit, ...) {
     warning(paste("rounding age to:", age))
   }
 
+  if (missing(male) & missing(sex)) {
+    stop("`male` or `sex` need to specified.")
+  }
+
 }
 

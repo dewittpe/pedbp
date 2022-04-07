@@ -19,6 +19,10 @@ test <- tryCatch(height_percentile(age = 3.8), warning = function(w) w)
 stopifnot("rounding age up didn't work as expected" = test$message == "rounding age to: 4")
 
 # no warning when numeric, but intellectually, integer value for age is passed
-test <- tryCatch(height_percentile(age = 3.00), warning = function(w) w)
+test <- tryCatch(height_percentile(age = 3.00, male = 0), warning = function(w) w)
 stopifnot(is.null(test))
 
+# verify error if both male and sex are missing
+
+test <- tryCatch(height_percentile(age = 3.00), error = function(e) e)
+stopifnot(test$message == "`male` or `sex` need to specified.")
