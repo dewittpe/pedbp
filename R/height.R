@@ -39,9 +39,9 @@ height_percentile <- function(height, height_unit, age, male = NULL, sex = NULL,
     warning(paste("rounding age to:", age))
   }
 
-  if (is.null(male) & is.null(sex)) {
+  if (is.null(male) && is.null(sex)) {
     stop("`male` or `sex` need to specified.")
-  } else if (!is.null(male) & !is.null(sex)) {
+  } else if (!is.null(male) && !is.null(sex)) {
     stop("only one of `male` or `sex` should be specified.")
   } else if (is.null(male)) {
     stopifnot(length(sex) == 1L)
@@ -51,6 +51,18 @@ height_percentile <- function(height, height_unit, age, male = NULL, sex = NULL,
     male <- as.integer(male)
     stopifnot(male %in% 0:1)
   }
+
+  height_unit <- tolower(height_unit)
+  stopifnot(length(height_unit) == 1L)
+  stopifnot(height_unit %in% c("in", "inches", "cm", "centimeters"))
+  if (height_unit == "inches") {
+    height_unit <- "in"
+  } else if (height_unit == "centimeters") {
+    height_unit <- "cm"
+  }
+
+  stopifnot(length(height) == 1L)
+  stopifnot(height > 0)
 
 }
 

@@ -19,7 +19,7 @@ test <- tryCatch(height_percentile(age = 3.8), warning = function(w) w)
 stopifnot("rounding age up didn't work as expected" = !is.null(test) && test$message == "rounding age to: 4")
 
 # no warning when numeric, but intellectually, integer value for age is passed
-test <- tryCatch(height_percentile(age = 3.00, male = 0), warning = function(w) w)
+test <- tryCatch(height_percentile(height = 81.0, height_unit = "cm", age = 3.00, male = 0), warning = function(w) w)
 stopifnot(is.null(test))
 
 # verify error if both male and sex are missing
@@ -45,3 +45,18 @@ stopifnot(!is.null(test) && grepl('length(sex) == 1L is not TRUE', test$message,
 test <- tryCatch(height_percentile(age = 3, male = 0:1), error = function(e) e)
 stopifnot(!is.null(test) && grepl('length(male) == 1L is not TRUE', test$message, fixed = TRUE))
 
+# error if height_unit is longer than 1L
+test <- tryCatch(height_percentile(height_unit = c("in", "cm"), age = 3, male = 0), error = function(e) e)
+stopifnot(!is.null(test) && grepl('length(height_unit) == 1L is not TRUE', test$message, fixed = TRUE))
+
+# error if height_unit is not an expected unit
+test <- tryCatch(height_percentile(height_unit = c("inch"), age = 3, male = 0), error = function(e) e)
+stopifnot(!is.null(test) && grepl('height_unit %in% c("in", "inches", "cm", "centimeters") is not TRUE' , test$message, fixed = TRUE))
+
+# error if height is less than or equal to  zero
+test <- tryCatch(height_percentile(height = -1.2, height_unit = c("inches"), age = 3, male = 0), error = function(e) e)
+stopifnot(!is.null(test) && grepl('height > 0 is not TRUE' , test$message, fixed = TRUE))
+
+# error if height has length greater than 1
+test <- tryCatch(height_percentile(height = c(1, 2), height_unit = c("inches"), age = 3, male = 0), error = function(e) e)
+stopifnot(!is.null(test) && grepl('length(height) == 1L is not TRUE' , test$message, fixed = TRUE))
