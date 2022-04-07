@@ -32,6 +32,9 @@ data provided in Flynn et.al. (2017).
 \examples{
 
 height_percentile(83.2, "cm", age = 12, sex = "M")
+height_percentile(143.4, "cm", age = 12, sex = "M")
+height_percentile(160.8, "cm", age = 12, sex = "M")
+height_percentile(243.9, "cm", age = 12, sex = "M")
 
 }
 \references{

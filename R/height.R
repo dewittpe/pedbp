@@ -25,6 +25,9 @@
 #' @examples
 #'
 #' height_percentile(83.2, "cm", age = 12, sex = "M")
+#' height_percentile(143.4, "cm", age = 12, sex = "M")
+#' height_percentile(160.8, "cm", age = 12, sex = "M")
+#' height_percentile(243.9, "cm", age = 12, sex = "M")
 #'
 #' @export
 height_percentile <- function(height, height_unit, age, male = NULL, sex = NULL, ...) {
@@ -46,6 +49,7 @@ height_percentile <- function(height, height_unit, age, male = NULL, sex = NULL,
   } else if (is.null(male)) {
     stopifnot(length(sex) == 1L)
     stopifnot(tolower(sex) %in% c("m", "male", "f", "female"))
+    male <- as.integer(tolower(sex) %in% c("m", "male"))
   } else {
     stopifnot(length(male) == 1L)
     male <- as.integer(male)
@@ -64,5 +68,16 @@ height_percentile <- function(height, height_unit, age, male = NULL, sex = NULL,
   stopifnot(length(height) == 1L)
   stopifnot(height > 0)
 
+  # subset data
+  e$bp_age_height <-
+    subset(e$bp_age_height
+           , subset = e$bp_age_height$age_years == age & e$bp_age_height$male == 1 &
+                      e$bp_age_height$bp_percentile == "50th"
+           , select = c("height_percentile", paste0("height_", height_unit)))
+
+  # find nearest height percentile
+  e$bp_age_height[
+                  which.min(abs(height - e$bp_age_height[, 2]))
+                  , 1]
 }
 

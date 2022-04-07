@@ -20,7 +20,7 @@ stopifnot("rounding age up didn't work as expected" = !is.null(test) && test$mes
 
 # no warning when numeric, but intellectually, integer value for age is passed
 test <- tryCatch(height_percentile(height = 81.0, height_unit = "cm", age = 3.00, male = 0), warning = function(w) w)
-stopifnot(is.null(test))
+stopifnot(inherits(test, "numeric"))
 
 # verify error if both male and sex are missing
 test <- tryCatch(height_percentile(age = 3.00), error = function(e) e)
@@ -60,3 +60,10 @@ stopifnot(!is.null(test) && grepl('height > 0 is not TRUE' , test$message, fixed
 # error if height has length greater than 1
 test <- tryCatch(height_percentile(height = c(1, 2), height_unit = c("inches"), age = 3, male = 0), error = function(e) e)
 stopifnot(!is.null(test) && grepl('length(height) == 1L is not TRUE' , test$message, fixed = TRUE))
+
+# Spot checks for height percentile
+stopifnot(height_percentile(height = 48.8, height_unit = "in", male = 1, age = 6) == 75)
+stopifnot(height_percentile(height = 48.8, height_unit = "in", male = 1, age = 7) == 50)
+
+stopifnot(height_percentile(height = 48.8, height_unit = "in", male = 0, age = 6) == 75)
+stopifnot(height_percentile(height = 48.8, height_unit = "in", male = 0, age = 7) == 50)
