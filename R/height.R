@@ -24,12 +24,20 @@
 #'
 #' @examples
 #'
+#' height_percentile(12, sex = "M", 83.2, "cm")
+#'
 #' @export
 height_percentile <- function(age, male, sex, height, height_unit, ...) {
-  #e <- new.env()
-  #utils::data(list = "bp_age_height", package = "pedbd", envir = e)
+  e <- new.env()
+  utils::data(list = "bp_age_height", package = "pedbp", envir = e)
 
   stopifnot(length(age) == 1L)
   stopifnot(1 <= age & age <= 17)
+
+  if (age %% 1 != 0) {
+    age <- round(age, 0)
+    warning(paste("rounding age to:", age))
+  }
+
 }
 
