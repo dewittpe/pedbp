@@ -4,15 +4,23 @@
 \alias{bp_chart}
 \title{Blood Pressure Chart}
 \usage{
-bp_chart(age, height, height_unit = "percentile", ...)
+bp_chart(height, height_unit, age, male = NULL, sex = NULL, ...)
 }
 \arguments{
-\item{age}{age of the subject in years between 1 and 17.}
+\item{height}{numeric value for the height of the subject}
 
-\item{height}{a numeric value}
+\item{height_unit}{character string indicating if the \code{height} value is
+in inches or centimeters.  Acceptable inputs are form the set \code{c("in",
+"inches", "cm", "centimeters")}.}
 
-\item{height_unit}{a character indicating if the \code{height} value is a
-percentile (default), in inches, or centimeters.}
+\item{age}{In years, expected integer value, will round to nearest integer
+value if non-integer value is passed in.}
+
+\item{male}{an integer value (1 = male, 0 = female)}
+
+\item{sex}{an alternative to using the \code{male} argument, expecting a
+character string of length one within the case insensitive set, \code{c("m",
+"male", "f", "female")}.}
 
 \item{...}{Pass through}
 }
