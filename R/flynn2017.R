@@ -1,4 +1,4 @@
-#' Blood Pressure by Age and Height
+#' Blood Pressure by Age and Height Defined by Flynn et.al.(2017)
 #'
 #' A data set resulting from the transcription of Tables 4 and 5 from Flynn
 #' et.al (2017)
@@ -11,4 +11,4 @@
 #'
 #' @format a data.frame
 #'
-"bp_age_height"
+"flynn2017"

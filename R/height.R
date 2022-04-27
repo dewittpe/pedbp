@@ -32,7 +32,7 @@
 #' @export
 height_percentile <- function(height, height_unit, age, male = NULL, sex = NULL, ...) {
   e <- new.env()
-  utils::data(list = "bp_age_height", package = "pedbp", envir = e)
+  utils::data(list = "flynn2017", package = "pedbp", envir = e)
 
   stopifnot(length(age) == 1L)
   stopifnot(1 <= age & age <= 17)
@@ -69,15 +69,15 @@ height_percentile <- function(height, height_unit, age, male = NULL, sex = NULL,
   stopifnot(height > 0)
 
   # subset data
-  e$bp_age_height <-
-    subset(e$bp_age_height
-           , subset = e$bp_age_height$age_years == age & e$bp_age_height$male == 1 &
-                      e$bp_age_height$bp_percentile == "50th"
+  e$flynn2017 <-
+    subset(e$flynn2017
+           , subset = e$flynn2017$age_years == age & e$flynn2017$male == 1 &
+                      e$flynn2017$bp_percentile == "50th"
            , select = c("height_percentile", paste0("height_", height_unit)))
 
   # find nearest height percentile
-  e$bp_age_height[
-                  which.min(abs(height - e$bp_age_height[, 2]))
+  e$flynn2017[
+                  which.min(abs(height - e$flynn2017[, 2]))
                   , 1]
 }
 

@@ -287,8 +287,8 @@ bp <-
 bp <- merge(bp, heights, all = TRUE)
 
 # save the data set as a simple data.frame
-bp_age_height <- as.data.frame(bp)
-save(bp_age_height, file = "./data/bp_age_height.rda")
+flynn2017 <- as.data.frame(bp)
+save(flynn2017, file = "./data/flynn2017.rda")
 
 ################################################################################
 #                                 End of File                                  #

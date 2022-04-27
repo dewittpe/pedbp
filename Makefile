@@ -17,7 +17,7 @@ TESTS     = $(wildcard $(PKG_ROOT)/tests/*.R)
 #VIGNETTES  = $(PKG_ROOT)/vignettes/summary-statistics.Rmd
 
 ## Data targets
-DATATARGETS  = $(PKG_ROOT)/data/bp_age_height.rda
+DATATARGETS  = $(PKG_ROOT)/data/flynn2017.rda
 
 ################################################################################
 # Recipes
@@ -55,10 +55,8 @@ $(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R
 ################################################################################
 # Data Sets
 #
-$(DATATARGETS) &: .data-export.Rout
-
-.data-export.Rout : data-raw/bp_age_height.R
-	R CMD BATCH --vanilla $< $@
+$(PKG_ROOT)/data/%.rda : data-raw/%.R
+	R CMD BATCH --vanilla $<
 
 ################################################################################
 # Other Recipes for checking the package, (un)installing, and cleaning the
