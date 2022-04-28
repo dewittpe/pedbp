@@ -6,6 +6,7 @@
 \alias{flynn2017}
 \alias{lo2013}
 \alias{gemelli1990}
+\alias{cdc_length_for_age}
 \title{Data Sets Informing Blood Pressure Percentile Estimates}
 \format{
 An object of class \code{data.frame} with 952 rows and 7 columns.
@@ -13,6 +14,8 @@ An object of class \code{data.frame} with 952 rows and 7 columns.
 An object of class \code{data.frame} with 30 rows and 8 columns.
 
 An object of class \code{data.frame} with 8 rows and 6 columns.
+
+An object of class \code{data.frame} with 510 rows and 11 columns.
 }
 \usage{
 flynn2017
@@ -20,6 +23,8 @@ flynn2017
 lo2013
 
 gemelli1990
+
+cdc_length_for_age
 }
 \description{
 A collection of data sets from multiple sources used to inform blood pressure

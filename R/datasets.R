@@ -44,3 +44,6 @@ NULL
 
 #' @rdname bpdata
 "gemelli1990"
+
+#' @rdname bpdata
+"cdc_length_for_age"
