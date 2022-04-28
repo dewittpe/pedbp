@@ -80,6 +80,12 @@ bp <-
 # merge into one data set
 bp <- merge(bp, heights, all = TRUE)
 
+# unify names and units
+bp[, age_years := age_years * 12]
+data.table::setnames(bp, old = "age_years", new = "age")
+data.table::setnames(bp, old = "height_cm", new = "height")
+bp[, height_in := NULL]
+
 # save the data set as a simple data.frame
 flynn2017 <- as.data.frame(bp)
 save(flynn2017, file = "./data/flynn2017.rda")
