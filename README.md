@@ -1,4 +1,5 @@
-# pedbd : Pediatric Blood Pressure
+# pedbp : Pediatric Blood Pressure
+A R package for estimating expected blood pressure of children and adolescences
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/dewittpe/pedbp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dewittpe/pedbp/actions/workflows/R-CMD-check.yaml)
@@ -11,11 +12,4 @@
 [![License](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
 
-An R package for estimating expected blood pressure of children and adolescences
-based on data published within the clinical practice guidelines from the
-American Academy of Pediatrics:
-
-Flynn JT, Kaelber DC, Baker-Smith CM, et al. Clinical Practice Guideline for
-Screening and Management of High Blood Pressure in Children and Adolescents.
-Pediatrics. 2017;140(3):e20171904
 
