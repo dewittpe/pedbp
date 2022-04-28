@@ -14,7 +14,7 @@ TESTS     = $(wildcard $(PKG_ROOT)/tests/*.R)
 ## Vignettes
 # These are both targets for building and dependencies for the package tar.gz
 # file
-#VIGNETTES  = $(PKG_ROOT)/vignettes/summary-statistics.Rmd
+VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd
 
 ## Data targets
 DATATARGETS  = $(PKG_ROOT)/data/flynn2017.rda
