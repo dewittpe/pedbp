@@ -5,31 +5,38 @@
 \alias{bpdata}
 \alias{flynn2017}
 \alias{lo2013}
+\alias{gemelli1990}
 \title{Data Sets Informing Blood Pressure Percentile Estimates}
 \format{
 An object of class \code{data.frame} with 952 rows and 7 columns.
 
 An object of class \code{data.frame} with 30 rows and 8 columns.
+
+An object of class \code{data.frame} with 8 rows and 6 columns.
 }
 \usage{
 flynn2017
 
 lo2013
+
+gemelli1990
 }
 \description{
 A collection of data sets from multiple sources used to inform blood pressure
 percentiles for pediatrics patients by sex, age, and height (if known).
 }
 \details{
+Data sets are named to reflect the source.
+
 For all the data sets provided units are uniform:
 
 \describe{
-   \item{age}{Patient age; months}
-   \item{height}{length/height/stature; cm}
-   \item{weight}{patient weight; kg}
-   \item{male}{integer value; 1 = male, 0 = female}
-   \item{sbp}{systolic blood pressure; mmHg}
-   \item{dbp}{diastolic blood pressure; mmHg}
+   \item{age:}{Patient age; months}
+   \item{height:}{length/height/stature; cm}
+   \item{weight:}{patient weight; kg}
+   \item{male:}{integer value; 1 = male, 0 = female}
+   \item{sbp:}{systolic blood pressure; mmHg}
+   \item{dbp:}{diastolic blood pressure; mmHg}
 }
 
 Columns with a name such as \code{sbp} is a point observations.  Summary

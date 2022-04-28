@@ -1,5 +1,7 @@
 library(pedbp)
 
+stopifnot(class(flynn2017) == "data.frame")
+
 # expected names:
 stopifnot(all(c("age", "male", "sbp", "dbp", "height") %in% names(flynn2017)))
 

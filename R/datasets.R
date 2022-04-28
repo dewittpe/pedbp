@@ -41,3 +41,6 @@ NULL
 
 #' @rdname bpdata
 "lo2013"
+
+#' @rdname bpdata
+"gemelli1990"
