@@ -18,6 +18,7 @@ TESTS     = $(wildcard $(PKG_ROOT)/tests/*.R)
 
 ## Data targets
 DATATARGETS  = $(PKG_ROOT)/data/flynn2017.rda
+DATATARGETS += $(PKG_ROOT)/data/lo2013.rda
 
 ################################################################################
 # Recipes

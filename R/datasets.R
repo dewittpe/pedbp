@@ -12,3 +12,15 @@
 #' @format a data.frame
 #'
 "flynn2017"
+
+
+#' Mean and Standard Deviation of Blood Pressure, Height, Weight, and BMI from Lo et.al. (2013)
+#'
+#' Data from Appendix tables 1 and 2.
+#'
+#' @references
+#' Lo, Joan C., et al. "Prehypertension and hypertension in community-based
+#' pediatric practice." Pediatrics 131.2 (2013): e415-e424.
+#'
+#' @format a data.frame
+"lo2013"
