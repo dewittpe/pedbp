@@ -1,7 +1,7 @@
 #'---
 #'title: "Pediatric Blood Pressure Distributions"
 #'output:
-#'  rmarkdown::html_vignette:
+#'  bookdown::html_document2:
 #'    toc: true
 #'    number_sections: true
 #'bibliography: references.bib
@@ -10,6 +10,9 @@
 #'  %\VignetteEngine{knitr::rmarkdown}
 #'  %\VignetteEncoding{UTF-8}
 #'---
+#'
+#+ label = "setup", include = FALSE
+knitr::opts_chunk$set(collapse = TRUE)
 #'
 #' # Introduction
 #'
@@ -36,8 +39,11 @@
 #' least three years then data from @lo2013prehypertension is used.  Lastly,
 #' under three years of age with unknown height have blood pressure precentiles
 #' estimated by the @flynn2017clinical data with the default of the median
-#' height for sex and age.
+#' height for sex and age (Figure \@ref(fig:flowchart)).
 #'
+#' ![](./flowchart.png)
+#+ label = "flowchart", echo = FALSE, results = "hide", out.width = 0.1, out.height = 0.1, fig.cap = "Flowchart for determining which data source informs blood pressure percentiles by age and height."
+plot(1:10) # this is just here to "trick" a figure caption onto the flowchart
 #'
 #' # References
 #'<div id="refs"></div>
