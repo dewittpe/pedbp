@@ -21,6 +21,10 @@
 #' \code{sd_sbp} for the reported mean and standard deviation of systolic blood
 #' pressue.
 #'
+#' CDC ages represent whole month but reported at the half month.  That is, age
+#' = 12.5 is short-hand for 12 <= age < 13. The exception is birth; age = 0 is
+#' birth and not a range.
+#'
 #' @seealso \code{vignette("bp-distributions", package = "pedbp")}
 #'
 #' @references

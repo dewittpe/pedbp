@@ -67,6 +67,9 @@ est_norm <- function(q, p, weights = rep(1, length(p)), ...) {
 
   # define a function to minimize via stats::optim
   sum_squared_resid <- function(x) {
+    if (x[2] < 0) {
+      x[2] <- 0.01
+    }
     res <- stats::pnorm(q = q, mean = x[1], sd = x[2]) - p
     res <- res * weights
     sum(res**2)
@@ -97,7 +100,7 @@ print.pedbp_est_norm <- function(x, ...) {
 #' @export
 plot.pedbp_est_norm <- function(x, y, ...) {
   plot(x = x$qp[, "q"], y = x$qp[, "p"],
-       xlab = "Quantile", ylab = "Probability")
+       xlab = "Quantile", ylab = "Probability", ...)
   m = x$par[1]
   s = x$par[2]
   foo <- function(x) {

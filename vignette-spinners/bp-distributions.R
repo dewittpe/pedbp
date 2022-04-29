@@ -12,7 +12,10 @@
 #'---
 #'
 #+ label = "setup", include = FALSE
-knitr::opts_chunk$set(collapse = TRUE)
+knitr::opts_chunk$set(
+                      collapse = TRUE
+                      , fig.align = "center"
+                      )
 #'
 #' # Introduction
 #'
@@ -45,6 +48,111 @@ knitr::opts_chunk$set(collapse = TRUE)
 #+ label = "flowchart", echo = FALSE, results = "hide", out.width = 0.1, out.height = 0.1, fig.cap = "Flowchart for determining which data source informs blood pressure percentiles by age and height."
 plot(1:10) # this is just here to "trick" a figure caption onto the flowchart
 #'
+#' # Source Data Sets
+#'
+#' Provided data sets have been processed to have the same names and units.
+#'
+#' * age: numeric value in months
+#' * male: integer value, 1 = male, 0 = female
+#' * sbp : systolic blood pressure, mmHg
+#' * dbp : diastolic blood pressure, mmHg
+#' * height: numberic value in cm
+#'
+#' Summary statistics are prepended, e.g., mean_sbp is the mean systolic blood
+#' pressure.
+#'
+#' A listing of the data sets can be found thusly:
+data(package = "pedbp")$results[, "Item"]
+#'
+#' ## CDC Length of Age
+#'
+#' Percentiles of length of age, percentiles given are the 3rd, 5th, 10th, 25th,
+#' 50th, 75th, 90th, 95th, and 97th.
+#'
+#' The ages are reported at the half-month represent a whole month.  That is,
+#' $\text{age} = 144.5$ is short-hand for $144 \leq \text{age} < 145.$  The
+#' exception is birth; 0 is the point of birth.
+#'
+data(cdc_length_for_age, package = "pedbp")
+str(cdc_length_for_age)
+#'
+#' ## @flynn2017clinical
+#'
+#' Data from the clinical practices guidelines from the American Academey of
+#' Pediatrics
+#'
+data(flynn2017, package = "pedbp")
+str(flynn2017)
+#'
+#' ## @gemelli1990longitudinal
+#'
+#' Used for patients under one year of age.
+#'
+data(gemelli1990, package = "pedbp")
+str(gemelli1990)
+#'
+#' ## @lo2013prehypertension
+#'
+data(lo2013, package = "pedbp")
+str(lo2013)
+#'
+#' # Estimated Distributions
+#'
+#' Given that the provided data is a mixture of percentiles and means with
+#' standard deviations we opted to approximate all the distributions for height
+#' and blood pressure as Gausssians.  For example, the function est_norm will
+#' find the mean and standard deviation needed to define a normal random
+#' variable with quantiles similar to the ones provided.
+#'
+#' For $$X \sim N\left(\mu, \sigma\right)$$ we estimate the mean, $\mu,$ and
+#' standard deviation, $\sigma,$ given a vector of quantiles, $q,$ and the
+#' corresponding probabilties, $p,$ such that $$\Pr\left(X \leq q\right) = p.$$
+#'
+#' Note: The est_norm function allows the end user to select weights to
+#' emphasize particular quantiles to fit.  The default setting is to weight all
+#' quantiles equally.
+#'
+#' An example for getting the estimated mean and standard deviation for a
+#' Gausssian distribution of 12 year (144 month) old males is
+qs <- unlist(subset(cdc_length_for_age, male == 1 & age == 144.5)[, -(1:2)])
+ps <- as.numeric(sub("p", "", names(qs))) / 100
+length_144_male <- pedbp::est_norm(q = qs, p = ps)
+length_144_male
+#'
+#' A simple plotting method is provided to view the provided quantiles with the
+#' estimated Gausssian cumulative distribution function (Figure
+#' \@ref(fig:egcdf)).
+#+ label = "eg_cdf_cap", echo = FALSE, results = "hide"
+cap <-
+  paste0("Length for Age quantiles for 12-year old males with a Gausssian ",
+         "cumulative distribution function overlaid.  The mean and standard deviations",
+         "values for the Gausssian are ", round(length_144_male$par[1], 3),
+         " and ", round(length_144_male$par[2], 3), " respectively.")
+#'
+#+ label = "egcdf", fig.cap = cap
+plot(length_144_male)
+#'
+#' If you know that you will be focused on the upper percentiles you can weight
+#' the appropriations.  Comparing the equaweighted CDF, Figure \@ref(fig:egcdf),
+#' to the weighted CDF, Figure \@ref(fig:egcdf2), there is little difference
+#' here, but the estiamted larger quantiles are approximated with more accuracy
+#' than the lower quantiles. Other, more extreme examples are easy to produce.
+length_144_male_weighted <-
+  pedbp::est_norm(q = qs, p = ps, weights= c(0, 0, 1, 1, 1, 3, 10, 10, 30))
+length_144_male_weighted
+#'
+#'
+#+ label = "eg_cdf_cap2", echo = FALSE, results = "hide"
+cap <-
+  paste0("Length for Age quantiles for 12-year old males with a Gausssian ",
+         "cumulative distribution function overlaid.  The mean and standard deviations",
+         "values for the Gausssian are ", round(length_144_male_weighted$par[1], 3),
+         " and ", round(length_144_male_weighted$par[2], 3), " respectively.")
+#'
+#'
+#+ label = "egcdf2", fig.cap = cap
+plot(length_144_male_weighted)
+#'
 #'
 # /* --------------------------------------------------------------------------
 #
@@ -60,7 +168,7 @@ library(magrittr)
 # File Paths for all SBI Data files
 options(user_norms_path = "./references/sbi/sbi_data/")
 bp_norms_lo_boys <- paste0(getOption("user_norms_path"), "Lo_bp_norms_boys.csv")
-bp_norms_lo_girls <- paste0(getOption("user_norms_path"), "Lo_bp_norms_girls.csv")                 
+bp_norms_lo_girls <- paste0(getOption("user_norms_path"), "Lo_bp_norms_girls.csv")
 bp_norms_cdc_boys <- paste0(getOption("user_norms_path"), "CDC_bp_norms_boys.csv")
 bp_norms_cdc_girls <- paste0(getOption("user_norms_path"), "CDC_bp_norms_girls.csv")
 Gemelli_bp_under_one_boys <- paste0(getOption("user_norms_path"), "Gemelli_bp_under_one_boys.csv")
@@ -72,7 +180,7 @@ length_cdc_girls <- paste0(getOption("user_norms_path"), "CDC_length_girls.csv")
 
 # Prompt user to enter whether or not height is available, if so what is the height in cm, and then what the patient's age is in years
 
-#is_ht_pres <- readline(prompt = "Is patient height known (y/n)? ") 
+#is_ht_pres <- readline(prompt = "Is patient height known (y/n)? ")
 is_ht_pres <- "y"
 #
 if(is_ht_pres == "y"){
@@ -85,7 +193,7 @@ if(is_ht_pres == "y"){
 #age_entered_yrs <- as.numeric(age_entered_yrs)
 age_entered_yrs <- 12.1
 #
-#sex_entered <- readline(prompt = "Please enter the patient's biologic sex (m/f): ") 
+#sex_entered <- readline(prompt = "Please enter the patient's biologic sex (m/f): ")
 sex_entered <- "m"
 #
 #sbp_entered <- readline(prompt = "Please enter the systolic blood pressure measurement: ")
@@ -132,7 +240,7 @@ bp_lo_girls <- readr::read_csv(file = bp_norms_lo_girls)
 bp_cdc_boys <- readr::read_csv(file = bp_norms_cdc_boys)
 bp_cdc_girls <- readr::read_csv(file = bp_norms_cdc_girls)
 
-bp_boys_under_one <- readr::read_csv(file = Gemelli_bp_under_one_boys); 
+bp_boys_under_one <- readr::read_csv(file = Gemelli_bp_under_one_boys);
 bp_boys_under_one <- bp_boys_under_one[, -1]
 
 bp_girls_under_one <- readr::read_csv(file = Gemelli_bp_under_one_girls)
@@ -196,7 +304,7 @@ if (vs_percentile$sex[1] == "Male") {
   }
 
 }
-  
+
 
 
 # Repeat above process for changing heights to percentages for children > 36 months (i.e. 3 years)
@@ -220,7 +328,7 @@ if(age_entered_yrs >= 3)
 age_in_months <- age_entered_yrs * 12
 df_index <- round(age_in_months, digits = 0) - 23
 
-if (vs_percentile$sex == "Male") 
+if (vs_percentile$sex == "Male")
   {
     vs_percentile$height_init_cm[1] <- sapply(vs_percentile$height_init_cm[1], vs_normalize_fxn, length_boys, df_index)
   } else if (vs_percentile$sex == "Female") {
@@ -228,7 +336,7 @@ if (vs_percentile$sex == "Male")
   } else {
       print("Error, unclear biologic sex entered")
   }
-    
+
 }
 
 
@@ -236,9 +344,13 @@ if (vs_percentile$sex == "Male")
 # Now that we have normalized length/height, we will move onto normalizing blood pressure measurements for sbp and dbp based on age, sex, and availability of a height measurement
 
 # Will start with the <1yo patients then move up in age. For <1yo cohort will use Gemelli et al. norm data
-# Since we already have the mean and sd data, we don't need to calculate these values, 
+# Since we already have the mean and sd data, we don't need to calculate these values,
 # We simply need to get df's in the correct format for the normalize function
-sbp_under_one_boys <- bp_boys_under_one %>% dplyr::mutate(distr_mean = bp_boys_under_one$SBP_mean, distr_sd = bp_boys_under_one$SBP_sd) %>% dplyr::select(age_mo, distr_mean, distr_sd)
+sbp_under_one_boys <-
+  bp_boys_under_one %>%
+  dplyr::mutate(distr_mean = bp_boys_under_one$SBP_mean,
+                distr_sd = bp_boys_under_one$SBP_sd) %>%
+  dplyr::select(age_mo, distr_mean, distr_sd)
 dbp_under_one_boys <- bp_boys_under_one %>% dplyr::mutate(distr_mean = bp_boys_under_one$DBP_mean, distr_sd = bp_boys_under_one$DBP_sd) %>% dplyr::select(age_mo, distr_mean, distr_sd)
 
 sbp_under_one_girls <- bp_girls_under_one %>% dplyr::mutate(distr_mean = bp_girls_under_one$SBP_mean, distr_sd = bp_girls_under_one$SBP_sd) %>% dplyr::select(age_mo, distr_mean, distr_sd)
@@ -247,9 +359,9 @@ dbp_under_one_girls <- bp_girls_under_one %>% dplyr::mutate(distr_mean = bp_girl
 # Now use these Gemelli norms to convert SBP and DBP to percentiles
 if(age_entered_yrs < 1)
 {
-  
+
   age_in_months <- age_entered_yrs * 12
-  
+
   # Obtain the row index we should use when accessing the gemelli BP's using the patients age in months
   if(age_in_months >=1 & age_in_months < 3) {
     df_index <- 1
@@ -262,12 +374,12 @@ if(age_entered_yrs < 1)
   } else {
     print("error, age out of range")
   }
-  
+
   #Normalize sbp & dbp for males
   if(vs_percentile$sex == "Male"){
   vs_percentile$sbp[1] <- sapply(vs_percentile$sbp[1], vs_normalize_fxn, sbp_under_one_boys, df_index)
   vs_percentile$dbp[1] <- sapply(vs_percentile$dbp[1], vs_normalize_fxn, dbp_under_one_boys, df_index)
-  
+
   #Normalize sbp & dbp for females
   } else if (vs_percentile$sex == "Female"){
     vs_percentile$sbp[1] <- sapply(vs_percentile$sbp[1], vs_normalize_fxn, sbp_under_one_girls, df_index)
@@ -277,7 +389,7 @@ if(age_entered_yrs < 1)
   }
 
 }
-  
+
 #Now we will move on to those patients without height measurements who are > 3 yo, and use norm data from Lo et al to normalize these SBP and DBPs, via a similar approach to above
 sbp_lo_boys <- bp_lo_boys %>% dplyr::mutate(distr_mean = bp_lo_boys$SBP_mean, distr_sd = bp_lo_boys$SBP_sd) %>% dplyr::select(age_yr, distr_mean, distr_sd)
 dbp_lo_boys <- bp_lo_boys %>% dplyr::mutate(distr_mean = bp_lo_boys$DBP_mean, distr_sd = bp_lo_boys$DBP_sd) %>% dplyr::select(age_yr, distr_mean, distr_sd)
@@ -296,7 +408,7 @@ if (age_entered_yrs >= 3 & is_ht_pres == "n")
   if (vs_percentile$sex[1] == "Male") {
     vs_percentile$sbp[1] <- sapply(vs_percentile$sbp[1], vs_normalize_fxn, sbp_lo_boys , df_index)
     vs_percentile$dbp[1] <- sapply(vs_percentile$dbp[1], vs_normalize_fxn, dbp_lo_boys , df_index)
-    
+
   } else if (vs_percentile$sex[1] == "Female") {
     vs_percentile$sbp[1] <- sapply(vs_percentile$sbp[1], vs_normalize_fxn, sbp_lo_girls , df_index)
     vs_percentile$dbp[1] <- sapply(vs_percentile$dbp[1], vs_normalize_fxn, dbp_lo_girls , df_index)
@@ -347,7 +459,7 @@ for (i in c(1:nrow(cdc_sbp_boys))) {
 # Will also need a function that changes the actual height to the %ile used in the CDC table to send to the function we will define below, e.g. if pt height
 # is 54% it will use the 50%ile height bp curve, if 92% then uses 90%, etc.
 height_simplify <- function(pt_vs_df){
-  
+
   for (i in 1:nrow(pt_vs_df)) {
     pt_ht <- pt_vs_df$height_init_cm[i]
     if (pt_ht < 10) {pt_vs_df$ht_simple[i] <- 5}
@@ -390,48 +502,48 @@ vs_percentile <- height_simplify(vs_percentile)
 # Within this function will also normalize those >=1yo age < 3 years old without a height assuming the 50th%ile
 
 if (age_entered_yrs >=1) {
-  
+
   age <- floor(vs_percentile$age_years)
-  
+
   if(is_ht_pres == "y") {
-  
+
     #Convert male patient SBP & DBP
-    if(vs_percentile$sex == "Male"){  
-  
+    if(vs_percentile$sex == "Male"){
+
       vs_percentile$sbp[1] <- sapply(vs_percentile$sbp[1], vs_height_normalize, cdc_sbp_boys, age, vs_percentile$ht_simple)
       vs_percentile$dbp[1] <- sapply(vs_percentile$dbp[1], vs_height_normalize, cdc_dbp_boys, age, vs_percentile$ht_simple)
-  
+
     } else if (vs_percentile$sex == "Female"){
-    
+
       vs_percentile$sbp[1] <- sapply(vs_percentile$sbp[1], vs_height_normalize, cdc_sbp_girls, age, vs_percentile$ht_simple)
       vs_percentile$dbp[1] <- sapply(vs_percentile$dbp[1], vs_height_normalize, cdc_dbp_girls, age, vs_percentile$ht_simple)
-    
+
     } else {
       print("error, invalid sex supplied")
     }
 
   } else if (is_ht_pres == "n" & age_entered_yrs < 3) {
-    
+
     #Convert male patient SBP & DBP
-    if(vs_percentile$sex == "Male"){  
-      
+    if(vs_percentile$sex == "Male"){
+
       vs_percentile$sbp[1] <- sapply(vs_percentile$sbp[1], vs_height_normalize, cdc_sbp_boys, age, 50)
       vs_percentile$dbp[1] <- sapply(vs_percentile$dbp[1], vs_height_normalize, cdc_dbp_boys, age, 50)
-      
+
     } else if (vs_percentile$sex == "Female"){
-      
+
       vs_percentile$sbp[1] <- sapply(vs_percentile$sbp[1], vs_height_normalize, cdc_sbp_girls, age, 50)
       vs_percentile$dbp[1] <- sapply(vs_percentile$dbp[1], vs_height_normalize, cdc_dbp_girls, age, 50)
-      
+
     } else {
       print("error, invalid sex supplied")
     }
-  
-        
+
+
   } else {
     print("error, invalid height yes/no answer supplied")
   }
-  
+
 }
 
 ###### Print out the SBP and DBP percentile results
@@ -443,8 +555,8 @@ if(is_ht_pres == "y"){
   "As height was not available, a height percentile of 50% was assumed"
 }
 
-############################################################  Additional code to create the plots for the BP norms paper ############################################################################## 
-# Ultimate lines will need to have to plot. Boys and girls, SBP and DBP. The different percentiles for 5, 10, 
+############################################################  Additional code to create the plots for the BP norms paper ##############################################################################
+# Ultimate lines will need to have to plot. Boys and girls, SBP and DBP. The different percentiles for 5, 10,
 # 25, 50, 75, 90, 95, plot using 50th%ile height?
 
 
@@ -583,7 +695,7 @@ for(i in c(1:17)){
   cdc_kids_50h_b_sbp_75$sbp[i] <- qnorm(0.75, mean = cdc_50_sbp_boys$distr_mean[i], cdc_50_sbp_boys$distr_sd[i])
   cdc_kids_50h_b_sbp_90$sbp[i] <- qnorm(0.90, mean = cdc_50_sbp_boys$distr_mean[i], cdc_50_sbp_boys$distr_sd[i])
   cdc_kids_50h_b_sbp_95$sbp[i] <- qnorm(0.95, mean = cdc_50_sbp_boys$distr_mean[i], cdc_50_sbp_boys$distr_sd[i])
-  
+
   cdc_kids_50h_b_dbp_5$dbp[i]  <- qnorm(0.05, mean = cdc_50_dbp_boys$distr_mean[i], cdc_50_dbp_boys$distr_sd[i])
   cdc_kids_50h_b_dbp_10$dbp[i] <- qnorm(0.10, mean = cdc_50_dbp_boys$distr_mean[i], cdc_50_dbp_boys$distr_sd[i])
   cdc_kids_50h_b_dbp_25$dbp[i] <- qnorm(0.25, mean = cdc_50_dbp_boys$distr_mean[i], cdc_50_dbp_boys$distr_sd[i])
@@ -591,7 +703,7 @@ for(i in c(1:17)){
   cdc_kids_50h_b_dbp_75$dbp[i] <- qnorm(0.75, mean = cdc_50_dbp_boys$distr_mean[i], cdc_50_dbp_boys$distr_sd[i])
   cdc_kids_50h_b_dbp_90$dbp[i] <- qnorm(0.90, mean = cdc_50_dbp_boys$distr_mean[i], cdc_50_dbp_boys$distr_sd[i])
   cdc_kids_50h_b_dbp_95$dbp[i] <- qnorm(0.95, mean = cdc_50_dbp_boys$distr_mean[i], cdc_50_dbp_boys$distr_sd[i])
-  
+
   cdc_kids_50h_g_sbp_5$sbp[i] <-  qnorm(0.05, mean = cdc_50_sbp_girls$distr_mean[i], cdc_50_sbp_girls$distr_sd[i])
   cdc_kids_50h_g_sbp_10$sbp[i] <- qnorm(0.10, mean = cdc_50_sbp_girls$distr_mean[i], cdc_50_sbp_girls$distr_sd[i])
   cdc_kids_50h_g_sbp_25$sbp[i] <- qnorm(0.25, mean = cdc_50_sbp_girls$distr_mean[i], cdc_50_sbp_girls$distr_sd[i])
@@ -599,7 +711,7 @@ for(i in c(1:17)){
   cdc_kids_50h_g_sbp_75$sbp[i] <- qnorm(0.75, mean = cdc_50_sbp_girls$distr_mean[i], cdc_50_sbp_girls$distr_sd[i])
   cdc_kids_50h_g_sbp_90$sbp[i] <- qnorm(0.90, mean = cdc_50_sbp_girls$distr_mean[i], cdc_50_sbp_girls$distr_sd[i])
   cdc_kids_50h_g_sbp_95$sbp[i] <- qnorm(0.95, mean = cdc_50_sbp_girls$distr_mean[i], cdc_50_sbp_girls$distr_sd[i])
-  
+
   cdc_kids_50h_g_dbp_5$dbp[i] <-  qnorm(0.05, mean = cdc_50_dbp_girls$distr_mean[i], cdc_50_dbp_girls$distr_sd[i])
   cdc_kids_50h_g_dbp_10$dbp[i] <- qnorm(0.10, mean = cdc_50_dbp_girls$distr_mean[i], cdc_50_dbp_girls$distr_sd[i])
   cdc_kids_50h_g_dbp_25$dbp[i] <- qnorm(0.25, mean = cdc_50_dbp_girls$distr_mean[i], cdc_50_dbp_girls$distr_sd[i])
@@ -657,7 +769,7 @@ for(i in c(1:15)){
   lo_kids_b_sbp_75$sbp[i] <- qnorm(0.75, mean = bp_lo_boys$SBP_mean[i], bp_lo_boys$SBP_sd[i])
   lo_kids_b_sbp_90$sbp[i] <- qnorm(0.90, mean = bp_lo_boys$SBP_mean[i], bp_lo_boys$SBP_sd[i])
   lo_kids_b_sbp_95$sbp[i] <- qnorm(0.95, mean = bp_lo_boys$SBP_mean[i], bp_lo_boys$SBP_sd[i])
-  
+
   lo_kids_b_dbp_5$dbp[i] <-  qnorm(0.05, mean = bp_lo_boys$DBP_mean[i], bp_lo_boys$DBP_sd[i])
   lo_kids_b_dbp_10$dbp[i] <- qnorm(0.10, mean = bp_lo_boys$DBP_mean[i], bp_lo_boys$DBP_sd[i])
   lo_kids_b_dbp_25$dbp[i] <- qnorm(0.25, mean = bp_lo_boys$DBP_mean[i], bp_lo_boys$DBP_sd[i])
@@ -665,7 +777,7 @@ for(i in c(1:15)){
   lo_kids_b_dbp_75$dbp[i] <- qnorm(0.75, mean = bp_lo_boys$DBP_mean[i], bp_lo_boys$DBP_sd[i])
   lo_kids_b_dbp_90$dbp[i] <- qnorm(0.90, mean = bp_lo_boys$DBP_mean[i], bp_lo_boys$DBP_sd[i])
   lo_kids_b_dbp_95$dbp[i] <- qnorm(0.95, mean = bp_lo_boys$DBP_mean[i], bp_lo_boys$DBP_sd[i])
-  
+
   lo_kids_g_sbp_5$sbp[i] <-  qnorm(0.05, mean = bp_lo_girls$SBP_mean[i], bp_lo_girls$SBP_sd[i])
   lo_kids_g_sbp_10$sbp[i] <- qnorm(0.10, mean = bp_lo_girls$SBP_mean[i], bp_lo_girls$SBP_sd[i])
   lo_kids_g_sbp_25$sbp[i] <- qnorm(0.25, mean = bp_lo_girls$SBP_mean[i], bp_lo_girls$SBP_sd[i])
@@ -673,7 +785,7 @@ for(i in c(1:15)){
   lo_kids_g_sbp_75$sbp[i] <- qnorm(0.75, mean = bp_lo_girls$SBP_mean[i], bp_lo_girls$SBP_sd[i])
   lo_kids_g_sbp_90$sbp[i] <- qnorm(0.90, mean = bp_lo_girls$SBP_mean[i], bp_lo_girls$SBP_sd[i])
   lo_kids_g_sbp_95$sbp[i] <- qnorm(0.95, mean = bp_lo_girls$SBP_mean[i], bp_lo_girls$SBP_sd[i])
-  
+
   lo_kids_g_dbp_5$dbp[i] <-  qnorm(0.05, mean = bp_lo_girls$DBP_mean[i], bp_lo_girls$DBP_sd[i])
   lo_kids_g_dbp_10$dbp[i] <- qnorm(0.10, mean = bp_lo_girls$DBP_mean[i], bp_lo_girls$DBP_sd[i])
   lo_kids_g_dbp_25$dbp[i] <- qnorm(0.25, mean = bp_lo_girls$DBP_mean[i], bp_lo_girls$DBP_sd[i])
@@ -733,7 +845,7 @@ no_ht_b_sbp_95 <- dplyr::bind_rows(under_1_b_sbp_95, (cdc_kids_50h_b_sbp_95 %>% 
 
 no_ht_all_b_sbp <- dplyr::bind_rows(no_ht_b_sbp_5, no_ht_b_sbp_10, no_ht_b_sbp_25, no_ht_b_sbp_50, no_ht_b_sbp_75, no_ht_b_sbp_90, no_ht_b_sbp_95)
 no_ht_all_b_sbp$label <- NA
-no_ht_all_b_sbp$label[which(no_ht_all_b_sbp$age_mo == max(no_ht_all_b_sbp$age_mo))] <- 
+no_ht_all_b_sbp$label[which(no_ht_all_b_sbp$age_mo == max(no_ht_all_b_sbp$age_mo))] <-
   no_ht_all_b_sbp$group[which(no_ht_all_b_sbp$age_mo == max(no_ht_all_b_sbp$age_mo))]
 
 # Repeat for boys DBP
@@ -747,16 +859,16 @@ no_ht_b_dbp_95 <- dplyr::bind_rows(under_1_b_dbp_95, (cdc_kids_50h_b_dbp_95 %>% 
 
 no_ht_all_b_dbp <- dplyr::bind_rows(no_ht_b_dbp_5, no_ht_b_dbp_10, no_ht_b_dbp_25, no_ht_b_dbp_50, no_ht_b_dbp_75, no_ht_b_dbp_90, no_ht_b_dbp_95)
 no_ht_all_b_dbp$label <- NA
-no_ht_all_b_dbp$label[which(no_ht_all_b_dbp$age_mo == max(no_ht_all_b_dbp$age_mo))] <- 
+no_ht_all_b_dbp$label[which(no_ht_all_b_dbp$age_mo == max(no_ht_all_b_dbp$age_mo))] <-
   no_ht_all_b_dbp$group[which(no_ht_all_b_dbp$age_mo == max(no_ht_all_b_dbp$age_mo))]
 
-no_ht_all_b_both <- dplyr::bind_rows(no_ht_all_b_sbp, no_ht_all_b_dbp %>% dplyr::rename(sbp = dbp)) %>% dplyr::rename(bp = sbp, age = age_mo) %>% dplyr::mutate(age = age/12) 
+no_ht_all_b_both <- dplyr::bind_rows(no_ht_all_b_sbp, no_ht_all_b_dbp %>% dplyr::rename(sbp = dbp)) %>% dplyr::rename(bp = sbp, age = age_mo) %>% dplyr::mutate(age = age/12)
 
 # Create ggplot
 no_ht_b_plot <- ggplot2::ggplot(no_ht_all_b_both, ggplot2::aes(x = age, y = bp, col = group)) + ggplot2::geom_smooth(se = FALSE) +
-  ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) + ggplot2::labs(title = "Blood Pressure Percentiles: Boys", tag = 'A', y = "Blood Pressure (mmHg)", 
+  ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) + ggplot2::labs(title = "Blood Pressure Percentiles: Boys", tag = 'A', y = "Blood Pressure (mmHg)",
                                                                                                 x = "Age (yr)") + ggplot2::scale_y_continuous(breaks=c(30,60, 90, 120), limits = c(28, 140)) +
-  ggplot2::theme(plot.title = ggplot2::element_text(size = 16, face = "bold"), axis.text = ggplot2::element_text(size = 14, face = "bold"), axis.title = ggplot2::element_text(size = 16, face = "bold"), 
+  ggplot2::theme(plot.title = ggplot2::element_text(size = 16, face = "bold"), axis.text = ggplot2::element_text(size = 14, face = "bold"), axis.title = ggplot2::element_text(size = 16, face = "bold"),
         legend.position = "none") + ggplot2::scale_x_continuous(breaks=c(1,5, 10, 15), limits = c(0.0833333, 17.1))
 
 # Save the BP plot for boys using 50% height assumption
@@ -777,7 +889,7 @@ no_ht_g_sbp_95 <- dplyr::bind_rows(under_1_g_sbp_95, (cdc_kids_50h_g_sbp_95 %>% 
 
 no_ht_all_g_sbp <- dplyr::bind_rows(no_ht_g_sbp_5, no_ht_g_sbp_10, no_ht_g_sbp_25, no_ht_g_sbp_50, no_ht_g_sbp_75, no_ht_g_sbp_90, no_ht_g_sbp_95)
 no_ht_all_g_sbp$label <- NA
-no_ht_all_g_sbp$label[which(no_ht_all_g_sbp$age_mo == max(no_ht_all_g_sbp$age_mo))] <- 
+no_ht_all_g_sbp$label[which(no_ht_all_g_sbp$age_mo == max(no_ht_all_g_sbp$age_mo))] <-
   no_ht_all_g_sbp$group[which(no_ht_all_g_sbp$age_mo == max(no_ht_all_g_sbp$age_mo))]
 
 # Repeat for girls DBP
@@ -791,16 +903,16 @@ no_ht_g_dbp_95 <- dplyr::bind_rows(under_1_g_dbp_95, (cdc_kids_50h_g_dbp_95 %>% 
 
 no_ht_all_g_dbp <- dplyr::bind_rows(no_ht_g_dbp_5, no_ht_g_dbp_10, no_ht_g_dbp_25, no_ht_g_dbp_50, no_ht_g_dbp_75, no_ht_g_dbp_90, no_ht_g_dbp_95)
 no_ht_all_g_dbp$label <- NA
-no_ht_all_g_dbp$label[which(no_ht_all_g_dbp$age_mo == max(no_ht_all_g_dbp$age_mo))] <- 
+no_ht_all_g_dbp$label[which(no_ht_all_g_dbp$age_mo == max(no_ht_all_g_dbp$age_mo))] <-
   no_ht_all_g_dbp$group[which(no_ht_all_g_dbp$age_mo == max(no_ht_all_g_dbp$age_mo))]
 
-no_ht_all_g_both <- dplyr::bind_rows(no_ht_all_g_sbp, no_ht_all_g_dbp %>% dplyr::rename(sbp = dbp)) %>% dplyr::rename(bp = sbp, age = age_mo) %>% dplyr::mutate(age = age/12) 
+no_ht_all_g_both <- dplyr::bind_rows(no_ht_all_g_sbp, no_ht_all_g_dbp %>% dplyr::rename(sbp = dbp)) %>% dplyr::rename(bp = sbp, age = age_mo) %>% dplyr::mutate(age = age/12)
 
 # Create ggplot
 no_ht_g_plot <- ggplot2::ggplot(no_ht_all_g_both, ggplot2::aes(x = age, y = bp, col = group)) + ggplot2::geom_smooth(se = FALSE) +
-  ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) + ggplot2::labs(title = "Blood Pressure Percentiles: Girls", tag = 'B', y = "Blood Pressure (mmHg)", 
+  ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) + ggplot2::labs(title = "Blood Pressure Percentiles: Girls", tag = 'B', y = "Blood Pressure (mmHg)",
                                                                                                 x = "Age (yr)") + ggplot2::scale_y_continuous(breaks=c(30,60, 90, 120), limits = c(28, 140)) +
-  ggplot2::theme(plot.title = ggplot2::element_text(size = 16, face = "bold"), axis.text = ggplot2::element_text(size = 14, face = "bold"), axis.title = ggplot2::element_text(size = 16, face = "bold"), 
+  ggplot2::theme(plot.title = ggplot2::element_text(size = 16, face = "bold"), axis.text = ggplot2::element_text(size = 14, face = "bold"), axis.title = ggplot2::element_text(size = 16, face = "bold"),
         legend.position = "none") + ggplot2::scale_x_continuous(breaks=c(1,5, 10, 15), limits = c(0.0833333, 17.1))
 
 # Save the BP plot for boys using 50% height assumption
@@ -830,20 +942,20 @@ cdc_kids_50h_b_dbp_50 <- dplyr::bind_rows(under_1_b_dbp_50, cdc_b_dbp_50h)  %>% 
 cdc_kids_95h_b_dbp_50 <- dplyr::bind_rows(under_1_b_dbp_50, cdc_b_dbp_95h) %>% dplyr::mutate(group = "95% Height")
 
 # Group all the above together to allow for plotting
-full_boys_with_h_sbp <- dplyr::bind_rows(cdc_kids_5h_b_sbp_50 %>% dplyr::rename(bp = sbp), cdc_kids_50h_b_sbp_50 %>% dplyr::rename(bp = sbp), 
+full_boys_with_h_sbp <- dplyr::bind_rows(cdc_kids_5h_b_sbp_50 %>% dplyr::rename(bp = sbp), cdc_kids_50h_b_sbp_50 %>% dplyr::rename(bp = sbp),
                                   cdc_kids_95h_b_sbp_50 %>% dplyr::rename(bp = sbp))
 
 full_boys_with_h_sbp$label <- NA
 
-full_boys_with_h_dbp <- dplyr::bind_rows(cdc_kids_5h_b_dbp_50 %>% dplyr::rename(bp = dbp), 
+full_boys_with_h_dbp <- dplyr::bind_rows(cdc_kids_5h_b_dbp_50 %>% dplyr::rename(bp = dbp),
                                   cdc_kids_50h_b_dbp_50 %>% dplyr::rename(bp = dbp), cdc_kids_95h_b_dbp_50 %>% dplyr::rename(bp = dbp))
 
 full_boys_with_h_dbp$label <- NA
 
-full_boys_with_h_dbp$label[which(full_boys_with_h_dbp$age_mo == max(full_boys_with_h_dbp$age_mo))] <- 
+full_boys_with_h_dbp$label[which(full_boys_with_h_dbp$age_mo == max(full_boys_with_h_dbp$age_mo))] <-
   full_boys_with_h_dbp$group[which(full_boys_with_h_dbp$age_mo == max(full_boys_with_h_dbp$age_mo))]
 
-full_boys_with_h_sbp$label[which(full_boys_with_h_sbp$age_mo == max(full_boys_with_h_sbp$age_mo))] <- 
+full_boys_with_h_sbp$label[which(full_boys_with_h_sbp$age_mo == max(full_boys_with_h_sbp$age_mo))] <-
   full_boys_with_h_sbp$group[which(full_boys_with_h_sbp$age_mo == max(full_boys_with_h_sbp$age_mo))]
 
 full_boys_with_h_all_bps <- dplyr::bind_rows(full_boys_with_h_sbp, full_boys_with_h_dbp) %>% dplyr::rename(age = age_mo) %>%
@@ -851,9 +963,9 @@ full_boys_with_h_all_bps <- dplyr::bind_rows(full_boys_with_h_sbp, full_boys_wit
 
 ## Now plot the boys' data
 yes_ht_b_plot <- ggplot2::ggplot(full_boys_with_h_all_bps, ggplot2::aes(x = age, y = bp, col = group)) + ggplot2::geom_smooth(se = FALSE) +
-  ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) + ggplot2::labs(title = "Blood Pressure Percentiles: Boys", tag = 'A', y = "Blood Pressure (mmHg)", 
+  ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) + ggplot2::labs(title = "Blood Pressure Percentiles: Boys", tag = 'A', y = "Blood Pressure (mmHg)",
                                                                                                 x = "Age (yr)") + ggplot2::scale_y_continuous(breaks=c(30,60, 90, 120), limits = c(28, 140)) +
-  ggplot2::theme(plot.title = ggplot2::element_text(size = 16, face = "bold"), axis.text = ggplot2::element_text(size = 14, face = "bold"), axis.title = ggplot2::element_text(size = 16, face = "bold"), 
+  ggplot2::theme(plot.title = ggplot2::element_text(size = 16, face = "bold"), axis.text = ggplot2::element_text(size = 14, face = "bold"), axis.title = ggplot2::element_text(size = 16, face = "bold"),
         legend.position = "none") + ggplot2::scale_x_continuous(breaks=c(1,5, 10, 15), limits = c(0.0833333, 17.1))
 
 boys_bp_yes_h_plot <- ggplot2::ggsave(filename = "boys_bp_yes_h_plot.svg", device = "svg", dpi = 1200)
@@ -878,20 +990,20 @@ cdc_kids_50h_g_dbp_50 <- dplyr::bind_rows(under_1_g_dbp_50, cdc_g_dbp_50h)  %>% 
 cdc_kids_95h_g_dbp_50 <- dplyr::bind_rows(under_1_g_dbp_50, cdc_g_dbp_95h) %>% dplyr::mutate(group = "95% Height")
 
 # Group all the above together to allow for plotting
-full_girls_with_h_sbp <- dplyr::bind_rows(cdc_kids_5h_g_sbp_50 %>% dplyr::rename(bp = sbp), cdc_kids_50h_g_sbp_50 %>% dplyr::rename(bp = sbp), 
+full_girls_with_h_sbp <- dplyr::bind_rows(cdc_kids_5h_g_sbp_50 %>% dplyr::rename(bp = sbp), cdc_kids_50h_g_sbp_50 %>% dplyr::rename(bp = sbp),
                                    cdc_kids_95h_g_sbp_50 %>% dplyr::rename(bp = sbp))
 
 full_girls_with_h_sbp$label <- NA
 
-full_girls_with_h_dbp <- dplyr::bind_rows(cdc_kids_5h_g_dbp_50 %>% dplyr::rename(bp = dbp), 
+full_girls_with_h_dbp <- dplyr::bind_rows(cdc_kids_5h_g_dbp_50 %>% dplyr::rename(bp = dbp),
                                    cdc_kids_50h_g_dbp_50 %>% dplyr::rename(bp = dbp), cdc_kids_95h_g_dbp_50 %>% dplyr::rename(bp = dbp))
 
 full_girls_with_h_dbp$label <- NA
 
-full_girls_with_h_dbp$label[which(full_girls_with_h_dbp$age_mo == max(full_girls_with_h_dbp$age_mo))] <- 
+full_girls_with_h_dbp$label[which(full_girls_with_h_dbp$age_mo == max(full_girls_with_h_dbp$age_mo))] <-
   full_girls_with_h_dbp$group[which(full_girls_with_h_dbp$age_mo == max(full_girls_with_h_dbp$age_mo))]
 
-full_girls_with_h_sbp$label[which(full_girls_with_h_sbp$age_mo == max(full_girls_with_h_sbp$age_mo))] <- 
+full_girls_with_h_sbp$label[which(full_girls_with_h_sbp$age_mo == max(full_girls_with_h_sbp$age_mo))] <-
   full_girls_with_h_sbp$group[which(full_girls_with_h_sbp$age_mo == max(full_girls_with_h_sbp$age_mo))]
 
 full_girls_with_h_all_bps <- dplyr::bind_rows(full_girls_with_h_sbp, full_girls_with_h_dbp) %>% dplyr::rename(age = age_mo) %>%
@@ -899,9 +1011,9 @@ full_girls_with_h_all_bps <- dplyr::bind_rows(full_girls_with_h_sbp, full_girls_
 
 ## Now plot the girls' data
 yes_ht_g_plot <- ggplot2::ggplot(full_girls_with_h_all_bps, ggplot2::aes(x = age, y = bp, col = group)) + ggplot2::geom_smooth(se = FALSE) +
-  ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) + ggplot2::labs(title = "Blood Pressure Percentiles: Girls", tag = 'A', y = "Blood Pressure (mmHg)", 
+  ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) + ggplot2::labs(title = "Blood Pressure Percentiles: Girls", tag = 'A', y = "Blood Pressure (mmHg)",
                                                                                                 x = "Age (yr)") + ggplot2::scale_y_continuous(breaks=c(30,60, 90, 120), limits = c(28, 140)) +
-  ggplot2::theme(plot.title = ggplot2::element_text(size = 16, face = "bold"), axis.text = ggplot2::element_text(size = 14, face = "bold"), axis.title = ggplot2::element_text(size = 16, face = "bold"), 
+  ggplot2::theme(plot.title = ggplot2::element_text(size = 16, face = "bold"), axis.text = ggplot2::element_text(size = 14, face = "bold"), axis.title = ggplot2::element_text(size = 16, face = "bold"),
         legend.position = "none") + ggplot2::scale_x_continuous(breaks=c(1,5, 10, 15), limits = c(0.0833333, 17.1))
 
 girls_bp_yes_h_plot <- ggplot2::ggsave(filename = "girls_bp_yes_h_plot.svg", device = "svg", dpi = 1200)

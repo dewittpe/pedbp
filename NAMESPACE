@@ -3,3 +3,5 @@
 S3method(plot,pedbp_est_norm)
 S3method(print,pedbp_est_norm)
 export(est_norm)
+export(get_bp_percentile)
+export(get_height_percentile)

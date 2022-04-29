@@ -15,7 +15,7 @@ An object of class \code{data.frame} with 30 rows and 8 columns.
 
 An object of class \code{data.frame} with 8 rows and 6 columns.
 
-An object of class \code{data.frame} with 510 rows and 11 columns.
+An object of class \code{data.frame} with 510 rows and 13 columns.
 }
 \usage{
 flynn2017
@@ -48,6 +48,10 @@ Columns with a name such as \code{sbp} is a point observations.  Summary
 statistics are prepended to the variable as needed, e.g., \code{mean_sbp} and
 \code{sd_sbp} for the reported mean and standard deviation of systolic blood
 pressue.
+
+CDC ages represent whole month but reported at the half month.  That is, age
+= 12.5 is short-hand for 12 <= age < 13. The exception is birth; age = 0 is
+birth and not a range.
 }
 \references{
 Flynn JT, Kaelber DC, Baker-Smith CM, et al. Clinical Practice Guideline for
