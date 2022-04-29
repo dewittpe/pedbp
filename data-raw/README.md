@@ -8,8 +8,7 @@
  | `cdc_weight_for_age.txt`              | https://www.cdc.gov/growthcharts/html_charts/wtage.htm     | accessed 28 April 2022 |
  | `flynn2017_male.txt`                  | Flynn et.al. (2017)                                        |                        |
  | `flynn2017_female.txt`                | Flynn et.al. (2017)                                        |                        |
- | `gemelli1990_male.txt`                | Gemelli et.al. (1990)                                        |                        |
- | `gemelli1990_female.txt`              | Gemelli et.al. (1990)                                        |                        |
+ | `gemelli1990_male.txt`                | Gemelli et.al. (1990)                                      |                        |
+ | `gemelli1990_female.txt`              | Gemelli et.al. (1990)                                      |                        |
  | `lo2013_bp_weight_height_bmi.txt`     | Lo et.al. (2013)                                           |                        |
-
 
