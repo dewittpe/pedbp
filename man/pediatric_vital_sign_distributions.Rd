@@ -98,37 +98,30 @@ approach.
 }
 \examples{
 
-p_bmi_for_age(q = 16.455, age = 32, male = 1)
-z_bmi_for_age(q = 16.455, age = 32, male = 1)
-q_bmi_for_age(p = 0.58, age = 32, male = 1)
+#############################################################################
+# BMI for Age
 
-p_head_circ_for_age(q = 16.455, age = 32, male = 1)
-z_head_circ_for_age(q = 16.455, age = 32, male = 1)
-q_head_circ_for_age(p = 0.58, age = 32, male = 1)
+# A BMI of 18.2 for a 18.1 year old female is in the
+p_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0)
+# percentile.
 
-p_length_for_age_inf(q = 16.455, age = 32, male = 1)
-z_length_for_age_inf(q = 16.455, age = 32, male = 1)
-q_length_for_age_inf(p = 0.58, age = 32, male = 1)
+# The z-score is the same as qnorm(p)
+qnorm(p_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0))
+z_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0)
 
-p_stature_for_age(q = 16.455, age = 32, male = 1)
-z_stature_for_age(q = 16.455, age = 32, male = 1)
-q_stature_for_age(p = 0.58, age = 32, male = 1)
+# The 70th percentile of BMI for 15.4 year old males is
+q_bmi_for_age(p = 0.70, age = 15.4 * 12, male = 1)
 
-p_weight_for_age(q = 4.455, age = 24.1, male = 1)
-q_weight_for_age(p = 0.05, age = 24.1, male = 1)
-z_weight_for_age(q = 4.455, age = 24.1, male = 1)
+#############################################################################
+# Stature/Lenght/Height for Age
 
-p_weight_for_age_inf(q = 4.455, age = 2.41, male = 1)
-q_weight_for_age_inf(p = 0.05, age = 2.41, male = 1)
-z_weight_for_age_inf(q = 4.455, age = 2.41, male = 1)
-
-p_weight_for_length_inf(q = 4.455, length = 55, male = 1)
-q_weight_for_length_inf(p = 0.05, length = 55, male = 1)
-z_weight_for_length_inf(q = 4.455, length = 55, male = 1)
-
-p_weight_for_stature(q = 4.455, height = 95, male = 1)
-q_weight_for_stature(p = 0.05, height = 95, male = 1)
-z_weight_for_stature(q = 4.455, height = 95, male = 1)
+# length_for_age_inf is for Infants are from 0 to 3 years (36 months)
+# stature_for_age    is for pediatrics from 2 years (24 months) to 20 years
+#                    (240 months)
+# The overlap between these functions will produce slightly different values
+# the kids between 24 and 36 months of age.
+p_length_for_age_inf(87, age = 28, male = 0)
+p_stature_for_age(87, age = 28, male = 0)
 
 }
 \references{

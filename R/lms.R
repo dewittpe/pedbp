@@ -15,37 +15,30 @@
 #'
 #' @examples
 #'
-#' p_bmi_for_age(q = 16.455, age = 32, male = 1)
-#' z_bmi_for_age(q = 16.455, age = 32, male = 1)
-#' q_bmi_for_age(p = 0.58, age = 32, male = 1)
+#' #############################################################################
+#' # BMI for Age
 #'
-#' p_head_circ_for_age(q = 16.455, age = 32, male = 1)
-#' z_head_circ_for_age(q = 16.455, age = 32, male = 1)
-#' q_head_circ_for_age(p = 0.58, age = 32, male = 1)
+#' # A BMI of 18.2 for a 18.1 year old female is in the
+#' p_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0)
+#' # percentile.
 #'
-#' p_length_for_age_inf(q = 16.455, age = 32, male = 1)
-#' z_length_for_age_inf(q = 16.455, age = 32, male = 1)
-#' q_length_for_age_inf(p = 0.58, age = 32, male = 1)
+#' # The z-score is the same as qnorm(p)
+#' qnorm(p_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0))
+#' z_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0)
 #'
-#' p_stature_for_age(q = 16.455, age = 32, male = 1)
-#' z_stature_for_age(q = 16.455, age = 32, male = 1)
-#' q_stature_for_age(p = 0.58, age = 32, male = 1)
+#' # The 70th percentile of BMI for 15.4 year old males is
+#' q_bmi_for_age(p = 0.70, age = 15.4 * 12, male = 1)
 #'
-#' p_weight_for_age(q = 4.455, age = 24.1, male = 1)
-#' q_weight_for_age(p = 0.05, age = 24.1, male = 1)
-#' z_weight_for_age(q = 4.455, age = 24.1, male = 1)
+#' #############################################################################
+#' # Stature/Lenght/Height for Age
 #'
-#' p_weight_for_age_inf(q = 4.455, age = 2.41, male = 1)
-#' q_weight_for_age_inf(p = 0.05, age = 2.41, male = 1)
-#' z_weight_for_age_inf(q = 4.455, age = 2.41, male = 1)
-#'
-#' p_weight_for_length_inf(q = 4.455, length = 55, male = 1)
-#' q_weight_for_length_inf(p = 0.05, length = 55, male = 1)
-#' z_weight_for_length_inf(q = 4.455, length = 55, male = 1)
-#'
-#' p_weight_for_stature(q = 4.455, height = 95, male = 1)
-#' q_weight_for_stature(p = 0.05, height = 95, male = 1)
-#' z_weight_for_stature(q = 4.455, height = 95, male = 1)
+#' # length_for_age_inf is for Infants are from 0 to 3 years (36 months)
+#' # stature_for_age    is for pediatrics from 2 years (24 months) to 20 years
+#' #                    (240 months)
+#' # The overlap between these functions will produce slightly different values
+#' # the kids between 24 and 36 months of age.
+#' p_length_for_age_inf(87, age = 28, male = 0)
+#' p_stature_for_age(87, age = 28, male = 0)
 #'
 #' @references
 #' \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm}
@@ -232,9 +225,13 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
 
   if (set %in% c("length_for_age_inf", "weight_for_age_inf")) {
     stopifnot(length(age) == 1L)
-    stopifnot(0 <= age & age <= 36)
-
+    stopifnot(!is.na(age))
     d <- cdc_lms_data[cdc_lms_data$set == set, ]
+
+    if (age < min(d$age) | age > max(d$age)) {
+      stop(paste("age must be between", min(d$age), "and", max(d$age)))
+    }
+
     d <- d[d$male == male, ]
 
     d1 <- d[d$age <= age, ]
@@ -246,13 +243,18 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     s <- linear_interp(age, d[, "age"], d[, "s"])
   } else if (set %in% c("bmi_for_age", "head_circ_for_age", "stature_for_age", "weight_for_age")) {
     stopifnot(length(age) == 1L)
-    stopifnot(24 <= age & age < 241)
+    stopifnot(!is.na(age))
 
     d <- cdc_lms_data[cdc_lms_data$set == set, ]
+
+    if (age < min(d$age) | age > max(d$age)) {
+      stop(paste("age must be between", min(d$age), "and", max(d$age)))
+    }
+
     d <- d[d$male == male, ]
 
     d1 <- d[d$age <= age, ]
-    d2 <- d[d$age >  age, ]
+    d2 <- d[d$age >= age, ]
     d  <- rbind(d1[nrow(d1), ], d2[1, ])
 
     l <- linear_interp(age, d[, "age"], d[, "l"])
@@ -260,11 +262,15 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     s <- linear_interp(age, d[, "age"], d[, "s"])
   } else if (set == "weight_for_length_inf") {
     stopifnot(length(length) == 1L)
+    stopifnot(!is.na(length))
     d <- cdc_lms_data[cdc_lms_data$set == set, ]
+    if (length < min(d$length) | max(d$length) < length) {
+      stop(paste("length must be between", min(d$length), "and", max(d$length)))
+    }
     d <- d[d$male == male, ]
 
     d1 <- d[d$length <= length, ]
-    d2 <- d[d$length >  length, ]
+    d2 <- d[d$length >= length, ]
     d  <- rbind(d1[nrow(d1), ], d2[1, ])
 
     l <- linear_interp(age, d[, "length"], d[, "l"])
@@ -272,12 +278,15 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     s <- linear_interp(age, d[, "length"], d[, "s"])
   } else if (set == "weight_for_stature") {
     stopifnot(length(height) == 1L)
-    stopifnot(height > 0)
+    stopifnot(!is.na(height))
     d <- cdc_lms_data[cdc_lms_data$set == set, ]
+    if (height < min(d$height) | max(d$height) < height) {
+      stop(paste("height must be between", min(d$height), "and", max(d$height)))
+    }
     d <- d[d$male == male, ]
 
     d1 <- d[d$height <= height, ]
-    d2 <- d[d$height >  height, ]
+    d2 <- d[d$height >= height, ]
     d  <- rbind(d1[nrow(d1), ], d2[1, ])
 
     l <- linear_interp(age, d[, "height"], d[, "l"])
@@ -291,7 +300,17 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
 }
 
 linear_interp <- function(x, xs, ys) {
-  ys[1] + (diff(ys) / diff(xs)) * (x - xs[1])
+  if (sum(is.na(xs) == 1)) {
+    rtn <- ys[!is.na(xs)]
+    return(rtn)
+  }
+  stopifnot(min(xs) <= x & x <= max(xs))
+  if (isTRUE(all.equal(0.0, diff(xs)))) {
+    rtn <- mean(ys)
+  } else {
+    rtn <- ys[1] + (diff(ys) / diff(xs)) * (x - xs[1])
+  }
+  rtn
 }
 
 #   - M: Median
