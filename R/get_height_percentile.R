@@ -18,21 +18,26 @@
 #'  utils::data(list = "cdc_length_for_age", package = "pedbp", envir = e)
 #'
 #'  e$cdc_length_for_age[130, ]
-#'  get_height_percentile(age = 78.5, male = 1, height = 109.0335)
-#'  get_height_percentile(age = 78.5, male = 1, height = 122.4042)
+#'  #get_height_percentile(age = 78.5, male = 1, height = 109.0335)
+#'  #get_height_percentile(age = 78.5, male = 1, height = 122.4042)
 #'
 #' @export
 get_height_percentile <- function(age, male, height, ...) {
-  stopifnot(length(age) == 1L)
-  stopifnot(length(male) == 1L)
-  stopifnot(length(height) == 1L)
-  stopifnot(!is.na(age))
-  stopifnot(!is.na(male))
-  stopifnot(!is.na(height))
-  e <- new.env()
-  utils::data(list = "cdc_length_for_age", package = "pedbp", envir = e)
-  dat <- e$cdc_length_for_age[e$cdc_length_for_age$male == male, ]
-  dat <- dat[which.min(abs(age - dat$age)), ]
-  stopifnot(nrow(dat) == 1L)
-  pnorm(height, mean = dat$mean_height, sd = dat$sd_height)
+
+  # TODO: under construction
+  #
+  # stopifnot(length(age) == 1L)
+  # stopifnot(length(male) == 1L)
+  # stopifnot(length(height) == 1L)
+  # stopifnot(!is.na(age))
+  # stopifnot(!is.na(male))
+  # stopifnot(!is.na(height))
+  # e <- new.env()
+  # utils::data(list = "cdc_length_for_age", package = "pedbp", envir = e)
+  # dat <- e$cdc_length_for_age[e$cdc_length_for_age$male == male, ]
+  # dat <- dat[which.min(abs(age - dat$age)), ]
+  # stopifnot(nrow(dat) == 1L)
+
+ 
+  # stats::pnorm(height, mean = dat$mean_height, sd = dat$sd_height)
 }

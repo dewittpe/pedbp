@@ -17,8 +17,7 @@ TESTS     = $(wildcard $(PKG_ROOT)/tests/*.R)
 VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd
 
 ## Data targets
-DATATARGETS  = $(PKG_ROOT)/data/flynn2017.rda
-DATATARGETS += $(PKG_ROOT)/data/lo2013.rda
+DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda
 DATATARGETS += $(PKG_ROOT)/data/gemelli1990.rda
 DATATARGETS += $(PKG_ROOT)/data/cdc_length_for_age.rda
 

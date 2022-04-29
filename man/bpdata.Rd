@@ -3,23 +3,18 @@
 \docType{data}
 \name{bpdata}
 \alias{bpdata}
-\alias{flynn2017}
 \alias{lo2013}
 \alias{gemelli1990}
 \alias{cdc_length_for_age}
 \title{Data Sets Informing Blood Pressure Percentile Estimates}
 \format{
-An object of class \code{data.frame} with 952 rows and 7 columns.
-
 An object of class \code{data.frame} with 30 rows and 8 columns.
 
 An object of class \code{data.frame} with 8 rows and 6 columns.
 
-An object of class \code{data.frame} with 510 rows and 13 columns.
+An object of class \code{data.frame} with 510 rows and 11 columns.
 }
 \usage{
-flynn2017
-
 lo2013
 
 gemelli1990
@@ -38,7 +33,6 @@ For all the data sets provided units are uniform:
 \describe{
    \item{age:}{Patient age; months}
    \item{height:}{length/height/stature; cm}
-   \item{weight:}{patient weight; kg}
    \item{male:}{integer value; 1 = male, 0 = female}
    \item{sbp:}{systolic blood pressure; mmHg}
    \item{dbp:}{diastolic blood pressure; mmHg}

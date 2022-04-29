@@ -38,10 +38,10 @@ knitr::opts_chunk$set(
 #' will be used to inform the blood pressure percentiles.  Under one year of
 #' age, the data from @gemelli1990longitudinal will be used; height is
 #' irrelevent.  For those at least one year of age with a known height then the
-#' @flynn2017clinical data sets are used.  If height is unknown and age is at
+#' @nhlbi data sets are used.  If height is unknown and age is at
 #' least three years then data from @lo2013prehypertension is used.  Lastly,
 #' under three years of age with unknown height have blood pressure precentiles
-#' estimated by the @flynn2017clinical data with the default of the median
+#' estimated by the @nhlbi data with the default of the median
 #' height for sex and age (Figure \@ref(fig:flowchart)).
 #'
 #' ![](./flowchart.png)
@@ -76,14 +76,6 @@ data(package = "pedbp")$results[, "Item"]
 data(cdc_length_for_age, package = "pedbp")
 str(cdc_length_for_age)
 #'
-#' ## @flynn2017clinical
-#'
-#' Data from the clinical practices guidelines from the American Academey of
-#' Pediatrics
-#'
-data(flynn2017, package = "pedbp")
-str(flynn2017)
-#'
 #' ## @gemelli1990longitudinal
 #'
 #' Used for patients under one year of age.
@@ -111,47 +103,6 @@ str(lo2013)
 #' Note: The est_norm function allows the end user to select weights to
 #' emphasize particular quantiles to fit.  The default setting is to weight all
 #' quantiles equally.
-#'
-#' An example for getting the estimated mean and standard deviation for a
-#' Gausssian distribution of 12 year (144 month) old males is
-qs <- unlist(subset(cdc_length_for_age, male == 1 & age == 144.5)[, -(1:2)])
-ps <- as.numeric(sub("p", "", names(qs))) / 100
-length_144_male <- pedbp::est_norm(q = qs, p = ps)
-length_144_male
-#'
-#' A simple plotting method is provided to view the provided quantiles with the
-#' estimated Gausssian cumulative distribution function (Figure
-#' \@ref(fig:egcdf)).
-#+ label = "eg_cdf_cap", echo = FALSE, results = "hide"
-cap <-
-  paste0("Length for Age quantiles for 12-year old males with a Gausssian ",
-         "cumulative distribution function overlaid.  The mean and standard deviations",
-         "values for the Gausssian are ", round(length_144_male$par[1], 3),
-         " and ", round(length_144_male$par[2], 3), " respectively.")
-#'
-#+ label = "egcdf", fig.cap = cap
-plot(length_144_male)
-#'
-#' If you know that you will be focused on the upper percentiles you can weight
-#' the appropriations.  Comparing the equaweighted CDF, Figure \@ref(fig:egcdf),
-#' to the weighted CDF, Figure \@ref(fig:egcdf2), there is little difference
-#' here, but the estiamted larger quantiles are approximated with more accuracy
-#' than the lower quantiles. Other, more extreme examples are easy to produce.
-length_144_male_weighted <-
-  pedbp::est_norm(q = qs, p = ps, weights= c(0, 0, 1, 1, 1, 3, 10, 10, 30))
-length_144_male_weighted
-#'
-#'
-#+ label = "eg_cdf_cap2", echo = FALSE, results = "hide"
-cap <-
-  paste0("Length for Age quantiles for 12-year old males with a Gausssian ",
-         "cumulative distribution function overlaid.  The mean and standard deviations",
-         "values for the Gausssian are ", round(length_144_male_weighted$par[1], 3),
-         " and ", round(length_144_male_weighted$par[2], 3), " respectively.")
-#'
-#'
-#+ label = "egcdf2", fig.cap = cap
-plot(length_144_male_weighted)
 #'
 #'
 # /* --------------------------------------------------------------------------
