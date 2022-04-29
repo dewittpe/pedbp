@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
                       collapse = TRUE
                       , fig.align = "center"
                       )
+library(pedbp)
 ```
 
 
@@ -125,6 +126,51 @@ corresponding probabilties, $p,$ such that $$\Pr\left(X \leq q\right) = p.$$
 Note: The est_norm function allows the end user to select weights to
 emphasize particular quantiles to fit.  The default setting is to weight all
 quantiles equally.
+
+# PLOTS
+
+
+```{r }
+# when no height
+d <- data.table::CJ(male = 0:1
+                    , age = unique(bp_parameters$age)#seq(3, 18 * 12, by = 1)
+                    , bp_percentile = c(5, 10, 25, 50, 75, 90, 95))
+
+d <- d[, as.list(get_bp(bp_percentile/100, bp_percentile/100, age, male))
+       , by = .(male, age, bp_percentile)]
+
+d <- data.table::melt(d
+                      , id.vars = c("male", "age", "bp_percentile")
+                      , measure.vars = c("sbp", "dbp")
+                      )
+
+ggplot2::ggplot(d) +
+  ggplot2::aes(x = age, y = value, linetype = variable, color = factor(bp_percentile)) +
+  # ggplot2::geom_line() +
+  ggplot2::geom_smooth(se = FALSE) +
+  ggplot2::facet_grid( ~ male) +
+  ggplot2::scale_y_continuous(breaks=c(30,60, 90, 120), limits = c(28, 140))
+
+#ggplot2::ggplot(cdc_bp_norms
+
+
+
+
+
+# no_ht_b_plot <-
+#   ggplot2::ggplot(no_ht_all_b_both, ggplot2::aes(x = age, y = bp, col = group)) +
+#   ggplot2::geom_smooth(se = FALSE) +
+#   ggrepel::geom_label_repel(ggplot2::aes(label = label), size = 3, nudge_x = 1, nudge_y = 1, na.rm = TRUE) +
+#   ggplot2::labs(title = "Blood Pressure Percentiles: Boys", tag = 'A', y = "Blood Pressure (mmHg)", x = "Age (yr)") +
+#   ggplot2::scale_y_continuous(breaks=c(30,60, 90, 120), limits = c(28, 140)) +
+#   ggplot2::theme(
+#                  plot.title = ggplot2::element_text(size = 16, face = "bold"),
+#                  axis.text = ggplot2::element_text(size = 14, face = "bold"),
+#                  axis.title = ggplot2::element_text(size = 16, face = "bold"),
+#                  legend.position = "none") +
+#   ggplot2::scale_x_continuous(breaks=c(1,5, 10, 15), limits = c(0.0833333, 17.1))
+```
+
 
 
 

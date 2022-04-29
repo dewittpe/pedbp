@@ -18,8 +18,8 @@
 #'  utils::data(list = "cdc_length_for_age", package = "pedbp", envir = e)
 #'
 #'  e$cdc_length_for_age[130, ]
-#'  get_height_percentile(age = 78.5, male = 0, height = 109.0335)
-#'  get_height_percentile(age = 78.5, male = 0, height = 122.4042)
+#'  get_height_percentile(age = 13.5, male = 0, height = 73.533349)
+#'  get_height_percentile(age = 13.5, male = 0, height = 77)
 #'
 #' @export
 get_height_percentile <- function(age, male, height, ...) {

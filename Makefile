@@ -23,6 +23,7 @@ DATATARGETS += $(PKG_ROOT)/data/cdc_length_for_age.rda
 DATATARGETS += $(PKG_ROOT)/data/cdc_bp_norms.rda
 DATATARGETS += $(PKG_ROOT)/data/bp_parameters.rda
 DATATARGETS += $(PKG_ROOT)/data/ht_parameters.rda
+DATATARGETS += $(PKG_ROOT)/R/sysdata.rda
 
 ################################################################################
 # Recipes
@@ -76,6 +77,9 @@ $(PKG_ROOT)/data/cdc_length_for_age.rda : data-raw/cdc_length_for_age.R data-raw
 	R CMD BATCH --vanilla $<
 
 $(PKG_ROOT)/data/bp_parameters.rda $(PKG_ROOT)/data/ht_parameters.rda &: data-raw/gaussian_parameters.R R/est_norm.R data/gemelli1990.rda data/cdc_length_for_age.rda data/cdc_bp_norms.rda data/lo2013.rda
+	R CMD BATCH --vanilla $<
+
+$(PKG_ROOT)/R/sysdata.rda : data-raw/sysdata.R data-raw/cdc_percentile_data_with_lms_values/bmiagerev.csv data-raw/cdc_percentile_data_with_lms_values/hcageinf.csv data-raw/cdc_percentile_data_with_lms_values/lenageinf.csv data-raw/cdc_percentile_data_with_lms_values/statage.csv data-raw/cdc_percentile_data_with_lms_values/wtageinf.csv data-raw/cdc_percentile_data_with_lms_values/wtage.csv data-raw/cdc_percentile_data_with_lms_values/wtleninf.csv data-raw/cdc_percentile_data_with_lms_values/wtstat.csv
 	R CMD BATCH --vanilla $<
 
 ################################################################################

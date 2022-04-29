@@ -1,10 +1,8 @@
-#' Estimate Pediatric Blood Pressure Percentiles
+#' Estimate BP from percentile for Age, Sex and Height
 #'
-#' Estimate the percentile for blood pressure and height for a pediatric patient
-#' based on sex and age and height.  Sex and age are required, height is not.
 #'
-#' @param sbp Systolic blood pressure, mmHg
-#' @param dbp Systolic blood pressure, mmHg
+#' @param sbp_percentile numeric between 0, 1
+#' @param dbp_percentile numeric between 0, 1
 #' @param age age in months
 #' @param male integer value, 1 = male, 0 = female
 #' @param height numeric, in centimeters, can be missing.
@@ -13,15 +11,22 @@
 #' @param ... not currently used
 #'
 #' @examples
-#' get_bp_percentile(sbp = 100, dbp = 60, age = 8, male = 0)
+#' get_bp(sbp_percentile = 0.9, dbp = 0.60, age = 8, male = 0)
 #' @export
-get_bp_percentile <- function(sbp, dbp, age, male, height = NA, height_percentile = 0.50, ...) {
+get_bp <- function(sbp_percentile = NA, dbp_percentile = NA, age, male, height = NA, height_percentile = 0.50, ...) {
   stopifnot(length(age) == 1L)
   stopifnot(length(male) == 1L)
-  stopifnot(all(age >=0) & all(age < 19))
+  stopifnot(all(age >=0) & all(age <= 18 * 12))
   stopifnot(all(male %in% c(0L, 1L)))
   stopifnot(all(stats::na.omit(height > 0)))
   stopifnot(0 < height_percentile & height_percentile < 1)
+  stopifnot(!is.na(sbp_percentile) & !is.na(dbp_percentile))
+  if (!is.na(sbp_percentile)) {
+    stopifnot(0 < sbp_percentile & sbp_percentile < 1)
+  }
+  if (!is.na(dbp_percentile)) {
+    stopifnot(0 < dbp_percentile & dbp_percentile < 1)
+  }
 
   if (!is.na(height)) {
     height_percentile <- get_height_percentile(age, male, height)
@@ -47,11 +52,9 @@ get_bp_percentile <- function(sbp, dbp, age, male, height = NA, height_percentil
     d <- d[d$height_percentile == max(d$height_percentile), ]
   }
 
-  stopifnot(nrow(d) == 1L)
-
   rtn <-
-    list(  sbp_percentile = stats::pnorm(sbp, mean = d$sbp_mean, sd = d$sbp_sd)
-         , dbp_percentile = stats::pnorm(dbp, mean = d$dbp_mean, sd = d$dbp_sd)
+    list(  sbp = stats::qnorm(sbp_percentile, mean = d$sbp_mean, sd = d$sbp_sd)
+         , dbp = stats::qnorm(dbp_percentile, mean = d$dbp_mean, sd = d$dbp_sd)
          , height_percentile = height_percentile)
   rtn
 }
