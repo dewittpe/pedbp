@@ -6,7 +6,7 @@ stopifnot(class(lo2013) == "data.frame")
 stopifnot(all(c("age", "male") %in% names(lo2013)))
 
 # testing charateristics of the data set
-stopifnot( dim(lo2013) == c(30, 8))
+stopifnot( dim(lo2013) == c(30, 6))
 
 stopifnot(min(lo2013$age) ==  3 * 12)
 stopifnot(max(lo2013$age) == 17 * 12)

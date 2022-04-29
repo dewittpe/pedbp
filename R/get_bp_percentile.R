@@ -21,43 +21,36 @@ get_bp_percentile <- function(sbp, dbp, age, male, height = NA, height_percentil
   stopifnot(all(age >=0) & all(age < 19))
   stopifnot(all(male %in% c(0L, 1L)))
   stopifnot(all(stats::na.omit(height > 0)))
+  stopifnot(0 < height_percentile & height_percentile < 1)
 
   if (!is.na(height)) {
     height_percentile <- get_height_percentile(age, male, height)
   }
 
-  rtn <- list(sbp_percentile = NA, dbp_percentile = NA, height_percentile = height_percentile)
+  e <- new.env()
+  utils::data(list = "bp_parameters", package = "pedbp", envir = e)
+  d <- e$bp_parameters[e$bp_parameters$male == male, ]
 
-  # think through this logic more -- It could be better
   if (age < 12) {
-    rtn <- get_bp_percentile_gemelli(sbp, dbp, age, male)
-  } else if (!is.na(height)) {
-    rtn <- get_bp_percentile_flynn2017(sbp, dbp, age, male, height_percentile)
-  } else if (age < 3) {
-    rtn <- get_bp_percentile_flynn2017(sbp, dbp, age, male, height_percentile)
+    d <- d[d$age < age, ]
+    d <- d[which.max(age), ]
+    height_percentile <- NA_real_
+  } else if (is.na(height) & age >= 36) {
+    d <- d[is.na(d$height_percentile), ]
+    d <- d[d$age <= age, ]
+    d <- d[d$age == max(d$age), ]
+    height_percentile <- NA_real_
   } else {
-    rtn <- get_bp_percentile_lo2013(sbp, dbp, age, male)
+    d <- d[d$age <= age, ]
+    d <- d[d$age == max(d$age), ]
+    d <- d[d$height_percentile <= height_percentile * 100, ]
+    d <- d[d$height_percentile == max(d$height_percentile), ]
   }
 
-
+  rtn <-
+    list(  sbp_percentile = stats::pnorm(sbp, mean = d$sbp_mean, sd = d$sbp_sd)
+         , dbp_percentile = stats::pnorm(dbp, mean = d$dbp_mean, sd = d$dbp_sd)
+         , height_percentile = height_percentile)
   rtn
 }
 
-get_bp_percentile_gemelli <- function(sbp, dbp, age, male) {
-  e <- new.env()
-  utils::data(list = "gemelli1990", package = "pedbp", envir = e)
-  idx <- which(e$gemelli1990$male == male)
-  dat <- e$gemelli1990[idx, ]
-  dat <- dat[which.min(abs(age - dat$age)), ]
-  list(
-       sbp_percentile = stats::pnorm(sbp, mean = dat$mean_sbp, sd = dat$sd_sbp),
-       dbp_percentile = stats::pnorm(dbp, mean = dat$mean_dbp, sd = dat$sd_dbp),
-       height_percentile = NA_real_
-       )
-}
-
-get_bp_percentile_flynn2017 <- function(sbp, dbp, age, male, height_percentile) {
-}
-
-get_bp_percentile_lo2013 <- function(sbp, dbp, age, male, height_percentile) {
-}
