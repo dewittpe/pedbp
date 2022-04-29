@@ -6,20 +6,35 @@ set.seed(42)
 source("R/est_norm.R")
 load("./data/cdc_length_for_age.rda")
 load("./data/gemelli1990.rda")
+load("./data/lo2013.rda")
+load("./data/cdc_bp_norms.rda")
 
-ps <- names(cdc_length_for_age)
-ps <- ps[grepl("^p", ps)]
-ps <- as.numeric(sub("p", "", ps)) / 100
+data.table::setDT(cdc_length_for_age)
+data.table::setDT(cdc_bp_norms)
+data.table::setDT(gemelli1990)
+data.table::setDT(lo2013)
 
-ms <- apply(cdc_length_for_age[, -(1:2)], 1, est_norm, ps)
-ms <- lapply(ms, getElement, "par")
-ms <- do.call(rbind, ms)
-colnames(ms) <- c("mean_height", "sd_height")
+# mean and standard deviation estimates for height
+ht_parameters <-
+  cdc_length_for_age[,
+                     as.list(est_norm(height, height_percentile/100)$par)
+                     , by = .(male, age)
+                     ]
 
-gaussian_parameters <- cbind(cdc_length_for_age[, c("age", "male")], ms)
+data.table::setnames(ht_parameters, old = c("mean", "sd"), new = c("height_mean", "height_sd"))
 
-head(gaussian_parameters)
+# bp
+sbp <- cdc_bp_norms[, as.list(est_norm(sbp, bp_percentile/100)$par), by = .(male, age, height_percentile)]
+dbp <- cdc_bp_norms[, as.list(est_norm(dbp, bp_percentile/100)$par), by = .(male, age, height_percentile)]
+data.table::setnames(sbp, old = c("mean", "sd"), new = c("sbp_mean", "sbp_sd"))
+data.table::setnames(dbp, old = c("mean", "sd"), new = c("dbp_mean", "dbp_sd"))
+cdc_bp <- merge(sbp, dbp)
+
+bp_parameters <- rbind(gemelli1990, cdc_bp, lo2013, use.names = TRUE, fill = TRUE)
 
 
-subset(cdc_length_for_age, male == 0 & age > 12 & age < 13)
-gemelli1990
+bp_parameters <- as.data.frame(bp_parameters)
+ht_parameters <- as.data.frame(ht_parameters)
+
+save(ht_parameters, file = "./data/ht_parameters.rda") # save first (Makefile logic)
+save(bp_parameters, file = "./data/bp_parameters.rda") # save last  (Makefile logic)

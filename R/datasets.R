@@ -16,24 +16,34 @@
 #' }
 #'
 #' Columns with a name such as \code{sbp} is a point observations.  Summary
-#' statistics are prepended to the variable as needed, e.g., \code{mean_sbp} and
-#' \code{sd_sbp} for the reported mean and standard deviation of systolic blood
+#' statistics are appended to the variable as needed, e.g., \code{sbp_mean} and
+#' \code{sbp_sd} for the reported mean and standard deviation of systolic blood
 #' pressue.
 #'
 #' CDC ages represent whole month but reported at the half month.  That is, age
 #' = 12.5 is short-hand for 12 <= age < 13. The exception is birth; age = 0 is
 #' birth and not a range.
 #'
+#' \code{ht_parameters} and \code{bp_parameters} have estimated mean and
+#' standard deviations for estimating percentiles using a Gaussian distribution
+#' for a given sex, age (in months), and height (if known/applicable).
+#'
 #' @seealso \code{vignette("bp-distributions", package = "pedbp")}
 #'
 #' @references
 #'
-#' Flynn JT, Kaelber DC, Baker-Smith CM, et al. Clinical Practice Guideline for
-#' Screening and Management of High Blood Pressure in Children and Adolescents.
-#' Pediatrics. 2017;140(3):e20171904
+#' Expert Panel on Integrated Guidelines for Cardiovascular Health and Risk
+#' Reduction in Children and Adolescents. "Expert panel on integrated guidelines
+#' for cardiovascular health and risk reduction in children and adolescents:
+#' summary report." Pediatrics 128.Supplement_5 (2011): S213-S256.
+#'
+#' Gemelli, M., Manganaro, R., Mami, C., & De Luca, F. (1990). Longitudinal
+#' study of blood pressure during the 1st year of life. European journal of
+#' pediatrics, 149(5), 318-320.
 #'
 #' Lo, Joan C., et al. "Prehypertension and hypertension in community-based
 #' pediatric practice." Pediatrics 131.2 (2013): e415-e424.
+#'
 #'
 #' @name bpdata
 #' @keywords datasets
@@ -47,3 +57,13 @@ NULL
 
 #' @rdname bpdata
 "cdc_length_for_age"
+
+#' @rdname bpdata
+"cdc_bp_norms"
+
+#' @rdname bpdata
+"ht_parameters"
+
+#' @rdname bpdata
+"bp_parameters"
+

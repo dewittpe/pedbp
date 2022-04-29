@@ -20,6 +20,9 @@ VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd
 DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda
 DATATARGETS += $(PKG_ROOT)/data/gemelli1990.rda
 DATATARGETS += $(PKG_ROOT)/data/cdc_length_for_age.rda
+DATATARGETS += $(PKG_ROOT)/data/cdc_bp_norms.rda
+DATATARGETS += $(PKG_ROOT)/data/bp_parameters.rda
+DATATARGETS += $(PKG_ROOT)/data/ht_parameters.rda
 
 ################################################################################
 # Recipes
@@ -27,6 +30,9 @@ DATATARGETS += $(PKG_ROOT)/data/cdc_length_for_age.rda
 .PHONY: all check install clean
 
 all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
+
+test:
+	${assert}
 
 $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS)
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
@@ -57,7 +63,19 @@ $(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R
 ################################################################################
 # Data Sets
 #
-$(PKG_ROOT)/data/%.rda : data-raw/%.R
+$(PKG_ROOT)/data/cdc_bp_norms.rda : data-raw/cdc_bp_norms.R data-raw/CDC_bp_norms_boys.csv data-raw/CDC_bp_norms_girls.csv
+	R CMD BATCH --vanilla $<
+
+$(PKG_ROOT)/data/lo2013.rda : data-raw/lo2013.R data-raw/lo2013_bp_weight_height_bmi.txt
+	R CMD BATCH --vanilla $<
+
+$(PKG_ROOT)/data/gemelli1990.rda : data-raw/gemelli1990.R data-raw/gemelli1990_female.csv data-raw/gemelli1990_male.csv
+	R CMD BATCH --vanilla $<
+
+$(PKG_ROOT)/data/cdc_length_for_age.rda : data-raw/cdc_length_for_age.R data-raw/cdc_length_for_age_0_36_months.txt data-raw/cdc_stature_for_age.txt
+	R CMD BATCH --vanilla $<
+
+$(PKG_ROOT)/data/bp_parameters.rda $(PKG_ROOT)/data/ht_parameters.rda &: data-raw/gaussian_parameters.R R/est_norm.R data/gemelli1990.rda data/cdc_length_for_age.rda data/cdc_bp_norms.rda data/lo2013.rda
 	R CMD BATCH --vanilla $<
 
 ################################################################################

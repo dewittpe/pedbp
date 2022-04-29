@@ -6,13 +6,22 @@
 \alias{lo2013}
 \alias{gemelli1990}
 \alias{cdc_length_for_age}
+\alias{cdc_bp_norms}
+\alias{ht_parameters}
+\alias{bp_parameters}
 \title{Data Sets Informing Blood Pressure Percentile Estimates}
 \format{
-An object of class \code{data.frame} with 30 rows and 8 columns.
+An object of class \code{data.frame} with 30 rows and 6 columns.
 
 An object of class \code{data.frame} with 8 rows and 6 columns.
 
-An object of class \code{data.frame} with 510 rows and 11 columns.
+An object of class \code{data.frame} with 4590 rows and 4 columns.
+
+An object of class \code{data.frame} with 952 rows and 6 columns.
+
+An object of class \code{data.frame} with 486 rows and 4 columns.
+
+An object of class \code{data.frame} with 276 rows and 7 columns.
 }
 \usage{
 lo2013
@@ -20,6 +29,12 @@ lo2013
 gemelli1990
 
 cdc_length_for_age
+
+cdc_bp_norms
+
+ht_parameters
+
+bp_parameters
 }
 \description{
 A collection of data sets from multiple sources used to inform blood pressure
@@ -39,18 +54,27 @@ For all the data sets provided units are uniform:
 }
 
 Columns with a name such as \code{sbp} is a point observations.  Summary
-statistics are prepended to the variable as needed, e.g., \code{mean_sbp} and
-\code{sd_sbp} for the reported mean and standard deviation of systolic blood
+statistics are appended to the variable as needed, e.g., \code{sbp_mean} and
+\code{sbp_sd} for the reported mean and standard deviation of systolic blood
 pressue.
 
 CDC ages represent whole month but reported at the half month.  That is, age
 = 12.5 is short-hand for 12 <= age < 13. The exception is birth; age = 0 is
 birth and not a range.
+
+\code{ht_parameters} and \code{bp_parameters} have estimated mean and
+standard deviations for estimating percentiles using a Gaussian distribution
+for a given sex, age (in months), and height (if known/applicable).
 }
 \references{
-Flynn JT, Kaelber DC, Baker-Smith CM, et al. Clinical Practice Guideline for
-Screening and Management of High Blood Pressure in Children and Adolescents.
-Pediatrics. 2017;140(3):e20171904
+Expert Panel on Integrated Guidelines for Cardiovascular Health and Risk
+Reduction in Children and Adolescents. "Expert panel on integrated guidelines
+for cardiovascular health and risk reduction in children and adolescents:
+summary report." Pediatrics 128.Supplement_5 (2011): S213-S256.
+
+Gemelli, M., Manganaro, R., Mami, C., & De Luca, F. (1990). Longitudinal
+study of blood pressure during the 1st year of life. European journal of
+pediatrics, 149(5), 318-320.
 
 Lo, Joan C., et al. "Prehypertension and hypertension in community-based
 pediatric practice." Pediatrics 131.2 (2013): e415-e424.

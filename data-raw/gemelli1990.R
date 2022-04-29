@@ -20,10 +20,10 @@ gemelli1990[, HR_mean := NULL]
 gemelli1990[, wt_gr_sd := NULL]
 gemelli1990[, wt_gr_mean := NULL]
 data.table::setnames(gemelli1990, old = "age_mo", "age")
-data.table::setnames(gemelli1990, old = "SBP_mean", "mean_sbp")
-data.table::setnames(gemelli1990, old = "SBP_sd", "sd_sbp")
-data.table::setnames(gemelli1990, old = "DBP_mean", "mean_dbp")
-data.table::setnames(gemelli1990, old = "DBP_sd", "sd_dbp")
+data.table::setnames(gemelli1990, old = "SBP_mean", "sbp_mean")
+data.table::setnames(gemelli1990, old = "SBP_sd", "sbp_sd")
+data.table::setnames(gemelli1990, old = "DBP_mean", "dbp_mean")
+data.table::setnames(gemelli1990, old = "DBP_sd", "dbp_sd")
 
 
 # rename and set units

@@ -13,9 +13,9 @@ lo2013 <-
              , strip.white = TRUE
   )
 
+
 # rename and set units
-lo2013$male = as.numeric(lo2013$sex == "male")
-lo2013$sex <- NULL
+lo2013$male = as.integer(lo2013$sex == "male")
 lo2013$age <- lo2013$age * 12
 
 names(lo2013) <- sub("_mmHg", "", names(lo2013))
@@ -24,8 +24,8 @@ names(lo2013) <- sub("_kg", "", names(lo2013))
 
 head(lo2013)
 
-lo2013 <- lo2013[c("age", "male", "mean_sbp", "sd_sbp", "mean_dbp", "sd_dbp",
-                   "mean_height", "sd_height")]
+lo2013 <- lo2013[c("age", "male", "mean_sbp", "sd_sbp", "mean_dbp", "sd_dbp")]
+names(lo2013) <- c("age", "male", "sbp_mean", "sbp_sd", "dbp_mean", "dbp_sd")
 
 save(lo2013, file = "./data/lo2013.rda")
 
