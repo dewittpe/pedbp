@@ -5,7 +5,7 @@
 \alias{bpdata}
 \alias{lo2013}
 \alias{gemelli1990}
-\alias{cdc_bp_norms}
+\alias{nhlbi_bp_norms}
 \alias{bp_parameters}
 \title{Data Sets Informing Blood Pressure Percentile Estimates}
 \format{
@@ -22,7 +22,7 @@ lo2013
 
 gemelli1990
 
-cdc_bp_norms
+nhlbi_bp_norms
 
 bp_parameters
 }

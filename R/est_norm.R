@@ -95,6 +95,7 @@ est_norm <- function(q, p, weights = rep(1, length(p)), ...) {
 #' @export
 print.pedbp_est_norm <- function(x, ...) {
   print(x$par)
+  invisible(x)
 }
 
 #' @export

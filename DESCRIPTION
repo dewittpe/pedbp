@@ -21,6 +21,7 @@ Suggests:
     covr,
     data.table,
     ggplot2,
+    ggrepel,
     knitr,
     rmarkdown
 VignetteBuilder: knitr

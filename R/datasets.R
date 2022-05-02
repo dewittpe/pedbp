@@ -56,7 +56,7 @@ NULL
 "gemelli1990"
 
 #' @rdname bpdata
-"cdc_bp_norms"
+"nhlbi_bp_norms"
 
 #' @rdname bpdata
 "bp_parameters"

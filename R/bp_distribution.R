@@ -45,8 +45,8 @@ p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50,
   rtn <-
     list(sbp_percentile = stats::pnorm(q_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
       ,  dbp_percentile = stats::pnorm(q_dbp, mean = d$dbp_mean, sd = d$dbp_sd))
-  attr(rtn, "bp_params") = d
-  class(rtn) <- c("pedbp_bp", class(rtn))
+  attr(rtn, "bp_params") <- d
+  class(rtn) <- "pedbp_bp"
   rtn
 }
 
@@ -61,10 +61,20 @@ q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50,
   rtn <-
     list(sbp = stats::qnorm(p_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
       ,  dbp = stats::qnorm(p_dbp, mean = d$dbp_mean, sd = d$dbp_sd))
-  attr(rtn, "bp_params") = d
-  class(rtn) <- c("pedbp_bp", class(rtn))
+  attr(rtn, "bp_params") <- d
+  class(rtn) <- "pedbp_bp"
   rtn
 }
+
+#' @export
+print.pedbp_bp <- function(x, ...) {
+  print(x[1:2])
+  invisible(x)
+}
+
+
+
+
 
 bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
   stopifnot(length(age) == 1L)
@@ -96,6 +106,7 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
     d <- d[d$age == max(d$age), ]
     height_percentile <- NA_real_
   } else {
+    d <- d[!is.na(d$height_percentile), ]
     d <- d[d$age <= age, ]
     d <- d[d$age == max(d$age), ]
     d <- d[which.min(abs(d$height_percentile/100 - height_percentile)), ]
