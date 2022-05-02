@@ -8,11 +8,24 @@ nrow(d)
 # verify you get the exact row back from bp_parameters when height is ommited
 for( i in 1:nrow(d)) {
   if (interactive()) {
-    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i])) 
+    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i]))
   }
   stopifnot(
     all.equal(
               attr(q_bp(0.5, 0.5, d$age[i], male = d$male[i]), "bp_params")
+              ,
+              d[i, ]
+              )
+  )
+}
+
+for( i in 1:nrow(d)) {
+  if (interactive()) {
+    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i]))
+  }
+  stopifnot(
+    all.equal(
+              attr(p_bp(90, 60, d$age[i], male = d$male[i]), "bp_params")
               ,
               d[i, ]
               )
@@ -26,19 +39,32 @@ nrow(d)
 d <- d[d$age >= 12 & d$age < 36 & !is.na(d$height_percentile), ]
 nrow(d)
 
-d$ht <- 
+d$ht <-
   mapply(q_length_for_age_inf,
          p = d$height_percentile / 100,
          age = d$age,
          male = d$male)
-         
+
 for( i in 1:nrow(d)) {
   if (interactive()) {
-    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i], "; height: ", d$ht[i])) 
+    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i], "; height: ", d$ht[i]))
   }
   stopifnot(
     all.equal(
               attr(q_bp(0.5, 0.5, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
+              ,
+              d[i, 1:7]
+              )
+  )
+}
+
+for( i in 1:nrow(d)) {
+  if (interactive()) {
+    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i], "; height: ", d$ht[i]))
+  }
+  stopifnot(
+    all.equal(
+              attr(p_bp(90, 60, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
               d[i, 1:7]
               )
@@ -52,19 +78,32 @@ nrow(d)
 d <- d[d$age >= 36 & !is.na(d$height_percentile), ]
 nrow(d)
 
-d$ht <- 
+d$ht <-
   mapply(q_stature_for_age,
          p = d$height_percentile / 100,
          age = d$age,
          male = d$male)
-         
+
 for( i in 1:nrow(d)) {
   if (interactive()) {
-    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i], "; height: ", d$ht[i])) 
+    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i], "; height: ", d$ht[i]))
   }
   stopifnot(
     all.equal(
               attr(q_bp(0.5, 0.5, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
+              ,
+              d[i, 1:7]
+              )
+  )
+}
+
+for( i in 1:nrow(d)) {
+  if (interactive()) {
+    print(paste0("i: ", i, "; age: ", d$age[i], "; male: ", d$male[i], "; height: ", d$ht[i]))
+  }
+  stopifnot(
+    all.equal(
+              attr(p_bp(90, 60, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
               d[i, 1:7]
               )
