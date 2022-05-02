@@ -109,9 +109,9 @@ str(lo2013)
 # when no height
 d <- data.table::CJ(male = 0:1
                     , age = unique(bp_parameters$age)#seq(3, 18 * 12, by = 1)
-                    , bp_percentile = c(5, 10, 25, 50, 75, 90, 95))
+                    , bp_percentile = c(5, 10, 25, 50, 75, 90, 95) / 100)
 
-d <- d[, as.list(get_bp(bp_percentile/100, bp_percentile/100, age, male))
+d <- d[, as.list(q_bp(bp_percentile, bp_percentile, age, male))
        , by = .(male, age, bp_percentile)]
 
 d <- data.table::melt(d

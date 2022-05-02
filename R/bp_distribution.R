@@ -31,6 +31,10 @@
 #' x
 #' str(x)
 #'
+#' @name bp_distribution
+NULL
+
+#' @rdname bp_distribution
 #' @export
 p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50, ...) {
 
@@ -46,6 +50,7 @@ p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50,
   rtn
 }
 
+#' @rdname bp_distribution
 #' @export
 q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50, ...) {
 
@@ -70,7 +75,6 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
   stopifnot(0 < height_percentile & height_percentile < 1)
 
   if (!is.na(height)) {
-    # height_percentile <- get_height_percentile(age, male, height)
     if (age <= 36) {
       height_percentile <- p_length_for_age_inf(height, age = age, male = male)
     } else {
@@ -83,12 +87,12 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
   d <- e$bp_parameters[e$bp_parameters$male == male, ]
 
   if (age < 12) {
-    d <- d[d$age < age, ]
+    d <- d[d$age == min(d$age) | d$age < age, ]
     d <- d[d$age == max(d$age), ]
     height_percentile <- NA_real_
   } else if (is.na(height) & age >= 36) {
     d <- d[is.na(d$height_percentile), ]
-    d <- d[d$age <= age, ]
+    d <- d[((age >= 36) & (d$age <= age)), ]
     d <- d[d$age == max(d$age), ]
     height_percentile <- NA_real_
   } else {
