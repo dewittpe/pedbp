@@ -106,5 +106,3 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
 }
 
 
-
-

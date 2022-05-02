@@ -1,51 +1,72 @@
-#'---
-#'title: "Pediatric Blood Pressure Distributions"
-#'output:
-#'  rmarkdown::html_vignette:
-#'    toc: true
-#'    number_sections: true
-#'bibliography: references.bib
-#'vignette: >
-#'  %\VignetteIndexEntry{Pediatric Blood Pressure Distributions}
-#'  %\VignetteEngine{knitr::rmarkdown}
-#'  %\VignetteEncoding{UTF-8}
+#'--- title: "Pediatric Blood Pressure Distributions" output:
+#'rmarkdown::html_vignette: toc: true number_sections: true bibliography:
+#'references.bib vignette: > %\VignetteIndexEntry{Pediatric Blood Pressure
+#'Distributions} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
 #'---
 #'
 #+ label = "setup", include = FALSE
-knitr::opts_chunk$set(
-                      collapse = TRUE
-                      , fig.align = "center"
-                      )
-library(pedbp)
+knitr::opts_chunk$set( collapse = TRUE , fig.align = "center") library(pedbp)
 #'
 #' # Introduction
 #'
 #' Part of the work of @martin2022machine required transforming blood
 #' pressurement measurement into percentiles based on published norms.  This
 #' work was complicated by the fact that data for pediatric blood pressure
-#' precentiles is sparse and gennerally only applicable to children at least
-#' one year of age and requires height, a commonly unavailable data point in
+#' precentiles is sparse and gennerally only applicable to children at least one
+#' year of age and requires height, a commonly unavailable data point in
 #' electronic health records for a variety of reasons.
 #'
 #' A solution to building pediatric blood pressure percentiles was developed and
 #' is presented here for others to use.  Inputs for the developed method are:
 #'
-#' 1. Patient sex (male/female) _required_
-#' 2. Systolic blood pressure (mmHg) _required_
-#' 3. Diastolic blood pressure (mmHg) _required_
-#' 4. Patient height (cm) _if known_.
+#' 1. Patient sex (male/female) _required_ 2. Systolic blood pressure (mmHg)
+#' _required_ 3. Diastolic blood pressure (mmHg) _required_ 4. Patient height
+#' (cm) _if known_.
 #'
 #' Given the inputs the following logic is used to determine which data sets
 #' will be used to inform the blood pressure percentiles.  Under one year of
 #' age, the data from @gemelli1990longitudinal will be used; height is
 #' irrelevent.  For those at least one year of age with a known height then the
-#' @nhlbi data sets are used.  If height is unknown and age is at
-#' least three years then data from @lo2013prehypertension is used.  Lastly,
-#' under three years of age with unknown height have blood pressure precentiles
-#' estimated by the @nhlbi data with the default of the median
-#' height for sex and age.
+#' @nhlbi data sets are used.  If height is unknown and age is at least three
+#' years then data from @lo2013prehypertension is used.  Lastly, under three
+#' years of age with unknown height have blood pressure precentiles estimated by
+#' the @nhlbi data with the default of the median height for sex and age.
 #'
 #' ![](./flowchart.png)
+#'
+#' # Estimating Pediatric Blood Distributions
+#'
+#' There are two functions provided for working with blood pressure
+#' distributions.  These methods uses Gausssian distributions for both systolic
+#' and diastolic blood pressures with means and standard deviations either
+#' explicitly from a aformentioned source or derived by optimizing the paramters
+#' such that the sum of squared errors between the provided quantiles from a
+#' aformentioned source and the distribution quantiles is minimized.  The
+#' provided functions, a distribuiton function and a qunatile function, follow a
+#' similar naming convention to the distribution functions found the stats
+#' library in R.
+#'
+#+ Distribution Function
+args(p_bp)
+
+# Quantile Function
+args(q_bp)
+#'
+#'
+#' Both methods expect age in months, and an indicator for sex.  If height is
+#' missing, e.g., NA, then the default higher percentile of 50 will will be used
+#' as applicable.  The end user may modify the the default height percentile.
+#'
+#' If height is entered, then the height percentile is determined via a LMS
+#' method for age and sex and corresponding LMS data from the Centers for Disease Control and
+#' Preventions (more infomation on LMS methods and data later in this vignette.)
+#' The parameters for the blood pressure distriution are found in a look up
+#' table using the nearest age and height percentile.
+#'
+#' ## Percentiles
+#'
+p_bp(q_sbp = 100, q_dbp = 60, age = 44.5, male = 1)
+p_bp(q_sbp = 100, q_dbp = 60, age = 44.5, male = 1, height = 183)
 #'
 #' # Source Data Sets
 #'
