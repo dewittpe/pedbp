@@ -273,9 +273,9 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     d2 <- d[d$length >= length, ]
     d  <- rbind(d1[nrow(d1), ], d2[1, ])
 
-    l <- linear_interp(age, d[, "length"], d[, "l"])
-    m <- linear_interp(age, d[, "length"], d[, "m"])
-    s <- linear_interp(age, d[, "length"], d[, "s"])
+    l <- linear_interp(length, d[, "length"], d[, "l"])
+    m <- linear_interp(length, d[, "length"], d[, "m"])
+    s <- linear_interp(length, d[, "length"], d[, "s"])
   } else if (set == "weight_for_stature") {
     stopifnot(length(height) == 1L)
     stopifnot(!is.na(height))
@@ -289,9 +289,9 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     d2 <- d[d$height >= height, ]
     d  <- rbind(d1[nrow(d1), ], d2[1, ])
 
-    l <- linear_interp(age, d[, "height"], d[, "l"])
-    m <- linear_interp(age, d[, "height"], d[, "m"])
-    s <- linear_interp(age, d[, "height"], d[, "s"])
+    l <- linear_interp(height, d[, "height"], d[, "l"])
+    m <- linear_interp(height, d[, "height"], d[, "m"])
+    s <- linear_interp(height, d[, "height"], d[, "s"])
   } else {
     stop("unknown set")
   }
