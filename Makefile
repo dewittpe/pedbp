@@ -55,7 +55,7 @@ $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNE
 #
 # List the explicit targets above
 
-$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R
+$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R $(PKG_ROOT)/vignettes/references.bib
 	R --vanilla --quiet -e "knitr::spin(hair = '$<', knit = FALSE)"
 	mv $(basename $<).Rmd $@
 
