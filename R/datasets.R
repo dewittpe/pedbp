@@ -24,7 +24,7 @@
 #' = 12.5 is short-hand for 12 <= age < 13. The exception is birth; age = 0 is
 #' birth and not a range.
 #'
-#' \code{ht_parameters} and \code{bp_parameters} have estimated mean and
+#' \code{bp_parameters} has the estimated mean and
 #' standard deviations for estimating percentiles using a Gaussian distribution
 #' for a given sex, age (in months), and height (if known/applicable).
 #'
@@ -56,13 +56,7 @@ NULL
 "gemelli1990"
 
 #' @rdname bpdata
-"cdc_length_for_age"
-
-#' @rdname bpdata
 "cdc_bp_norms"
-
-#' @rdname bpdata
-"ht_parameters"
 
 #' @rdname bpdata
 "bp_parameters"

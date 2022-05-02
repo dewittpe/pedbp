@@ -5,9 +5,7 @@
 \alias{bpdata}
 \alias{lo2013}
 \alias{gemelli1990}
-\alias{cdc_length_for_age}
 \alias{cdc_bp_norms}
-\alias{ht_parameters}
 \alias{bp_parameters}
 \title{Data Sets Informing Blood Pressure Percentile Estimates}
 \format{
@@ -15,24 +13,16 @@ An object of class \code{data.frame} with 30 rows and 6 columns.
 
 An object of class \code{data.frame} with 8 rows and 6 columns.
 
-An object of class \code{data.frame} with 4590 rows and 4 columns.
-
 An object of class \code{data.frame} with 952 rows and 6 columns.
 
-An object of class \code{data.frame} with 486 rows and 4 columns.
-
-An object of class \code{data.frame} with 276 rows and 7 columns.
+An object of class \code{data.frame} with 276 rows and 8 columns.
 }
 \usage{
 lo2013
 
 gemelli1990
 
-cdc_length_for_age
-
 cdc_bp_norms
-
-ht_parameters
 
 bp_parameters
 }
@@ -62,7 +52,7 @@ CDC ages represent whole month but reported at the half month.  That is, age
 = 12.5 is short-hand for 12 <= age < 13. The exception is birth; age = 0 is
 birth and not a range.
 
-\code{ht_parameters} and \code{bp_parameters} have estimated mean and
+\code{bp_parameters} has the estimated mean and
 standard deviations for estimating percentiles using a Gaussian distribution
 for a given sex, age (in months), and height (if known/applicable).
 }

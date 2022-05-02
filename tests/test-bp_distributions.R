@@ -53,7 +53,7 @@ for( i in 1:nrow(d)) {
     all.equal(
               attr(q_bp(0.5, 0.5, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
-              d[i, 1:7]
+              d[i, 1:8]
               )
   )
 }
@@ -66,7 +66,7 @@ for( i in 1:nrow(d)) {
     all.equal(
               attr(p_bp(90, 60, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
-              d[i, 1:7]
+              d[i, 1:8]
               )
   )
 }
@@ -92,7 +92,7 @@ for( i in 1:nrow(d)) {
     all.equal(
               attr(q_bp(0.5, 0.5, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
-              d[i, 1:7]
+              d[i, 1:8]
               )
   )
 }
@@ -105,7 +105,7 @@ for( i in 1:nrow(d)) {
     all.equal(
               attr(p_bp(90, 60, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
-              d[i, 1:7]
+              d[i, 1:8]
               )
   )
 }

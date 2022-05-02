@@ -1,11 +1,17 @@
-#'--- title: "Pediatric Blood Pressure Distributions" output:
-#'rmarkdown::html_vignette: toc: true number_sections: true bibliography:
-#'references.bib vignette: > %\VignetteIndexEntry{Pediatric Blood Pressure
-#'Distributions} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
+#'---
+#'title: "Pediatric Blood Pressure Distributions"
+#'output: rmarkdown::html_vignette:
+#'  toc: true
+#'  number_sections: true
+#'bibliography: references.bib
+#'vignette: > %\VignetteIndexEntry{Pediatric Blood Pressure Distributions}
+#'%\VignetteEngine{knitr::rmarkdown}
+#'%\VignetteEncoding{UTF-8}
 #'---
 #'
 #+ label = "setup", include = FALSE
-knitr::opts_chunk$set( collapse = TRUE , fig.align = "center") library(pedbp)
+knitr::opts_chunk$set( collapse = TRUE , fig.align = "center")
+library(pedbp)
 #'
 #' # Introduction
 #'
@@ -83,18 +89,6 @@ p_bp(q_sbp = 100, q_dbp = 60, age = 44.5, male = 1, height = 183)
 #'
 #' A listing of the data sets can be found thusly:
 data(package = "pedbp")$results[, "Item"]
-#'
-#' ## CDC Length of Age
-#'
-#' Percentiles of length of age, percentiles given are the 3rd, 5th, 10th, 25th,
-#' 50th, 75th, 90th, 95th, and 97th.
-#'
-#' The ages are reported at the half-month represent a whole month.  That is,
-#' $\text{age} = 144.5$ is short-hand for $144 \leq \text{age} < 145.$  The
-#' exception is birth; 0 is the point of birth.
-#'
-data(cdc_length_for_age, package = "pedbp")
-str(cdc_length_for_age)
 #'
 #' ## @gemelli1990longitudinal
 #'
