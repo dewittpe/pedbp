@@ -67,7 +67,10 @@ dashboardPage(
         tabItem("overview",
           fluidRow(column(width = 6, includeMarkdown("overview.md"))
                    , column(width = 6, p("Flowchart for selection of data set to build blood pressure percentiles one."), plotOutput("flowchart"))))
-      , tabItem("bp",
+      , tabItem("bp" #{{{
+          ,
+          h2("Blood Pressure Percentiles")
+          ,
           fluidRow(
               box(title = "Patient Notes", width = 3, tableOutput("patient_notes"))
             , box(width = 9, plotOutput("bp_cdf"))
@@ -78,8 +81,12 @@ dashboardPage(
                           box(title = "Blood Pressure CDF Notes", width = 7, tableOutput("bp_notes"))
                           )
           )
-      )
-      , tabItem("batch", h3("hi"))
+      ) #}}}
+      , tabItem("batch" # {{{
+          , h2("Batch Processing")
+          , p("You may use this page to get the blood pressure percentiles for several patients at one time.",
+              "The expected format the data in the uploaded file is:")
+      ) #}}}
     )
   )
 )
