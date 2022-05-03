@@ -3,6 +3,7 @@
 S3method(plot,pedbp_est_norm)
 S3method(print,pedbp_bp)
 S3method(print,pedbp_est_norm)
+export(bp_cdf)
 export(est_norm)
 export(p_bmi_for_age)
 export(p_bp)
