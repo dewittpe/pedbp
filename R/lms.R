@@ -238,6 +238,10 @@ z_weight_for_stature <- function(q, height, male) {
 
 
 # non-exported functions
+
+# v_get_lms is a vectorized version of get_lms.  get_lms uses a look up table
+# and it was easier to think with single values there and vectorize at a higher
+# level.
 v_get_lms <- function(set = "", age, male, length = NULL, height = NULL) {
   stopifnot(length(age) == length(male))
 
