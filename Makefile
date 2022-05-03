@@ -8,6 +8,7 @@ CRAN = "https://cran.rstudio.com"
 SRC       = $(wildcard $(PKG_ROOT)/src/*.cpp)
 RFILES    = $(wildcard $(PKG_ROOT)/R/*.R)
 TESTS     = $(wildcard $(PKG_ROOT)/tests/*.R)
+SHINYAPPS = $(wildcard $(PKG_ROOT)/inst/shinyapps/*)
 
 # Targets
 #
@@ -33,7 +34,7 @@ all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 test:
 	${assert}
 
-$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS)
+$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS) $(SHINYAPPS)
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
 
 .install_dev_deps.Rout : $(PKG_ROOT)/DESCRIPTION
