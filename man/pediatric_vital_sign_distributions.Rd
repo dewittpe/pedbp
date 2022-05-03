@@ -79,10 +79,9 @@ z_weight_for_stature(q, height, male)
 \arguments{
 \item{q}{a vector of quantites}
 
-\item{age}{numeric age, in months, for one patient}
+\item{age}{numeric age, in months}
 
-\item{male}{integer value, 1 = male, 0 = female, indicating sex of the
-patient}
+\item{male}{integer value, 1 = male, 0 = female}
 
 \item{p}{a vector of probabilities}
 
@@ -122,6 +121,14 @@ q_bmi_for_age(p = 0.70, age = 15.4 * 12, male = 1)
 # the kids between 24 and 36 months of age.
 p_length_for_age_inf(87, age = 28, male = 0)
 p_stature_for_age(87, age = 28, male = 0)
+p_length_for_age_inf(q = 87, age = 28,  male = 0)
+
+#############################################################################
+# Multiple patients, the age and male, length, height arguments can also be
+# vectors
+p_length_for_age_inf(q = 87, age = 28,  male = 0)
+p_length_for_age_inf(q = 90, age = 30,  male = 1)
+p_length_for_age_inf(q = c(87,90), age = c(28, 30),  male = c(0,1))
 
 }
 \references{

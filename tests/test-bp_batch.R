@@ -12,8 +12,8 @@ d2 <- data.frame(
                  , id  = d$pid
                  )
 
-batch1 <- bp_batch(d)
-batch2 <- bp_batch(d2, columns = c(idcol = 7, age = 1, male = 5, height = 4, sbp = 3, dbp = 6))
+batch1 <- p_bp_batch(d)
+batch2 <- p_bp_batch(d2, columns = c(idcol = 7, age = 1, male = 5, height = 4, sbp = 3, dbp = 6))
 
 stopifnot(identical(batch1$sbp_percentile, batch2$sbp_percentile))
 stopifnot(identical(batch1$dbp_percentile, batch2$dbp_percentile))

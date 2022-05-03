@@ -5,70 +5,70 @@ d <- pedbp:::cdc_lms_data
 
 # Testing p_length_for_age_inf {{{
 test_p03 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p03"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p03"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_p05 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p05"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p05"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 test_p10 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p10"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p10"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_p25 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p25"]
-         , age  = d[d$set == "length_for_age_inf", "age"]
-         , male = d[d$set == "length_for_age_inf", "male"]
-         )
+  p_length_for_age_inf(
+         q    = d[d$set == "length_for_age_inf", "p25"]
+       , age  = d[d$set == "length_for_age_inf", "age"]
+       , male = d[d$set == "length_for_age_inf", "male"]
+       )
 
 test_p50 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p50"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p50"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_p75 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p75"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p75"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_p85 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p85"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p85"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_p90 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p90"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p90"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_p95 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p95"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p95"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_p97 <-
-  mapply(p_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p97"]
+  p_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p97"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
@@ -90,43 +90,43 @@ stopifnot(all(round(test_p97, 2) == 0.97))
 
 # Tesing q_length_for_age_inf {{{
 test_q03 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.03)
+  q_length_for_age_inf(
+           p    = c(0.03)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_q05 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.05)
+  q_length_for_age_inf(
+           p    = c(0.05)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_q10 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.10)
+  q_length_for_age_inf(
+           p    = c(0.10)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_q25 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.25)
+  q_length_for_age_inf(
+           p    = c(0.25)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_q50 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.50)
+  q_length_for_age_inf(
+           p    = c(0.50)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_q75 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.75)
+  q_length_for_age_inf(
+           p    = c(0.75)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
@@ -134,29 +134,29 @@ test_q75 <-
 # no need to test 85th as it is not in the provided data set
 stopifnot(all(is.na(d[d$set == "length_for_age_inf", "p85"])))
 # test_q85 <-
-#   mapply(q_length_for_age_inf
-#          , p    = c(0.85)
+#   q_length_for_age_inf(
+#            p    = c(0.85)
 #          , age  = d[d$set == "length_for_age_inf", "age"]
 #          , male = d[d$set == "length_for_age_inf", "male"]
 #          )
 
 test_q90 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.90)
+  q_length_for_age_inf(
+           p    = c(0.90)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_q95 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.95)
+  q_length_for_age_inf(
+           p    = c(0.95)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_q97 <-
-  mapply(q_length_for_age_inf
-         , p    = c(0.97)
+  q_length_for_age_inf(
+           p    = c(0.97)
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
@@ -176,72 +176,72 @@ stopifnot(all.equal(test_q97, d[d$set == "length_for_age_inf", "p97"], tol = 1e-
 
 # Testing z_length_for_age_inf {{{
 test_z03 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p03"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p03"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_z05 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p05"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p05"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_z10 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p10"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p10"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_z25 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p25"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p25"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_z50 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p50"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p50"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_z75 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p75"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p75"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 stopifnot(all(is.na(d[d$set == "length_for_age_inf", "p85"])))
 # test_z85 <-
-#   mapply(z_length_for_age_inf
-#          , q    = d[d$set == "length_for_age_inf", "p85"]
+#   z_length_for_age_inf(
+#            q    = d[d$set == "length_for_age_inf", "p85"]
 #          , age  = d[d$set == "length_for_age_inf", "age"]
 #          , male = d[d$set == "length_for_age_inf", "male"]
 #          )
 
 test_z90 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p90"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p90"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_z95 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p95"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p95"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )
 
 test_z97 <-
-  mapply(z_length_for_age_inf
-         , q    = d[d$set == "length_for_age_inf", "p97"]
+  z_length_for_age_inf(
+           q    = d[d$set == "length_for_age_inf", "p97"]
          , age  = d[d$set == "length_for_age_inf", "age"]
          , male = d[d$set == "length_for_age_inf", "male"]
          )

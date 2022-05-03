@@ -7,9 +7,8 @@
 #'
 #' @param q a vector of quantites
 #' @param p a vector of probabilities
-#' @param age numeric age, in months, for one patient
-#' @param male integer value, 1 = male, 0 = female, indicating sex of the
-#' patient
+#' @param age numeric age, in months
+#' @param male integer value, 1 = male, 0 = female
 #' @param height height, in cm, of the patient (age 2 - 20 years)
 #' @param length length, in cm, of the patient (age under 3 years)
 #'
@@ -39,6 +38,14 @@
 #' # the kids between 24 and 36 months of age.
 #' p_length_for_age_inf(87, age = 28, male = 0)
 #' p_stature_for_age(87, age = 28, male = 0)
+#' p_length_for_age_inf(q = 87, age = 28,  male = 0)
+#'
+#' #############################################################################
+#' # Multiple patients, the age and male, length, height arguments can also be
+#' # vectors
+#' p_length_for_age_inf(q = 87, age = 28,  male = 0)
+#' p_length_for_age_inf(q = 90, age = 30,  male = 1)
+#' p_length_for_age_inf(q = c(87,90), age = c(28, 30),  male = c(0,1))
 #'
 #' @references
 #' \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm}
@@ -91,22 +98,35 @@ z_head_circ_for_age <- function(q, age, male) {
 #' @rdname pediatric_vital_sign_distributions
 #' @export
 p_length_for_age_inf <- function(q, age, male) {
-  lms <- do.call(get_lms, list(set = "length_for_age_inf", age = age, male = male))
-  plms(q, lms$l, lms$m, lms$s)
+  lms <- v_get_lms(set = "length_for_age_inf", age = age, male = male)
+  lms <- Map(append, lms, q)
+  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
+  rtn <- do.call(c, rtn)
+  rtn
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
 q_length_for_age_inf <- function(p, age, male) {
-  lms <- do.call(get_lms, list(set = "length_for_age_inf", age = age, male = male))
-  qlms(p, lms$l, lms$m, lms$s)
+  #lms <- do.call(get_lms, list(set = "length_for_age_inf", age = age, male = male))
+  #qlms(p, lms$l, lms$m, lms$s)
+  lms <- v_get_lms(set = "length_for_age_inf", age = age, male = male)
+  lms <- Map(append, lms, p)
+  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
+  rtn <- do.call(c, rtn)
+  rtn
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
 z_length_for_age_inf <- function(q, age, male) {
-  lms <- do.call(get_lms, list(set = "length_for_age_inf", age = age, male = male))
-  zlms(q, lms$l, lms$m, lms$s)
+  # lms <- do.call(get_lms, list(set = "length_for_age_inf", age = age, male = male))
+  # zlms(q, lms$l, lms$m, lms$s)
+  lms <- v_get_lms(set = "length_for_age_inf", age = age, male = male)
+  lms <- Map(append, lms, q)
+  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
+  rtn <- do.call(c, rtn)
+  rtn
 }
 
 #' @rdname pediatric_vital_sign_distributions
@@ -218,6 +238,32 @@ z_weight_for_stature <- function(q, height, male) {
 
 
 # non-exported functions
+v_get_lms <- function(set = "", age, male, length = NULL, height = NULL) {
+  stopifnot(length(age) == length(male))
+
+  if (!is.null(length)) {
+    stopifnot(length(age) == length(length))
+  } else {
+    length <- rep(NA_real_, length(age))
+  }
+
+  if (!is.null(height)) {
+    stopifnot(length(age) == length(height))
+  } else {
+    height <- rep(NA_real_, length(age))
+  }
+
+  stopifnot(all(male %in% c(0, 1)))
+
+  if (length(set) == 1L) {
+    set <- rep(set, length(age))
+  }
+
+  rtn <- Map(get_lms, set = set, age = age, male = male, length = length, height = height)
+  rtn <- unname(rtn)
+  rtn
+}
+
 get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = NA_real_) {
 
   stopifnot(length(male) == 1L)
@@ -313,25 +359,9 @@ linear_interp <- function(x, xs, ys) {
   rtn
 }
 
-#   - M: Median
-#   - L: power of box-cox transform
-#   - S: genralized ocefficient of variation
-
-# For a given z-score, the value X is dertermined by:
-# X = M * (1 + L * S * Z) ^ (1 / L), L != 0
-#   = M exp(S * Z), L == 0
-#
-# Z score for a given value of X
-#
-# Z = (((X / M) ^ L ) - 1) / (L * S) ; L != 0
-#   = log( X/M) / S                  ; L == 0 (natural log)
-
 
 zlms <- function(x, l, m, s) {
-  stopifnot(length(l) == 1L)
-  stopifnot(length(m) == 1L)
-  stopifnot(length(s) == 1L)
-  stopifnot(s >= 0)
+  stopifnot(all(s >= 0))
 
   if (isTRUE(all.equal(0.0, l))) {
     z <- log( x / m) / s
@@ -347,10 +377,7 @@ plms <- function(q, l, m, s) {
 }
 
 qlms <- function(p, l, m, s) {
-  stopifnot(length(l) == 1L)
-  stopifnot(length(m) == 1L)
-  stopifnot(length(s) == 1L)
-  stopifnot(s >= 0)
+  stopifnot(all(s >= 0))
 
   z <- stats::qnorm(p, mean = 0, sd = 1)
 
@@ -362,13 +389,3 @@ qlms <- function(p, l, m, s) {
   rtn
 }
 
-
-# d <- data.table::melt(stature_for_age, id.vars = c("Sex", "Agemos"), measure.vars = c("L", "M", "S"))
-#
-# ggplot2::ggplot(
-#                 d[Agemos > 20 & Agemos < 38]
-#                 ) +
-#   ggplot2::aes(x = Agemos, y = value, color = factor(Sex)) +
-#   ggplot2::geom_point() +
-#   ggplot2::geom_line() +
-#   ggplot2::facet_wrap( ~ variable, scales = "free_y")
