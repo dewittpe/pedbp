@@ -1,11 +1,3 @@
-# input <- list()
-# input$age_mo <- 96
-# input$sex <- 1L
-# input$sbp <- 102
-# input$dbp <- 58
-# input$height_cm <- 102
-# input$height_known <- 0
-
 server <- function(input, output, session) {
 
   output$flowchart <- renderImage({
@@ -13,9 +5,6 @@ server <- function(input, output, session) {
   }, deleteFile = FALSE)
   output$csv_for_batch <- renderImage({
     list(height = "90%", src = normalizePath(system.file("images", "csv_for_batch.png", package = "pedbp")))
-  }, deleteFile = FALSE)
-  output$csv_for_batch2 <- renderImage({
-    list(height = "90%", src = normalizePath(system.file("images", "csv_for_batch2.png", package = "pedbp")))
   }, deleteFile = FALSE)
 
   bp <- reactive({
