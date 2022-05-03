@@ -10,11 +10,11 @@ dashboardPage(
                   )
   ,
   dashboardSidebar(
-    sidebarMenu( #{{{
+    sidebarMenu(
       id = "sidebar"
       , menuItem("Overview",       tabName = "overview", icon = icon("fas fa-home"))
       , menuItem("Blood Pressure", tabName = "bp",       icon = icon("fas fa-chart-line"))
-      , conditionalPanel(
+      , conditionalPanel( #{{{
             condition = "input.sidebar == 'bp'"
           , numericInput(
               inputId = "sbp"
@@ -58,6 +58,7 @@ dashboardPage(
                   )
               )
           ) # end of conditionalPanel
+      , menuItem("Batch Processing", tabName = "batch",  icon = icon("fas fa-file"))
     )#}}}
   )
   ,
@@ -78,6 +79,7 @@ dashboardPage(
                           )
           )
       )
+      , tabItem("batch", h3("hi"))
     )
   )
 )
