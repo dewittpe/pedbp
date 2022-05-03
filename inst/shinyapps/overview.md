@@ -22,5 +22,3 @@ years then data from @lo2013prehypertension is used.  Lastly, under three
 years of age with unknown height have blood pressure precentiles estimated by
 the NHLBI/CDC data with the default of the median height for sex and age.
 
-![](./flowchart.png)
-

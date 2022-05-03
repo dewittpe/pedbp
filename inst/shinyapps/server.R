@@ -8,6 +8,12 @@
 
 server <- function(input, output, session) {
 
+  # output$flowchart <- renderImage({
+  #   normalizePath(
+  # dir(system.file("doc", package = "pedbp"))
+  #   )
+  # })
+
   bp <- reactive({
     bp <- p_bp(input$sbp, input$dbp, age = input$age_mo, male = input$sex,
                height = ifelse(input$height_known == 0, NA, input$height_cm))
