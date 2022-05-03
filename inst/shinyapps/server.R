@@ -11,6 +11,12 @@ server <- function(input, output, session) {
   output$flowchart <- renderImage({
     list(src = normalizePath(system.file("images", "flowchart.png", package = "pedbp")))
   }, deleteFile = FALSE)
+  output$csv_for_batch <- renderImage({
+    list(height = "90%", src = normalizePath(system.file("images", "csv_for_batch.png", package = "pedbp")))
+  }, deleteFile = FALSE)
+  output$csv_for_batch2 <- renderImage({
+    list(height = "90%", src = normalizePath(system.file("images", "csv_for_batch2.png", package = "pedbp")))
+  }, deleteFile = FALSE)
 
   bp <- reactive({
     bp <- p_bp(input$sbp, input$dbp, age = input$age_mo, male = input$sex,
@@ -20,8 +26,8 @@ server <- function(input, output, session) {
     bp
   })
 
-  output$bp_notes <- renderTable({ 
-    d <- attr(bp(), "bp_params") 
+  output$bp_notes <- renderTable({
+    d <- attr(bp(), "bp_params")
     names(d) <-
       c("Source", "Male", "Age (months)", "SBP Mean", "SBP SD", "DBP Mean", "DBP SD", "Height Percentile")
     d

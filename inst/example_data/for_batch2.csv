@@ -1,0 +1,6 @@
+﻿pid,age_months,male,height (cm),sbp (mmHg),dbp (mmHg)
+patient_A,96,1,,102,58
+patient_B,144,0,153,113,66
+patient_C,4,0,62,82,43
+patient_D_1,41,1,,96,62
+patient_D_2,41,1,101,96,62

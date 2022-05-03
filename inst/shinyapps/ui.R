@@ -84,8 +84,10 @@ dashboardPage(
       ) #}}}
       , tabItem("batch" # {{{
           , h2("Batch Processing")
-          , p("You may use this page to get the blood pressure percentiles for several patients at one time.",
-              "The expected format the data in the uploaded file is:")
+          , fluidRow(column(width = 12, "You may use this page to get the blood pressure percentiles for several patients at one time. The expected format the data in the uploaded file is as follows, with or with out a patient id column:"))
+          , fluidRow(column(width = 5, plotOutput("csv_for_batch", height = "200px")), column(width = 5, plotOutput("csv_for_batch2", height = "200px")))
+          , fluidRow(column(width = 12, "That is, each row represents a patient, a column for age in months, sex indicated as a 0 = female, 1 = male, height in centimeters; leave empty cell for unknown height, systolic blood pressure in mmHg, and diastolic blood pressure in mmHg. The actual column names are not important.  The order of the columns is critically important as the batch process code assumes the shown sequence of columns."))
+          , fluidRow(column(width = 12, "You may upload a file here and you'll get an output table to explore in this app along with the option to download a csv file with the blood pressure percentiles."))
       ) #}}}
     )
   )
