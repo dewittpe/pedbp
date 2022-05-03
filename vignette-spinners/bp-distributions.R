@@ -107,6 +107,34 @@ str(bps)
 #'
 q_bp(p_sbp = c(0.701, NA, 0.36), p_dbp = c(0.85, 0.99, 0.50), age = 44, male = 1, height = ht)
 #'
+#'
+#' ## Batch Processing
+#' The age, male, height arguments for q_bp and p_bp are expected to all have
+#' length 1, this makes using the methods a bit tedious if you have multiple
+#' blood pressure readings to assess.  To make this process a little easier, you
+#' can process a data.frame via bp_batch.
+#'
+#+ label = "bp_batch_example"
+# an example file is provided
+eg_data <- read.csv(system.file("example_data", "for_batch.csv", package = "pedbp"))
+eg_data
+p_bp_batch(eg_data)
+#'
+#' In practice, you can modify your data frame to have the same column order or
+#' you can specify the column order in the call to bp_batch.
+eg_data2 <-
+  data.frame(
+               age = eg_data$age_months
+             , x1 = runif(5)
+             , sbp = eg_data$sbp..mmHg.
+             , ht  = eg_data$height..cm.
+             , sex = eg_data$male
+             , dbp = eg_data$dbp..mmHg.
+             , id  = eg_data$pid
+  )
+eg_data2
+p_bp_batch(eg_data2, columns = c(idcol = 7, age = 1, male = 5, height = 4, sbp = 3, dbp = 6))
+#'
 #' # Blood Pressure Charts
 #'
 #'

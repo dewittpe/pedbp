@@ -33,7 +33,13 @@ missing.}
 \item{p_dbp}{a vector of diastolic blood percentiles}
 }
 \description{
-Estimate Pediatric Blood Pressure Distribution
+Percentile and quantile functions for pediatric blood pressure.
+}
+\details{
+The areguments \code{age}, \code{male}, and \code{height} are expected to all
+have lenght 1.  This is to simplify the base code and use of a look up table.
+If you have the needed to quickly get the percentiles for a collection of
+patients consider using \link{\code{p_bp_batch}}.
 }
 \examples{
 
@@ -53,4 +59,9 @@ x <- q_bp(p_sbp = 0.78, p_dbp = 0.65, age = 8, male = 0)
 x
 str(x)
 
+}
+\seealso{
+\code{vignette("bp-distriution", package = "pedbp")},
+\link{\code{p_bp_batch}},
+\link{\code{q_bp_batch}}
 }

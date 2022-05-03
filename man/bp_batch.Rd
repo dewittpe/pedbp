@@ -3,13 +3,6 @@
 \name{bp_batch}
 \alias{bp_batch}
 \title{Batch Process a File or Data Frame}
-\usage{
-bp_batch(
-  x,
-  columns = c(idcol = 1, age = 2, male = 3, height = 4, sbp = 5, dbp = 6),
-  ...
-)
-}
 \arguments{
 \item{x}{a \code{data.frame}}
 
@@ -31,7 +24,8 @@ for the systolic and diastolic blood pressures.
 
 d <- read.csv(system.file("example_data", "for_batch.csv", package = "pedbp"))
 d
-bp_batch(d)
+batch1 <- p_bp_batch(d)
+batch1
 
 # use with a data.frame with columns in a different order
 d2 <- data.frame(
@@ -44,6 +38,11 @@ d2 <- data.frame(
                  , id  = d$pid
                  )
 d2
-bp_batch(d2, columns = c(idcol = 7, age = 1, male = 5, height = 4, sbp = 3, dbp = 6))
+batch2 <- p_bp_batch(d2, columns = c(idcol = 7, age = 1, male = 5, height = 4, sbp = 3, dbp = 6))
+batch2
+
+# getting quantiles
+q_bp_batch(batch1, columns = c(idcol = 1, age = 2, male = 3, height = 4, sbp_percentile = 7, dbp_percentile = 8))
+
 
 }
