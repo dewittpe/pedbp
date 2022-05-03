@@ -10,7 +10,7 @@ server <- function(input, output, session) {
 
   output$flowchart <- renderImage({
     list(src = normalizePath(system.file("images", "flowchart.png", package = "pedbp")))
-  })
+  }, deleteFile = FALSE)
 
   bp <- reactive({
     bp <- p_bp(input$sbp, input$dbp, age = input$age_mo, male = input$sex,

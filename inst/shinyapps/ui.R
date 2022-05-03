@@ -63,7 +63,9 @@ dashboardPage(
   ,
   dashboardBody(
     tabItems(
-        tabItem("overview", includeMarkdown("overview.md"), plotOutput("flowchart"))
+        tabItem("overview",
+          fluidRow(column(width = 6, includeMarkdown("overview.md"))
+                   , column(width = 6, p("Flowchart for selection of data set to build blood pressure percentiles one."), plotOutput("flowchart"))))
       , tabItem("bp",
           fluidRow(
               box(title = "Patient Notes", width = 3, tableOutput("patient_notes"))
