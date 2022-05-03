@@ -63,7 +63,7 @@ dashboardPage(
   ,
   dashboardBody(
     tabItems(
-        tabItem("overview", includeMarkdown("overview.md"))
+        tabItem("overview", includeMarkdown("overview.md"), plotOutput("flowchart"))
       , tabItem("bp",
           fluidRow(
               box(title = "Patient Notes", width = 3, tableOutput("patient_notes"))

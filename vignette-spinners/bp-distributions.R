@@ -41,7 +41,9 @@ library(pedbp)
 #' years of age with unknown height have blood pressure precentiles estimated by
 #' the NHLBI/CDC data with the default of the median height for sex and age.
 #'
-#' ![](./flowchart.png)
+#+ echo = FALSE, results = "asis"
+cat(paste0("<img src=\"", normalizePath(system.file("images", "flowchart.png", package = "pedbp")), "\">\n"))
+#'
 #'
 #' # Estimating Pediatric Blood Distributions
 #'
