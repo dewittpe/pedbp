@@ -2,27 +2,18 @@
 #'
 #' Percentile and quantile functions for pediatric blood pressure.
 #'
-#' The areguments \code{age}, \code{male}, and \code{height} are expected to all
-#' have lenght 1.  This is to simplify the base code and use of a look up table.
-#' If you have the needed to quickly get the percentiles for a collection of
-#' patients consider using \link{\code{p_bp_batch}}.
-#'
 #' @param q_sbp a vector of systolic blood pressures
 #' @param q_dbp a vector of diastolic blood pressures
 #' @param p_sbp a vector of systolic blood percentiles
 #' @param p_dbp a vector of diastolic blood percentiles
 #' @param age numeric age, in months
-#' @param male integer value, 1 = male, 0 = female, indicating sex of the
-#' patient
-#' @param height numeric, in centimeters, can be missing.  This is the length
-#' for patients under three years of age
+#' @param male integer value, 1 = male, 0 = female
+#' @param height numeric, in centimeters, can be missing.
 #' @param height_percentile default height percentile to use if \code{height} is
 #' missing.
 #' @param ... not currently used
 #'
-#' @seealso \code{vignette("bp-distriution", package = "pedbp")},
-#' \link{\code{p_bp_batch}},
-#' \link{\code{q_bp_batch}}
+#' @seealso \code{vignette("bp-distriution", package = "pedbp")}
 #'
 #' @examples
 #'

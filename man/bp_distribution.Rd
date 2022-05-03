@@ -17,11 +17,9 @@ q_bp(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.5, ...)
 
 \item{age}{numeric age, in months}
 
-\item{male}{integer value, 1 = male, 0 = female, indicating sex of the
-patient}
+\item{male}{integer value, 1 = male, 0 = female}
 
-\item{height}{numeric, in centimeters, can be missing.  This is the length
-for patients under three years of age}
+\item{height}{numeric, in centimeters, can be missing.}
 
 \item{height_percentile}{default height percentile to use if \code{height} is
 missing.}
@@ -34,12 +32,6 @@ missing.}
 }
 \description{
 Percentile and quantile functions for pediatric blood pressure.
-}
-\details{
-The areguments \code{age}, \code{male}, and \code{height} are expected to all
-have lenght 1.  This is to simplify the base code and use of a look up table.
-If you have the needed to quickly get the percentiles for a collection of
-patients consider using \link{\code{p_bp_batch}}.
 }
 \examples{
 
@@ -61,7 +53,5 @@ str(x)
 
 }
 \seealso{
-\code{vignette("bp-distriution", package = "pedbp")},
-\link{\code{p_bp_batch}},
-\link{\code{q_bp_batch}}
+\code{vignette("bp-distriution", package = "pedbp")}
 }

@@ -2,7 +2,38 @@
 % Please edit documentation in R/batch.R
 \name{bp_batch}
 \alias{bp_batch}
+\alias{p_bp_batch}
+\alias{q_bp_batch}
+\alias{p_bp_batch.data.frame}
+\alias{q_bp_batch.data.frame}
 \title{Batch Process a File or Data Frame}
+\usage{
+p_bp_batch(
+  x,
+  columns = c(idcol = 1, age = 2, male = 3, height = 4, sbp = 5, dbp = 6),
+  ...
+)
+
+q_bp_batch(
+  x,
+  columns = c(idcol = 1, age = 2, male = 3, height = 4, sbp_percentile = 5,
+    dbp_percentile = 6),
+  ...
+)
+
+\method{p_bp_batch}{data.frame}(
+  x,
+  columns = c(idcol = 1, age = 2, male = 3, height = 4, sbp = 5, dbp = 6),
+  ...
+)
+
+\method{q_bp_batch}{data.frame}(
+  x,
+  columns = c(idcol = 1, age = 2, male = 3, height = 4, sbp_percentile = 5,
+    dbp_percentile = 6),
+  ...
+)
+}
 \arguments{
 \item{x}{a \code{data.frame}}
 
