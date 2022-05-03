@@ -97,6 +97,9 @@ install: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 uninstall :
 	R --vanilla --quiet -e "try(remove.packages('pedalfast.data'), silent = TRUE)"
 
+shiny: install
+	R -e "shiny::runApp(normalizePath(system.file('shinyapps', package = 'pedbp')), port = 4492)"
+
 clean:
 	$(RM) -f  $(PKG_NAME)_$(PKG_VERSION).tar.gz
 	$(RM) -rf $(PKG_NAME).Rcheck
