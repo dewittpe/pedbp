@@ -33,6 +33,28 @@
 #' x
 #' str(x)
 #'
+#' #############################################################################
+#' # Working with multiple patients records
+#' d <- read.csv(system.file("example_data", "for_batch.csv", package = "pedbp"))
+#' d
+#'
+#' bp_percentiles <-
+#'   p_bp(
+#'       q_sbp = d$sbp..mmHg.
+#'     , q_dbp = d$dbp..mmHg.
+#'     , age   = d$age_months
+#'     , male  = d$male
+#'     )
+#' bp_percentiles
+#'
+#' q_bp(
+#'     p_sbp = bp_percentiles$sbp_percentile
+#'   , p_dbp = bp_percentiles$dbp_percentile
+#'   , age   = d$age_months
+#'   , male  = d$male
+#'   )
+#'
+#'
 #' @name bp_distribution
 NULL
 
@@ -42,7 +64,31 @@ p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50,
 
   stopifnot(length(q_sbp) == length(q_dbp))
 
-  d <- bp_params(age = age, male = male, height = height, height_percentile = height_percentile)
+  if (length(age) == 1L) {
+    age <- rep(age, length(q_dbp))
+  } else if (length(age) > 1L) {
+    stopifnot(length(q_sbp) == length(age), length(q_dbp) == length(age))
+  } else {
+    stop("length(age) needs to be at least 1L")
+  }
+
+  if (length(male) == 1L) {
+    male <- rep(male, length(q_dbp))
+  } else if (length(male) > 1L) {
+    stopifnot(length(q_sbp) == length(male), length(q_dbp) == length(male))
+  } else {
+    stop("length(male) needs to be at least 1L")
+  }
+
+  if (length(height) == 1L) {
+    height <- rep(height, length(q_dbp))
+  } else if (length(height) > 1L) {
+    stopifnot(length(q_sbp) == length(height), length(q_dbp) == length(height))
+  } else {
+    stop("length(height) needs to be at least 1L")
+  }
+
+  d <- v_bp_params(age = age, male = male, height = height, height_percentile = height_percentile)
 
   rtn <-
     list(sbp_percentile = stats::pnorm(q_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
@@ -58,7 +104,31 @@ q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50,
 
   stopifnot(length(p_sbp) == length(p_dbp))
 
-  d <- bp_params(age = age, male = male, height = height, height_percentile = height_percentile)
+  if (length(age) == 1L) {
+    age <- rep(age, length(p_dbp))
+  } else if (length(age) > 1L) {
+    stopifnot(length(p_sbp) == length(age), length(p_dbp) == length(age))
+  } else {
+    stop("length(age) needs to be at least 1L")
+  }
+
+  if (length(male) == 1L) {
+    male <- rep(male, length(p_dbp))
+  } else if (length(male) > 1L) {
+    stopifnot(length(p_sbp) == length(male), length(p_dbp) == length(male))
+  } else {
+    stop("length(male) needs to be at least 1L")
+  }
+
+  if (length(height) == 1L) {
+    height <- rep(height, length(p_dbp))
+  } else if (length(height) > 1L) {
+    stopifnot(length(p_sbp) == length(height), length(p_dbp) == length(height))
+  } else {
+    stop("length(height) needs to be at least 1L")
+  }
+
+  d <- v_bp_params(age = age, male = male, height = height, height_percentile = height_percentile)
 
   rtn <-
     list(sbp = stats::qnorm(p_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
@@ -75,7 +145,16 @@ print.pedbp_bp <- function(x, ...) {
 }
 
 
+# v_bp_params is a vectorized version of bp_params.  The use of a look up table
+# was easier to build assuming age, male, height were single values. v_bp_params
+# will make functions easier to use for end users.
 
+v_bp_params <- function(age, male, height, height_percentile = 0.50, ...) {
+
+  rtn <- Map(bp_params, age = age, male = male, height = height, height_percentile = height_percentile)
+  do.call(rbind, rtn)
+
+}
 
 
 bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {

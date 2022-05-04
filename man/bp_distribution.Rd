@@ -51,6 +51,28 @@ x <- q_bp(p_sbp = 0.78, p_dbp = 0.65, age = 8, male = 0)
 x
 str(x)
 
+#############################################################################
+# Working with multiple patients records
+d <- read.csv(system.file("example_data", "for_batch.csv", package = "pedbp"))
+d
+
+bp_percentiles <-
+  p_bp(
+      q_sbp = d$sbp..mmHg.
+    , q_dbp = d$dbp..mmHg.
+    , age   = d$age_months
+    , male  = d$male
+    )
+bp_percentiles
+
+q_bp(
+    p_sbp = bp_percentiles$sbp_percentile
+  , p_dbp = bp_percentiles$dbp_percentile
+  , age   = d$age_months
+  , male  = d$male
+  )
+
+
 }
 \seealso{
 \code{vignette("bp-distriution", package = "pedbp")}
