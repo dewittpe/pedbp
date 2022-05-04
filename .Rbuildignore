@@ -12,7 +12,7 @@
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 ^references/*
-^covr-report\.html$
+^covr-report-.*\.html$
 ^lib/*
 ^data-raw/*
 ^sbi.zip$

@@ -38,6 +38,7 @@ For all the data sets provided units are uniform:
 \describe{
    \item{age:}{Patient age; months}
    \item{height:}{length/height/stature; cm}
+   \item{weight:}{kilograms}
    \item{male:}{integer value; 1 = male, 0 = female}
    \item{sbp:}{systolic blood pressure; mmHg}
    \item{dbp:}{diastolic blood pressure; mmHg}

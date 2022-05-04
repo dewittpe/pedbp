@@ -82,9 +82,20 @@ $(PKG_ROOT)/R/sysdata.rda : data-raw/sysdata.R data-raw/cdc_percentile_data_with
 # Other Recipes for checking the package, (un)installing, and cleaning the
 # working directory.
 #
-covr-report.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R --vanilla --quiet -e 'x <- covr::package_coverage(type = "tests")'\
-		-e 'covr::report(x, file = "covr-report.html")'
+covr-report-tests.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("tests")'\
+		-e 'covr::report(x, file = "covr-report-tests.html")'
+
+covr-report-vignettes.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("vignettes")'\
+		-e 'covr::report(x, file = "covr-report-vignettes.html")'
+
+covr-report-examples.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("examples"))'\
+		-e 'covr::report(x, file = "covr-report-examples.html")'
+
+covr : covr-report-tests.html covr-report-vignettes.html covr-report-examples.html
+
 
 check: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 	R CMD check $(PKG_NAME)_$(PKG_VERSION).tar.gz

@@ -2,7 +2,7 @@
 pedbp.Rcheck/
 inst/doc
 *.Rout
-covr-report.html
+covr-report*.html
 lib/*
 sbi.zip
 references/sbi/*

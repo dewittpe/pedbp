@@ -94,6 +94,12 @@ ht
 p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = ht)
 
 #'
+#' A plotting method to show where the observed blood pressures are on the
+#' distribution function is also provided.
+#+ fig.width = 5, fig.height = 5
+bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60)
+
+#'
 #' Vectors of blood pressures can be used as well.  NA values will return and
 #' NA.
 bps <-
@@ -144,6 +150,8 @@ bp_percentiles <-
        , height = eg_data$height
        )
 bp_percentiles
+
+str(bp_percentiles)
 
 #'
 #' Going from percentiles back to quantiles:
@@ -370,9 +378,31 @@ lms <- data.table::setDT(data.table::copy(pedbp:::cdc_lms_data))
 #' For all eight of the noted methods we provide a distribution function,
 #' quantile function, and function that returns z-scores.
 #'
+#' Estimates for finer differences in age, for example, are possible for these
+#' methods than the blood pressure methods.  This is due to the permissible
+#' linear interpolation of the LMS parameters for the CDC charts whereas the
+#' blood pressure assessment is restricted to values within a look up table.
+#'
 #' ## Length and Stature For Age
 #'
-#' Example of building a length/height for age chart:
+#' A 13 year old male standing 154 cm tall is in the
+{{ paste0(round(p_stature_for_age(q = 154, age = 13 * 12, male = 1L) * 100, 2), "th") }}
+#' percentile:
+p_stature_for_age(q = 154, age = 13 * 12, male = 1L)
+
+#'
+#' To find the height corresponding to the 50th, 60th, and 75th percentiles for
+#' height for 9.5-year old girls:
+q_stature_for_age(p = c(0.50, 0.60, 0.75), age = 9.5 * 12, male = 0L)
+
+#'
+#' If you want a the standard score for a percentile, you could use qnorm around
+#' p_stature_for_age, or just call z_stature_for_age.
+qnorm(p_stature_for_age(q = 154, age = 13 * 12, male = 1L))
+z_stature_for_age(q = 154, age = 13 * 12, male = 1L)
+
+#'
+#' A length/height for age chart based on the CDC data:
 #+ echo = FALSE
 lfa <- data.table::CJ(p = c(0.01, 0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95, 0.99),
                       age = seq(0, 18*12, by = 3),
@@ -412,6 +442,68 @@ g(lfa[male == "Female"])
 #+ label = "lfa_male", echo = FALSE, fig.width = 8, fig.height = 6
 g(lfa[male == "Male"])
 #'
+#' ## Weight for Age
+#'
+#' There are two methods for weight for age, one for infants, up to 36 months,
+#' and one for anyone over 24 months.
+#'
+#' A 33 pound (
+{{ round(33 * 0.453592, 2)}}
+#' kg) 4 year old male is in the
+{{ paste0(round(100 * p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1), 2), 'th') }}
+#' percentile.
+p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1)
+#'
+#' A the 20th percentile weight for a 18 month old female is
+{{ q_weight_for_age_inf(p = 0.2, age = 18, male = 0) }}
+#' kg.
+#+
+q_weight_for_age_inf(p = 0.2, age = 18, male = 0)
+#'
+#' ## Weight for Length or Stature
+#'
+#' Two methods, one for infants under 36 months and one for other pediatric
+#' cases over 24 months.  The overlap between the methods will differ.
+#'
+#' The median weight for a 95 cm long infant
+{{ q_weight_for_length_inf(0.5, 95, 1) }}
+#' kg, whereas the median weight for a 95 cm tall kid is
+{{ q_weight_for_stature(0.5, 95, 1) }}
+#' kg.
+#'
+q_weight_for_length_inf(0.5, 95, 1)
+q_weight_for_stature(0.5, 95, 1)
+#'
+#' A 5.8 kg, 61 cm long female infant is in the
+{{ p_weight_for_length_inf(5.8, 61, 0) }}
+#' weight percentile.
+p_weight_for_length_inf(5.8, 61, 0)
+#'
+#' ## BMI for Age
+#'
+#' For twelve year olds, a BMI of 22.2 corresponds to the
+{{ paste0(round(p_bmi_for_age(q = 22.2, age = 144, male = 0) * 100, 2), "th") }}
+#' BMI percentile for females, and the
+{{ paste0(round(p_bmi_for_age(q = 22.2, age = 144, male = 1) * 100, 2), "th") }}
+#' BMI percentile for males.
+#+
+p_bmi_for_age(q = 22.2, age = c(144, 144), male = c(0, 1))
+#'
+#' The median BMI values for 10 year old male and females are:
+q_bmi_for_age(p = 0.5, age = c(120, 120), male = c(1, 0))
+#'
+#' ## Head Circumference
+#'
+#' A 10 month old male has a median head circumference of
+{{ q_head_circ_for_age(0.5, 10, 1) }}
+#' cm.
+#'
+#' A head circumference of 42 cm for a 8 month old female is in the
+{{ p_head_circ_for_age(42, 8, 0) }}
+#' percentile.
+#'
+q_head_circ_for_age(0.5, 10, 1)
+p_head_circ_for_age(42, 8, 0)
 #'
 #'
 #' # Additional Utilities
