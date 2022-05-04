@@ -13,8 +13,5 @@ A R package for estimating expected blood pressure of children and adolescences
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
 
 
-## System Dependencies
 
-* [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
-* GNU Make v4.3 or newer
 
