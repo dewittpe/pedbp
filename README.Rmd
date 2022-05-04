@@ -82,7 +82,7 @@ You may use an interactive [Shiny](https://shiny.rstudio.com/) application as
 well.  Assuming you have installed the pedbp package along with the suggested
 packages then you can run the app locally via
 ```{r, eval = FALSE}
-shiny::runApp(system.file("shinyapps", package = "pedbp"))
+shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
 ```
 
 ## References

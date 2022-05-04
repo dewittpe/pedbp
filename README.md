@@ -118,7 +118,7 @@ well. After installing the pedbp package and the suggested
 packages, you can run the app locally via
 
 ```r
-shiny::runApp(system.file("shinyapps", package = "pedbp"))
+shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
 ```
 
 ## References
