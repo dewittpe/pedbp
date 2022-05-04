@@ -22,7 +22,6 @@ Imports:
 Suggests:
     covr,
     data.table,
-    ggrepel,
     knitr,
     rmarkdown,
     shiny,
