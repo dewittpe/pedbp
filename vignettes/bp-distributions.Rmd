@@ -214,39 +214,68 @@ percentile_factor <- function(p) {
   factor(p, levels = sort(unique(p)), labels = paste0(sort(unique(p)) * 100, "th"))
 }
 
+q_bp_with_source <- function(bpp, age, male, height = NA, height_percentile = 0.5) {
+  d <- q_bp(bpp, bpp, age, male, height, height_percentile)
+  data.table::data.table(source = attr(d, "bp_params")$source, sbp = d$sbp, dbp = d$dbp)
+}
+
 d <- data.table::CJ(male = 0:1
-                    , age = unique(bp_parameters$age)
+                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
+                    # , age = unique(bp_parameters$age)
                     , bp_percentile = c(5, 10, 25, 50, 75, 90, 95) / 100)
 
-d <- d[, as.list(q_bp(bp_percentile, bp_percentile, age, male))
+d <- d[, as.list(q_bp_with_source(bp_percentile, age, male))
        , by = .(male, age, bp_percentile)]
 
 d <- data.table::melt(d
-                      , id.vars = c("male", "age", "bp_percentile")
+                      , id.vars = c("source", "male", "age", "bp_percentile")
                       , measure.vars = c("sbp", "dbp")
                       )
 d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
 d[, bp_percentile := percentile_factor(bp_percentile)]
 
+d[, .(range(age)), by = .(source)]
+bkgrnd <-
+  data.table::data.table(
+      source = c("Gemelli", "NHLBI", "Lo")
+    , xmin   = c(0, 12, 36)
+    , xmax   = c(12, 36, 204)
+    , ymin   = rep(-Inf, 3)
+    , ymax   = rep(Inf, 3)
+    )
+
 g <- function(d) {
   ggplot2::ggplot(d) +
-  ggplot2::theme_bw() +
-  ggplot2::aes(x = age, y = value, linetype = variable, color = bp_percentile) +
-  ggplot2::geom_line() +
-  ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
-  ggplot2::scale_x_continuous(name = "Age"
-                              , breaks = seq(0, max(d$age) + 12, by = 12)
-                              , labels = paste(
-                                                 paste0(seq(0, max(d$age) + 12, by = 12), "m")
-                                               , paste0(seq(0, max(d$age) + 12, by = 12) / 12, "yr")
-                                               , sep = "\n")
-                              ) +
-  ggplot2::scale_y_continuous(name = "mmHg",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
-  ggplot2::scale_linetype(name = "") +
-  ggplot2::scale_color_hue(name = "BP Percentile") +
-  ggplot2::theme(
-                 legend.position = "bottom"
-                 )
+    ggplot2::theme_bw() +
+    ggplot2::aes(x = age, y = value, linetype = variable, color = bp_percentile) +
+    ggplot2::geom_rect(data = bkgrnd
+                       , inherit.aes = FALSE
+                       , alpha = 0.3
+                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
+    ggplot2::geom_line() +
+    ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
+    ggplot2::scale_x_continuous(name = "Age"
+                                , breaks = seq(0, max(d$age) + 12, by = 12)
+                                , labels = paste(
+                                                   paste0(seq(0, max(d$age) + 12, by = 12), "m")
+                                                 , paste0(seq(0, max(d$age) + 12, by = 12) / 12, "yr")
+                                                 , sep = "\n")
+                                ) +
+    ggplot2::scale_y_continuous(name = "mmHg",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
+    ggplot2::scale_linetype(name = "") +
+    ggplot2::scale_color_hue(name = "BP\nPercentile") +
+    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
+                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
+                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
+                                                                )) +
+    ggplot2::guides(
+                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
+                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
+                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
+                    ) +
+    ggplot2::theme(
+                   legend.position = "bottom"
+                   )
 }
 ```
 
@@ -280,25 +309,40 @@ varying the default height percentile used.  The colors refer to the height
 percentile.
 
 
-```{r label = "chart2_setup", echo = FALSE}
+```{r label = "chart2_setup", echo = FALSE, results = FALSE}
 d <- data.table::CJ(male = 0:1
-                    , age = unique(bp_parameters$age)
+                    # , age = unique(bp_parameters$age)
+                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
                     , bp_percentile = 50 / 100
                     , height_percentile = unique(na.omit(bp_parameters$height_percentile)) / 100)
-d <- d[, as.list(q_bp(bp_percentile, bp_percentile, age, male, height_percentile = height_percentile))
+d <- d[, as.list(q_bp_with_source(bp_percentile, age, male, height_percentile = height_percentile))
        , by = .(male, age, bp_percentile, height_percentile)]
 
 d <- data.table::melt(d
-                      , id.vars = c("male", "age", "bp_percentile","height_percentile")
+                      , id.vars = c("source", "male", "age", "bp_percentile","height_percentile")
                       , measure.vars = c("sbp", "dbp")
                       )
 d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
 d[, height_percentile := percentile_factor(height_percentile)]
+d <- subset(d, age <= 84)
+d[, range(age), by = .(source)]
+bkgrnd <-
+  data.table::data.table(
+      source = c("Gemelli", "NHLBI", "Lo")
+    , xmin   = c(0, 12, 36)
+    , xmax   = c(12, 36, max(d$age))
+    , ymin   = rep(-Inf, 3)
+    , ymax   = rep(Inf, 3)
+    )
 
 g <- function(d) {
-  ggplot2::ggplot(d[d$age <= 84, ]) +
+  ggplot2::ggplot(d) +
     ggplot2::theme_bw() +
     ggplot2::aes(x = age, y = value, linetype = variable, color = height_percentile) +
+    ggplot2::geom_rect(data = bkgrnd
+                       , inherit.aes = FALSE
+                       , alpha = 0.3
+                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
     ggplot2::geom_line() +
     ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
     ggplot2::scale_x_continuous(name = "Age"
@@ -310,7 +354,16 @@ g <- function(d) {
                                 ) +
     ggplot2::scale_y_continuous(name = "Median BP (mmHg)",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
     ggplot2::scale_linetype(name = "") +
-    ggplot2::scale_color_hue(name = "Height Percentile") +
+    ggplot2::scale_color_hue(name = "Height\nPercentile") +
+    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
+                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
+                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
+                                                                )) +
+    ggplot2::guides(
+                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
+                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
+                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
+                    ) +
     ggplot2::theme(
                    legend.position = "bottom"
                    )
@@ -339,9 +392,9 @@ The following chart shows the median blood pressure by age for different
 heights based on percentiles for age.
 
 
-```{r label = "chart3", echo = FALSE, fig.width = 12, fig.height = 6}
+```{r label = "chart3", echo = FALSE, results = "hide"}
 d <- data.table::CJ(male = 0:1
-                    , age = unique(bp_parameters$age)
+                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
                     , bp_percentile = 50 / 100
                     , height_percentile = unique(na.omit(bp_parameters$height_percentile)) / 100)
 
@@ -349,19 +402,28 @@ d[, height := NA_real_]
 d[age < 36, height := q_length_for_age_inf(height_percentile, age, male), by = .(male, age, height_percentile)]
 d[age >= 36, height := q_stature_for_age(height_percentile, age, male), by = .(male, age, height_percentile)]
 
-d <- d[, as.list(q_bp(bp_percentile, bp_percentile, age, male, height))
-       , by = .(male, age, bp_percentile, height_percentile)]
+
+d <-
+  d[, as.list(q_bp_with_source(bp_percentile, age, male, height)) , by = .(male, age, bp_percentile, height_percentile)]
 
 d <- data.table::melt(d
-                      , id.vars = c("male", "age", "bp_percentile","height_percentile")
+                      , id.vars = c("source", "male", "age", "bp_percentile", "height_percentile")
                       , measure.vars = c("sbp", "dbp")
                       )
+
 d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
 d[, height_percentile := percentile_factor(height_percentile)]
+
+d[, .(xmin = min(age), xmax = max(age)), by = .(source)]
+bkgrnd <- data.table::data.table(source = c("Gemelli", "NHLBI"), xmin = c(0, 12), xmax = c(12, max(d$age)), ymin = c(-Inf, -Inf), ymax = c(Inf, Inf))
 
 g <- function(d) {
   ggplot2::ggplot(d) +
     ggplot2::theme_bw() +
+    ggplot2::geom_rect(data = bkgrnd
+                       , inherit.aes = FALSE
+                       , alpha = 0.3
+                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
     ggplot2::aes(x = age, y = value, linetype = variable, color = height_percentile) +
     ggplot2::geom_line() +
     ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
@@ -374,9 +436,19 @@ g <- function(d) {
                                 ) +
     ggplot2::scale_y_continuous(name = "Median BP (mmHg)",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
     ggplot2::scale_linetype(name = "") +
-    ggplot2::scale_color_hue(name = "Height Percentile") +
+    ggplot2::scale_color_hue(name = "Height\nPercentile") +
+    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
+                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
+                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
+                                                                )) +
+    ggplot2::guides(
+                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
+                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
+                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
+                    ) +
     ggplot2::theme(
                    legend.position = "bottom"
+                   # , legend.direction = "vertical"
                    )
 }
 ```
