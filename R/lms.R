@@ -5,7 +5,7 @@
 #' another vital sign, e.g., weight for age.  Values are based on an LMS
 #' approach.
 #'
-#' @param q a vector of quantites
+#' @param q a vector of quantities
 #' @param p a vector of probabilities
 #' @param age numeric age, in months
 #' @param male integer value, 1 = male, 0 = female

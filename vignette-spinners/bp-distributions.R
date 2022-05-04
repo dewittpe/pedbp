@@ -70,8 +70,8 @@ args(q_bp)
 #'
 #' If height is entered, then the height percentile is determined via a LMS
 #' method for age and sex and corresponding LMS data from the Centers for
-#' Disease Control and Preventions (more information on LMS methods and data
-#' later in this vignette.) The parameters for the blood pressure distribution
+#' Disease Control and Prevention (more information on LMS methods and data
+#' later in this vignette). The parameters for the blood pressure distribution
 #' are found in a look up table using the nearest age and height percentile.
 #'
 #' ## Percentiles
@@ -481,11 +481,11 @@ p_weight_for_length_inf(5.8, 61, 0)
 #'
 #' ## BMI for Age
 #'
-#' For twelve year olds, a BMI of 22.2 corresponds to the
+#' For a twelve year old, a BMI of 22.2 corresponds to the
 {{ paste0(round(p_bmi_for_age(q = 22.2, age = 144, male = 0) * 100, 2), "th") }}
-#' BMI percentile for females, and the
+#' BMI percentile for a female, and the
 {{ paste0(round(p_bmi_for_age(q = 22.2, age = 144, male = 1) * 100, 2), "th") }}
-#' BMI percentile for males.
+#' BMI percentile for a male.
 #+
 p_bmi_for_age(q = 22.2, age = c(144, 144), male = c(0, 1))
 #'

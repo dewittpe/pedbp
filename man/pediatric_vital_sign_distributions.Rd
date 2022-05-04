@@ -77,7 +77,7 @@ q_weight_for_stature(p, height, male)
 z_weight_for_stature(q, height, male)
 }
 \arguments{
-\item{q}{a vector of quantites}
+\item{q}{a vector of quantities}
 
 \item{age}{numeric age, in months}
 

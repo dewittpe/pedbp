@@ -9,23 +9,23 @@ est_norm(q, p, weights = rep(1, length(p)), ...)
 \arguments{
 \item{q}{quantile values.}
 
-\item{p}{probabilties corresponding to the \code{q} quantiles.}
+\item{p}{probabilities corresponding to the \code{q} quantiles.}
 
 \item{weights}{relative weight of each quantile.  The higher the weight the
-better the approximated distribuiton will be at fitting that quantile.}
+better the approximated distribution will be at fitting that quantile.}
 
 \item{...}{passed to \code{\link[stats]{optim}}.}
 }
 \description{
 With at least two quantile values find the mean and standard deviation of a
-normal distribuiton to match up with empirical values provided.
+normal distribution to match up with empirical values provided.
 }
 \details{
 For X ~ N(mu, sigma), Pr[X <= q] = p
 
-Given the set of quantiles and probabilites, \code{est_norm} uses
+Given the set of quantiles and probabilities, \code{est_norm} uses
 \code{\link[stats]{optim}} to find the preferable mean and standard deviation
-of a normal distriubiton to fit the provided quantiles.
+of a normal distribution to fit the provided quantiles.
 
 Use the \code{weight} argument to emphasize which, if any, of the provided
 quantiles needs to be approximated closer than others.  By default all the

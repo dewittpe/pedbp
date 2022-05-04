@@ -39,7 +39,7 @@ Inputs for these functions are:
 
 * age: in months _required_
 * male: indicator for for sex; 0 = female, 1 = male, _required_
-* height: in centimenters, _if known_
+* height: in centimeters, _if known_
 * sbp,dbp: blood pressure, in mmHg _if known_
 
 
@@ -126,7 +126,7 @@ shiny::runApp(system.file("shinyapps", package = "pedbp"))
 
 * Gemelli, M, R Manganaro, C Mami, and F De Luca. 1990. “Longitudinal Study of Blood Pressure During the 1st Year of Life.” European Journal of Pediatrics 149 (5): 318–20.
 
-* Lo, Joan C, Alan Sinaiko, Malini Chandra, Matthew F Daley, Louise C Greenspan, Emily D Parker, Elyse O Kharbanda, et al. 2013. “Prehypertension and Hypertension in Community-Based Pediatric Practice.” Pediatrics 131 (2): e415–24.
+* Lo, Joan C, Alan Sinaiko, Malini Chandra, Matthew F Daley, Louise C Greenspan, Emily D Parker, Elyse O Kharbanda, et.al. 2013. “Prehypertension and Hypertension in Community-Based Pediatric Practice.” Pediatrics 131 (2): e415–24.
 
 * Martin, Blake, Peter E. DeWitt, Scout HF, SK Parker, and Tellen D. Bennett. 2022. “Machine Learning Approach to Predicting Absence of Serious Bacterial Infection at PICU Admission.” Hospital Pediatrics.
 

@@ -19,7 +19,7 @@
 #' Columns with a name such as \code{sbp} is a point observations.  Summary
 #' statistics are appended to the variable as needed, e.g., \code{sbp_mean} and
 #' \code{sbp_sd} for the reported mean and standard deviation of systolic blood
-#' pressue.
+#' pressure.
 #'
 #' CDC ages represent whole month but reported at the half month.  That is, age
 #' = 12.5 is short-hand for 12 <= age < 13. The exception is birth; age = 0 is
@@ -42,7 +42,7 @@
 #' study of blood pressure during the 1st year of life. European journal of
 #' pediatrics, 149(5), 318-320.
 #'
-#' Lo, Joan C., et al. "Prehypertension and hypertension in community-based
+#' Lo, Joan C., et.al. "Prehypertension and hypertension in community-based
 #' pediatric practice." Pediatrics 131.2 (2013): e415-e424.
 #'
 #'
