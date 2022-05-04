@@ -7,6 +7,34 @@ server <- function(input, output, session) {
     list(height = "90%", src = normalizePath(system.file("images", "csv_for_batch.png", package = "pedbp")))
   }, deleteFile = FALSE)
 
+  batch_results <- reactive({
+    req(input$bpfile)
+    d <- data.table::fread(input$bpfile$datapath)
+    names(d) <- c("pid", "age_months", "male", "height_cm", "sbp_mmHg", "dbp_mmHg")
+    d <- d[
+           , as.list(p_bp(sbp_mmHg, dbp_mmHg, age_months, male, height_cm))
+           , by = .(pid, age_months, male, height_cm, sbp_mmHg, dbp_mmHg)
+           ]
+   d
+  })
+
+  output$batch_results <- DT::renderDataTable({
+    batch_results()
+  })
+
+  output$download_batch_results <- downloadHandler(
+    filename = function() {paste0(input$bpfile, "_with_percentiles.csv")},
+    content  = function(file) {
+      data.table::fwrite(batch_results(), file)
+    }
+  )
+
+  output$download_button <- renderUI({
+    if(!is.null(input$bpfile)) {
+      downloadButton("download_batch_results", "Download Data With Percentiles (.csv)")
+    }
+  })
+
   bp <- reactive({
     bp <- p_bp(input$sbp, input$dbp, age = input$age_mo, male = input$sex,
                height = ifelse(input$height_known == 0, NA, input$height_cm))

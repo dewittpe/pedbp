@@ -1,6 +1,8 @@
 library(shiny)
 library(shinydashboard)
 library(pedbp)
+library(data.table)
+library(DT)
 
 ui <-
 dashboardPage(
@@ -88,6 +90,13 @@ dashboardPage(
           , fluidRow(column(width = 5, plotOutput("csv_for_batch", height = "200px")))
           , fluidRow(column(width = 12, "That is, each row represents a patient, a column for age in months, sex indicated as a 0 = female, 1 = male, height in centimeters; leave empty cell for unknown height, systolic blood pressure in mmHg, and diastolic blood pressure in mmHg. The actual column names are not important.  The order of the columns is critically important as the batch process code assumes the shown sequence of columns."))
           , fluidRow(column(width = 12, "You may upload a file here and you'll get an output table to explore in this app along with the option to download a csv file with the blood pressure percentiles."))
+          , fileInput(inputId = "bpfile"
+                    , "Choose a CSV File"
+                    , multiple = FALSE
+                    , accept   = c("text/csv", "text/comma-separated-values,text/plain",".csv")
+                    )
+          , DT::dataTableOutput("batch_results")
+          , uiOutput("download_button")
       ) #}}}
     )
   )
