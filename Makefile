@@ -118,4 +118,5 @@ clean:
 	$(RM) -rf $(PKG_NAME).Rcheck
 	$(RM) -f .*.Rout
 	$(RM) -f *.Rout
+	$(RM) -f *.html
 
