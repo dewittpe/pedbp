@@ -26,8 +26,7 @@ deviations based on published percentiles.
 ## How to Install
 
 Install the developmental version:
-
-```r
+```{r, eval = FALSE}
 remotes::install_github("dewittpe/pedbp", dependencies = TRUE)
 ```
 
@@ -42,22 +41,9 @@ Inputs for these functions are:
 * height: in centimenters, _if known_
 * sbp,dbp: blood pressure, in mmHg _if known_
 
-
-```r
+```{r}
 d <- read.csv(system.file("example_data", "for_batch.csv", package = "pedbp"))
 d
-```
-
-```
-##           pid age_months male height..cm. sbp..mmHg. dbp..mmHg.
-## 1   patient_A         96    1          NA        102         58
-## 2   patient_B        144    0         153        113         NA
-## 3   patient_C          4    0          62         82         43
-## 4 patient_D_1         41    1          NA         96         62
-## 5 patient_D_2         41    1         101         96         62
-```
-
-```r
 # distribution function
 p_bp(  q_sbp  = d$sbp..mmHg.
      , q_dbp  = d$dbp..mmHg.
@@ -65,17 +51,7 @@ p_bp(  q_sbp  = d$sbp..mmHg.
      , male   = d$male
      , height = d$height..cm.
      )
-```
 
-```
-## $sbp_percentile
-## [1] 0.5533069 0.7680548 0.2622697 0.6195685 0.6101926
-## 
-## $dbp_percentile
-## [1] 0.4120704        NA 0.1356661 0.8028518 0.9011263
-```
-
-```r
 # quantile function
 q_bp(  p_sbp = 0.50
      , p_dbp = 0.40
@@ -83,31 +59,19 @@ q_bp(  p_sbp = 0.50
      , male  = 1)
 ```
 
-```
-## $sbp
-## [1] 100.7
-## 
-## $dbp
-## [1] 57.74789
-```
-
 You may also get plots showing where an observed blood pressure is on the
 distribution curve
-
-```r
+```{r, label = "bp_cdf_example", fig.width = 4, fig.height = 4, fig.path = "inst/images/"}
 bp_cdf(  sbp = 105
        , dbp = 59
        , age   = 96
        , male  = 1)
 ```
 
-![plot of chunk bp_cdf_example](inst/images/bp_cdf_example-1.png)
-
 More examples and details for the blood pressure distribution functions, along
 with additional features such as CDC growth charts, can be found in the package
 vignette.
-
-```r
+```{r, eval = FALSE}
 vignette("bp-distributions", package = "pedbp")
 ```
 
@@ -115,8 +79,7 @@ vignette("bp-distributions", package = "pedbp")
 You may use an interactive [Shiny](https://shiny.rstudio.com/) application as
 well.  Assuming you have installed the pedbp package along with the suggested
 packages then you can run the app locally via
-
-```r
+```{r, eval = FALSE}
 shiny::runApp(system.file("shinyapps", package = "pedbp"))
 ```
 

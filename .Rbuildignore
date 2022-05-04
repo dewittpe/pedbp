@@ -1,7 +1,7 @@
 ^vignette-spinners/*
 ^\.github/*
 ^codecov\.yml$
-^README.md$
+^README.Rmd$
 ^logo.png$
 ^logo-518x600.png$
 ^.*\.Rout$

@@ -44,9 +44,10 @@ $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNE
 		-e "devtools::install_dev_deps()"
 	touch $@
 
-.document.Rout: $(SRC) $(RFILES) $(DATATARGETS) $(EXAMPLES) $(PKG_ROOT)/DESCRIPTION
+.document.Rout: $(SRC) $(RFILES) $(DATATARGETS) $(EXAMPLES) $(PKG_ROOT)/DESCRIPTION $(PKG_ROOT)/README.Rmd
 	Rscript --vanilla --quiet -e "options(warn = 2)" \
-		-e "devtools::document('$(PKG_ROOT)')"
+		-e "devtools::document('$(PKG_ROOT)')"\
+		-e "knitr::knit('$(PKG_ROOT)/README.Rmd', output = 'README.md')"
 	touch $@
 
 ################################################################################
