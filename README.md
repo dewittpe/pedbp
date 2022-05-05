@@ -1,5 +1,5 @@
 # pedbp : Pediatric Blood Pressure
-A R package for estimating expected blood pressure of children and adolescences
+An R package for estimating expected blood pressure of children and adolescences
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/dewittpe/pedbp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dewittpe/pedbp/actions/workflows/R-CMD-check.yaml)
@@ -15,11 +15,11 @@ A R package for estimating expected blood pressure of children and adolescences
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
 
 ## Objective
-Provided a method for translating pediatric blood pressures, dependent on age,
+Provide a method for translating pediatric blood pressures, dependent on age,
 sex, and height (if known), to percentiles.
 
 ## Method
-Blood pressure precentiles are based Gaussian distributions defined by published
+Blood pressure precentiles are based on Gaussian distributions defined by published
 values for the mean and standard deviation, or derived mean and standard
 deviations based on published percentiles.
 
@@ -39,10 +39,10 @@ remotes::install_github("dewittpe/pedbp", dependencies = TRUE)
 
 Inputs for these functions are:
 
-* age: in months _required_
+* age: in months, _required_
 * male: indicator for for sex; 0 = female, 1 = male, _required_
 * height: in centimeters, _if known_
-* sbp,dbp: blood pressure, in mmHg _if known_
+* sbp,dbp: systolic and diastolic blood pressure in mmHg, _if known_
 
 
 ```r
@@ -93,8 +93,7 @@ q_bp(  p_sbp = 0.50
 ## [1] 57.74789
 ```
 
-You may also get plots showing where an observed blood pressure is on the
-distribution curve
+Plots show where an observed blood pressure is on the distribution curve
 
 ```r
 bp_cdf(  sbp = 105
@@ -114,9 +113,9 @@ vignette("bp-distributions", package = "pedbp")
 ```
 
 ### Shiny Application
-You may use an interactive [Shiny](https://shiny.rstudio.com/) application as
-well.  Assuming you have installed the pedbp package along with the suggested
-packages then you can run the app locally via
+An interactive [Shiny](https://shiny.rstudio.com/) application is also available.
+well. After installing the pedbp package and the suggested
+packages, you can run the app locally via
 
 ```r
 shiny::runApp(system.file("shinyapps", package = "pedbp"))
