@@ -114,7 +114,7 @@ vignette("bp-distributions", package = "pedbp")
 
 ### Shiny Application
 An interactive [Shiny](https://shiny.rstudio.com/) application is also available.
-well. After installing the pedbp package and the suggested
+After installing the pedbp package and the suggested
 packages, you can run the app locally via
 
 ```r
