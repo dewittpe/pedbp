@@ -6,3 +6,4 @@ covr-report*.html
 lib/*
 sbi.zip
 references/sbi/*
+.Rproj.user
