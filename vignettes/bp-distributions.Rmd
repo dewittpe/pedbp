@@ -128,6 +128,8 @@ bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60)
 ```
 
 
+
+
 Vectors of blood pressures can be used as well.  NA values will return NA.
 
 ```{r }
@@ -298,6 +300,7 @@ g(d[male == 0])
 ```{r label = "chart1_male", echo = FALSE, fig.width = 8, fig.height = 6}
 g(d[male == 1])
 ```
+
 
 
 ## Median Blood Pressures -- Varying default height percentile

@@ -107,6 +107,11 @@ p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = ht)
 bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60)
 
 #'
+#'
+# /*
+ggplot2::ggsave(file = "inst/images/fig3.svg", plot = bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60))
+# */
+#'
 #' Vectors of blood pressures can be used as well.  NA values will return NA.
 bps <-
   p_bp(
@@ -250,9 +255,18 @@ g <- function(d) {
 #+ label = "chart1_female", echo = FALSE, fig.width = 8, fig.height = 6
 g(d[male == 0])
 #'
+# /*
+# output svg for manuscript
+require("svglite")
+ggplot2::ggsave(file = "inst/images/fig2b.svg", plot = g(d[male == 0]))
+# */
 #'
 #+ label = "chart1_male", echo = FALSE, fig.width = 8, fig.height = 6
 g(d[male == 1])
+#'
+# /*
+ggplot2::ggsave(file = "inst/images/fig2a.svg", plot = g(d[male == 1]))
+# */
 #'
 #' ## Median Blood Pressures -- Varying default height percentile
 #'
@@ -332,10 +346,16 @@ g <- function(d) {
 #+ label = "chart2_female", echo = FALSE, fig.width = 8, fig.height = 6
 g(d[male == 0])
 #'
+# /*
+ggplot2::ggsave(file = "inst/images/fig2d.svg", plot = g(d[male == 0]))
+# */
 #'
 #+ label = "chart2_male", echo = FALSE, fig.width = 8, fig.height = 6
 g(d[male == 1])
 #'
+# /*
+ggplot2::ggsave(file = "inst/images/fig2c.svg", plot = g(d[male == 1]))
+# */
 #'
 #' ## Median Blood Pressures for Children with Known Heights
 #'
