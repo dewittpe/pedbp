@@ -35,14 +35,18 @@ is presented here for others to use.  Inputs for the developed method are:
 3. Diastolic blood pressure (mmHg) _required_
 4. Patient height (cm) _if known_.
 
-Given the inputs the following logic is used to determine which data sets
+Given the inputs, the following logic is used to determine which data sets
 will be used to inform the blood pressure percentiles.  Under one year of
-age, the data from @gemelli1990longitudinal will be used; height is
-irrelevant.  For those at least one year of age with a known height then the
-NHLBI/CDC [@nhlbi2011expert] data sets are used.  If height is unknown and age is at least three
-years then data from @lo2013prehypertension is used.  Lastly, under three
-years of age with unknown height have blood pressure percentiles estimated by
-the NHLBI/CDC data with the default of the median height for sex and age.
+age, the data from @gemelli1990longitudinal will be used; a height input is
+not required for this patient subset. For those at least one year of age with
+a known height, data from @nhlbi2011exper (hereafter referred to as
+'NHLBI/CDC' as the report incorporates recomendations and inputs from the
+National Heart, Lung, and Blood Institute [NHLBI] and the Centers for Disease
+Control and Prevention [CDC]). If height is unknown and age is at least three
+years, then data from @lo2013prehypertension is used.  Lastly, for children
+between one and three years of age with unknown height, blood pressure
+percentiles are estimated by the NHLBI/CDC data using as a default the median
+height for each patient's sex and age.
 
 
 ```{r echo = FALSE, results = "asis"}
@@ -51,16 +55,16 @@ cat(paste0("<img src=\"", normalizePath(system.file("images", "flowchart.png", p
 
 
 
-# Estimating Pediatric Blood Distributions
+# Estimating Pediatric Blood Pressure Distributions
 
 There are two functions provided for working with blood pressure
-distributions.  These methods uses Gaussian distributions for both systolic
+distributions.  These methods use Gaussian distributions for both systolic
 and diastolic blood pressures with means and standard deviations either
-explicitly from a aforementioned source or derived by optimizing the parameters
-such that the sum of squared errors between the provided quantiles from a
+explicitly provided in an aforementioned source or derived by optimizing the parameters
+such that the sum of squared errors between the provided quantiles from an
 aforementioned source and the distribution quantiles is minimized.  The
 provided functions, a distribution function and a quantile function, follow a
-similar naming convention to the distribution functions found the stats
+similar naming convention to the distribution functions found in the stats
 library in R.
 
 
@@ -73,20 +77,21 @@ args(q_bp)
 
 
 
-Both methods expect age in months, and an indicator for sex.  If height is
-missing, e.g., NA, then the default higher percentile of 50 will will be used
-as applicable.  The end user may modify the default height percentile.
+Both methods expect an age in months and an indicator for sex.  If height is
+missing, e.g., NA, then the default height percentile of 50 will be used as
+applicable based on the patient's age group.  The end user may modify the
+default height percentile.
 
-If height is entered, then the height percentile is determined via a LMS
-method for age and sex and corresponding LMS data from the Centers for
-Disease Control and Prevention (more information on LMS methods and data
-later in this vignette). The parameters for the blood pressure distribution
-are found in a look up table using the nearest age and height percentile.
+If height is entered, then the height percentile is determined via an LMS
+method for age and sex using corresponding LMS data from the CDC (more
+information on LMS methods and data is provided later in this vignette). The
+parameters for the blood pressure distribution are found in a look up table
+using the nearest age and height percentile.
 
 ## Percentiles
 
 What percentile for systolic and diastolic blood pressure is 100/60 for a 44
-month old male with height unknown?
+month old male with unknown height?
 
 
 ```{r }
@@ -101,9 +106,11 @@ p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 183)
 ```
 
 
-What if you are guessing that the kid is extremely tall for his age and you'd
-like to know the blood pressure percentiles assuming 90th percentile or
-height?  First find the height quantile using the q_stature_for_age function:
+The package can also be used to determine the blood pressure percentiles
+corresponding to a child of a given height percentile.
+First find the height quantile using the q_stature_for_age function, and then
+use this height measurement (provided in centimeters) as the height input for
+the p_bp function.
 
 ```{r }
 ht <- q_stature_for_age(p = 0.90, age = 44, male = 1)
@@ -121,8 +128,7 @@ bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60)
 ```
 
 
-Vectors of blood pressures can be used as well.  NA values will return and
-NA.
+Vectors of blood pressures can be used as well.  NA values will return NA.
 
 ```{r }
 bps <-
@@ -137,8 +143,8 @@ bps
 ```
 
 
-If you want to know where the estimates came from look at the bp_params
-attribute:
+If you want to know which data source was used in computing each of the
+percentile estimates you can look at the bp_params attribute:
 
 ```{r }
 attr(bps, "bp_params")
@@ -148,8 +154,8 @@ str(bps)
 
 ## Quantiles
 
-If you have percentile value and want to know the associated
-blood pressures:
+If you have a percentile value and want to know the associated
+systolic and diastolic blood pressures:
 
 
 ```{r }
@@ -166,7 +172,7 @@ q_bp(
 
 ## Working With More Than One Patient
 
-The p_bp and q_bp methods are set up to accept vectors for all the arguments.
+The p_bp and q_bp methods are designed accept vectors for each of the arguments.
 These methods expected each argument to be length 1 or all the same length.
 
 
@@ -296,13 +302,13 @@ g(d[male == 1])
 
 ## Median Blood Pressures -- Varying default height percentile
 
-If height is unknown there will be no difference in the estimated percentile
+If height is unknown, there will be no difference in the estimated percentile
 for blood pressures when modifying the default height_percentile with the
 exception of values for patients between the ages of 12 and 36 months.
-Younger patients have percentile estimated by data from
-@gemelli1990longitudinal which does not consider height (length), and for
+Patients under 12 months of age have percentiles estimated using data from
+@gemelli1990longitudinal which does not consider height (length).  For
 patients over 36 months of age data from @lo2013prehypertension, which also
-does not account for height, is used.
+does not consider height, is used.
 
 The following graphic shows the median blood pressure in mmHg by age when
 varying the default height percentile used.  The colors refer to the height
@@ -386,7 +392,7 @@ g(d[male == 1])
 
 
 
-## Median Blood Pressures with Known Heights
+## Median Blood Pressures for Children with Known Heights
 
 The following chart shows the median blood pressure by age for different
 heights based on percentiles for age.
@@ -478,23 +484,24 @@ lms <- data.table::setDT(data.table::copy(pedbp:::cdc_lms_data))
 
 
 Using the [Percentile Data Files with LMS values](https://www.cdc.gov/growthcharts/percentile_data_files.htm)
-provided by the CDC, we provide eight distribution tools.
+provided by the CDC, we provide eight distribution tools:
 
-1. weight for age infant
-2. length for age infant
-3. weight for length infant
+1. weight for age for infants
+2. length for age for infants
+3. weight for length for infants
 4. head circumference for age
 5. weight for stature
 6. weight for age
 7. stature for age
-8. bmi for age
+8. BMI for age
 
-All lengths/heights are in centimeters, age in months, weight in kilograms.
+All lengths/heights are in centimeters, ages in months, and weights in
+kilograms.
 
 The length-for-age and stature-for-age methods were needed for the blood
 pressure methods above.
 
-All the methods use the published LMS parameters to defined z-scores,
+All methods use the published LMS parameters to define z-scores,
 percentiles, and quantiles for skewed distributions.  L is a $\lambda$
 parameter, the Box-Cox transformation power; $M$ the median value, and $S$ a
 generalized coefficient of variation.  For a given percentile or z-score, the
@@ -512,7 +519,7 @@ $$ Z = \begin{cases}
   \frac{\log\left(\frac{X}{M}\right) }{ S } & \lambda = 0.
   \end{cases}$$
 
-Percentiles are found from the standard normal distribution of z-scores.
+Percentiles are determined using the standard normal distribution of z-scores.
 
 For all eight of the noted methods we provide a distribution function,
 quantile function, and function that returns z-scores.
@@ -541,8 +548,8 @@ q_stature_for_age(p = c(0.50, 0.60, 0.75), age = 9.5 * 12, male = 0L)
 ```
 
 
-If you want a the standard score for a percentile, you could use qnorm around
-p_stature_for_age, or just call z_stature_for_age.
+If you want the standard score for a percentile, you can use qnorm around
+p_stature_for_age, or simply call z_stature_for_age.
 
 ```{r }
 qnorm(p_stature_for_age(q = 154, age = 13 * 12, male = 1L))
@@ -601,8 +608,11 @@ g(lfa[male == "Male"])
 
 ## Weight for Age
 
-There are two methods for weight for age, one for infants, up to 36 months,
-and one for anyone over 24 months.
+There are two methods for determining weight for age both based on CDC
+National Center for Health Statistics data: one for infants (weighed laying
+flat) up to 36 months [@cdc_weight_for_age_0_36], 
+and one for children (weighed on a standing scale) over 24 months
+[@cdc_weight_for_age].
 
 A 33 pound (
 `r  round(33 * 0.453592, 2) `
@@ -615,23 +625,27 @@ p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1)
 ```
 
 
-A the 20th percentile weight for a 18 month old female is
-`r  q_weight_for_age_inf(p = 0.2, age = 18, male = 0)  `
+The 20th percentile weight for an 18 month old infant female is
+`r  round(q_weight_for_age_inf(p = 0.2, age = 18, male = 0), 5) `
 kg.
 
 ```{r }
-q_weight_for_age_inf(p = 0.2, age = 18, male = 0)
+round(q_weight_for_age_inf(p = 0.2, age = 18, male = 0), 5)
 ```
 
 
 ## Weight for Length or Stature
 
-Two methods, one for infants under 36 months and one for other pediatric
-cases over 24 months.  The overlap between the methods will differ.
+Similar to weight-for-age, there are two methods for determining
+weight-for-length.  Both methods utilize data from the CDC National Center for
+Health Statistics.  The first method is used for infants under 36 months
+(used for children who are measured laying flat), and the second is used for
+child over 24 months (used for children able to be measured while standing
+up).  The overlapping range between the methods will differ.
 
 The median weight for a 95 cm long infant
 `r  q_weight_for_length_inf(0.5, 95, 1)  `
-kg, whereas the median weight for a 95 cm tall kid is
+kg, whereas the median weight for a 95 cm tall child is
 `r  q_weight_for_stature(0.5, 95, 1)  `
 kg.
 
@@ -664,7 +678,7 @@ p_bmi_for_age(q = 22.2, age = c(144, 144), male = c(0, 1))
 ```
 
 
-The median BMI values for 10 year old male and females are:
+The median BMI values for a 10 year old male and females are:
 
 ```{r }
 q_bmi_for_age(p = 0.5, age = c(120, 120), male = c(1, 0))
@@ -677,8 +691,8 @@ A 10 month old male has a median head circumference of
 `r  q_head_circ_for_age(0.5, 10, 1)  `
 cm.
 
-A head circumference of 42 cm for a 8 month old female is in the
-`r  p_head_circ_for_age(42, 8, 0)  `
+A head circumference of 42 cm for an 8 month old female is in the
+`r  paste0(round(100*p_head_circ_for_age(42, 8, 0), 5), "th") `
 percentile.
 
 
