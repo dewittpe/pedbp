@@ -123,7 +123,7 @@ shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
 
 ## References
 
-* EXPERT PANEL ON INTEGRATED GUIDELINES FOR CARDIOVASCULAR HEALTH AND RISK REDUCTION IN CHILDREN AND ADOLESCENTS. 2011. “Expert Panel on Integrated Guidelines for Cardiovascular Health and Risk Reduction in Children and Adolescents: Summary Report.” Pediatrics 128 (Supplement_5): S213–56. https://doi.org/10.1542/peds.2009-2107C.
+* Expert Panel On Integrated Guidelines For Cardiovascular Health and Risk Reduction in Children and Adolescents. 2011. “Expert Panel on Integrated Guidelines for Cardiovascular Health and Risk Reduction in Children and Adolescents: Summary Report.” Pediatrics 128 (Supplement_5): S213–56. https://doi.org/10.1542/peds.2009-2107C.
 
 * Gemelli, M, R Manganaro, C Mami, and F De Luca. 1990. “Longitudinal Study of Blood Pressure During the 1st Year of Life.” European Journal of Pediatrics 149 (5): 318–20.
 
