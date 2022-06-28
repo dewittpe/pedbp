@@ -202,7 +202,7 @@ d <- data.table::melt(d
 d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
 d[, bp_percentile := percentile_factor(bp_percentile)]
 
-d[, .(range(age)), by = .(source)]
+# d[, .(range(age)), by = .(source)]
 bkgrnd <-
   data.table::data.table(
       source = c("Gemelli", "NHLBI", "Lo")
@@ -412,6 +412,24 @@ g(d[male == 0])
 g(d[male == 1])
 
 #'
+#' # Shiny Application
+#'
+#' An interactive [Shiny](https://shiny.rstudio.com/) application is also
+#' available. After installing the pedbp package and the suggested packages, you
+#' can run the app locally via
+#'
+#+ label = "shiny", eval = FALSE
+# /* 
+while (FALSE) {
+# */
+shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
+# /*
+}
+# */
+#'
+#' The shiny application allows for interactive exploration of blood pressure
+#' percentiles for an individual patient and allows for batch processing a set
+#' of patients as well.
 #'
 #' # CDC Growth Charts
 #'
