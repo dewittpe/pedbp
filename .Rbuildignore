@@ -16,3 +16,4 @@
 ^lib/*
 ^data-raw/*
 ^sbi.zip$
+^.*/rsconnect/*
