@@ -41,7 +41,7 @@ bp_cdf <- function(age, male, height = NA, height_percentile = 0.50, sbp = NA, d
     ggplot2::theme_bw() +
     ggplot2::aes_string(x = "mmHg", y = "p", linetype = "bp") +
     ggplot2::geom_line() +
-    ggplot2::scale_y_continuous(name = "Percentile", labels = scales::percent) +
+    ggplot2::scale_y_continuous(name = "Percentile", labels = scales::label_percent(suffix = "th")) +
     ggplot2::scale_linetype(guide = ggplot2::guide_legend(reverse = TRUE)) +
     ggplot2::theme(legend.position = "bottom"
                    , legend.title = ggplot2::element_blank()
