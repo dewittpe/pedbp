@@ -40,7 +40,7 @@ will be used to inform the blood pressure percentiles.  Under one year of
 age, the data from @gemelli1990longitudinal will be used; a height input is
 not required for this patient subset. For those at least one year of age with
 a known height, data from @nhlbi2011exper (hereafter referred to as
-'NHLBI/CDC' as the report incorporates recomendations and inputs from the
+'NHLBI/CDC' as the report incorporates recommendations and inputs from the
 National Heart, Lung, and Blood Institute [NHLBI] and the Centers for Disease
 Control and Prevention [CDC]). If height is unknown and age is at least three
 years, then data from @lo2013prehypertension is used.  Lastly, for children

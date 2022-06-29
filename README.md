@@ -19,7 +19,7 @@ Provide a method for translating pediatric blood pressures, dependent on age,
 sex, and height (if known), to percentiles.
 
 ## Method
-Blood pressure precentiles are based on Gaussian distributions defined by published
+Blood pressure percentiles are based on Gaussian distributions defined by published
 values for the mean and standard deviation, or derived mean and standard
 deviations based on published percentiles.
 

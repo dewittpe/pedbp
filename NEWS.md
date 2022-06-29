@@ -4,7 +4,7 @@
 
 * User Level Features:
 
-  * blood pressure distriubtions functions
+  * blood pressure distributions functions
   * CDC growth chart/distribution functions
   * shiny app for blood pressure distribution exploration
 
