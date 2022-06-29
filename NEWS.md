@@ -1,4 +1,4 @@
-# pedbp 0.1.0
+# pedbp 1.0.0
 
 * Initial Version for Review of Collaborators
 
