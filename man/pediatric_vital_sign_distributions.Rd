@@ -91,7 +91,7 @@ z_weight_for_stature(q, height, male)
 }
 \value{
 The \code{p_} method return values from the estimated distribution
-function.  \code{q_} methods return values from the estimated quantitie
+function.  \code{q_} methods return values from the estimated quantile
 function.  \code{z_} methods return standard scores, equivalent to
 \code{\link[stats]{qnorm}}.
 }

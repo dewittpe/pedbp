@@ -31,7 +31,7 @@ missing.}
 \item{...}{not currently used}
 }
 \value{
-a \code{ggplot2} graphic showing the CDF for diastoic and systolic
+a \code{ggplot2} graphic showing the CDF for diastolic and systolic
 blood pressures with vertical and horizontal lines highlight the percentile
 for the given inputs.
 }

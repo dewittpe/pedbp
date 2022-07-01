@@ -24,7 +24,7 @@
 #'   \item{par}{a named numeric vector with the mean and standard deviation for a Gaussian distribution}
 #'   \item{qp}{a numeric matrix with two columns built from the input values of
 #'   \code{q} and \code{p}}
-#'   \item{weights}{the inputed \code{weights}}
+#'   \item{weights}{the \code{weights} used}
 #'   \item{call}{The call made}
 #'   \item{optim}{result from calling \code{\link[stats]{optim}}}
 #' }

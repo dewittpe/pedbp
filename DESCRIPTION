@@ -17,7 +17,7 @@ Description: Data and utilities for estimating pediatric blood pressure
     <doi:10.1542/peds.2009-2107C> or from Lo et.al. (2013)
     <doi:10.1542/peds.2012-1292>.  The flowchart for selecting the informing
     data source comes from Martin et.al. (2022)
-    <doi:https://doi.org/10.1542/hpeds.2021-005998>.
+    <doi:10.1542/hpeds.2021-005998>.
 Depends:
     R (>= 3.5.0)
 License: GPL-2

@@ -1,5 +1,31 @@
 # pedbp 1.0.0 (resubmission)
 
+## Testing Results
+
+- Local testing R 4.2.1 - 1 Note (new submission)
+- Github actions all passed
+  - Windows R-release
+  - MacOS   R-release
+  - Ubuntu  R-release
+  - Ubuntu  R-devel
+  - Ubuntu  R-oldrelease
+
+- win-bulider.r-project.org (1 Note)
+
+  New submission
+
+  Possibly misspelled words in DESCRIPTION:
+  Gemelli (12:77)
+  NHLBI (15:62)
+  al (13:8, 17:49, 19:38)
+  et (13:5, 17:46, 19:35)
+
+  - Gemelli is the correct spelling of the lead author of a cited paper.
+  - NHLBI is the correct acronym for the National Heart, Lung, and Blood Institute
+  - The abbreviation "et.al." is used in the description resulting in
+    "al" and "et" being flagged as possibly misspelled words.
+
+
 ## Responses to feedback from initial submission
 
 _Comment:_
