@@ -110,13 +110,11 @@ print.pedbp_est_norm <- function(x, ...) {
 }
 
 #' @export
-plot.pedbp_est_norm <- function(x, y, ...) {
-  plot(x = x$qp[, "q"], y = x$qp[, "p"],
-       xlab = "Quantile", ylab = "Probability", ...)
-  m = x$par[1]
-  s = x$par[2]
-  foo <- function(x) {
-    stats::pnorm(x, mean = m, sd = s)
-  }
-  graphics::curve(foo, add = TRUE)
+plot.pedbp_est_norm <- function(x, ...) {
+  ggplot2::ggplot(data = data.frame(x = x$qp[, "q"], y = x$qp[, "p"])) +
+    ggplot2::aes_string(x = "x", y = "y") +
+    ggplot2::xlab("Quantile") +
+    ggplot2::ylab("Probability") +
+    ggplot2::geom_point(pch = 1) +
+    ggplot2::geom_function(fun = stats::pnorm, args = list(mean = x$par[1], sd = x$par[2]))
 }

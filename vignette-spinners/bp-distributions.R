@@ -681,11 +681,13 @@ w2 <- est_norm(qs, ps, weights = c(1, 2, 2, 1))
 
 #'
 #'
-#+ label = "est_norm_plots", fig.width = 7, fig.height = 5
-par(mfrow = c(1, 3))
-plot(w0, main = paste0("w0\nMean: ", round(w0$par[1], 2), " SD: ", round(w0$par[2], 3)))
-plot(w1, main = paste0("w1\nMean: ", round(w1$par[1], 2), " SD: ", round(w1$par[2], 3)))
-plot(w2, main = paste0("w2\nMean: ", round(w2$par[1], 2), " SD: ", round(w2$par[2], 3)))
+#+ label = "est_norm_plots", fig.width = 9, fig.height = 5
+gridExtra::grid.arrange(
+  plot(w0) + ggplot2::ggtitle(label = "w0", subtitle = paste0("Mean: ", round(w0$par[1], 2), " SD: ", round(w0$par[2], 3)))
+  , plot(w1) + ggplot2::ggtitle(label = "w1", subtitle = paste0("Mean: ", round(w1$par[1], 2), " SD: ", round(w1$par[2], 3)))
+  , plot(w2) + ggplot2::ggtitle(label = "w2", subtitle = paste0("Mean: ", round(w2$par[1], 2), " SD: ", round(w2$par[2], 3)))
+  , nrow = 1
+)
 
 #'
 #'

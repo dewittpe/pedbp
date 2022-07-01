@@ -55,6 +55,11 @@ _Comment:_
 > oldpar <- par(mfrow = c(1,2))
 > ...
 > par(oldpar)
+  
+  _Response:_
+
+  The use of `par` has been removed from the vignette.  There is no longer a
+  need to reset user's options().
 
 _Comment:_
 > Please fix and resubmit.
