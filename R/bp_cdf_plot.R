@@ -12,6 +12,10 @@
 #' @param sbp,dbp observed values to plot on the CDF
 #' @param ... not currently used
 #'
+#' @return a \code{ggplot2} graphic showing the CDF for diastoic and systolic
+#' blood pressures with vertical and horizontal lines highlight the percentile
+#' for the given inputs.
+#'
 #' @examples
 #' bp_cdf(age = 96, male = 1, sbp = 103, dbp = 55)
 #'
