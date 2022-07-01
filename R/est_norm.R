@@ -19,6 +19,16 @@
 #' better the approximated distribution will be at fitting that quantile.
 #' @param ... passed to \code{\link[stats]{optim}}.
 #'
+#' @return a \code{pedbp_est_norm} object.  This is a list with elements:
+#' \itemize{
+#'   \item{par}{a named numeric vector with the mean and standard deviation for a Gaussian distribution}
+#'   \item{qp}{a numeric matrix with two columns built from the input values of
+#'   \code{q} and \code{p}}
+#'   \item{weights}{the inputed \code{weights}}
+#'   \item{call}{The call made}
+#'   \item{optim}{result from calling \code{\link[stats]{optim}}}
+#' }
+#'
 #' @examples
 #'
 #' # Example 1
@@ -26,6 +36,7 @@
 #' p <- c(0.025, 0.50, 0.975)
 #'
 #' x <- est_norm(q, p)
+#' str(x)
 #' x
 #'
 #' plot(x)

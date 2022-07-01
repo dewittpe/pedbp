@@ -12,6 +12,11 @@
 #' @param height height, in cm, of the patient (age 2 - 20 years)
 #' @param length length, in cm, of the patient (age under 3 years)
 #'
+#' @return The \code{p_} method return values from the estimated distribution
+#' function.  \code{q_} methods return values from the estimated quantitie
+#' function.  \code{z_} methods return standard scores, equivalent to
+#' \code{\link[stats]{qnorm}}.
+#'
 #' @examples
 #'
 #' #############################################################################

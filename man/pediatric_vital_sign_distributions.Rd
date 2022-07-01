@@ -89,6 +89,12 @@ z_weight_for_stature(q, height, male)
 
 \item{height}{height, in cm, of the patient (age 2 - 20 years)}
 }
+\value{
+The \code{p_} method return values from the estimated distribution
+function.  \code{q_} methods return values from the estimated quantitie
+function.  \code{z_} methods return standard scores, equivalent to
+\code{\link[stats]{qnorm}}.
+}
 \description{
 Based on the data provided by the CDC, provide the distribution function,
 quantile function, and a z-score function for one of eight vital signs by

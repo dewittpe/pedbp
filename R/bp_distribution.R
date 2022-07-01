@@ -15,6 +15,12 @@
 #'
 #' @seealso \code{vignette("bp-distriution", package = "pedbp")}
 #'
+#' @return a \code{pedbp_bp} object.  This is a list of two numeric vectors:
+#' \code{sbp_percentile} (systolic blood pressure) and \code{dbp_percentile}
+#' (diastolic blood pressure).  Additionally, the \code{bp_params} attribute
+#' provides details on the data source and parameters used in the percentile
+#' estimates.
+#'
 #' @examples
 #'
 #' x <- p_bp( q_sbp = 100, q_dbp = 60, age = 8, male = 0)

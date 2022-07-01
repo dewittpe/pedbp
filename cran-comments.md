@@ -18,11 +18,9 @@ _Comment:_
 > auto-linking.
 > (If you want to add a title as well please put it in quotes: "Title")
 
-_Response:_
+  _Response:_
 
-The Description field has been extened to report data sources and methods.
-
-_Comment:_
+  The Description field has been extened to report data sources and methods.
 
 _Comment:_
 > Please add \value to .Rd files regarding exported methods and explain 
@@ -35,6 +33,12 @@ _Comment:_
 >       bp_distribution.Rd: \value
 >       est_norm.Rd: \value
 >       pediatric_vital_sign_distributions.Rd: \value
+
+  _Response:_
+
+  Thank you for noting the missing \value sections.  Said sections have been
+  added to the noted Rd-tags.
+
 
 _Comment:_
 > Please ensure that your functions do not write by default or in your 

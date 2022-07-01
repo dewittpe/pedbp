@@ -30,6 +30,13 @@ missing.}
 
 \item{p_dbp}{a vector of diastolic blood percentiles}
 }
+\value{
+a \code{pedbp_bp} object.  This is a list of two numeric vectors:
+\code{sbp_percentile} (systolic blood pressure) and \code{dbp_percentile}
+(diastolic blood pressure).  Additionally, the \code{bp_params} attribute
+provides details on the data source and parameters used in the percentile
+estimates.
+}
 \description{
 Percentile and quantile functions for pediatric blood pressure.
 }
