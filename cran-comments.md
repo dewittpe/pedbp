@@ -8,25 +8,25 @@ _Comment:_
 > the package does and why it may be useful. Please add more details about the
 > package functionality and implemented methods in your Description text.
 >
-> If there are references describing the methods in your package, please 
+> If there are references describing the methods in your package, please
 > add these in the description field of your DESCRIPTION file in the form
 > authors (year) <doi:...>
 > authors (year) <arXiv:...>
 > authors (year, ISBN:...)
 > or if those are not available: <https:...>
-> with no space after 'doi:', 'arXiv:', 'https:' and angle brackets for 
+> with no space after 'doi:', 'arXiv:', 'https:' and angle brackets for
 > auto-linking.
 > (If you want to add a title as well please put it in quotes: "Title")
 
   _Response:_
 
-  The Description field has been extened to report data sources and methods.
+  The Description field has been extended to report data sources and methods.
 
 _Comment:_
-> Please add \value to .Rd files regarding exported methods and explain 
-> the functions results in the documentation. Please write about the 
-> structure of the output (class) and also what the output means. (If a 
-> function does not return a value, please document that too, e.g. 
+> Please add \value to .Rd files regarding exported methods and explain
+> the functions results in the documentation. Please write about the
+> structure of the output (class) and also what the output means. (If a
+> function does not return a value, please document that too, e.g.
 > \value{No return value, called for side effects} or similar)
 > Missing Rd-tags:
 >       bp_cdf.Rd: \value
@@ -41,21 +41,32 @@ _Comment:_
 
 
 _Comment:_
-> Please ensure that your functions do not write by default or in your 
-> examples/vignettes/tests in the user's home filespace (including the 
+> Please ensure that your functions do not write by default or in your
+> examples/vignettes/tests in the user's home filespace (including the
 > package directory and getwd()). This is not allowed by CRAN policies.
-> Please omit any default path in writing functions. In your 
+> Please omit any default path in writing functions. In your
 > examples/vignettes/tests you can write to tempdir().
 
+  _Response:_
+  The only place in the package code which writes to disk is within a function
+  in the inst/shinyapps/pedbp/server.R script.  The write occurs only after an
+  end user clicks on a download button in an active shiny application. The file
+  would then be written to disk based on the settings of the web bowser the
+  end user is working in.
+
+  If there is another place in the examples/vignettes/tests where a write is
+  occurring that is likely an error and I would be very appreciative if such a
+  case could be explicitly identified.
+
 _Comment:_
-> Please always make sure to reset to user's options(), working directory 
-> or par() after you changed it in examples and vignettes and demos. -> 
+> Please always make sure to reset to user's options(), working directory
+> or par() after you changed it in examples and vignettes and demos. ->
 > inst/doc/bp-distributions.R
 > e.g.:
 > oldpar <- par(mfrow = c(1,2))
 > ...
 > par(oldpar)
-  
+
   _Response:_
 
   The use of `par` has been removed from the vignette.  There is no longer a
@@ -63,4 +74,7 @@ _Comment:_
 
 _Comment:_
 > Please fix and resubmit.
+
+  _Response:_
+  Done.
 
