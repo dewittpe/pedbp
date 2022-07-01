@@ -450,6 +450,12 @@ shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
 #' The shiny application allows for interactive exploration of blood pressure
 #' percentiles for an individual patient and allows for batch processing a set
 #' of patients as well.
+#' 
+#' An example input file for batch processing is provided within the package an
+#' can be accessed via:
+#+ label = "shiny_batch_example_file", eval = FALSE
+system.file("example_data", "for_batch.csv", package = "pedbp")
+
 #'
 #' # CDC Growth Charts
 #'
