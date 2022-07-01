@@ -8,7 +8,16 @@ Authors@R: c(
     person(given = "Tell",  family = "Bennett", email = "tell.bennett@cuanschutz.edu",        role = c("ctb"),        comment = c(ORCID = "0000-0003-1483-4236"))
     )
 Description: Data and utilities for estimating pediatric blood pressure
-    percentiles.
+    percentiles by sex, age, and optionally height (stature).
+    Blood pressure percentiles for children under one year of age come from Gemelli
+    et.al. (1990) <doi:10.1007/BF02171556>.  Estimates of blood pressure
+    percentiles for children at least one year of age are informed by
+    data from the National Heart, Lung, and Blood Institute (NHLBI) and the
+    Centers for Disease Control and Prevention (CDC)
+    <doi:10.1542/peds.2009-2107C> or from Lo et.al. (2013)
+    <doi:10.1542/peds.2012-1292>.  The flowchart for selecting the informing
+    data source comes from Martin et.al. (2022)
+    <doi:https://doi.org/10.1542/hpeds.2021-005998>.
 Depends:
     R (>= 3.5.0)
 License: GPL-2

@@ -7,10 +7,7 @@ _Comment:_
 > The Description field is intended to be a (one paragraph) description of what
 > the package does and why it may be useful. Please add more details about the
 > package functionality and implemented methods in your Description text.
-
-_Response:_
-
-_Comment:_
+>
 > If there are references describing the methods in your package, please 
 > add these in the description field of your DESCRIPTION file in the form
 > authors (year) <doi:...>
@@ -20,6 +17,12 @@ _Comment:_
 > with no space after 'doi:', 'arXiv:', 'https:' and angle brackets for 
 > auto-linking.
 > (If you want to add a title as well please put it in quotes: "Title")
+
+_Response:_
+
+The Description field has been extened to report data sources and methods.
+
+_Comment:_
 
 _Comment:_
 > Please add \value to .Rd files regarding exported methods and explain 
