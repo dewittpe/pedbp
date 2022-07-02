@@ -2,6 +2,8 @@ library(shiny)
 library(shinydashboard)
 library(pedbp)
 library(data.table)
+library(markdown)
+library(ggplot2)
 library(DT)
 
 ui <-
