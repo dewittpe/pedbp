@@ -25,6 +25,13 @@ deviations based on published percentiles.
 
 ## How to Install
 
+Install from CRAN:
+
+
+```r
+install.packages("pedbp")
+```
+
 Install the developmental version:
 
 ```r
@@ -118,6 +125,8 @@ packages, you can run the app locally via
 ```r
 shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
 ```
+
+The shiny app is also live on [shinyapps.io](https://dewittpe.shinyapps.io/pedbp/)
 
 ## References
 
