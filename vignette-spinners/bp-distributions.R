@@ -14,6 +14,9 @@
 #+ label = "setup", include = FALSE
 knitr::opts_chunk$set(collapse = TRUE, fig.align = "center")
 library(pedbp)
+# /*
+require("svglite") # needed for saving svg images
+# */
 #'
 #' # Introduction
 #'
@@ -257,15 +260,14 @@ g(d[male == 0])
 #'
 # /*
 # output svg for manuscript
-require("svglite")
-ggplot2::ggsave(file = "inst/images/fig2b.svg", plot = g(d[male == 0]))
+ggplot2::ggsave(file = "inst/images/bp_percentile_female_height_unknown.svg", plot = g(d[male == 0]))
 # */
 #'
 #+ label = "chart1_male", echo = FALSE, fig.width = 8, fig.height = 6
 g(d[male == 1])
 #'
 # /*
-ggplot2::ggsave(file = "inst/images/fig2a.svg", plot = g(d[male == 1]))
+ggplot2::ggsave(file = "inst/images/bp_percentile_male_height_unknown.svg", plot = g(d[male == 1]))
 # */
 #'
 #' ## Median Blood Pressures -- Varying default height percentile
@@ -347,14 +349,14 @@ g <- function(d) {
 g(d[male == 0])
 #'
 # /*
-ggplot2::ggsave(file = "inst/images/fig2d.svg", plot = g(d[male == 0]))
+ggplot2::ggsave(file = "inst/images/median_bp_female_variable_default_height_percentile.svg", plot = g(d[male == 0]))
 # */
 #'
 #+ label = "chart2_male", echo = FALSE, fig.width = 8, fig.height = 6
 g(d[male == 1])
 #'
 # /*
-ggplot2::ggsave(file = "inst/images/fig2c.svg", plot = g(d[male == 1]))
+ggplot2::ggsave(file = "inst/images/median_bp_male_variable_default_height_percentile.svg", plot = g(d[male == 1]))
 # */
 #'
 #' ## Median Blood Pressures for Children with Known Heights
@@ -425,11 +427,17 @@ g <- function(d) {
 #'
 #+ label = "chart3_female", echo = FALSE, fig.width = 8, fig.height = 6
 g(d[male == 0])
+# /*
+ggplot2::ggsave(file = "inst/images/median_bp_female_known_height.svg", plot = g(d[male == 0]))
+# */
 
 #'
 #'
 #+ label = "chart3_male", echo = FALSE, fig.width = 8, fig.height = 6
 g(d[male == 1])
+# /*
+ggplot2::ggsave(file = "inst/images/median_bp_male_known_height.svg", plot = g(d[male == 1]))
+# */
 
 #'
 #' # Shiny Application

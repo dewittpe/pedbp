@@ -6,8 +6,8 @@ An R package for estimating expected blood pressure of children and adolescences
 [![codecov](https://codecov.io/gh/dewittpe/pedbp/branch/main/graph/badge.svg?token=DYiVkUwKrP)](https://app.codecov.io/gh/dewittpe/pedbp)
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/pedbp)](https://cran.r-project.org/package=pedbp)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/pedbp)](http://www.r-pkg.org/pkg/pedbp)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/pedbp)](http://www.r-pkg.org/pkg/pedbp)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/pedbp)](https://www.r-pkg.org/pkg/pedbp)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/pedbp)](https://www.r-pkg.org/pkg/pedbp)
 
 [![License](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
@@ -15,6 +15,23 @@ An R package for estimating expected blood pressure of children and adolescences
 ## Objective
 Provide a method for translating pediatric blood pressures, dependent on age,
 sex, and height (if known), to percentiles.
+
+## Publications
+
+If you use this package in your research please cite it via:
+
+Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric Blood
+Pressure Percentile Tool for Clinical Decision Support. JAMA Netw Open.
+2022;5(10):e2236918. doi:10.1001/jamanetworkopen.2022.36918
+
+```{r}
+# research letter published in JAMA Network Open
+citation("pedbp")
+
+# citation for the package itself
+citation("pedbp", auto = TRUE)
+```
+
 
 ## Method
 Blood pressure percentiles are based on Gaussian distributions defined by published

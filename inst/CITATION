@@ -1,0 +1,19 @@
+citHeader("To cite pedbp please cite the research letter")
+
+citEntry(
+    textVersion = "Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric Blood Pressure Percentile Tool for Clinical Decision Support. JAMA Netw Open. 2022;5(10):e2236918. doi:10.1001/jamanetworkopen.2022.36918",
+    entry = "article",
+    author = "Martin, Blake and DeWitt, Peter E. and Albers, David and Bennett, Tellen D.",
+    title = "Development of a Pediatric Blood Pressure Percentile Tool for Clinical Decision Support",
+    journal = "JAMA Network Open",
+    volume = "5",
+    number = "10",
+    pages = "e2236918-e2236918",
+    year = "2022",
+    month = "10",
+    issn = "2574-3805",
+    doi = "10.1001/jamanetworkopen.2022.36918",
+    url = "https://doi.org/10.1001/jamanetworkopen.2022.36918",
+    eprint = "https://jamanetwork.com/journals/jamanetworkopen/articlepdf/2797401/martin_2022_ld_220236_1665075001.39453.pdf"
+)
+

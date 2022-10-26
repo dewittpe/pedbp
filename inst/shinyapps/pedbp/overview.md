@@ -53,7 +53,10 @@ package in your work.
 
 __To Cite This Work:__
 
-* cite the R package -- will have a doi for this soon.
+
+Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric Blood
+Pressure Percentile Tool for Clinical Decision Support. JAMA Netw Open.
+2022;5(10):e2236918. doi:10.1001/jamanetworkopen.2022.36918
 
 __References:__
 

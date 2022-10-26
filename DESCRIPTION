@@ -1,6 +1,6 @@
 Package: pedbp
 Title: Pediatric Blood Pressure
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person(given = "Peter", family = "DeWitt",  email = "peter.dewitt@cuanschutz.edu",        role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6391-0795")),
     person(given = "Blake", family = "Martin",  email = "blake.martin@childrenscolorado.org", role = c("ctb"),        comment = c(ORCID = "0000-0001-5683-8310")),
@@ -8,7 +8,8 @@ Authors@R: c(
     person(given = "Tell",  family = "Bennett", email = "tell.bennett@cuanschutz.edu",        role = c("ctb"),        comment = c(ORCID = "0000-0003-1483-4236"))
     )
 Description: Data and utilities for estimating pediatric blood pressure
-    percentiles by sex, age, and optionally height (stature).
+    percentiles by sex, age, and optionally height (stature) as described in
+    Martin et.al. (2022) <doi:10.1001/jamanetworkopen.2022.36918>.
     Blood pressure percentiles for children under one year of age come from Gemelli
     et.al. (1990) <doi:10.1007/BF02171556>.  Estimates of blood pressure
     percentiles for children at least one year of age are informed by
@@ -38,4 +39,4 @@ Suggests:
     shiny,
     shinydashboard
 VignetteBuilder: knitr
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1

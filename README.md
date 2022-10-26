@@ -6,8 +6,8 @@ An R package for estimating expected blood pressure of children and adolescences
 [![codecov](https://codecov.io/gh/dewittpe/pedbp/branch/main/graph/badge.svg?token=DYiVkUwKrP)](https://app.codecov.io/gh/dewittpe/pedbp)
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/pedbp)](https://cran.r-project.org/package=pedbp)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/pedbp)](http://www.r-pkg.org/pkg/pedbp)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/pedbp)](http://www.r-pkg.org/pkg/pedbp)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/pedbp)](https://www.r-pkg.org/pkg/pedbp)
+[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/pedbp)](https://www.r-pkg.org/pkg/pedbp)
 
 [![License](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
@@ -15,6 +15,57 @@ An R package for estimating expected blood pressure of children and adolescences
 ## Objective
 Provide a method for translating pediatric blood pressures, dependent on age,
 sex, and height (if known), to percentiles.
+
+## Publications
+
+If you use this package in your research please cite it via:
+
+Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric Blood
+Pressure Percentile Tool for Clinical Decision Support. JAMA Netw Open.
+2022;5(10):e2236918. doi:10.1001/jamanetworkopen.2022.36918
+
+
+```r
+# research letter published in JAMA Network Open
+citation("pedbp")
+```
+
+```
+## 
+## To cite pedbp please cite the research letter
+## 
+##   Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric
+##   Blood Pressure Percentile Tool for Clinical Decision Support. JAMA
+##   Netw Open. 2022;5(10):e2236918.
+##   doi:10.1001/jamanetworkopen.2022.36918
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Article{,
+##     author = {{Martin} and {Blake} and {DeWitt} and Peter E. and {Albers} and {David} and {Bennett} and Tellen D.},
+##     title = {Development of a Pediatric Blood Pressure Percentile Tool for Clinical Decision Support},
+##     journal = {JAMA Network Open},
+##     volume = {5},
+##     number = {10},
+##     pages = {e2236918-e2236918},
+##     year = {2022},
+##     month = {10},
+##     issn = {2574-3805},
+##     doi = {10.1001/jamanetworkopen.2022.36918},
+##     url = {https://doi.org/10.1001/jamanetworkopen.2022.36918},
+##     eprint = {https://jamanetwork.com/journals/jamanetworkopen/articlepdf/2797401/martin_2022_ld_220236_1665075001.39453.pdf},
+##   }
+```
+
+```r
+# citation for the package itself
+citation("pedbp", auto = TRUE)
+```
+
+```
+## Error in citation("pedbp", auto = TRUE): (converted from warning) no date field in DESCRIPTION file of package 'pedbp'
+```
+
 
 ## Method
 Blood pressure percentiles are based on Gaussian distributions defined by published
