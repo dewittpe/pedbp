@@ -25,13 +25,8 @@ Pressure Percentile Tool for Clinical Decision Support. JAMA Netw Open.
 2022;5(10):e2236918. doi:10.1001/jamanetworkopen.2022.36918
 
 ```{r}
-# research letter published in JAMA Network Open
 citation("pedbp")
-
-# citation for the package itself
-citation("pedbp", auto = TRUE)
 ```
-
 
 ## Method
 Blood pressure percentiles are based on Gaussian distributions defined by published
