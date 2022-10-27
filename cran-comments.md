@@ -11,9 +11,21 @@
   - Ubuntu  R-devel
   - Ubuntu  R-oldrelease
 
-- win-bulider.r-project.org (1 Note)
+- R-hub Windows Server 2022, R-devel, 64 bit  (1 Note)
 
-  New submission
+    * checking for detritus in the temp directory ... NOTE
+    Found the following files/directories:
+      'lastMiKTeXException'
+
+  This note can be ignored, see https://github.com/r-hub/rhub/issues/503
+  This note is likely related to a bug/crash in miktex
+
+- win-bulider.r-project.org (Status: OK)
+
+
+## Notes from prior submissions I want/need to remind myself and reviewers of
+
+On a prior submission the following was found:
 
   Possibly misspelled words in DESCRIPTION:
   Gemelli (12:77)
@@ -27,9 +39,7 @@
     "al" and "et" being flagged as possibly misspelled words.
 
 
-
-
-_Comment:_
+_Comment from version 1.0.0_
 > Please ensure that your functions do not write by default or in your
 > examples/vignettes/tests in the user's home filespace (including the
 > package directory and getwd()). This is not allowed by CRAN policies.
