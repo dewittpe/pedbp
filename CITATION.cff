@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "DeWitt"
+  given-names: "Peter"
+  orcid: "https://orcid.org/0000-0002-6391-0795"
+- family-names: "Martin"
+  given-names: "Blake"
+  orcid: "https://orcid.org/0000-0001-5683-8310"
+- family-names: "Albers"
+  given-names: "David"
+  orcid: "https://orcid.org/0000-0002-5369-526X"
+- family-names: "Bennett"
+  given-names: "Tell"
+  orcid: "https://orcid.org/0000-0003-1483-4236"
+title: "Pediatric Blood Pressue"
+url: "https://github.com/dewittpe/pedbp"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "DeWitt"
+    given-names: "Peter"
+    orcid: "https://orcid.org/0000-0002-6391-0795"
+  - family-names: "Martin"
+    given-names: "Blake"
+    orcid: "https://orcid.org/0000-0001-5683-8310"
+  - family-names: "Albers"
+    given-names: "David"
+    orcid: "https://orcid.org/0000-0002-5369-526X"
+  - family-names: "Bennett"
+    given-names: "Tell"
+    orcid: "https://orcid.org/0000-0003-1483-4236"
+  doi: "10.1001/jamanetworkopen.2022.36918"
+  journal: "JAMA Network Open"
+  month: 10
+  start: e2236918 # First page number
+  end: e2236918 # Last page number
+  title: "Development of a Pediatric Blood Pressure Percentile Tool for Clinical Decision Support"
+  issue: 10
+  volume: 5
+  year: 2022
+
