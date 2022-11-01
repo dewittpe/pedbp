@@ -1,3 +1,13 @@
+# pedbp 1.0.1.9000
+
+* Bug Fixes:
+  - Warning when age and height is out of the range in the provided data sets
+    instead of error.  This fixes (#5).  The logic is still good.  The known bug
+    was when 35.5 < age < 36 for length_by_age_inf which only has age up to 35.5
+    but the logic for use of that set is age < 36.  A warning will not be given
+    if 35.5 < age < 36.
+
+
 # pedbp 1.0.1
 
 * Add citation information

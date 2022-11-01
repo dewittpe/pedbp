@@ -347,13 +347,15 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     d <- cdc_lms_data[cdc_lms_data$set == set, ]
 
     if (age < min(d$age) | age > max(d$age)) {
-      stop(paste("age must be between", min(d$age), "and", max(d$age)))
+    #  stop(paste("age must be between", min(d$age), "and", max(d$age)))
+      warning(paste0("provided age of ", age, " is outside the range of (",
+                     min(d$age), ", ", max(d$age), ")  for the set ", set))
     }
 
     d <- d[d$male == male, ]
 
     d1 <- d[d$age <= age, ]
-    d2 <- d[d$age >  age, ]
+    d2 <- d[d$age >= age, ]
     d  <- rbind(d1[nrow(d1), ], d2[1, ])
 
     l <- linear_interp(age, d[, "age"], d[, "l"])
@@ -366,7 +368,9 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     d <- cdc_lms_data[cdc_lms_data$set == set, ]
 
     if (age < min(d$age) | age > max(d$age)) {
-      stop(paste("age must be between", min(d$age), "and", max(d$age)))
+      #stop(paste("age must be between", min(d$age), "and", max(d$age)))
+      warning(paste0("provided age of ", age, " is outside the range of (",
+                     min(d$age), ", ", max(d$age), ")  for the set ", set))
     }
 
     d <- d[d$male == male, ]
@@ -399,7 +403,9 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     stopifnot(!is.na(height))
     d <- cdc_lms_data[cdc_lms_data$set == set, ]
     if (height < min(d$height) | max(d$height) < height) {
-      stop(paste("height must be between", min(d$height), "and", max(d$height)))
+      #stop(paste("height must be between", min(d$height), "and", max(d$height)))
+      warning(paste0("provided height of ", height, " is outside the range of (",
+                     min(d$height), ", ", max(d$height), ")  for the set ", set))
     }
     d <- d[d$male == male, ]
 

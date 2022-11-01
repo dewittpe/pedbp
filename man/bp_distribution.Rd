@@ -42,7 +42,7 @@ Percentile and quantile functions for pediatric blood pressure.
 }
 \examples{
 
-x <- p_bp( q_sbp = 100, q_dbp = 60, age = 8, male = 0)
+x <- p_bp(q_sbp = 100, q_dbp = 60, age = 8, male = 0)
 x
 str(x)
 
@@ -57,6 +57,14 @@ str(x)
 x <- q_bp(p_sbp = 0.78, p_dbp = 0.65, age = 8, male = 0)
 x
 str(x)
+
+#############################################################################
+# compare results when height is known or unknown
+p_bp(q_sbp = rep(100, 2),
+     q_dbp = rep( 60, 2),
+     age   = rep(35.75, 2),
+     male  = c(0, 0),
+     height = c(NA, 100))
 
 #############################################################################
 # Working with multiple patients records
