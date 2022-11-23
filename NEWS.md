@@ -1,4 +1,4 @@
-# pedbp 1.0.1.9000
+# pedbp 1.0.2
 
 * Bug Fixes:
   - Warning when age and height is out of the range in the provided data sets

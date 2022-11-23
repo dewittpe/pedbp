@@ -1,4 +1,4 @@
-# pedbp 1.0.1
+# pedbp 1.0.2
 
 ## Testing Results
 
