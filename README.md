@@ -30,7 +30,6 @@ citation("pedbp")
 ```
 
 ```
-## 
 ## To cite pedbp please cite the research letter
 ## 
 ##   Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric
