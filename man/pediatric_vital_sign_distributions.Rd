@@ -2,92 +2,78 @@
 % Please edit documentation in R/lms.R
 \name{pediatric_vital_sign_distributions}
 \alias{pediatric_vital_sign_distributions}
+\alias{pvsd}
 \alias{p_bmi_for_age}
 \alias{q_bmi_for_age}
 \alias{z_bmi_for_age}
 \alias{p_head_circ_for_age}
 \alias{q_head_circ_for_age}
 \alias{z_head_circ_for_age}
-\alias{p_length_for_age_inf}
-\alias{q_length_for_age_inf}
-\alias{z_length_for_age_inf}
 \alias{p_stature_for_age}
 \alias{q_stature_for_age}
 \alias{z_stature_for_age}
-\alias{p_weight_for_age_inf}
-\alias{q_weight_for_age_inf}
-\alias{z_weight_for_age_inf}
 \alias{p_weight_for_age}
 \alias{q_weight_for_age}
 \alias{z_weight_for_age}
-\alias{p_weight_for_length_inf}
-\alias{q_weight_for_length_inf}
-\alias{z_weight_for_length_inf}
 \alias{p_weight_for_stature}
 \alias{q_weight_for_stature}
 \alias{z_weight_for_stature}
-\title{LMS Look Up Table}
+\title{Pediatric Vital Sign Distributions}
 \usage{
-p_bmi_for_age(q, age, male)
+pvsd(
+  x,
+  male,
+  age = NA_real_,
+  stature = NA_real_,
+  source = c("WHO", "CDC-2000"),
+  metric = c("bmi_for_age", "stature_for_age", "weight_for_age", "weight_for_stature",
+    "head_circumference_for_age"),
+  type = c("distribution", "quantile", "zscore"),
+  ...
+)
 
-q_bmi_for_age(p, age, male)
+p_bmi_for_age(q, male, age, source, ...)
 
-z_bmi_for_age(q, age, male)
+q_bmi_for_age(p, male, age, source, ...)
+
+z_bmi_for_age(x, male, age, source, ...)
 
 p_head_circ_for_age(q, age, male)
 
-q_head_circ_for_age(p, age, male)
+q_head_circ_for_age(p, male, age, source, ...)
 
-z_head_circ_for_age(q, age, male)
+z_head_circ_for_age(x, male, age, source, ...)
 
-p_length_for_age_inf(q, age, male)
+p_stature_for_age(q, male, age, source, ...)
 
-q_length_for_age_inf(p, age, male)
+q_stature_for_age(p, male, age, source, ...)
 
-z_length_for_age_inf(q, age, male)
+z_stature_for_age(q, male, age, source, ...)
 
-p_stature_for_age(q, age, male)
+p_weight_for_age(q, male, age, source, ...)
 
-q_stature_for_age(p, age, male)
+q_weight_for_age(p, male, age, source, ...)
 
-z_stature_for_age(q, age, male)
+z_weight_for_age(x, male, age, source, ...)
 
-p_weight_for_age_inf(q, age, male)
+p_weight_for_stature(q, male, stature, source, ...)
 
-q_weight_for_age_inf(p, age, male)
+q_weight_for_stature(p, male, stature, source, ...)
 
-z_weight_for_age_inf(q, age, male)
-
-p_weight_for_age(q, age, male)
-
-q_weight_for_age(p, age, male)
-
-z_weight_for_age(q, age, male)
-
-p_weight_for_length_inf(q, length, male)
-
-q_weight_for_length_inf(p, length, male)
-
-z_weight_for_length_inf(q, length, male)
-
-p_weight_for_stature(q, height, male)
-
-q_weight_for_stature(p, height, male)
-
-z_weight_for_stature(q, height, male)
+z_weight_for_stature(x, male, stature, source, ...)
 }
 \arguments{
-\item{q}{a vector of quantities}
+\item{male}{integer value, 1 = male, 0 = female}
 
 \item{age}{numeric age, in months}
 
-\item{male}{integer value, 1 = male, 0 = female}
+\item{q}{a vector of quantities}
 
 \item{p}{a vector of probabilities}
 
-\item{length}{length, in cm, of the patient (age under 3 years)}
-
 \item{height}{height, in cm, of the patient (age 2 - 20 years)}
+
+\item{length}{length, in cm, of the patient (age under 3 years)}
 }
 \value{
 The \code{p_} method return values from the estimated distribution
@@ -96,11 +82,6 @@ function.  \code{z_} methods return standard scores, equivalent to
 \code{\link[stats]{qnorm}}.
 }
 \description{
-lambda-mu-sigma (LMS) Box-Cox tranfom values for smoothing and normalizing
-bmi-for-age
-Pediatric Vital Sign Distributions
-}
-\details{
 Based on the data provided by the CDC, provide the distribution function,
 quantile function, and a z-score function for one of eight vital signs by
 another vital sign, e.g., weight for age.  Values are based on an LMS
@@ -123,16 +104,12 @@ z_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0)
 q_bmi_for_age(p = 0.70, age = 15.4 * 12, male = 1)
 
 #############################################################################
-# Stature/Lenght/Height for Age
-
-# length_for_age_inf is for Infants are from 0 to 3 years (36 months)
-# stature_for_age    is for pediatrics from 2 years (24 months) to 20 years
-#                    (240 months)
-# The overlap between these functions will produce slightly different values
-# the kids between 24 and 36 months of age.
-p_length_for_age_inf(87, age = 28, male = 0)
-p_stature_for_age(87, age = 28, male = 0)
-p_length_for_age_inf(q = 87, age = 28,  male = 0)
+# Stature (aka: Lenght or Height) for Age
+bmi_for_age
+head_circumference_for_age
+stature_for_age
+weight_for_age
+weight_for_stature
 
 #############################################################################
 # Multiple patients, the age and male, length, height arguments can also be

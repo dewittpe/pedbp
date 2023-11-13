@@ -177,6 +177,8 @@ lms_data <- rbind(who_lms_data, cdc_lms_data, use.names = TRUE, fill = TRUE)
 ################################################################################
 ##                             Save Internal Data                             ##
 
+data.table::setkey(lms_data, source, metric, male, age, stature)
+
 lms_data <- as.data.frame(lms_data)
 usethis::use_data(lms_data, internal = TRUE, overwrite = TRUE)
 

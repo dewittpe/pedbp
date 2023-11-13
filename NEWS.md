@@ -1,3 +1,7 @@
+# pedbp 2.0.0
+
+* API change to the vital sign distribution functions
+
 # pedbp 1.0.2
 
 * Bug Fixes:

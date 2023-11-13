@@ -1,9 +1,3 @@
-#' LMS Look Up Table
-#'
-#' lambda-mu-sigma (LMS) Box-Cox tranfom values for smoothing and normalizing
-#' bmi-for-age
-
-
 #' Pediatric Vital Sign Distributions
 #'
 #' Based on the data provided by the CDC, provide the distribution function,
@@ -40,16 +34,12 @@
 #' q_bmi_for_age(p = 0.70, age = 15.4 * 12, male = 1)
 #'
 #' #############################################################################
-#' # Stature/Lenght/Height for Age
-#'
-#' # length_for_age_inf is for Infants are from 0 to 3 years (36 months)
-#' # stature_for_age    is for pediatrics from 2 years (24 months) to 20 years
-#' #                    (240 months)
-#' # The overlap between these functions will produce slightly different values
-#' # the kids between 24 and 36 months of age.
-#' p_length_for_age_inf(87, age = 28, male = 0)
-#' p_stature_for_age(87, age = 28, male = 0)
-#' p_length_for_age_inf(q = 87, age = 28,  male = 0)
+#' # Stature (aka: Lenght or Height) for Age
+#' bmi_for_age
+#' head_circumference_for_age
+#' stature_for_age
+#' weight_for_age
+#' weight_for_stature
 #'
 #' #############################################################################
 #' # Multiple patients, the age and male, length, height arguments can also be
@@ -66,401 +56,242 @@ NULL
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-p_bmi_for_age <- function(q, age, male) {
-  lms <- v_get_lms(set = "bmi_for_age", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+pvsd <- function(x
+                 , male
+                 , age = NA_real_
+                 , stature = NA_real_
+                 , source = c("WHO", "CDC-2000")
+                 , metric = c(  "bmi_for_age"
+                              , "stature_for_age"
+                              , "weight_for_age"
+                              , "weight_for_stature"
+                              , "head_circumference_for_age"
+                   )
+                 , type = c("distribution", "quantile", "zscore")
+                 , ...) {
+
+  type <- match.arg(arg = type, several.ok = FALSE)
+  metric <- match.arg(arg = metric, several.ok = FALSE)
+  source <- match.arg(arg = source, several.ok = TRUE)
+
+  lms <- v_get_lms(metric = metric, age = age, stature = stature, male = male, source = source, ...)
+
+  f <- switch(type,
+              distribution = "plms",
+              quantile = "qlms",
+              zscore = "zlms")
+  f <- match.fun(f)
+
+  rtn <- Map(f, l = lms[["L"]], m = lms[["M"]], s = lms[["S"]], MoreArgs = list(x = x))
+  do.call(c, rtn)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_bmi_for_age <- function(p, age, male) {
-  lms <- v_get_lms(set = "bmi_for_age", age = age, male = male)
-  lms <- Map(append, lms, p)
-  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+p_bmi_for_age <- function(q, male, age, source, ...) {
+  pvsd(x = q, male = male, age = age, source = source, metric = "bmi_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_bmi_for_age <- function(q, age, male) {
-  lms <- v_get_lms(set = "bmi_for_age", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+q_bmi_for_age <- function(p, male, age, source, ...) {
+  pvsd(x = p, male = male, age = age, source = source, metric = "bmi_for_age", type = "quantile", ...)
+}
+
+#' @rdname pediatric_vital_sign_distributions
+#' @export
+z_bmi_for_age <- function(x, male, age, source, ...) {
+  pvsd(x = x, male = male, age = age, source = source, metric = "bmi_for_age", type = "zscore", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
 p_head_circ_for_age <- function(q, age, male) {
-  lms <- v_get_lms(set = "head_circ_for_age", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+  pvsd(x = q, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_head_circ_for_age <- function(p, age, male) {
-  lms <- v_get_lms(set = "head_circ_for_age", age = age, male = male)
-  lms <- Map(append, lms, p)
-  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+q_head_circ_for_age <- function(p, male, age, source, ...) {
+  pvsd(x = p, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_head_circ_for_age <- function(q, age, male) {
-  lms <- v_get_lms(set = "head_circ_for_age", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-p_length_for_age_inf <- function(q, age, male) {
-  lms <- v_get_lms(set = "length_for_age_inf", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-q_length_for_age_inf <- function(p, age, male) {
-  lms <- v_get_lms(set = "length_for_age_inf", age = age, male = male)
-  lms <- Map(append, lms, p)
-  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-z_length_for_age_inf <- function(q, age, male) {
-  lms <- v_get_lms(set = "length_for_age_inf", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-p_stature_for_age <- function(q, age, male) {
-  lms <- v_get_lms(set = "stature_for_age", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-q_stature_for_age <- function(p, age, male) {
-  lms <- v_get_lms(set = "stature_for_age", age = age, male = male)
-  lms <- Map(append, lms, p)
-  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-z_stature_for_age <- function(q, age, male) {
-  lms <- v_get_lms(set = "stature_for_age", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-p_weight_for_age_inf <- function(q, age, male) {
-  lms <- v_get_lms(set = "weight_for_age_inf", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-q_weight_for_age_inf <- function(p, age, male) {
-  lms <- v_get_lms(set = "weight_for_age_inf", age = age, male = male)
-  lms <- Map(append, lms, p)
-  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-z_weight_for_age_inf <- function(q, age, male) {
-  lms <- v_get_lms(set = "weight_for_age_inf", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-p_weight_for_age <- function(q, age, male) {
-  lms <- v_get_lms(set = "weight_for_age", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-q_weight_for_age <- function(p, age, male) {
-  lms <- v_get_lms(set = "weight_for_age", age = age, male = male)
-  lms <- Map(append, lms, p)
-  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
-}
-
-#' @rdname pediatric_vital_sign_distributions
-#' @export
-z_weight_for_age <- function(q, age, male) {
-  lms <- v_get_lms(set = "weight_for_age", age = age, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+z_head_circ_for_age <- function(x, male, age, source, ...) {
+  pvsd(x = x, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "zscore", ...)
 }
 
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-p_weight_for_length_inf <- function(q, length, male) {
-  lms <- v_get_lms(set = "weight_for_length_inf", length = length, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+p_stature_for_age <- function(q, male, age, source, ...) {
+  pvsd(x = q, male = male, age = age, source = source, metric = "stature_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_weight_for_length_inf <- function(p, length, male) {
-  lms <- v_get_lms(set = "weight_for_length_inf", length = length, male = male)
-  lms <- Map(append, lms, p)
-  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+q_stature_for_age <- function(p, male, age, source, ...) {
+  pvsd(x = p, male = male, age = age, source = source, metric = "stature_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_weight_for_length_inf <- function(q, length, male) {
-  lms <- v_get_lms(set = "weight_for_length_inf", length = length, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+z_stature_for_age <- function(q, male, age, source, ...) {
+  pvsd(x = x, male = male, age = age, source = source, metric = "stature_for_age", type = "zscore", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-p_weight_for_stature <- function(q, height, male) {
-  lms <- v_get_lms(set = "weight_for_stature", height = height, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { plms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+p_weight_for_age <- function(q, male, age, source, ...) {
+  pvsd(x = q, male = male, age = age, source = source, metric = "weight_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_weight_for_stature <- function(p, height, male) {
-  lms <- v_get_lms(set = "weight_for_stature", height = height, male = male)
-  lms <- Map(append, lms, p)
-  rtn <- lapply(lms, function(x,..) { qlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+q_weight_for_age <- function(p, male, age, source, ...) {
+  pvsd(x = p, male = male, age = age, source = source, metric = "weight_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_weight_for_stature <- function(q, height, male) {
-  lms <- v_get_lms(set = "weight_for_stature", height = height, male = male)
-  lms <- Map(append, lms, q)
-  rtn <- lapply(lms, function(x,..) { zlms(x[[4]], x$l, x$m, x$s) })
-  rtn <- do.call(c, rtn)
-  rtn
+z_weight_for_age <- function(x, male, age, source, ...) {
+  pvsd(x = x, male = male, age = age, source = source, metric = "weight_for_age", type = "zscore", ...)
+}
+
+#' @rdname pediatric_vital_sign_distributions
+#' @export
+p_weight_for_stature <- function(q, male, stature, source, ...) {
+  pvsd(x = q, male = male, age = age, source = source, metric = "weight_for_stature", type = "distribution", ...)
+}
+
+#' @rdname pediatric_vital_sign_distributions
+#' @export
+q_weight_for_stature <- function(p, male, stature, source, ...) {
+  pvsd(x = p, male = male, age = age, source = source, metric = "weight_for_stature", type = "quantile", ...)
+}
+
+#' @rdname pediatric_vital_sign_distributions
+#' @export
+z_weight_for_stature <- function(x, male, stature, source, ...) {
+  pvsd(x = x, male = male, age = age, source = source, metric = "weight_for_stature", type = "zscore", ...)
 }
 
 
 # non-exported functions
+
+#' LMS Look Up Functions
+#'
+#' Functions to look up LMS values from the internal data set lms_data
+#'
+#' @param metric section of the look up table
+#' @param male   0 = female; 1 = male
+#' @param source "CDC-2000", or "WHO"
+#' @param age    in months
+#' @param stature height/length
+#'
+#'
+get_lms <-
+  function(
+    metric = c(  "bmi_for_age"
+               , "stature_for_age"
+               , "weight_for_age"
+               , "weight_for_stature"
+               , "head_circumference_for_age"
+              )
+  , male
+  , source = c("WHO", "CDC-2000")
+  , age = NA_real_
+  , stature = NA_real_
+  ) {
+
+    print("You're in get_lms")
+
+  metric <- match.arg(arg = metric, several.ok = FALSE)
+  source <- match.arg(arg = source, several.ok = FALSE)
+  stopifnot(length(male) == 1L, isTRUE(all.equal(male, 1)) | isTRUE(all.equal(male, 0)))
+
+  idx <-
+    (lms_data[["metric"]] == metric) &
+    (lms_data[["male"]] == male) &
+    (lms_data[["source"]] == source)
+
+  if (grepl("_for_age", metric)) {
+    stopifnot(!is.null(age), length(age) == 1L, age >= 0)
+
+    min_age <- min(lms_data[["age"]][idx])
+    max_age <- max(lms_data[["age"]][idx])
+
+    if (age < min_age) {
+      message(sprintf("age: %s, is below the min value in the look up table.  Using %s.", age, min_age))
+      age <- min_age
+    } else if (age > max_age) {
+      message(sprintf("age: %s, is above the max value in the look up table.  Using %s.", age, max_age))
+      age <- max_age
+    }
+
+    idx <- idx & (lms_data[["age"]] <= age)
+
+  } else if (grepl("_for_stature", metric)) {
+    stopifnot(!is.null(stature), length(stature) == 1L, stature >= 0)
+
+    min_stature <- min(lms_data[["stature"]][idx])
+    max_stature <- max(lms_data[["stature"]][idx])
+
+    if (stature < min_stature) {
+      message(sprintf("stature: %s, is below the min value in the look up table.  Using %s.", stature, min_stature))
+      stature <- min_stature
+    } else if (stature > max_stature) {
+      message(sprintf("stature: %s, is above the max value in the look up table.  Using %s.", stature, max_stature))
+      stature <- max_stature
+    }
+
+    idx <- idx & (lms_data[["stature"]] <= stature)
+
+  } else {
+    stop("what else could there be except for _for_age and _for_stature?")
+  }
+
+  rtn <- lms_data[max(which(idx)), ]
+  rownames(rtn) <- NULL
+  rtn
+}
 
 # v_get_lms is a vectorized version of get_lms.  get_lms uses a look up table
 # and it was easier to think with single values there and vectorize at a higher
 # level.
 v_get_lms <-
   function(
-    metric = c(  "bmi-for-age"
-               , "stature-for-age"
-               , "weight-for-age"
-               , "weight-for-stature"
-               , "head-circumference-for-age"
+    metric = c(  "bmi_for_age"
+               , "stature_for_age"
+               , "weight_for_age"
+               , "weight_for_stature"
+               , "head_circumference_for_age"
               )
     , male
-    , source = c("auto", "who", "cdc")
-    , age = NULL
-    , stature = NULL
+    , source = c("WHO", "CDC-2000")
+    , age = NA_real_
+    , stature = NA_real_
     ) {
 
-  # male is required, so is metric, and source
-  stopifnot(!is.null(male), sapply(male, function(x) isTRUE(all.equal(x, 0)) | isTRUE(all.equal(x, 1))))
-
-  metric <- match.arg(arg = metric, several.ok = TRUE)
+  metric <- match.arg(arg = metric, several.ok = FALSE)
   source <- match.arg(arg = source, several.ok = TRUE)
 
-  if (!is.null(age)) {
-    stopifnot(length(male) == length(age))
-  } else {
-    age <- rep(NA_real_, length(male))
-  }
-
-  if (!is.null(length)) {
-    stopifnot(length(male) == length(length))
-  } else {
-    length <- rep(NA_real_, length(male))
-  }
-
-  if (!is.null(height)) {
-    stopifnot(length(male) == length(height))
-  } else {
-    height <- rep(NA_real_, length(male))
-  }
-
-  if (length(set) == 1L) {
-    set <- rep(set, length(male))
-  }
-
-  rtn <- Map(get_lms, set = set, age = age, male = male, length = length, height = height)
-  rtn <- unname(rtn)
+  rtn <-
+    mapply(get_lms
+           , metric = metric
+           , male = male
+           , source = source
+           , age = age
+           , stature = stature
+           , SIMPLIFY = FALSE
+    )
+  rtn <- do.call(rbind, rtn)
+  rownames(rtn) <- NULL
   rtn
 }
 
-get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = NA_real_) {
-
-  stopifnot(length(male) == 1L)
-  stopifnot(male == 0 | male == 1)
-
-  if (set %in% c("length_for_age_inf", "weight_for_age_inf")) {
-    stopifnot(length(age) == 1L)
-    stopifnot(!is.na(age))
-    d <- lms_data[lms_data$set == set, ]
-
-    if (age < min(d$age) | age > max(d$age)) {
-    #  stop(paste("age must be between", min(d$age), "and", max(d$age)))
-      warning(paste0("provided age of ", age, " is outside the range of (",
-                     min(d$age), ", ", max(d$age), ")  for the set ", set))
-    }
-
-    d <- d[d$male == male, ]
-
-    d1 <- d[d$age <= age, ]
-    d2 <- d[d$age >= age, ]
-    d  <- rbind(d1[nrow(d1), ], d2[1, ])
-
-    l <- linear_interp(age, d[, "age"], d[, "l"])
-    m <- linear_interp(age, d[, "age"], d[, "m"])
-    s <- linear_interp(age, d[, "age"], d[, "s"])
-  } else if (set %in% c("bmi_for_age", "head_circ_for_age", "stature_for_age", "weight_for_age")) {
-    stopifnot(length(age) == 1L)
-    stopifnot(!is.na(age))
-
-    d <- lms_data[lms_data$set == set, ]
-
-    if (age < min(d$age) | age > max(d$age)) {
-      #stop(paste("age must be between", min(d$age), "and", max(d$age)))
-      warning(paste0("provided age of ", age, " is outside the range of (",
-                     min(d$age), ", ", max(d$age), ")  for the set ", set))
-    }
-
-    d <- d[d$male == male, ]
-
-    d1 <- d[d$age <= age, ]
-    d2 <- d[d$age >= age, ]
-    d  <- rbind(d1[nrow(d1), ], d2[1, ])
-
-    l <- linear_interp(age, d[, "age"], d[, "l"])
-    m <- linear_interp(age, d[, "age"], d[, "m"])
-    s <- linear_interp(age, d[, "age"], d[, "s"])
-  } else if (set == "weight_for_length_inf") {
-    stopifnot(length(length) == 1L)
-    stopifnot(!is.na(length))
-    d <- lms_data[lms_data$set == set, ]
-    if (length < min(d$length) | max(d$length) < length) {
-      stop(paste("length must be between", min(d$length), "and", max(d$length)))
-    }
-    d <- d[d$male == male, ]
-
-    d1 <- d[d$length <= length, ]
-    d2 <- d[d$length >= length, ]
-    d  <- rbind(d1[nrow(d1), ], d2[1, ])
-
-    l <- linear_interp(length, d[, "length"], d[, "l"])
-    m <- linear_interp(length, d[, "length"], d[, "m"])
-    s <- linear_interp(length, d[, "length"], d[, "s"])
-  } else if (set == "weight_for_stature") {
-    stopifnot(length(height) == 1L)
-    stopifnot(!is.na(height))
-    d <- lms_data[lms_data$set == set, ]
-    if (height < min(d$height) | max(d$height) < height) {
-      #stop(paste("height must be between", min(d$height), "and", max(d$height)))
-      warning(paste0("provided height of ", height, " is outside the range of (",
-                     min(d$height), ", ", max(d$height), ")  for the set ", set))
-    }
-    d <- d[d$male == male, ]
-
-    d1 <- d[d$height <= height, ]
-    d2 <- d[d$height >= height, ]
-    d  <- rbind(d1[nrow(d1), ], d2[1, ])
-
-    l <- linear_interp(height, d[, "height"], d[, "l"])
-    m <- linear_interp(height, d[, "height"], d[, "m"])
-    s <- linear_interp(height, d[, "height"], d[, "s"])
-  } else {
-    stop("unknown set")
-  }
-
-  list(l = l, m = m, s = s)
-}
-
-linear_interp <- function(x, xs, ys) {
-  if (sum(is.na(xs) == 1)) {
-    rtn <- ys[!is.na(xs)]
-    return(rtn)
-  }
-  stopifnot(min(xs) <= x & x <= max(xs))
-  if (isTRUE(all.equal(0.0, diff(xs)))) {
-    rtn <- mean(ys)
-  } else {
-    rtn <- ys[1] + (diff(ys) / diff(xs)) * (x - xs[1])
-  }
-  rtn
-}
-
-
-zlms <- function(x, l, m, s) {
+zlms <- function(x, l, m, s, ...) {
   stopifnot(all(s >= 0))
 
   if (isTRUE(all.equal(0.0, l))) {
@@ -471,15 +302,15 @@ zlms <- function(x, l, m, s) {
   z
 }
 
-plms <- function(q, l, m, s) {
-  z <- zlms(q, l, m, s)
+plms <- function(x, l, m, s, ...) {
+  z <- zlms(x, l, m, s)
   stats::pnorm(z, mean = 0, sd = 1)
 }
 
-qlms <- function(p, l, m, s) {
+qlms <- function(x, l, m, s, ...) {
   stopifnot(all(s >= 0))
 
-  z <- stats::qnorm(p, mean = 0, sd = 1)
+  z <- stats::qnorm(x, mean = 0, sd = 1)
 
   if (isTRUE(all.equal(0.0, l))) {
     rtn <- m * exp(s * z)
@@ -488,4 +319,3 @@ qlms <- function(p, l, m, s) {
   }
   rtn
 }
-

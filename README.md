@@ -114,7 +114,7 @@ p_bp(  q_sbp  = d$sbp..mmHg.
 ```
 
 ```
-## Error in v_get_lms(set = "stature_for_age", age = age, male = male): unused argument (set = "stature_for_age")
+## Error in p_stature_for_age(height, age = age, male = male): argument "source" is missing, with no default
 ```
 
 ```r

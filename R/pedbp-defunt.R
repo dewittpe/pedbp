@@ -1,0 +1,55 @@
+#' Defunct Functions
+#'
+#' @rdname pedbp-defunct
+#' @export
+p_length_for_age_inf <- function(q, age, male) {
+  .Defunct(new = "p_stature_for_age", package = "pedbp")
+}
+
+#' @rdname pedbp-defunct
+#' @export
+q_length_for_age_inf <- function(p, age, male) {
+  .Defunct(new = "q_stature_for_age", package = "pedbp")
+}
+
+#' @rdname pedbp-defunct
+#' @export
+z_length_for_age_inf <- function(q, age, male) {
+  .Defunct(new = "z_stature_for_age", package = "pedbp")
+}
+
+#' @rdname pedbp-defunct
+#' @export
+p_weight_for_age_inf <- function(q, age, male) {
+  .Defunct(new = "p_weight_for_age", package = "pedbp")
+}
+
+#' @rdname pedbp-defunct
+#' @export
+q_weight_for_age_inf <- function(p, age, male) {
+  .Defunct(new = "q_weight_for_age", package = "pedbp")
+}
+
+#' @rdname pedbp-defunct
+#' @export
+z_weight_for_age_inf <- function(q, age, male) {
+  .Defunct(new = "z_weight_for_age", package = "pedbp")
+}
+
+#' @rdname pedbp-defunct
+#' @export
+p_weight_for_length_inf <- function(q, length, male) {
+  .Defunct(new = "p_weight_for_stature", package = "pedbp")
+}
+
+#' @rdname pedbp-defunct
+#' @export
+q_weight_for_length_inf <- function(p, length, male) {
+  .Defunct(new = "q_weight_for_stature", package = "pedbp")
+}
+
+#' @rdname pedbp-defunct
+#' @export
+z_weight_for_length_inf <- function(q, length, male) {
+  .Defunct(new = "z_weight_for_stature", package = "pedbp")
+}

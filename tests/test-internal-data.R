@@ -32,9 +32,19 @@ stopifnot(identical(
     , "stature_for_age"
     , "weight_for_age"
     , "weight_for_stature"
-  )
+   )
   )
 )
+
+stopifnot(identical(
+  sort(unique(lms_data[["source"]]))
+  ,
+  c("CDC-2000"
+    , "WHO"
+   )
+  )
+)
+
 
 ################################################################################
 ##                                End of File                                 ##
