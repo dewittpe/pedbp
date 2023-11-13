@@ -1,3 +1,9 @@
+#' LMS Look Up Table
+#'
+#' lambda-mu-sigma (LMS) Box-Cox tranfom values for smoothing and normalizing
+#' bmi-for-age
+
+
 #' Pediatric Vital Sign Distributions
 #'
 #' Based on the data provided by the CDC, provide the distribution function,
@@ -305,7 +311,25 @@ z_weight_for_stature <- function(q, height, male) {
 # v_get_lms is a vectorized version of get_lms.  get_lms uses a look up table
 # and it was easier to think with single values there and vectorize at a higher
 # level.
-v_get_lms <- function(set = "", age = NULL, male, length = NULL, height = NULL) {
+v_get_lms <-
+  function(
+    metric = c(  "bmi-for-age"
+               , "stature-for-age"
+               , "weight-for-age"
+               , "weight-for-stature"
+               , "head-circumference-for-age"
+              )
+    , male
+    , source = c("auto", "who", "cdc")
+    , age = NULL
+    , stature = NULL
+    ) {
+
+  # male is required, so is metric, and source
+  stopifnot(!is.null(male), sapply(male, function(x) isTRUE(all.equal(x, 0)) | isTRUE(all.equal(x, 1))))
+
+  metric <- match.arg(arg = metric, several.ok = TRUE)
+  source <- match.arg(arg = source, several.ok = TRUE)
 
   if (!is.null(age)) {
     stopifnot(length(male) == length(age))
@@ -325,8 +349,6 @@ v_get_lms <- function(set = "", age = NULL, male, length = NULL, height = NULL) 
     height <- rep(NA_real_, length(male))
   }
 
-  stopifnot(all(male %in% c(0, 1)))
-
   if (length(set) == 1L) {
     set <- rep(set, length(male))
   }
@@ -344,7 +366,7 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
   if (set %in% c("length_for_age_inf", "weight_for_age_inf")) {
     stopifnot(length(age) == 1L)
     stopifnot(!is.na(age))
-    d <- cdc_lms_data[cdc_lms_data$set == set, ]
+    d <- lms_data[lms_data$set == set, ]
 
     if (age < min(d$age) | age > max(d$age)) {
     #  stop(paste("age must be between", min(d$age), "and", max(d$age)))
@@ -365,7 +387,7 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
     stopifnot(length(age) == 1L)
     stopifnot(!is.na(age))
 
-    d <- cdc_lms_data[cdc_lms_data$set == set, ]
+    d <- lms_data[lms_data$set == set, ]
 
     if (age < min(d$age) | age > max(d$age)) {
       #stop(paste("age must be between", min(d$age), "and", max(d$age)))
@@ -385,7 +407,7 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
   } else if (set == "weight_for_length_inf") {
     stopifnot(length(length) == 1L)
     stopifnot(!is.na(length))
-    d <- cdc_lms_data[cdc_lms_data$set == set, ]
+    d <- lms_data[lms_data$set == set, ]
     if (length < min(d$length) | max(d$length) < length) {
       stop(paste("length must be between", min(d$length), "and", max(d$length)))
     }
@@ -401,7 +423,7 @@ get_lms <- function(set = "", age = NA_real_, male, length = NA_real_, height = 
   } else if (set == "weight_for_stature") {
     stopifnot(length(height) == 1L)
     stopifnot(!is.na(height))
-    d <- cdc_lms_data[cdc_lms_data$set == set, ]
+    d <- lms_data[lms_data$set == set, ]
     if (height < min(d$height) | max(d$height) < height) {
       #stop(paste("height must be between", min(d$height), "and", max(d$height)))
       warning(paste0("provided height of ", height, " is outside the range of (",

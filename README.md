@@ -114,7 +114,7 @@ p_bp(  q_sbp  = d$sbp..mmHg.
 ```
 
 ```
-## Error in (function (set = "", age = NA_real_, male, length = NA_real_, : object 'cdc_lms_data' not found
+## Error in v_get_lms(set = "stature_for_age", age = age, male = male): unused argument (set = "stature_for_age")
 ```
 
 ```r

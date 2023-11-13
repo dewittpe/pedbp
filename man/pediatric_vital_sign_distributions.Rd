@@ -26,7 +26,7 @@
 \alias{p_weight_for_stature}
 \alias{q_weight_for_stature}
 \alias{z_weight_for_stature}
-\title{Pediatric Vital Sign Distributions}
+\title{LMS Look Up Table}
 \usage{
 p_bmi_for_age(q, age, male)
 
@@ -96,6 +96,11 @@ function.  \code{z_} methods return standard scores, equivalent to
 \code{\link[stats]{qnorm}}.
 }
 \description{
+lambda-mu-sigma (LMS) Box-Cox tranfom values for smoothing and normalizing
+bmi-for-age
+Pediatric Vital Sign Distributions
+}
+\details{
 Based on the data provided by the CDC, provide the distribution function,
 quantile function, and a z-score function for one of eight vital signs by
 another vital sign, e.g., weight for age.  Values are based on an LMS

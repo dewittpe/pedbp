@@ -54,7 +54,7 @@ who_lms_data[ , male := as.integer(grepl("boy", file))]
 
 # define the "metric"
 metric_by_file <-
-  list('weight-for-age' =
+  list('weight_for_age' =
        c(  "wfa-girls-zscore-expanded-tables.xlsx?sfvrsn=f01bc813_10"
          , "wfa-girls-percentiles-expanded-tables.xlsx?sfvrsn=54cfa5e8_9"
          , "wfa-boys-zscore-expanded-tables.xlsx?sfvrsn=65cce121_10"
@@ -66,7 +66,7 @@ metric_by_file <-
          , "hfa-girls-perc-who2007-exp_6040a43e-81da-48fa-a2d4-5c856fe4fe71.xlsx?sfvrsn=5c5825c4_4"
          , "hfa-boys-perc-who2007-exp_07eb5053-9a09-4910-aa6b-c7fb28012ce6.xlsx?sfvrsn=97ab852c_4"
        ),
-       'stature-for-age' =
+       'stature_for_age' =
        c(  "lhfa-girls-zscore-expanded-tables.xlsx?sfvrsn=27f1e2cb_10"
          , "lhfa-girls-percentiles-expanded-tables.xlsx?sfvrsn=478569a5_9"
          , "lhfa-boys-zscore-expanded-tables.xlsx?sfvrsn=7b4a3428_12"
@@ -77,7 +77,7 @@ metric_by_file <-
          , "hfa-girls-perc-who2007-exp.xlsx?sfvrsn=7a910e5d_2"
          , "hfa-boys-perc-who2007-exp.xlsx?sfvrsn=27f20eb1_2"
        ),
-       'weight-for-stature' =
+       'weight_for_stature' =
        c(  "wfl-girls-zscore-expanded-table.xlsx?sfvrsn=db7b5d6b_8"
          , "wfh-girls-zscore-expanded-tables.xlsx?sfvrsn=daac732c_8"
          , "wfl-girls-percentiles-expanded-tables.xlsx?sfvrsn=e50b7713_7"
@@ -87,7 +87,7 @@ metric_by_file <-
          , "wfl-boys-percentiles-expanded-tables.xlsx?sfvrsn=41c436e1_7"
          , "wfh-boys-percentiles-expanded-tables.xlsx?sfvrsn=407ceb43_7"
        ),
-       'bmi-for-age' =
+       'bmi_for_age' =
        c(  "bfa-girls-zscore-expanded-tables.xlsx?sfvrsn=ae4cb8d1_12"
          , "bfa-girls-percentiles-expanded-tables.xlsx?sfvrsn=e9395fe_9"
          , "bfa-boys-zscore-expanded-tables.xlsx?sfvrsn=f8e1fbe2_10"
@@ -129,14 +129,14 @@ who_lms_data[, source := "WHO"]
 ##                                  CDC Data                                  ##
 
 cdc_lms_data <- list(
-    "weight-for-age-inf"         = "./data-raw/cdc2000/wtageinf.csv"
-  , "length-for-age-inf"         = "./data-raw/cdc2000/lenageinf.csv"
-  , "weight-for-length-inf"      = "./data-raw/cdc2000/wtleninf.csv"
-  , "head-cercumference-for-age" = "./data-raw/cdc2000/hcageinf.csv"
-  , "weight-for-height"          = "./data-raw/cdc2000/wtstat.csv"
-  , "stature-for-age"            = "./data-raw/cdc2000/statage.csv"
-  , "weight-for-age"             = "./data-raw/cdc2000/wtage.csv"
-  , "bmi-for-age"                = "./data-raw/cdc2000/bmiagerev.csv"
+    "weight_for_age_inf"         = "./data-raw/cdc2000/wtageinf.csv"
+  , "length_for_age_inf"         = "./data-raw/cdc2000/lenageinf.csv"
+  , "weight_for_length_inf"      = "./data-raw/cdc2000/wtleninf.csv"
+  , "head_circumference_for_age" = "./data-raw/cdc2000/hcageinf.csv"
+  , "weight_for_height"          = "./data-raw/cdc2000/wtstat.csv"
+  , "stature_for_age"            = "./data-raw/cdc2000/statage.csv"
+  , "weight_for_age"             = "./data-raw/cdc2000/wtage.csv"
+  , "bmi_for_age"                = "./data-raw/cdc2000/bmiagerev.csv"
 ) |>
 lapply(data.table::fread) |>
 data.table::rbindlist(idcol = "metric", use.names = TRUE, fill = TRUE)
@@ -144,7 +144,7 @@ data.table::rbindlist(idcol = "metric", use.names = TRUE, fill = TRUE)
 data.table::setnames(cdc_lms_data, old = c("Sex", "Agemos"), new = c("male", "age"))
 cdc_lms_data[, male := as.integer(male == 1)]
 
-cdc_lms_data[, metric := sub("-inf", "", metric)]
+cdc_lms_data[, metric := sub("_inf", "", metric)]
 cdc_lms_data[, metric := gsub("height", "stature", metric)]
 cdc_lms_data[, metric := gsub("length", "stature", metric)]
 
