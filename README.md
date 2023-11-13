@@ -114,11 +114,7 @@ p_bp(  q_sbp  = d$sbp..mmHg.
 ```
 
 ```
-## $sbp_percentile
-## [1] 0.5533069 0.7680548 0.2622697 0.6195685 0.6101926
-## 
-## $dbp_percentile
-## [1] 0.4120704        NA 0.1356661 0.8028518 0.9011263
+## Error in (function (set = "", age = NA_real_, male, length = NA_real_, : object 'cdc_lms_data' not found
 ```
 
 ```r

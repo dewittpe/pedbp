@@ -94,14 +94,14 @@ What percentile for systolic and diastolic blood pressure is 100/60 for a 44
 month old male with unknown height?
 
 
-```{r }
+```{r}
 p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1)
 ```
 
 
 Those percentiles would be modified if height was 183 cm:
 
-```{r }
+```{r}
 p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 183)
 ```
 
@@ -112,7 +112,7 @@ First find the height quantile using the q_stature_for_age function, and then
 use this height measurement (provided in centimeters) as the height input for
 the p_bp function.
 
-```{r }
+```{r}
 ht <- q_stature_for_age(p = 0.90, age = 44, male = 1)
 ht
 
@@ -132,7 +132,7 @@ bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60)
 
 Vectors of blood pressures can be used as well.  NA values will return NA.
 
-```{r }
+```{r}
 bps <-
   p_bp(
          q_sbp  = c(100, NA, 90)
@@ -148,7 +148,7 @@ bps
 If you want to know which data source was used in computing each of the
 percentile estimates you can look at the bp_params attribute:
 
-```{r }
+```{r}
 attr(bps, "bp_params")
 str(bps)
 ```
@@ -160,7 +160,7 @@ If you have a percentile value and want to know the associated
 systolic and diastolic blood pressures:
 
 
-```{r }
+```{r}
 q_bp(
        p_sbp = c(0.701, NA, 0.36)
      , p_dbp = c(0.85, 0.99, 0.50)
@@ -198,7 +198,7 @@ str(bp_percentiles)
 
 Going from percentiles back to quantiles:
 
-```{r }
+```{r}
 q_bp(
        p_sbp  = bp_percentiles$sbp_percentile
      , p_dbp  = bp_percentiles$dbp_percentile
@@ -561,7 +561,7 @@ A 13 year old male standing 154 cm tall is in the
 `r  paste0(round(p_stature_for_age(q = 154, age = 13 * 12, male = 1L) * 100, 2), "th")  `
 percentile:
 
-```{r }
+```{r}
 p_stature_for_age(q = 154, age = 13 * 12, male = 1L)
 ```
 
@@ -569,7 +569,7 @@ p_stature_for_age(q = 154, age = 13 * 12, male = 1L)
 To find the height corresponding to the 50th, 60th, and 75th percentiles for
 height for 9.5-year old girls:
 
-```{r }
+```{r}
 q_stature_for_age(p = c(0.50, 0.60, 0.75), age = 9.5 * 12, male = 0L)
 ```
 
@@ -577,7 +577,7 @@ q_stature_for_age(p = c(0.50, 0.60, 0.75), age = 9.5 * 12, male = 0L)
 If you want the standard score for a percentile, you can use qnorm around
 p_stature_for_age, or simply call z_stature_for_age.
 
-```{r }
+```{r}
 qnorm(p_stature_for_age(q = 154, age = 13 * 12, male = 1L))
 z_stature_for_age(q = 154, age = 13 * 12, male = 1L)
 ```
@@ -646,7 +646,7 @@ kg) 4 year old male is in the
 `r  paste0(round(100 * p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1), 2), 'th')  `
 percentile.
 
-```{r }
+```{r}
 p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1)
 ```
 
@@ -655,7 +655,7 @@ The 20th percentile weight for an 18 month old infant female is
 `r  round(q_weight_for_age_inf(p = 0.2, age = 18, male = 0), 5) `
 kg.
 
-```{r }
+```{r}
 round(q_weight_for_age_inf(p = 0.2, age = 18, male = 0), 5)
 ```
 
@@ -676,7 +676,7 @@ kg, whereas the median weight for a 95 cm tall child is
 kg.
 
 
-```{r }
+```{r}
 q_weight_for_length_inf(0.5, 95, 1)
 q_weight_for_stature(0.5, 95, 1)
 ```
@@ -686,7 +686,7 @@ A 5.8 kg, 61 cm long female infant is in the
 `r  p_weight_for_length_inf(5.8, 61, 0)  `
 weight percentile.
 
-```{r }
+```{r}
 p_weight_for_length_inf(5.8, 61, 0)
 ```
 
@@ -699,14 +699,14 @@ BMI percentile for a female, and the
 `r  paste0(round(p_bmi_for_age(q = 22.2, age = 144, male = 1) * 100, 2), "th")  `
 BMI percentile for a male.
 
-```{r }
+```{r}
 p_bmi_for_age(q = 22.2, age = c(144, 144), male = c(0, 1))
 ```
 
 
 The median BMI values for a 10 year old male and females are:
 
-```{r }
+```{r}
 q_bmi_for_age(p = 0.5, age = c(120, 120), male = c(1, 0))
 ```
 
@@ -722,7 +722,7 @@ A head circumference of 42 cm for an 8 month old female is in the
 percentile.
 
 
-```{r }
+```{r}
 q_head_circ_for_age(0.5, 10, 1)
 p_head_circ_for_age(42, 8, 0)
 ```
@@ -743,7 +743,7 @@ $$ \sum_{i} \left(\Pr(X \leq q_i) - p_i \right)^2, $$
 
 was minimized.  The NHLBI data is provided to the end user.
 
-```{r }
+```{r}
 data(list = "nhlbi_bp_norms", package = "pedbp")
 str(nhlbi_bp_norms)
 ```
@@ -751,7 +751,7 @@ str(nhlbi_bp_norms)
 
 For an example of how we fitted the parameters:
 
-```{r }
+```{r}
 d <- nhlbi_bp_norms[nhlbi_bp_norms$age == 144 & nhlbi_bp_norms$height_percentile == 50, ]
 d <- d[d$male == 0, ]
 d
@@ -776,7 +776,7 @@ If you want to emphasize a data point you can do that as well.  Here is an
 example from a set of quantiles and percentiles which are not Gaussian.
 
 
-```{r }
+```{r}
 qs <- c(-1.92, 0.05, 0.1, 1.89) * 1.8 + 3.14
 ps <- c(0.025, 0.40, 0.50, 0.975)
 

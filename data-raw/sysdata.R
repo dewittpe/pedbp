@@ -1,41 +1,185 @@
-# create a LMS data set for internal use in the package
+################################################################################
+##           create a LMS data set for internal use in the package            ##
 
-bmi_for_age           <- data.table::fread("./data-raw/cdc_percentile_data_with_lms_values/bmiagerev.csv")#[, .(Sex, Agemos, L, M, S)]
-head_circ_for_age     <- data.table::fread("./data-raw/cdc_percentile_data_with_lms_values/hcageinf.csv") #[, .(Sex, Agemos, L, M, S)]
-length_for_age_inf    <- data.table::fread("./data-raw/cdc_percentile_data_with_lms_values/lenageinf.csv")#[, .(Sex, Agemos, L, M, S)]
-stature_for_age       <- data.table::fread("./data-raw/cdc_percentile_data_with_lms_values/statage.csv")  #[, .(Sex, Agemos, L, M, S)]
-weight_for_age        <- data.table::fread("./data-raw/cdc_percentile_data_with_lms_values/wtage.csv")    #[, .(Sex, Agemos, L, M, S)]
-weight_for_age_inf    <- data.table::fread("./data-raw/cdc_percentile_data_with_lms_values/wtageinf.csv") #[, .(Sex, Agemos, L, M, S)]
-weight_for_length_inf <- data.table::fread("./data-raw/cdc_percentile_data_with_lms_values/wtleninf.csv") #[, .(Sex, Length, L, M, S)]
-weight_for_stature    <- data.table::fread("./data-raw/cdc_percentile_data_with_lms_values/wtstat.csv")   #[, .(Sex, Height, L, M, S)]
+################################################################################
+##                                  WHO Data                                  ##
+who_lms_data <- list.files("./data-raw/who", pattern = ".*.xlsx", full.names = TRUE)
+who_lms_data <- setNames(lapply(who_lms_data, readxl::read_excel), basename(who_lms_data))
+who_lms_data <- lapply(who_lms_data, data.table::as.data.table)
 
-cdc_lms_data <-
-  data.table::rbindlist(
-    list(
-           bmi_for_age           = bmi_for_age
-         , head_circ_for_age     = head_circ_for_age
-         , length_for_age_inf    = length_for_age_inf
-         , stature_for_age       = stature_for_age
-         , weight_for_age        = weight_for_age
-         , weight_for_age_inf    = weight_for_age_inf
-         , weight_for_length_inf = weight_for_length_inf
-         , weight_for_stature    = weight_for_stature
-    )
-    , idcol = "set"
-    , use.names = TRUE
-    , fill = TRUE
-  )
+who_downloads <- scan("./data-raw/who/download.sh", sep = "\n", what = character())
 
-names(cdc_lms_data)[2] <- "male"
-names(cdc_lms_data)[3] <- "age"
-names(cdc_lms_data) <- tolower(names(cdc_lms_data))
-cdc_lms_data$male <- as.integer(cdc_lms_data$male == "1")
+lapply(who_lms_data, names)
 
-cdc_lms_data <-
-  cdc_lms_data[, .(set, male, age, length, height, l, m, s,
-                   p03=p3, p05=p5, p10, p25, p50, p75, p85, p90, p95, p97)]
+# set common names
+for (i in 1:length(who_lms_data)) {
+  if ("Age" %in% names(who_lms_data[[i]])) {
+    data.table::setnames(who_lms_data[[i]], old = "Age", new = "age")
+  }
+  if ("Day" %in% names(who_lms_data[[i]])) {
+    data.table::setnames(who_lms_data[[i]], old = "Day", new = "age")
+  }
+  if ("Height" %in% names(who_lms_data[[i]])) {
+    data.table::setnames(who_lms_data[[i]], old = "Height", new = "stature")
+  }
+  if ("Length" %in% names(who_lms_data[[i]])) {
+    data.table::setnames(who_lms_data[[i]], old = "Length", new = "stature")
+  }
+  # remove unwanted columns
+  for (j in grep("^P\\d", names(who_lms_data[[i]]), value = TRUE)) {
+    data.table::set(who_lms_data[[i]], j = j, value = NULL)
+  }
+  for (j in grep("^SD\\d", names(who_lms_data[[i]]), value = TRUE)) {
+    data.table::set(who_lms_data[[i]], j = j, value = NULL)
+  }
+  for (j in grep("^StDev", names(who_lms_data[[i]]), value = TRUE)) {
+    data.table::set(who_lms_data[[i]], j = j, value = NULL)
+  }
+}
+
+who_lms_data <- data.table::rbindlist(who_lms_data, idcol = "file", use.names = TRUE, fill = TRUE)
+
+# WHO report age in days, convert to months
+# One month = 365.25 / 12 = 30.4375 days
+# conversion is also given in the instructions from the WHO on using there data
+who_lms_data[, age := age / ( 365.25 / 12) ]
+stopifnot(identical(who_lms_data[!is.na(age) & !is.na(Month), .N], 0L))
+who_lms_data[is.na(age) & !is.na(Month), age := Month]
+who_lms_data[, Month := NULL]
+
+who_lms_data <- unique(who_lms_data)
+
+# add a column for denoting male = 1, female = 0
+who_lms_data[ , male := as.integer(grepl("boy", file))]
+
+# define the "metric"
+metric_by_file <-
+  list('weight-for-age' =
+       c(  "wfa-girls-zscore-expanded-tables.xlsx?sfvrsn=f01bc813_10"
+         , "wfa-girls-percentiles-expanded-tables.xlsx?sfvrsn=54cfa5e8_9"
+         , "wfa-boys-zscore-expanded-tables.xlsx?sfvrsn=65cce121_10"
+         , "wfa-boys-percentiles-expanded-tables.xlsx?sfvrsn=c2f79259_11"
+         # weight for age 5-19 years (file name is odd, but that is what the
+         # link gave)
+         , "hfa-girls-z-who-2007-exp_7ea58763-36a2-436d-bef0-7fcfbadd2820.xlsx?sfvrsn=6ede55a4_4"
+         , "hfa-boys-z-who-2007-exp_0ff9c43c-8cc0-4c23-9fc6-81290675e08b.xlsx?sfvrsn=b3ca0d6f_4"
+         , "hfa-girls-perc-who2007-exp_6040a43e-81da-48fa-a2d4-5c856fe4fe71.xlsx?sfvrsn=5c5825c4_4"
+         , "hfa-boys-perc-who2007-exp_07eb5053-9a09-4910-aa6b-c7fb28012ce6.xlsx?sfvrsn=97ab852c_4"
+       ),
+       'stature-for-age' =
+       c(  "lhfa-girls-zscore-expanded-tables.xlsx?sfvrsn=27f1e2cb_10"
+         , "lhfa-girls-percentiles-expanded-tables.xlsx?sfvrsn=478569a5_9"
+         , "lhfa-boys-zscore-expanded-tables.xlsx?sfvrsn=7b4a3428_12"
+         , "lhfa-boys-percentiles-expanded-tables.xlsx?sfvrsn=bc36d818_9"
+         # height for age 5-19 years
+         , "hfa-girls-z-who-2007-exp.xlsx?sfvrsn=79d310ee_2"
+         , "hfa-boys-z-who-2007-exp.xlsx?sfvrsn=7fa263d_2"
+         , "hfa-girls-perc-who2007-exp.xlsx?sfvrsn=7a910e5d_2"
+         , "hfa-boys-perc-who2007-exp.xlsx?sfvrsn=27f20eb1_2"
+       ),
+       'weight-for-stature' =
+       c(  "wfl-girls-zscore-expanded-table.xlsx?sfvrsn=db7b5d6b_8"
+         , "wfh-girls-zscore-expanded-tables.xlsx?sfvrsn=daac732c_8"
+         , "wfl-girls-percentiles-expanded-tables.xlsx?sfvrsn=e50b7713_7"
+         , "wfh-girls-percentiles-expanded-tables.xlsx?sfvrsn=eb27f3ad_7"
+         , "wfl-boys-zscore-expanded-table.xlsx?sfvrsn=d307434f_8"
+         , "wfh-boys-zscore-expanded-tables.xlsx?sfvrsn=ac60cb13_8"
+         , "wfl-boys-percentiles-expanded-tables.xlsx?sfvrsn=41c436e1_7"
+         , "wfh-boys-percentiles-expanded-tables.xlsx?sfvrsn=407ceb43_7"
+       ),
+       'bmi-for-age' =
+       c(  "bfa-girls-zscore-expanded-tables.xlsx?sfvrsn=ae4cb8d1_12"
+         , "bfa-girls-percentiles-expanded-tables.xlsx?sfvrsn=e9395fe_9"
+         , "bfa-boys-zscore-expanded-tables.xlsx?sfvrsn=f8e1fbe2_10"
+         , "bfa-boys-percentiles-expanded-tables.xlsx?sfvrsn=aec7ec8d_9"
+         # bmi for age 5-19 years
+         , "bmi-girls-z-who-2007-exp.xlsx?sfvrsn=79222875_2"
+         , "bmi-boys-z-who-2007-exp.xlsx?sfvrsn=a84bca93_2"
+         , "bmi-girls-perc-who2007-exp.xlsx?sfvrsn=e866c0a0_2"
+         , "bmi-boys-perc-who2007-exp.xlsx?sfvrsn=28412fcf_2"
+       )
+      )
+metric_by_file <-
+  metric_by_file |>
+  lapply(function(x) data.table::data.table(file = x)) |>
+  data.table::rbindlist(idcol = "metric")
+
+who_lms_data <-
+  merge(x = who_lms_data, y = metric_by_file, all.x = TRUE, by = "file")
 
 
-cdc_lms_data <- as.data.frame(cdc_lms_data)
-usethis::use_data(cdc_lms_data, internal = TRUE, overwrite = TRUE)
+who_lms_data[, .N, keyby = .(file, metric)]  |> print(n = Inf)
+who_lms_data[, .N, keyby = .(file, metric)][, .N, keyby = .(metric)] |> print(n = Inf)
 
+who_lms_data[, file := NULL]
+
+
+# the lms data should be the same between the zscore and percentile files, only
+# need the unique values
+n1 <- nrow(who_lms_data)
+who_lms_data <- unique(who_lms_data)
+n2 <- nrow(who_lms_data)
+stopifnot(isTRUE(all.equal(n1 / n2, 2)))
+
+# add a source column
+who_lms_data[, source := "WHO"]
+
+
+################################################################################
+##                                  CDC Data                                  ##
+
+cdc_lms_data <- list(
+    "weight-for-age-inf"         = "./data-raw/cdc2000/wtageinf.csv"
+  , "length-for-age-inf"         = "./data-raw/cdc2000/lenageinf.csv"
+  , "weight-for-length-inf"      = "./data-raw/cdc2000/wtleninf.csv"
+  , "head-cercumference-for-age" = "./data-raw/cdc2000/hcageinf.csv"
+  , "weight-for-height"          = "./data-raw/cdc2000/wtstat.csv"
+  , "stature-for-age"            = "./data-raw/cdc2000/statage.csv"
+  , "weight-for-age"             = "./data-raw/cdc2000/wtage.csv"
+  , "bmi-for-age"                = "./data-raw/cdc2000/bmiagerev.csv"
+) |>
+lapply(data.table::fread) |>
+data.table::rbindlist(idcol = "metric", use.names = TRUE, fill = TRUE)
+
+data.table::setnames(cdc_lms_data, old = c("Sex", "Agemos"), new = c("male", "age"))
+cdc_lms_data[, male := as.integer(male == 1)]
+
+cdc_lms_data[, metric := sub("-inf", "", metric)]
+cdc_lms_data[, metric := gsub("height", "stature", metric)]
+cdc_lms_data[, metric := gsub("length", "stature", metric)]
+
+cdc_lms_data[!is.na(Length), stature := Length]
+cdc_lms_data[, Length := NULL]
+cdc_lms_data[!is.na(Height), stature := Height]
+cdc_lms_data[, Height := NULL]
+
+cdc_lms_data[, .N, keyby = .(metric)]
+
+cdc_lms_data[, source := "CDC-2000"]
+
+for (j in grep("Pub|Diff|P\\d", names(cdc_lms_data), value = TRUE)) {
+  data.table::set(cdc_lms_data, j = j, value = NULL)
+}
+
+# some of the files have the header coppied in a row in the middle of the file.
+# Omit that row and coersce characters to numberic values
+cdc_lms_data <- cdc_lms_data[L != "L"]
+cdc_lms_data[, age := as.numeric(age)]
+cdc_lms_data[, L := as.numeric(L)]
+cdc_lms_data[, M := as.numeric(M)]
+cdc_lms_data[, S := as.numeric(S)]
+
+################################################################################
+##                       Put it all together and export                       ##
+
+lms_data <- rbind(who_lms_data, cdc_lms_data, use.names = TRUE, fill = TRUE)
+
+################################################################################
+##                             Save Internal Data                             ##
+
+lms_data <- as.data.frame(lms_data)
+usethis::use_data(lms_data, internal = TRUE, overwrite = TRUE)
+
+################################################################################
+##                                End of File                                 ##
+################################################################################

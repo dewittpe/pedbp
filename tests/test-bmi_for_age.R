@@ -1,9 +1,10 @@
 library(pedbp)
+pedbp::
 
 d <- pedbp:::cdc_lms_data
 
-
-# Testing p_bmi_for_age {{{
+################################################################################
+##                           Testing p_bmi_for_age                            ##
 test_p03 <-
   p_bmi_for_age(
            q    = d[d$set == "bmi_for_age", "p03"]
@@ -17,6 +18,7 @@ test_p05 <-
          , age  = d[d$set == "bmi_for_age", "age"]
          , male = d[d$set == "bmi_for_age", "male"]
          )
+
 test_p10 <-
   p_bmi_for_age(
            q    = d[d$set == "bmi_for_age", "p10"]
@@ -73,21 +75,20 @@ test_p97 <-
          , male = d[d$set == "bmi_for_age", "male"]
          )
 
+stopifnot(identical(round(test_p03, 2), rep(0.03, 438)))
+stopifnot(identical(round(test_p05, 2), rep(0.05, 438)))
+stopifnot(identical(round(test_p10, 2), rep(0.10, 438)))
+stopifnot(identical(round(test_p25, 2), rep(0.25, 438)))
+stopifnot(identical(round(test_p50, 2), rep(0.50, 438)))
+stopifnot(identical(round(test_p75, 2), rep(0.75, 438)))
+stopifnot(identical(round(test_p85, 2), rep(0.85, 438)))
+stopifnot(identical(round(test_p90, 2), rep(0.90, 438)))
+stopifnot(identical(round(test_p95, 2), rep(0.95, 438)))
+stopifnot(identical(round(test_p97, 2), rep(0.97, 438)))
 
-stopifnot(all(round(test_p03, 2) == 0.03))
-stopifnot(all(round(test_p05, 2) == 0.05))
-stopifnot(all(round(test_p10, 2) == 0.10))
-stopifnot(all(round(test_p25, 2) == 0.25))
-stopifnot(all(round(test_p50, 2) == 0.50))
-stopifnot(all(round(test_p75, 2) == 0.75))
-stopifnot(all(round(test_p85, 2) == 0.85))
-stopifnot(all(round(test_p90, 2) == 0.90))
-stopifnot(all(round(test_p95, 2) == 0.95))
-stopifnot(all(round(test_p97, 2) == 0.97))
+################################################################################
+##                            Tesing q_bmi_for_age                            ##
 
-# }}}
-
-# Tesing q_bmi_for_age {{{
 test_q03 <-
   q_bmi_for_age(
            p    = c(0.03)
