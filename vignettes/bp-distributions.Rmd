@@ -636,7 +636,7 @@ g(lfa[male == "Male"])
 
 There are two methods for determining weight for age both based on CDC
 National Center for Health Statistics data: one for infants (weighed laying
-flat) up to 36 months [@cdc_weight_for_age_0_36], 
+flat) up to 36 months [@cdc_weight_for_age_0_36],
 and one for children (weighed on a standing scale) over 24 months
 [@cdc_weight_for_age].
 

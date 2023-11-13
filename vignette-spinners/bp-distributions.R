@@ -12,11 +12,12 @@
 #'---
 #'
 #+ label = "setup", include = FALSE
+#/*
+devtools::load_all() # load the dev version while editting
+require("svglite") # needed for saving svg images
+#*/
 knitr::opts_chunk$set(collapse = TRUE, fig.align = "center")
 library(pedbp)
-# /*
-require("svglite") # needed for saving svg images
-# */
 #'
 #' # Introduction
 #'
@@ -447,7 +448,7 @@ ggplot2::ggsave(file = "inst/images/median_bp_male_known_height.svg", plot = g(d
 #' can run the app locally via
 #'
 #+ label = "shiny", eval = FALSE
-# /* 
+# /*
 while (FALSE) {
 # */
 shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
@@ -458,7 +459,7 @@ shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
 #' The shiny application allows for interactive exploration of blood pressure
 #' percentiles for an individual patient and allows for batch processing a set
 #' of patients as well.
-#' 
+#'
 #' An example input file for batch processing is provided within the package an
 #' can be accessed via:
 #+ label = "shiny_batch_example_file", eval = FALSE
@@ -579,7 +580,7 @@ g(lfa[male == "Male"])
 #'
 #' There are two methods for determining weight for age both based on CDC
 #' National Center for Health Statistics data: one for infants (weighed laying
-#' flat) up to 36 months [@cdc_weight_for_age_0_36], 
+#' flat) up to 36 months [@cdc_weight_for_age_0_36],
 #' and one for children (weighed on a standing scale) over 24 months
 #' [@cdc_weight_for_age].
 #'
