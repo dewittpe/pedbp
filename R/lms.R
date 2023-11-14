@@ -76,11 +76,11 @@ get_lms <-
     max_age <- max(lms_data[["age"]][idx])
 
     if (age < min_age) {
-      warning(sprintf("age: %s, is below the min value in the look up table.  Using %s.", age, min_age))
-      age <- min_age
+      warning(sprintf("age: %s, is below the min value in the look up table.", age))
+      age <- -Inf # this will result in no viable index
     } else if (age > max_age) {
-      warning(sprintf("age: %s, is above the max value in the look up table.  Using %s.", age, max_age))
-      age <- max_age
+      warning(sprintf("age: %s, is above the max value in the look up table.", age))
+      age <- -Inf # this will result in no viable index
     }
 
     idx <- idx & (lms_data[["age"]] <= age)
@@ -92,11 +92,11 @@ get_lms <-
     max_stature <- max(lms_data[["stature"]][idx])
 
     if (stature < min_stature) {
-      message(sprintf("stature: %s, is below the min value in the look up table.  Using %s.", stature, min_stature))
-      stature <- min_stature
+      message(sprintf("stature: %s, is below the min value in the look up table", stature))
+      stature <- -Inf
     } else if (stature > max_stature) {
-      message(sprintf("stature: %s, is above the max value in the look up table.  Using %s.", stature, max_stature))
-      stature <- max_stature
+      message(sprintf("stature: %s, is above the max value in the look up table", stature))
+      stature <- -Inf
     }
 
     idx <- idx & (lms_data[["stature"]] <= stature)
@@ -105,7 +105,11 @@ get_lms <-
     stop("what else could there be except for _for_age and _for_stature?")
   }
 
-  rtn <- lms_data[max(which(idx)), ]
+  if (any(idx)) {
+    rtn <- lms_data[max(which(idx)), c("L", "M", "S")]
+  } else {
+    rtn <- data.frame(L = NA_real_, M = NA_real_, S = NA_real_)
+  }
   rownames(rtn) <- NULL
   rtn
 }
@@ -153,7 +157,12 @@ v_get_lms <-
 #' @param ... pass through
 
 zlms <- function(x, l, m, s, ...) {
-  stopifnot(all(s >= 0))
+  # stopifnot(all(s >= 0))
+  # print(c(l, m, s))
+  stopifnot(length(x) == 1L,
+            length(l) == 1L,
+            length(m) == 1L,
+            length(s) == 1L)
 
   if (isTRUE(all.equal(0.0, l))) {
     z <- log( x / m) / s
@@ -164,12 +173,20 @@ zlms <- function(x, l, m, s, ...) {
 }
 
 plms <- function(x, l, m, s, ...) {
+  stopifnot(length(x) == 1L,
+            length(l) == 1L,
+            length(m) == 1L,
+            length(s) == 1L)
   z <- zlms(x, l, m, s)
   stats::pnorm(z, mean = 0, sd = 1)
 }
 
 qlms <- function(x, l, m, s, ...) {
-  stopifnot(all(s >= 0))
+  # stopifnot(all(s >= 0))
+  stopifnot(length(x) == 1L,
+            length(l) == 1L,
+            length(m) == 1L,
+            length(s) == 1L)
 
   z <- stats::qnorm(x, mean = 0, sd = 1)
 

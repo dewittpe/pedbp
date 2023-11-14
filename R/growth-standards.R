@@ -40,35 +40,6 @@
 #'
 #' @examples
 #'
-#' #############################################################################
-#' # BMI for Age
-#'
-#' # A BMI of 18.2 for a 18.1 year old female is in the
-#' p_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0)
-#' # percentile.
-#'
-#' # The z-score is the same as qnorm(p)
-#' qnorm(p_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0))
-#' z_bmi_for_age(q = 18.2, age = 18.1 * 12, male = 0)
-#'
-#' # The 70th percentile of BMI for 15.4 year old males is
-#' q_bmi_for_age(p = 0.70, age = 15.4 * 12, male = 1)
-#'
-#' #############################################################################
-#' # Stature (aka: Lenght or Height) for Age
-#' bmi_for_age
-#' head_circumference_for_age
-#' stature_for_age
-#' weight_for_age
-#' weight_for_stature
-#'
-#' #############################################################################
-#' # Multiple patients, the age and male, length, height arguments can also be
-#' # vectors
-#' p_length_for_age_inf(q = 87, age = 28,  male = 0)
-#' p_length_for_age_inf(q = 90, age = 30,  male = 1)
-#' p_length_for_age_inf(q = c(87,90), age = c(28, 30),  male = c(0,1))
-#'
 #'
 #' @name pediatric_growth_standards
 NULL

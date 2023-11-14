@@ -1,3 +1,7 @@
 library(pedbp)
 
-stopifnot(class(nhlbi_bp_norms) == "data.frame")
+stopifnot(identical(class(nhlbi_bp_norms),  "data.frame"))
+
+################################################################################
+##                                End of file                                 ##
+################################################################################

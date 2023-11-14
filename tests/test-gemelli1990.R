@@ -1,11 +1,15 @@
 library(pedbp)
 
-stopifnot(class(gemelli1990) == "data.frame")
+stopifnot(identical(class(gemelli1990), "data.frame"))
 
 # expected names:
-stopifnot(all(c("age", "male", "sbp_mean", "dbp_mean", "sbp_sd", "dbp_sd") %in% names(gemelli1990)))
+stopifnot(identical(names(gemelli1990), c("male", "age", "sbp_mean", "sbp_sd", "dbp_mean", "dbp_sd")))
 
 # testing charateristics of the data set
-stopifnot( dim(gemelli1990) == c(8, 6))
+stopifnot(identical(dim(gemelli1990), c(8L, 6L)))
 
-stopifnot(all(gemelli1990$male %in% c(0, 1)))
+stopifnot(isTRUE(all(gemelli1990$male %in% c(0, 1))))
+
+################################################################################
+##                                End of file                                 ##
+################################################################################

@@ -4,13 +4,17 @@ lms_data <- pedbp:::lms_data
 ################################################################################
 ##                 Verify the number of, and names of columns                 ##
 
-stopifnot(identical(ncol(lms_data), 8L))
+stopifnot(identical(ncol(lms_data), 34L))
 
 stopifnot(identical(
           names(lms_data)
           ,
-          c("age", "L", "M", "S", "stature", "male", "metric", "source")
-          ))
+          c("metric", "male", "age", "stature", "L", "M", "S", "P01", "P1",
+            "P3", "P5", "P10", "P15", "P25", "P50", "P75", "P85", "P90",
+            "P95", "P97", "P99", "P999", "SD4neg", "SD3neg", "SD2neg", "SD1neg",
+            "SD0", "SD1", "SD2", "SD3", "SD4", "StDev", "SD5neg", "source")
+          )
+         )
 
 ################################################################################
 ##                          Verify column structure                           ##
@@ -39,9 +43,7 @@ stopifnot(identical(
 stopifnot(identical(
   sort(unique(lms_data[["source"]]))
   ,
-  c("CDC-2000"
-    , "WHO"
-   )
+  c("CDC", "WHO")
   )
 )
 
