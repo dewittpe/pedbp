@@ -1,5 +1,12 @@
 #' Defunct Functions
 #'
+#' These functions are fully defunct, no longer implemented, and will not work.
+#'
+#' @param q,p quantile or perenctile
+#' @param age age in months
+#' @param male 0 = female; 1 = male
+#' @param length length and height are term for stature depending on age, in centimeters
+#'
 #' @rdname pedbp-defunct
 #' @export
 p_length_for_age_inf <- function(q, age, male) {

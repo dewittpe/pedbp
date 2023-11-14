@@ -146,6 +146,11 @@ z_weight_for_stature(
 
 \item{age}{numeric age, in months}
 
+\item{source}{a character string denoting the data source providing the
+parameters needed for the estimate.  See Details.}
+
+\item{...}{pass through}
+
 \item{p}{a vector of probabilities}
 
 \item{stature}{(height or length) in centimeters}
@@ -160,6 +165,21 @@ function.  \code{z_} methods return standard scores, equivalent to
 Based on the data provided by the CDC and the World Height Organization,
 the distribution function, quantile function, and a z-score function for
 several growth charts.
+}
+\details{
+The \code{source} argument controls which data source is queried for the LMS
+values.
+
+Note: CDC Recommends using WHO growth charts for infants and children ages 0
+to 2 years of age in the U.S. and CDC growth charts to monitor growth for
+children age 2 years and older in the U.S.
+
+To implement the CDC recommendation, the source \dQuote{CDC-WHO} will use
+CDC for ages over 2, and WHO for under 2.  \dQuote{CDC} will use only the CDC
+data, and \dQuote{WHO} will use only the WHO data.
+
+Further, when \code{source = "CDC-WHO"}, use either source if only one
+of the two is available.
 }
 \examples{
 

@@ -3,18 +3,9 @@
 #' Non-exported functions to look up LMS values from the internal data set
 #' lms_data
 #'
-#' The \code{source} controls which data source is queried for the LMS values.
-#' Note: CDC Recomends using WHO growth charts for infants and children ages 0
-#' to 2 years of age in the U.S. and CDC growth charts to monitor growth for
-#' children age 2 years and older in the U.S.
-#'
-#' To implement the CDC recommentdation, the source "CDC-WHO" will use CDC for
-#' ages over 2, and WHO for under 2.  "CDC" will use only the CDC data, and
-#' "WHO" will use only the WHO data.
-#'
 #' @param metric section of the look up tabl
 #' @param male   0 = female; 1 = male
-#' @param source See Details
+#' @param source See Details in \code{\link{pediatric_growth_standards}}
 #' @param age    in months
 #' @param stature height/length in centimeters
 #'
@@ -59,10 +50,7 @@ get_lms <-
     }
   }
 
-
-
-
-
+  # start finding the row index for the given inputs
   idx <-
     (lms_data[["metric"]] == metric) &
     (lms_data[["male"]] == male)
@@ -80,14 +68,18 @@ get_lms <-
       idx <- idx & (lms_data[["source"]] == source)
     }
 
+    if (!any(idx)) {
+      stop(sprintf("no rows in the lms_data look table where found for metric: %s, male: %s, source: %s", metric, as.character(male), source))
+    }
+
     min_age <- min(lms_data[["age"]][idx])
     max_age <- max(lms_data[["age"]][idx])
 
     if (age < min_age) {
-      message(sprintf("age: %s, is below the min value in the look up table.  Using %s.", age, min_age))
+      warning(sprintf("age: %s, is below the min value in the look up table.  Using %s.", age, min_age))
       age <- min_age
     } else if (age > max_age) {
-      message(sprintf("age: %s, is above the max value in the look up table.  Using %s.", age, max_age))
+      warning(sprintf("age: %s, is above the max value in the look up table.  Using %s.", age, max_age))
       age <- max_age
     }
 
