@@ -8,17 +8,17 @@ get_lms(
   metric = c("bmi_for_age", "stature_for_age", "weight_for_age", "weight_for_stature",
     "head_circumference_for_age"),
   male,
-  source = c("WHO", "CDC-2000"),
+  source = c("CDC-WHO", "WHO", "CDC"),
   age = NA_real_,
   stature = NA_real_
 )
 }
 \arguments{
-\item{metric}{section of the look up table}
+\item{metric}{section of the look up tabl}
 
 \item{male}{0 = female; 1 = male}
 
-\item{source}{"CDC-2000", or "WHO"}
+\item{source}{See Details}
 
 \item{age}{in months}
 
@@ -27,4 +27,17 @@ get_lms(
 \description{
 Non-exported functions to look up LMS values from the internal data set
 lms_data
+}
+\details{
+The \code{source} controls which data source is queried for the LMS values.
+Note: CDC Recomends using WHO growth charts for infants and children ages 0
+to 2 years of age in the U.S. and CDC growth charts to monitor growth for
+children age 2 years and older in the U.S.
+
+To implement the CDC recommentdation, the source "CDC-WHO" will use CDC for
+ages over 2, and WHO for under 2.  "CDC" will use only the CDC data, and
+"WHO" will use only the WHO data.
+}
+\references{
+\url{https://www.cdc.gov/growthcharts/who_charts.htm}
 }

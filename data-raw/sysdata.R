@@ -167,7 +167,7 @@ cdc_lms_data[, Height := NULL]
 
 cdc_lms_data[, .N, keyby = .(metric)]
 
-cdc_lms_data[, source := "CDC-2000"]
+cdc_lms_data[, source := "CDC"]
 
 for (j in grep("Pub|Diff", names(cdc_lms_data), value = TRUE)) {
   data.table::set(cdc_lms_data, j = j, value = NULL)

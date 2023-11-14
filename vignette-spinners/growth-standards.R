@@ -1,12 +1,12 @@
 #'---
-#'title: "Growth Charts"
+#'title: "Growth Standards"
 #'output:
 #'  rmarkdown::html_vignette:
 #'    toc: true
 #'    number_sections: true
 #'bibliography: references.bib
 #'vignette: >
-#'  %\VignetteIndexEntry{Growth Charts}
+#'  %\VignetteIndexEntry{Growth Standards}
 #'  %\VignetteEngine{knitr::rmarkdown}
 #'  %\VignetteEncoding{UTF-8}
 #'---
@@ -25,7 +25,7 @@ library(pedbp)
 #'
 #+ label = 'lms_data_table', include = FALSE
 lms <- data.table::setDT(data.table::copy(pedbp:::lms_data))
-cdc_lms <- subset(lms, source == "CDC-2000")
+cdc_lms <- subset(lms, source == "CDC")
 #'
 #' Using the [Percentile Data Files with LMS values](https://www.cdc.gov/growthcharts/percentile_data_files.htm)
 #' provided by the CDC, we provide eight distribution tables which have been
@@ -79,7 +79,7 @@ cdc_lms <- subset(lms, source == "CDC-2000")
 #' ## Length and Stature For Age
 #'
 #' A 13 year old male standing 154 cm tall is in the
-{{ paste0(round(p_stature_for_age(q = 154, age = 13 * 12, male = 1L, source = "CDC-2000") * 100, 2), "th") }}
+{{ paste0(round(p_stature_for_age(q = 154, age = 13 * 12, male = 1L, source = "CDC") * 100, 2), "th") }}
 #' percentile:
 p_stature_for_age(q = 154, age = 13 * 12, male = 1L)
 
@@ -105,6 +105,9 @@ lfa[age <  36, l := q_stature_for_age(p = p, age = age, male = male), by = .(p, 
 lfa[age >= 36, l := q_stature_for_age(p = p, age = age, male = male), by = .(p, age, male)]
 lfa[, lab := paste(p * 100, "%")]
 lfa[, male := factor(male, 0:1, c("Female", "Male"))]
+percentile_factor <- function(p) {
+  factor(p, levels = sort(unique(p)), labels = paste0(sort(unique(p)) * 100, "th"))
+}
 lfa[, p := percentile_factor(p)]
 
 g <- function(lfa) {

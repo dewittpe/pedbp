@@ -23,7 +23,7 @@ p_bmi_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -31,7 +31,7 @@ q_bmi_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -39,7 +39,7 @@ z_bmi_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -47,7 +47,7 @@ p_head_circ_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -55,7 +55,7 @@ q_head_circ_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -63,7 +63,7 @@ z_head_circ_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -71,7 +71,7 @@ p_stature_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -79,7 +79,7 @@ q_stature_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -87,7 +87,7 @@ z_stature_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -95,7 +95,7 @@ p_weight_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -103,7 +103,7 @@ q_weight_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -111,7 +111,7 @@ z_weight_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -119,7 +119,7 @@ p_weight_for_stature(
   q,
   male,
   stature,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -127,7 +127,7 @@ q_weight_for_stature(
   p,
   male,
   stature,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 
@@ -135,7 +135,7 @@ z_weight_for_stature(
   q,
   male,
   stature,
-  source = getOption("pedbp_pgsf_source", "CDC-2000"),
+  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
   ...
 )
 }

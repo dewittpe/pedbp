@@ -3,12 +3,22 @@
 #' Non-exported functions to look up LMS values from the internal data set
 #' lms_data
 #'
-#' @param metric section of the look up table
+#' The \code{source} controls which data source is queried for the LMS values.
+#' Note: CDC Recomends using WHO growth charts for infants and children ages 0
+#' to 2 years of age in the U.S. and CDC growth charts to monitor growth for
+#' children age 2 years and older in the U.S.
+#'
+#' To implement the CDC recommentdation, the source "CDC-WHO" will use CDC for
+#' ages over 2, and WHO for under 2.  "CDC" will use only the CDC data, and
+#' "WHO" will use only the WHO data.
+#'
+#' @param metric section of the look up tabl
 #' @param male   0 = female; 1 = male
-#' @param source "CDC-2000", or "WHO"
+#' @param source See Details
 #' @param age    in months
 #' @param stature height/length in centimeters
 #'
+#' @references \url{https://www.cdc.gov/growthcharts/who_charts.htm}
 #'
 get_lms <-
   function(
@@ -19,7 +29,7 @@ get_lms <-
                , "head_circumference_for_age"
               )
   , male
-  , source = c("WHO", "CDC-2000")
+  , source = c("CDC-WHO", "WHO", "CDC")
   , age = NA_real_
   , stature = NA_real_
   ) {
@@ -28,13 +38,47 @@ get_lms <-
   source <- match.arg(arg = source, several.ok = FALSE)
   stopifnot(length(male) == 1L, isTRUE(all.equal(male, 1)) | isTRUE(all.equal(male, 0)))
 
+  # look for possible data sources for the given metric
+  possible_sources <- unique(lms_data[["source"]][lms_data[["metric"]] == metric])
+  if (is.null(possible_sources)) {
+    stop(sprintf("No data source(s) for metric %s", metric))
+  }
+  if (source == "CDC-WHO") {
+    if (all(c("CDC", "WHO") %in% possible_sources)) {
+      # do nothing
+    } else if ("CDC" %in% possible_sources & !("WHO" %in% possible_sources)) {
+      source <- "CDC"
+    } else if ("WHO" %in% possible_sources & !("CDC" %in% possible_sources)) {
+      source <- "WHO"
+    } else {
+      stop("I don't know how you got to this error, but here you are.  Contact the developers with a reproducable example.")
+    }
+  } else {
+    if (!isTRUE(source %in% possible_sources)) {
+      stop(sprintf("For metric %s, you need to select a source from: %s", metric, paste(possible_sources, collapse = ", ")))
+    }
+  }
+
+
+
+
+
   idx <-
     (lms_data[["metric"]] == metric) &
-    (lms_data[["male"]] == male) &
-    (lms_data[["source"]] == source)
+    (lms_data[["male"]] == male)
 
   if (grepl("_for_age", metric)) {
     stopifnot(!is.null(age), length(age) == 1L, age >= 0)
+
+    if (source == "CDC-WHO") {
+      if (age < 24) {
+        idx <- idx & (lms_data[["source"]] == "WHO")
+      } else {
+        idx <- idx & (lms_data[["source"]] == "CDC")
+      }
+    } else {
+      idx <- idx & (lms_data[["source"]] == source)
+    }
 
     min_age <- min(lms_data[["age"]][idx])
     max_age <- max(lms_data[["age"]][idx])
@@ -86,7 +130,7 @@ v_get_lms <-
                , "head_circumference_for_age"
               )
     , male
-    , source = c("WHO", "CDC-2000")
+    , source = c("CDC-WHO", "WHO", "CDC")
     , age = NA_real_
     , stature = NA_real_
     ) {
@@ -111,7 +155,7 @@ v_get_lms <-
 #' Distribution, Quantile, and Zscores by LMS values
 #'
 #' Non-exported functions ...
-#' 
+#'
 #' @param x quantile or percentile value
 #' @param l,m,s the lms values
 #' @param ... pass through
