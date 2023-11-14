@@ -114,7 +114,11 @@ p_bp(  q_sbp  = d$sbp..mmHg.
 ```
 
 ```
-## Error in p_stature_for_age(height, age = age, male = male): argument "source" is missing, with no default
+## $sbp_percentile
+## [1] 0.5533069 0.7680548 0.2622697 0.6195685 0.6101926
+## 
+## $dbp_percentile
+## [1] 0.4120704        NA 0.1356661 0.8028518 0.9011263
 ```
 
 ```r

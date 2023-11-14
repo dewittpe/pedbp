@@ -211,7 +211,6 @@ d <- data.table::melt(d
 d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
 d[, bp_percentile := percentile_factor(bp_percentile)]
 
-# d[, .(range(age)), by = .(source)]
 bkgrnd <-
   data.table::data.table(
       source = c("Gemelli", "NHLBI", "Lo")
@@ -372,8 +371,8 @@ d <- data.table::CJ(male = 0:1
                     , height_percentile = unique(na.omit(bp_parameters$height_percentile)) / 100)
 
 d[, height := NA_real_]
-d[age < 36, height := q_length_for_age_inf(height_percentile, age, male), by = .(male, age, height_percentile)]
-d[age >= 36, height := q_stature_for_age(height_percentile, age, male), by = .(male, age, height_percentile)]
+d[age < 36, height := q_stature_for_age(height_percentile, male, age), by = .(male, age, height_percentile)]
+d[age >= 36, height := q_stature_for_age(height_percentile, male, age), by = .(male, age, height_percentile)]
 
 
 d <-
@@ -469,19 +468,23 @@ system.file("example_data", "for_batch.csv", package = "pedbp")
 #' # CDC Growth Charts
 #'
 #+ label = 'lms_data_table', include = FALSE
-lms <- data.table::setDT(data.table::copy(pedbp:::cdc_lms_data))
+lms <- data.table::setDT(data.table::copy(pedbp:::lms_data))
+cdc_lms <- subset(lms, source == "CDC-2000")
 #'
 #' Using the [Percentile Data Files with LMS values](https://www.cdc.gov/growthcharts/percentile_data_files.htm)
-#' provided by the CDC, we provide eight distribution tools:
+#' provided by the CDC, we provide eight distribution tables which have been
+#' combinded into five:
 #'
-#' 1. weight for age for infants
-#' 2. length for age for infants
-#' 3. weight for length for infants
-#' 4. head circumference for age
-#' 5. weight for stature
-#' 6. weight for age
-#' 7. stature for age
-#' 8. BMI for age
+#' | CDC Source                    | pedbp metric               |
+#' | :---------------------------- | :------------------------- |
+#' | BMI for age                   | bmi_for_age                |
+#' | head circumference for age    | head_circumference_for_age |
+#' | length for age for infants    | stature_for_age            |
+#' | stature for age               | stature_for_age            |
+#' | weight for age for infants    | weight_for_age             |
+#' | weight for age                | weight_for_age             |
+#' | weight for length for infants | weight_for_stature         |
+#' | weight for stature            | weight_for_stature         |
 #'
 #' All lengths/heights are in centimeters, ages in months, and weights in
 #' kilograms.
@@ -520,7 +523,7 @@ lms <- data.table::setDT(data.table::copy(pedbp:::cdc_lms_data))
 #' ## Length and Stature For Age
 #'
 #' A 13 year old male standing 154 cm tall is in the
-{{ paste0(round(p_stature_for_age(q = 154, age = 13 * 12, male = 1L) * 100, 2), "th") }}
+{{ paste0(round(p_stature_for_age(q = 154, age = 13 * 12, male = 1L, source = "CDC-2000") * 100, 2), "th") }}
 #' percentile:
 p_stature_for_age(q = 154, age = 13 * 12, male = 1L)
 
@@ -542,8 +545,8 @@ lfa <- data.table::CJ(p = c(0.01, 0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95, 0.99
                       age = seq(0, 18*12, by = 3),
                       male = 0:1)
 
-lfa[age <  36, l := q_length_for_age_inf(p, age, male), by = .(p, age, male)]
-lfa[age >= 36, l := q_stature_for_age(p, age, male), by = .(p, age, male)]
+lfa[age <  36, l := q_stature_for_age(p = p, age = age, male = male), by = .(p, age, male)]
+lfa[age >= 36, l := q_stature_for_age(p = p, age = age, male = male), by = .(p, age, male)]
 lfa[, lab := paste(p * 100, "%")]
 lfa[, male := factor(male, 0:1, c("Female", "Male"))]
 lfa[, p := percentile_factor(p)]
@@ -592,10 +595,10 @@ g(lfa[male == "Male"])
 p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1)
 #'
 #' The 20th percentile weight for an 18 month old infant female is
-{{ round(q_weight_for_age_inf(p = 0.2, age = 18, male = 0), 5)}}
+{{ round(q_weight_for_age(p = 0.2, age = 18, male = 0), 5)}}
 #' kg.
 #+
-round(q_weight_for_age_inf(p = 0.2, age = 18, male = 0), 5)
+round(q_weight_for_age(p = 0.2, age = 18, male = 0), 5)
 #'
 #' ## Weight for Length or Stature
 #'
@@ -606,19 +609,19 @@ round(q_weight_for_age_inf(p = 0.2, age = 18, male = 0), 5)
 #' child over 24 months (used for children able to be measured while standing
 #' up).  The overlapping range between the methods will differ.
 #'
-#' The median weight for a 95 cm long infant
-{{ q_weight_for_length_inf(0.5, 95, 1) }}
+#' The median weight for a male, 95 cm long infant
+{{ q_weight_for_stature(p = 0.5, stature = 95, male = 1) }}
 #' kg, whereas the median weight for a 95 cm tall child is
-{{ q_weight_for_stature(0.5, 95, 1) }}
+{{ q_weight_for_stature(p = 0.5, stature = 95, male = 1) }}
 #' kg.
 #'
-q_weight_for_length_inf(0.5, 95, 1)
-q_weight_for_stature(0.5, 95, 1)
+q_weight_for_stature(p = 0.5, stature = 95, male = 1)
+q_weight_for_stature(p = 0.5, stature = 95, male = 1)
 #'
 #' A 5.8 kg, 61 cm long female infant is in the
-{{ p_weight_for_length_inf(5.8, 61, 0) }}
+{{ p_weight_for_stature(q = 5.8, stature = 61, male = 0) }}
 #' weight percentile.
-p_weight_for_length_inf(5.8, 61, 0)
+p_weight_for_stature(q = 5.8, stature = 61, male = 0)
 #'
 #' ## BMI for Age
 #'
@@ -636,15 +639,15 @@ q_bmi_for_age(p = 0.5, age = c(120, 120), male = c(1, 0))
 #' ## Head Circumference
 #'
 #' A 10 month old male has a median head circumference of
-{{ q_head_circ_for_age(0.5, 10, 1) }}
+{{ q_head_circ_for_age(p = 0.5, age = 10, male = 1) }}
 #' cm.
 #'
 #' A head circumference of 42 cm for an 8 month old female is in the
-{{ paste0(round(100*p_head_circ_for_age(42, 8, 0), 5), "th")}}
+{{ paste0(round(100*p_head_circ_for_age(q = 42, age = 8, male = 0), 5), "th")}}
 #' percentile.
 #'
-q_head_circ_for_age(0.5, 10, 1)
-p_head_circ_for_age(42, 8, 0)
+q_head_circ_for_age(p = 0.5, age = 10, male = 1)
+p_head_circ_for_age(q = 42, age = 8, male = 0)
 #'
 #'
 #' # Additional Utilities

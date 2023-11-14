@@ -180,11 +180,7 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
   stopifnot(0 < height_percentile & height_percentile < 1)
 
   if (!is.na(height)) {
-    if (age < 36) {
-      height_percentile <- p_length_for_age_inf(height, age = age, male = male)
-    } else {
-      height_percentile <- p_stature_for_age(height, age = age, male = male)
-    }
+    height_percentile <- p_stature_for_age(height, age = age, male = male)
   }
 
   e <- new.env()

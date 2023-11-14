@@ -32,48 +32,136 @@ pvsd(
   ...
 )
 
-p_bmi_for_age(q, male, age, source, ...)
+p_bmi_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-q_bmi_for_age(p, male, age, source, ...)
+q_bmi_for_age(
+  p,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-z_bmi_for_age(x, male, age, source, ...)
+z_bmi_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-p_head_circ_for_age(q, age, male)
+p_head_circ_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-q_head_circ_for_age(p, male, age, source, ...)
+q_head_circ_for_age(
+  p,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-z_head_circ_for_age(x, male, age, source, ...)
+z_head_circ_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-p_stature_for_age(q, male, age, source, ...)
+p_stature_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-q_stature_for_age(p, male, age, source, ...)
+q_stature_for_age(
+  p,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-z_stature_for_age(q, male, age, source, ...)
+z_stature_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-p_weight_for_age(q, male, age, source, ...)
+p_weight_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-q_weight_for_age(p, male, age, source, ...)
+q_weight_for_age(
+  p,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-z_weight_for_age(x, male, age, source, ...)
+z_weight_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-p_weight_for_stature(q, male, stature, source, ...)
+p_weight_for_stature(
+  q,
+  male,
+  stature,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-q_weight_for_stature(p, male, stature, source, ...)
+q_weight_for_stature(
+  p,
+  male,
+  stature,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 
-z_weight_for_stature(x, male, stature, source, ...)
+z_weight_for_stature(
+  q,
+  male,
+  stature,
+  source = getOption("pedbp_pvsd_source", "CDC-2000"),
+  ...
+)
 }
 \arguments{
 \item{male}{integer value, 1 = male, 0 = female}
 
 \item{age}{numeric age, in months}
 
+\item{stature}{(height or length) in centimeters}
+
 \item{q}{a vector of quantities}
 
 \item{p}{a vector of probabilities}
-
-\item{height}{height, in cm, of the patient (age 2 - 20 years)}
-
-\item{length}{length, in cm, of the patient (age under 3 years)}
 }
 \value{
 The \code{p_} method return values from the estimated distribution

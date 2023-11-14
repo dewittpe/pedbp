@@ -7,10 +7,9 @@
 #'
 #' @param q a vector of quantities
 #' @param p a vector of probabilities
-#' @param age numeric age, in months
 #' @param male integer value, 1 = male, 0 = female
-#' @param height height, in cm, of the patient (age 2 - 20 years)
-#' @param length length, in cm, of the patient (age under 3 years)
+#' @param age numeric age, in months
+#' @param stature (height or length) in centimeters
 #'
 #' @return The \code{p_} method return values from the estimated distribution
 #' function.  \code{q_} methods return values from the estimated quantile
@@ -88,93 +87,93 @@ pvsd <- function(x
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-p_bmi_for_age <- function(q, male, age, source, ...) {
+p_bmi_for_age <- function(q, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
   pvsd(x = q, male = male, age = age, source = source, metric = "bmi_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_bmi_for_age <- function(p, male, age, source, ...) {
+q_bmi_for_age <- function(p, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
   pvsd(x = p, male = male, age = age, source = source, metric = "bmi_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_bmi_for_age <- function(x, male, age, source, ...) {
-  pvsd(x = x, male = male, age = age, source = source, metric = "bmi_for_age", type = "zscore", ...)
+z_bmi_for_age <- function(q, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
+  pvsd(x = q, male = male, age = age, source = source, metric = "bmi_for_age", type = "zscore", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-p_head_circ_for_age <- function(q, age, male) {
+p_head_circ_for_age <- function(q, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
   pvsd(x = q, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_head_circ_for_age <- function(p, male, age, source, ...) {
+q_head_circ_for_age <- function(p, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
   pvsd(x = p, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_head_circ_for_age <- function(x, male, age, source, ...) {
-  pvsd(x = x, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "zscore", ...)
+z_head_circ_for_age <- function(q, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
+  pvsd(x = q, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "zscore", ...)
 }
 
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-p_stature_for_age <- function(q, male, age, source, ...) {
+p_stature_for_age <- function(q, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
   pvsd(x = q, male = male, age = age, source = source, metric = "stature_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_stature_for_age <- function(p, male, age, source, ...) {
+q_stature_for_age <- function(p, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
   pvsd(x = p, male = male, age = age, source = source, metric = "stature_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_stature_for_age <- function(q, male, age, source, ...) {
-  pvsd(x = x, male = male, age = age, source = source, metric = "stature_for_age", type = "zscore", ...)
+z_stature_for_age <- function(q, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
+  pvsd(x = q, male = male, age = age, source = source, metric = "stature_for_age", type = "zscore", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-p_weight_for_age <- function(q, male, age, source, ...) {
+p_weight_for_age <- function(q, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
   pvsd(x = q, male = male, age = age, source = source, metric = "weight_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_weight_for_age <- function(p, male, age, source, ...) {
+q_weight_for_age <- function(p, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
   pvsd(x = p, male = male, age = age, source = source, metric = "weight_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_weight_for_age <- function(x, male, age, source, ...) {
-  pvsd(x = x, male = male, age = age, source = source, metric = "weight_for_age", type = "zscore", ...)
+z_weight_for_age <- function(q, male, age, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
+  pvsd(x = q, male = male, age = age, source = source, metric = "weight_for_age", type = "zscore", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-p_weight_for_stature <- function(q, male, stature, source, ...) {
-  pvsd(x = q, male = male, age = age, source = source, metric = "weight_for_stature", type = "distribution", ...)
+p_weight_for_stature <- function(q, male, stature, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
+  pvsd(x = q, male = male, stature = stature, source = source, metric = "weight_for_stature", type = "distribution", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-q_weight_for_stature <- function(p, male, stature, source, ...) {
-  pvsd(x = p, male = male, age = age, source = source, metric = "weight_for_stature", type = "quantile", ...)
+q_weight_for_stature <- function(p, male, stature, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
+  pvsd(x = p, male = male, stature = stature, source = source, metric = "weight_for_stature", type = "quantile", ...)
 }
 
 #' @rdname pediatric_vital_sign_distributions
 #' @export
-z_weight_for_stature <- function(x, male, stature, source, ...) {
-  pvsd(x = x, male = male, age = age, source = source, metric = "weight_for_stature", type = "zscore", ...)
+z_weight_for_stature <- function(q, male, stature, source = getOption("pedbp_pvsd_source", "CDC-2000"), ...) {
+  pvsd(x = q, male = male, stature = stature, source = source, metric = "weight_for_stature", type = "zscore", ...)
 }
 
 
@@ -188,7 +187,7 @@ z_weight_for_stature <- function(x, male, stature, source, ...) {
 #' @param male   0 = female; 1 = male
 #' @param source "CDC-2000", or "WHO"
 #' @param age    in months
-#' @param stature height/length
+#' @param stature height/length in centimeters
 #'
 #'
 get_lms <-
@@ -204,8 +203,6 @@ get_lms <-
   , age = NA_real_
   , stature = NA_real_
   ) {
-
-    print("You're in get_lms")
 
   metric <- match.arg(arg = metric, several.ok = FALSE)
   source <- match.arg(arg = source, several.ok = FALSE)
