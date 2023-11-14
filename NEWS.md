@@ -1,9 +1,14 @@
 # pedbp 2.0.0
 
-* API change to the growth distribution functions
+* API change to the growth standard distribution functions
+  * this includes a name change from "vital signs" to "growth stardards"
+  * complete redo for how the methods are implemented
+  * extended data sources
+
 * Extended the growth chart distribution data source to include the CDC (v1.0.0)
   and World Health Organization (WHO)
-* New "growth-charts" vignette
+
+* New "growth-standards" vignette
 
 
 # pedbp 1.0.2

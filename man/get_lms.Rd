@@ -25,5 +25,6 @@ get_lms(
 \item{stature}{height/length in centimeters}
 }
 \description{
-Functions to look up LMS values from the internal data set lms_data
+Non-exported functions to look up LMS values from the internal data set
+lms_data
 }
