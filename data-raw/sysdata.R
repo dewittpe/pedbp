@@ -26,15 +26,15 @@ for (i in 1:length(who_lms_data)) {
     data.table::setnames(who_lms_data[[i]], old = "Length", new = "stature")
   }
   # remove unwanted columns
-  for (j in grep("^P\\d", names(who_lms_data[[i]]), value = TRUE)) {
-    data.table::set(who_lms_data[[i]], j = j, value = NULL)
-  }
-  for (j in grep("^SD\\d", names(who_lms_data[[i]]), value = TRUE)) {
-    data.table::set(who_lms_data[[i]], j = j, value = NULL)
-  }
-  for (j in grep("^StDev", names(who_lms_data[[i]]), value = TRUE)) {
-    data.table::set(who_lms_data[[i]], j = j, value = NULL)
-  }
+  # for (j in grep("^P\\d", names(who_lms_data[[i]]), value = TRUE)) {
+  #   data.table::set(who_lms_data[[i]], j = j, value = NULL)
+  # }
+  # for (j in grep("^SD\\d", names(who_lms_data[[i]]), value = TRUE)) {
+  #   data.table::set(who_lms_data[[i]], j = j, value = NULL)
+  # }
+  # for (j in grep("^StDev", names(who_lms_data[[i]]), value = TRUE)) {
+  #   data.table::set(who_lms_data[[i]], j = j, value = NULL)
+  # }
 }
 
 who_lms_data <- data.table::rbindlist(who_lms_data, idcol = "file", use.names = TRUE, fill = TRUE)
@@ -113,17 +113,29 @@ who_lms_data[, .N, keyby = .(file, metric)][, .N, keyby = .(metric)] |> print(n 
 
 who_lms_data[, file := NULL]
 
+# because percentiles a zscores where provided in seperate files the metric,
+# age, stature, L, M, S values are duplicated as there are columns for the
+# percentiles and for the zscores.  Melt the data and recast it so that the
+# percentiles and zscores for a set of the id.vars will be on one row instead of
+# two.
+who_lms_data <-
+  data.table::melt(
+    data = who_lms_data
+  , id.vars = c("metric", "male", "age", "stature", "L", "M", "S")
+  , na.rm = TRUE
+  )
 
-# the lms data should be the same between the zscore and percentile files, only
-# need the unique values
-n1 <- nrow(who_lms_data)
 who_lms_data <- unique(who_lms_data)
-n2 <- nrow(who_lms_data)
-stopifnot(isTRUE(all.equal(n1 / n2, 2)))
+
+who_lms_data <-
+  data.table::dcast(
+    data = who_lms_data
+  , formula = metric + male + age + stature + L + M + S ~ variable
+  , value.var = "value"
+  )
 
 # add a source column
 who_lms_data[, source := "WHO"]
-
 
 ################################################################################
 ##                                  CDC Data                                  ##
@@ -157,17 +169,17 @@ cdc_lms_data[, .N, keyby = .(metric)]
 
 cdc_lms_data[, source := "CDC-2000"]
 
-for (j in grep("Pub|Diff|P\\d", names(cdc_lms_data), value = TRUE)) {
+for (j in grep("Pub|Diff", names(cdc_lms_data), value = TRUE)) {
   data.table::set(cdc_lms_data, j = j, value = NULL)
 }
 
 # some of the files have the header coppied in a row in the middle of the file.
 # Omit that row and coersce characters to numberic values
 cdc_lms_data <- cdc_lms_data[L != "L"]
-cdc_lms_data[, age := as.numeric(age)]
-cdc_lms_data[, L := as.numeric(L)]
-cdc_lms_data[, M := as.numeric(M)]
-cdc_lms_data[, S := as.numeric(S)]
+
+for (j in c("age", "L", "M", "S", grep("P\\d", names(cdc_lms_data), value = TRUE))) {
+  data.table::set(cdc_lms_data, j = j, value = as.numeric(cdc_lms_data[[j]]))
+}
 
 ################################################################################
 ##                       Put it all together and export                       ##
