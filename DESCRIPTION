@@ -35,6 +35,7 @@ Suggests:
     DT,
     gridExtra,
     knitr,
+    qwraps2 (>= 0.6.0),
     rmarkdown,
     shiny,
     shinydashboard

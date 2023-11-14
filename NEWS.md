@@ -1,6 +1,10 @@
 # pedbp 2.0.0
 
-* API change to the vital sign distribution functions
+* API change to the growth distribution functions
+* Extended the growth chart distribution data source to include the CDC (v1.0.0)
+  and World Health Organization (WHO)
+* New "growth-charts" vignette
+
 
 # pedbp 1.0.2
 

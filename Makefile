@@ -16,6 +16,7 @@ SHINYAPPS = $(wildcard $(PKG_ROOT)/inst/shinyapps/*)
 # These are both targets for building and dependencies for the package tar.gz
 # file
 VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd
+VIGNETTES += $(PKG_ROOT)/vignettes/growth-charts.Rmd
 
 ## Data targets
 DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda
