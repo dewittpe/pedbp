@@ -1,9 +1,8 @@
-#' Pediatric Vital Sign Distributions
+#' Pediatric Growth Charts
 #'
-#' Based on the data provided by the CDC, provide the distribution function,
-#' quantile function, and a z-score function for one of eight vital signs by
-#' another vital sign, e.g., weight for age.  Values are based on an LMS
-#' approach.
+#' Based on the data provided by the CDC and the World Height Organization,
+#' the distribution function, quantile function, and a z-score function for
+#' several growth charts.
 #'
 #' @param q a vector of quantities
 #' @param p a vector of probabilities
@@ -15,6 +14,10 @@
 #' function.  \code{q_} methods return values from the estimated quantile
 #' function.  \code{z_} methods return standard scores, equivalent to
 #' \code{\link[stats]{qnorm}}.
+#'
+#' @references
+#' \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm},
+#' \url{https://www.who.int/tools/child-growth-standards/standards}
 #'
 #' @examples
 #'
@@ -47,8 +50,6 @@
 #' p_length_for_age_inf(q = 90, age = 30,  male = 1)
 #' p_length_for_age_inf(q = c(87,90), age = c(28, 30),  male = c(0,1))
 #'
-#' @references
-#' \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm}
 #'
 #' @name pediatric_vital_sign_distributions
 NULL
@@ -69,19 +70,19 @@ pvsd <- function(x
                  , type = c("distribution", "quantile", "zscore")
                  , ...) {
 
-  type <- match.arg(arg = type, several.ok = FALSE)
+  type   <- match.arg(arg = type, several.ok = FALSE)
   metric <- match.arg(arg = metric, several.ok = FALSE)
   source <- match.arg(arg = source, several.ok = TRUE)
 
   lms <- v_get_lms(metric = metric, age = age, stature = stature, male = male, source = source, ...)
 
-  f <- switch(type,
-              distribution = "plms",
-              quantile = "qlms",
-              zscore = "zlms")
-  f <- match.fun(f)
+  rtn <-
+    switch(type
+           , distribution = Map(plms, x = x, l = lms[["L"]], m = lms[["M"]], s = lms[["S"]])
+           , quantile     = Map(qlms, x = x, l = lms[["L"]], m = lms[["M"]], s = lms[["S"]])
+           , zscore       = Map(zlms, x = x, l = lms[["L"]], m = lms[["M"]], s = lms[["S"]])
+  )
 
-  rtn <- Map(f, l = lms[["L"]], m = lms[["M"]], s = lms[["S"]], MoreArgs = list(x = x))
   do.call(c, rtn)
 }
 

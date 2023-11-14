@@ -1,10 +1,44 @@
 library(pedbp)
-pedbp::
 
-d <- pedbp:::cdc_lms_data
+d <- pedbp:::lms_data
+d <- d[d$metric == "bmi_for_age", ]
+
+dwho <- Filter(function(x) {!all(is.na(x))}, d[d$source == "WHO", ])
+dcdc <- Filter(function(x) {!all(is.na(x))}, d[d$source == "CDC-2000", ])
 
 ################################################################################
 ##                           Testing p_bmi_for_age                            ##
+
+debug(pvsd)
+debug(v_get_lms)
+debug(get_lms)
+
+undebug(pvsd)
+undebug(v_get_lms)
+undebug(get_lms)
+
+pvsd(x = dwho$P10
+     , male = dwho$male
+     , age = dwho$age
+     , source = "WHO"
+     , type = "distribution"
+     ) |> round(digits = 3) 
+
+pvsd(x = dcdc$P10
+     , male = dcdc$male
+     , age = dcdc$age
+     , source = "CDC-2000"
+     , type = "distribution"
+     ) |> round(digits = 3) 
+
+P01_test <- 
+  p_bmi_for_age(q = dwho$P01
+                , age = dwho$age
+                , male = 1#d$male
+                , source = "WHO"
+  )
+
+
 test_p03 <-
   p_bmi_for_age(
            q    = d[d$set == "bmi_for_age", "p03"]
