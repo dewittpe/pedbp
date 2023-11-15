@@ -23,7 +23,7 @@ p_bmi_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -31,7 +31,7 @@ q_bmi_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -39,7 +39,7 @@ z_bmi_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -47,7 +47,7 @@ p_head_circ_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -55,7 +55,7 @@ q_head_circ_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -63,7 +63,7 @@ z_head_circ_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -71,7 +71,7 @@ p_stature_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -79,7 +79,7 @@ q_stature_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -87,7 +87,7 @@ z_stature_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -95,7 +95,7 @@ p_weight_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -103,7 +103,7 @@ q_weight_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -111,7 +111,7 @@ z_weight_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -119,7 +119,7 @@ p_weight_for_stature(
   q,
   male,
   stature,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -127,7 +127,7 @@ q_weight_for_stature(
   p,
   male,
   stature,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 
@@ -135,7 +135,7 @@ z_weight_for_stature(
   q,
   male,
   stature,
-  source = getOption("pedbp_pgsf_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC-WHO"),
   ...
 )
 }
@@ -180,6 +180,72 @@ data, and \dQuote{WHO} will use only the WHO data.
 
 Further, when \code{source = "CDC-WHO"}, use either source if only one
 of the two is available.
+}
+\examples{
+
+#############################################################################
+## BMI for Age
+
+# The 54th percentile BMI (kg * m^(-2)) for a six year (72 month) old female
+# is
+bmi <- q_bmi_for_age(p = 0.54, male = 0, age = 72)
+
+all.equal(p_bmi_for_age(q = bmi, male = 0, age = 72), 0.54)
+all.equal(z_bmi_for_age(q = bmi, male = 0, age = 72), qnorm(0.54))
+
+
+# Find the 29th percentile for females from ages 0 through 4 years in three
+# month increments.  Sourcing the only CDC will generate a warning;
+# suppressed in this example.
+ages <- seq(0, 48, by = 3)
+bmi_29 <-
+  data.frame(
+    age = ages
+  , "CDC-WHO" = q_bmi_for_age(p = 0.29, male = 0, age = ages, source = "CDC-WHO")
+  , "CDC"     = suppressWarnings(q_bmi_for_age(p = 0.29, male = 0, age = ages, source = "CDC"))
+  , "WHO"     = q_bmi_for_age(p = 0.29, male = 0, age = ages, source = "WHO")
+  )
+
+bmi_29
+
+plot(
+  x = bmi_29$age
+, y = bmi_29$CDC.WHO, col = 1, pch = 1, cex = 2
+, xlab = "Age (months)", ylab = "29th percentile BMI (kg * m^(-2))"
+)
+points(x = bmi_29$age, y = bmi_29$CDC, col = 2, pch = 2)
+points(x = bmi_29$age, y = bmi_29$WHO, col = 3, pch = 3)
+legend("bottomright", col = 1:3, pch = 1:3, legend = c("CDC-WHO", "CDC", "WHO"))
+
+#############################################################################
+## Distributions of other metrics are easy to get in the same way.
+p <- runif(1)
+age <- runif(1, min = 0, max = 18 * 12)
+gender <- as.integer(runif(1) < 0.5)
+
+sfa <- q_stature_for_age(p = p, male = gender, age = age)
+all.equal(p_stature_for_age(q = sfa, male = gender, age = age), p)
+all.equal(z_stature_for_age(q = sfa, male = gender, age = age), qnorm(p))
+
+wfa <- q_weight_for_age(p = p, male = gender, age = age)
+all.equal(p_weight_for_age(q = wfa, male = gender, age = age), p)
+all.equal(z_weight_for_age(q = wfa, male = gender, age = age), qnorm(p))
+
+# weight for stature - range of values for stature:
+# range(pedbp:::lms_data[pedbp:::lms_data$metric == "weight_for_stature", "stature"])
+stature <- runif(1, min = 45, max = 121.5) # in centimeters
+wfs <- q_weight_for_stature(p = p, male = gender, stature = stature)
+all.equal(p_weight_for_stature(q = wfs, male = gender, stature = stature), p)
+all.equal(z_weight_for_stature(q = wfs, male = gender, stature = stature), qnorm(p))
+
+# head circumference for age
+# range(pedbp:::lms_data[pedbp:::lms_data$metric == "head_circumference_for_age", "age"])
+age <- runif(1, 0, 36)
+hcfa <- q_head_circ_for_age(p = p, male = gender, age = age)
+all.equal(p_head_circ_for_age(q = hcfa, male = gender, age = age), p)
+all.equal(z_head_circ_for_age(q = hcfa, male = gender, age = age), qnorm(p))
+
+
 }
 \references{
 \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm},
