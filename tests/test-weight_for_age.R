@@ -40,18 +40,16 @@ stopifnot(identical(length(p01_cdc_who_test), nrow(dwho)))
 stopifnot(identical(round(p01_who_test, digits = 3), rep(0.001, length = nrow(dwho))))
 stopifnot(identical(round(p01_who_test, digits = 4), rep(0.001, length = nrow(dwho))))
 
-# for the pure cdc data, there should be NAs, for ages under 2 years = 24
-# months, and non-NA for ages >= 2 years = 24 months.  The non-missing values
-# should be near 0.001, but will not be there as the provided quantiles in the
-# test are for the WHO data and corresponding values for the CDC are not
-# available.
-stopifnot(isTRUE(all(is.na( p01_cdc_test[dwho$age < 24] ))))
-stopifnot(isTRUE(all(!is.na( p01_cdc_test[dwho$age >= 24] ))))
+# The weight for age data should be non-missing for all ages and both WHO and
+# CDC (this is different from BMI for age)
+stopifnot(isTRUE(all(!is.na( p01_cdc_test ))))
+stopifnot(isTRUE(all(!is.na( p01_who_test ))))
+stopifnot(isTRUE(all(!is.na( p01_cdc_who_test ))))
 
 # the p01_cdc_who_test result should be the who value were p01_cdc_test is NA
 # and cdc value otherwise
 expected <- p01_cdc_test
-expected[is.na(p01_cdc_test)] <- p01_who_test[is.na(p01_cdc_test)]
+expected[dwho$age < 24] <- p01_who_test[dwho$age < 24]
 stopifnot(isTRUE(all.equal(p01_cdc_who_test, expected)))
 
 # do the same test for the first quantile
@@ -80,11 +78,12 @@ stopifnot(identical(length(p25_cdc_who_test), nrow(dwho)))
 
 stopifnot(identical(round(p25_who_test, digits = 3), rep(0.25, length = nrow(dwho))))
 
-stopifnot(isTRUE(all(is.na( p25_cdc_test[dwho$age < 24] ))))
-stopifnot(isTRUE(all(!is.na( p25_cdc_test[dwho$age >= 24] ))))
+stopifnot(isTRUE(all(!is.na( p25_cdc_test ))))
+stopifnot(isTRUE(all(!is.na( p25_who_test ))))
+stopifnot(isTRUE(all(!is.na( p25_cdc_who_test ))))
 
 expected <- p25_cdc_test
-expected[is.na(p25_cdc_test)] <- p25_who_test[is.na(p25_cdc_test)]
+expected[dwho$age < 24] <- p25_who_test[dwho$age < 24]
 stopifnot(isTRUE(all.equal(p25_cdc_who_test, expected)))
 
 # testing on the CDC data
@@ -113,11 +112,8 @@ stopifnot(identical(length(p25_cdc_who_test), nrow(dcdc)))
 
 stopifnot(identical(round(p25_cdc_test, digits = 3), rep(0.25, length = nrow(dcdc))))
 
-stopifnot(isTRUE(all(is.na( p25_cdc_test[dcdc$age < 24] ))))
-stopifnot(isTRUE(all(!is.na( p25_cdc_test[dcdc$age >= 24] ))))
-
 expected <- p25_cdc_test
-expected[is.na(p25_cdc_test)] <- p25_who_test[is.na(p25_cdc_test)]
+expected[dcdc$age < 24] <- p25_who_test[dcdc$age < 24]
 stopifnot(isTRUE(all.equal(p25_cdc_who_test, expected)))
 
 ################################################################################

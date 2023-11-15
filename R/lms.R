@@ -101,6 +101,18 @@ get_lms <-
 
     idx <- idx & (lms_data[["stature"]] <= stature)
 
+    if (source == "CDC-WHO") {
+      cidx <- lms_data[["source"]][idx] == "CDC"
+      widx <- lms_data[["source"]][idx] == "CDC"
+      if (any(cidx)) {
+        idx <- idx & lms_data[["source"]] == "CDC"
+      } else {
+        idx <- idx & lms_data[["source"]] == "WHO"
+      }
+    } else {
+      idx <- idx & (lms_data[["source"]] == source)
+    }
+
   } else {
     stop("what else could there be except for _for_age and _for_stature?")
   }
@@ -109,7 +121,7 @@ get_lms <-
     rtn <- lms_data[max(which(idx)), c("L", "M", "S")]
   } else {
     rtn <- data.frame(L = NA_real_, M = NA_real_, S = NA_real_)
-  }
+  } 
   rownames(rtn) <- NULL
   rtn
 }
