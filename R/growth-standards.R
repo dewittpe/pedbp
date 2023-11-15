@@ -106,8 +106,7 @@
 #' @name pediatric_growth_standards
 NULL
 
-# pgsf is a non-exported work horse function that is called with specific values
-# from the p_*, q_*, z_* functions which are exported
+#' @export
 pgsf <- function(x
                  , male
                  , age = NA_real_

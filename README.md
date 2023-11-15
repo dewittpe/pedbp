@@ -119,6 +119,16 @@ p_bp(  q_sbp  = d$sbp..mmHg.
 ## 
 ## $dbp_percentile
 ## [1] 0.4120704        NA 0.1356661 0.8028518 0.9011250
+## 
+## attr(,"bp_params")
+##          source male age  sbp_mean   sbp_sd dbp_mean   dbp_sd height_percentile
+## 252      lo2013    1  96 100.70000  9.70000 59.80000  8.10000                NA
+## 89        nhlbi    0 144 105.00094 10.92093 61.99818 10.94217                50
+## 2   gemelli1990    0   3  89.00000 11.00000 54.00000 10.00000                NA
+## 247      lo2013    1  36  93.20000  9.20000 55.10000  8.10000                NA
+## 146       nhlbi    1  36  93.00921 10.68829 47.00316 11.64362                75
+## attr(,"class")
+## [1] "pedbp_bp"
 ```
 
 ```r
@@ -135,6 +145,12 @@ q_bp(  p_sbp = 0.50
 ## 
 ## $dbp
 ## [1] 57.74789
+## 
+## attr(,"bp_params")
+##     source male age sbp_mean sbp_sd dbp_mean dbp_sd height_percentile
+## 252 lo2013    1  96    100.7    9.7     59.8    8.1                NA
+## attr(,"class")
+## [1] "pedbp_bp"
 ```
 
 Plots show where an observed blood pressure is on the distribution curve

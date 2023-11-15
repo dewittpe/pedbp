@@ -185,13 +185,26 @@ for (j in c("age", "L", "M", "S", grep("P\\d", names(cdc_lms_data), value = TRUE
 ##                       Put it all together and export                       ##
 
 lms_data <- rbind(who_lms_data, cdc_lms_data, use.names = TRUE, fill = TRUE)
+data.table::setkey(lms_data, source, metric, male, age, stature)
+lms_data <- as.data.frame(lms_data)
+
+lms_data <- 
+  lms_data |>
+  split(f = lms_data$metric) |>
+  lapply(function(x) { split(x, f = x$source) }) |>
+  lapply(lapply, function(x) {setNames(split(x, f = x$male), c("Female", "Male"))}) |>
+  lapply(lapply, lapply, Filter, f = function(x) !all(is.na(x))) |>
+  I()
+# lapply(lapply, lapply, Filter, f = function(x) length(unique(x)) > 1L)
+
+str(lms_data, max.level = 0)
+str(lms_data, max.level = 1)
+str(lms_data, max.level = 2)
+str(lms_data, max.level = 3)
 
 ################################################################################
 ##                             Save Internal Data                             ##
 
-data.table::setkey(lms_data, source, metric, male, age, stature)
-
-lms_data <- as.data.frame(lms_data)
 usethis::use_data(lms_data, internal = TRUE, overwrite = TRUE)
 
 ################################################################################

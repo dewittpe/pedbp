@@ -1,6 +1,12 @@
 # library(pedbp)
 
-d <- data.table::setDT(pedbp:::lms_data)
+str(pedbp:::lms_data, max.level = 3)
+
+d <- pedbp:::lms_data |> 
+     lapply(lapply, data.table::rbindlist, use.names = TRUE, fill = TRUE) |>
+     lapply(data.table::rbindlist, use.names = TRUE, fill = TRUE) |>
+     data.table::rbindlist(use.names = TRUE, fill = TRUE)
+
 d <- d[d$metric == "weight_for_stature"]
 
 ################################################################################
@@ -34,16 +40,17 @@ published[published_percentile == "P999", published_percentile := 0.999]
 published[, published_percentile := as.numeric(published_percentile)]
 
 
-published[, testing_cdc_who_percentile := p_weight_for_stature(q = published_quantile, male = male, stature = stature, source = "CDC-WHO")]
-published[, testing_cdc_percentile := p_weight_for_stature(q = published_quantile, male = male, stature = stature, source = "CDC")]
-published[, testing_who_percentile := p_weight_for_stature(q = published_quantile, male = male, stature = stature, source = "WHO")]
-
-published[, testing_cdc_who_quantile := q_weight_for_stature(p = published_percentile, male = male, stature = stature, source = "CDC-WHO")]
-published[, testing_cdc_quantile := q_weight_for_stature(p = published_percentile, male = male, stature = stature, source = "CDC")]
+# published[, testing_cdc_who_percentile := p_weight_for_stature(q = published_quantile, male = male, stature = stature, source = "CDC-WHO")]
+# published[, testing_cdc_percentile := p_weight_for_stature(q = published_quantile, male = male, stature = stature, source = "CDC")]
+# published[, testing_who_percentile := p_weight_for_stature(q = published_quantile, male = male, stature = stature, source = "WHO")]
+# 
+# published[, testing_cdc_who_quantile := q_weight_for_stature(p = published_percentile, male = male, stature = stature, source = "CDC-WHO")]
+# published[, testing_cdc_quantile := q_weight_for_stature(p = published_percentile, male = male, stature = stature, source = "CDC")]
 
 tictoc::tic()
-published[, testing_who_quantile := q_weight_for_stature(p = published_percentile, male = male, stature = stature, source = "WHO")]
+published[, testing_who_quantile := suppressWarnings(q_weight_for_stature(p = published_percentile, male = male, stature = stature, source = "WHO"))]
 tictoc::toc()
+# was around 49 seconds when lms_data as a data.frame in the package
 
 
 stop()
@@ -51,6 +58,10 @@ stop()
 debug(p_weight_for_stature)
 debug(pedbp:::pgsf)
 debug(pedbp:::get_lms)
+
+undebug(p_weight_for_stature)
+undebug(pedbp:::pgsf)
+undebug(pedbp:::get_lms)
 
 p_weight_for_stature(q = 1.888, male = 0, stature = 45, source = "CDC")
 p_weight_for_stature(q = 1.888, male = 0, stature = 45, source = "WHO")
