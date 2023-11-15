@@ -5,11 +5,12 @@ d <- d[d$metric == "bmi_for_age", ]
 dwho <- d[d$source == "WHO", ]
 dcdc <- d[d$source == "CDC", ]
 
-# dwho <- Filter(function(x) {!all(is.na(x))}, d[d$source == "WHO", ])
-# dcdc <- Filter(function(x) {!all(is.na(x))}, d[d$source == "CDC-2000", ])
-
 ################################################################################
 ##                           Testing p_bmi_for_age                            ##
+
+# verify the 0.01 and 0.25 percentile is genereted as expected.  Assuming these
+# tests pass there will be additional tests of the quantile, distribution, and
+# zscore functions.
 
 p01_who_test <-
   p_bmi_for_age(  q      = dwho$P01
@@ -119,15 +120,40 @@ expected <- p25_cdc_test
 expected[is.na(p25_cdc_test)] <- p25_who_test[is.na(p25_cdc_test)]
 stopifnot(isTRUE(all.equal(p25_cdc_who_test, expected)))
 
-
-
-
 ################################################################################
-##                            Tesing q_bmi_for_age                            ##
+##           Testing of quantile, distribution, and zscore methods            ##
+set.seed(42)
+ages    <- runif(1000, min = 0, max = 240.5)
+genders <- as.integer(runif(1000) < 0.5)
+ps      <- runif(1000)
 
+test_df <-
+  data.frame(
+    age       = ages
+  , male      = genders
+  , p         = ps
+  , z         = qnorm(ps)
+  , q_cdc.who = suppressWarnings(q_bmi_for_age(p = ps, male = genders, age = ages, source = "CDC-WHO"))
+  , q_cdc     = suppressWarnings(q_bmi_for_age(p = ps, male = genders, age = ages, source = "CDC"))
+  , q_who     = suppressWarnings(q_bmi_for_age(p = ps, male = genders, age = ages, source = "WHO"))
+  )
 
-################################################################################
-##                            Tesing z_bmi_for_age                            ##
+test_df[["p_cdc.who"]] <- suppressWarnings(p_bmi_for_age(q = test_df$q_cdc.who, male = genders, age = ages, source = "CDC-WHO"))
+test_df[["p_cdc"]] <- suppressWarnings(p_bmi_for_age(q = test_df$q_cdc, male = genders, age = ages, source = "CDC"))
+test_df[["p_who"]] <- suppressWarnings(p_bmi_for_age(q = test_df$q_who, male = genders, age = ages, source = "WHO"))
+
+test_df[["z_cdc.who"]] <- suppressWarnings(z_bmi_for_age(q = test_df$q_cdc.who, male = genders, age = ages, source = "CDC-WHO"))
+test_df[["z_cdc"]] <- suppressWarnings(z_bmi_for_age(q = test_df$q_cdc, male = genders, age = ages, source = "CDC"))
+test_df[["z_who"]] <- suppressWarnings(z_bmi_for_age(q = test_df$q_who, male = genders, age = ages, source = "WHO"))
+
+head(test_df)
+
+stopifnot(identical(test_df[test_df$age <  24, "q_cdc.who"], test_df[test_df$age <  24, "q_who"]))
+stopifnot(identical(test_df[test_df$age >= 24, "q_cdc.who"], test_df[test_df$age >= 24, "q_cdc"]))
+
+stopifnot(with(test_df[!is.na(test_df$z_cdc), ], isTRUE(all.equal(z, z_cdc))))
+stopifnot(with(test_df[!is.na(test_df$z_who), ], isTRUE(all.equal(z, z_who))))
+stopifnot(with(test_df[!is.na(test_df$z_cdc.who), ], isTRUE(all.equal(z, z_cdc.who))))
 
 ################################################################################
 ##                               End of center                                ##
