@@ -79,20 +79,25 @@ test <- tryCatch(est_norm(qs2, ps2), error = function(e) e)
 stopifnot(identical(test$message, "q and p are expected to be sorted in ascending order."))
 
 ################################################################################
-# plot
+# test the plot
 g <- plot(out)
+
+# when needed, update the saved plot that is tested against
 # ggplot2::ggsave(g, file = "tests/plot.est_norm.png", width = 7, height = 7)
 
+# build and save a graphic
 tmpfile <- tempfile(fileext = ".png")
 ggplot2::ggsave(g, file = tmpfile, width = 7, height = 7)
 
+# read the graphics
 if (interactive()) {
   expected_img <- png::readPNG("tests/plot.est_norm.png")
 } else {
   expected_img <- png::readPNG("plot.est_norm.png")
 }
-new_img      <- png::readPNG(tmpfile)
+new_img <- png::readPNG(tmpfile)
 
+# compare the graphics
 stopifnot(identical(new_img, expected_img))
 
 ################################################################################
