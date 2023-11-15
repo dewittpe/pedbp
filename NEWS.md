@@ -10,6 +10,10 @@
 
 * New "growth-standards" vignette
 
+## Improvements
+
+* `est_norm` calls `stats::optim` with `method = "L-BFGS-B"`, `lower = c(-Inf, 0)`, and `upper = c(Inf, Inf))` to make sure the sd estimate is non-negative.
+* `est_norm` checks for sorted inputs.
 
 # pedbp 1.0.2
 
