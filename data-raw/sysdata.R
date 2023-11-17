@@ -202,6 +202,31 @@ str(lms_data, max.level = 1)
 str(lms_data, max.level = 2)
 str(lms_data, max.level = 3)
 
+lms_data[["bmi_for_age"]][["WHO"]][["Male"]][, c("age", "L", "M", "S")] |> head()
+
+m <-
+lms_data[["bmi_for_age"]][["WHO"]][["Male"]][, c("age", "L", "M", "S")] |> 
+apply(MARGIN = 1, FUN = function(x) paste("{", paste(x, collapse = ", "), "}")) |>
+paste(collapse = ", \n") 
+cat(
+    "
+// [[Rcpp::depends(RcppArmadillo)]]
+#include <RcppArmadillo.h>
+#include <Rcpp.h>
+arma::mat bmi_for_age_who_male() {
+  arma::mat LMS = {
+"
+, m
+,
+"
+  };
+  return LMS;
+}
+"
+,
+sep = '\n',
+file = "src/bmi_for_age_who_male.cpp")
+
 ################################################################################
 ##                             Save Internal Data                             ##
 
