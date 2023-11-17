@@ -25,16 +25,6 @@ for (i in 1:length(who_lms_data)) {
   if ("Length" %in% names(who_lms_data[[i]])) {
     data.table::setnames(who_lms_data[[i]], old = "Length", new = "stature")
   }
-  # remove unwanted columns
-  # for (j in grep("^P\\d", names(who_lms_data[[i]]), value = TRUE)) {
-  #   data.table::set(who_lms_data[[i]], j = j, value = NULL)
-  # }
-  # for (j in grep("^SD\\d", names(who_lms_data[[i]]), value = TRUE)) {
-  #   data.table::set(who_lms_data[[i]], j = j, value = NULL)
-  # }
-  # for (j in grep("^StDev", names(who_lms_data[[i]]), value = TRUE)) {
-  #   data.table::set(who_lms_data[[i]], j = j, value = NULL)
-  # }
 }
 
 who_lms_data <- data.table::rbindlist(who_lms_data, idcol = "file", use.names = TRUE, fill = TRUE)
@@ -188,7 +178,7 @@ lms_data <- rbind(who_lms_data, cdc_lms_data, use.names = TRUE, fill = TRUE)
 data.table::setkey(lms_data, source, metric, male, age, stature)
 lms_data <- as.data.frame(lms_data)
 
-lms_data <- 
+lms_data <-
   lms_data |>
   split(f = lms_data$metric) |>
   lapply(function(x) { split(x, f = x$source) }) |>
@@ -202,30 +192,39 @@ str(lms_data, max.level = 1)
 str(lms_data, max.level = 2)
 str(lms_data, max.level = 3)
 
-lms_data[["bmi_for_age"]][["WHO"]][["Male"]][, c("age", "L", "M", "S")] |> head()
 
-m <-
-lms_data[["bmi_for_age"]][["WHO"]][["Male"]][, c("age", "L", "M", "S")] |> 
-apply(MARGIN = 1, FUN = function(x) paste("{", paste(x, collapse = ", "), "}")) |>
-paste(collapse = ", \n") 
-cat(
-    "
-// [[Rcpp::depends(RcppArmadillo)]]
-#include <RcppArmadillo.h>
-#include <Rcpp.h>
-arma::mat bmi_for_age_who_male() {
-  arma::mat LMS = {
-"
-, m
-,
-"
-  };
-  return LMS;
+################################################################################
+##                            Export to .cpp files                            ##
+
+for (metric in names(lms_data)) {
+  for (src in names(lms_data[[metric]])) {
+    for (gndr in names(lms_data[[metric]][[src]])) {
+      nm <- tolower(paste0(metric, "_", src, "_", gndr))
+      d <- lms_data[[metric]][[src]][[gndr]]
+      if (grepl("_for_age", metric)) {
+        d <- d[, c("age", "L", "M", "S")]
+      } else if (grepl("_for_stature", metric)) {
+        d <- d[, c("stature", "L", "M", "S")]
+      }
+      d <- as.matrix(d)
+      d <- apply(d, MARGIN = 1, function(x) paste("{", paste(x, collapse = ", "), "}"))
+      d <- paste(d, collapse = ", \n")
+      cat("// [[Rcpp::depends(RcppArmadillo)]]",
+          "#include <RcppArmadillo.h>",
+          "#include <Rcpp.h>",
+          "#include \"lms.h\"",
+          paste0("arma::mat ", nm , "() {"),
+          "\tarma::mat LMS = {",
+          d,
+          "\t};",
+          "\treturn LMS;",
+          "}",
+          sep = "\n",
+          file = paste0("src/", nm, ".cpp")
+          )
+    }
+  }
 }
-"
-,
-sep = '\n',
-file = "src/bmi_for_age_who_male.cpp")
 
 ################################################################################
 ##                             Save Internal Data                             ##

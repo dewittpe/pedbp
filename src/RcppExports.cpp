@@ -11,19 +11,25 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// lms_bmi
-arma::mat lms_bmi();
-RcppExport SEXP _pedbp_lms_bmi() {
+// cppPGSF
+arma::mat cppPGSF(std::string metric, std::string source, int male, double x, double qp, std::string type);
+RcppExport SEXP _pedbp_cppPGSF(SEXP metricSEXP, SEXP sourceSEXP, SEXP maleSEXP, SEXP xSEXP, SEXP qpSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(lms_bmi());
+    Rcpp::traits::input_parameter< std::string >::type metric(metricSEXP);
+    Rcpp::traits::input_parameter< std::string >::type source(sourceSEXP);
+    Rcpp::traits::input_parameter< int >::type male(maleSEXP);
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type qp(qpSEXP);
+    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(cppPGSF(metric, source, male, x, qp, type));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pedbp_lms_bmi", (DL_FUNC) &_pedbp_lms_bmi, 0},
+    {"_pedbp_cppPGSF", (DL_FUNC) &_pedbp_cppPGSF, 6},
     {NULL, NULL, 0}
 };
 

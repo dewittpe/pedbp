@@ -10,7 +10,7 @@
 #' @param stature (in cm)
 #'
 #' @export
-lms_bmi <- function() {
-    .Call('_pedbp_lms_bmi', PACKAGE = 'pedbp')
+cppPGSF <- function(metric, source, male, x, qp, type) {
+    .Call('_pedbp_cppPGSF', PACKAGE = 'pedbp', metric, source, male, x, qp, type)
 }
 

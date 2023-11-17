@@ -13,6 +13,29 @@
 //'
 //' @export
 // [[Rcpp::export]]
-arma::mat lms_bmi() {
-  return bmi_for_age_who_male();
+arma::mat cppPGSF(std::string metric, std::string source, int male, double x, double qp, std::string type) {
+  // get the needed look up table
+  arma::mat LUT;
+
+  if (metric == "bmi_for_age") {
+    if (source == "WHO") {
+      if (male == 1) {
+        LUT = bmi_for_age_who_male();
+      } else if (male == 0) {
+        LUT = bmi_for_age_who_female();
+      }
+    } else if (source == "CDC") {
+      if (male == 1) {
+        LUT = bmi_for_age_cdc_male();
+      } else if (male == 0) {
+        LUT = bmi_for_age_cdc_female();
+      }
+    }
+  } else {
+    Rf_error("Not yet implemented");
+  }
+
+  return LUT;
 }
+
+
