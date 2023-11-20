@@ -4,17 +4,7 @@
 #include <Rmath.h>
 #include "lms.h"
 
-//' @title LMS data and distribution estimates
-//'
-//' @param metric
-//' @param male
-//' @param source
-//' @param age (in months)
-//' @param stature (in cm)
-//'
-//' @export
-// [[Rcpp::export]]
-double cppPGSF(std::string metric, std::string source, int male, double x, double qp, std::string type) {
+double cppPGSF1(std::string metric, std::string source, int male, double x, double qp, std::string type) {
   // get the needed look up table
   arma::mat LUT;
 
@@ -38,7 +28,7 @@ double cppPGSF(std::string metric, std::string source, int male, double x, doubl
     } else {
       Rf_error("Unknown source for bmi_for_age data");
     }
-  } else if (metric == "head_circumference_for_age_") {
+  } else if (metric == "head_circumference_for_age") {
     if (source == "WHO") {
       if (male == 1) {
         //LUT = head_circumference_for_age_who_male();
@@ -109,40 +99,30 @@ double cppPGSF(std::string metric, std::string source, int male, double x, doubl
   }
 
   // use a binary search to get the row of LUT needed
-  if (x < min(LUT.col(0))) {
-    Rf_warning("age/stature below lower limit");
-  } else if (x > max(LUT.col(0))) {
-    Rf_warning("age/stature above upper limit");
-  }
-
   int left=0, right = LUT.n_rows - 1, mid;
   unsigned int i = 0;
+
+  if (x < min(LUT.col(0))) {
+    Rf_warning("age/stature below lower limit");
+    return R_NaN;
+  } else if (x > max(LUT.col(0))) {
+    Rf_warning("age/stature above upper limit");
+    return R_NaN;
+  }
+
   while(left < right) {
 
     mid = left + ((right - left) / 2);
 
-    //Rcpp::Rcout << "i" << i << "\n";
-    //Rcpp::Rcout << "left" << left << "\n";
-    //Rcpp::Rcout << "right" << right << "\n";
-    //Rcpp::Rcout << "mid" << mid << "\n";
-    //Rcpp::Rcout << "LUT.col(0)(left)" << LUT.col(0)(left) << "\n";
-    //Rcpp::Rcout << "LUT.col(0)(mid)" << LUT.col(0)(mid) << "\n";
-    //Rcpp::Rcout << "LUT.col(0)(right)" << LUT.col(0)(right) << "\n";
-    //Rcpp::Rcout << "x" << x << "\n";
-
-    //if (LUT.col(0)(mid) == x) {
     if (abs(LUT.col(0)(mid) - x) < 0.000001) {
-      //Rcpp::Rcout << "equality\n";
       left = mid;
       right = mid;
     } else if (abs(LUT.col(0)(right) - x) < 0.000001) {
       left = right;
       mid = right;
     } else if (LUT.col(0)(mid) < x) {
-      //Rcpp::Rcout << "left\n";
       left = mid;
     } else {
-      //Rcpp::Rcout << "right\n";
       right = mid - 1;
     }
     ++i;
@@ -156,6 +136,10 @@ double cppPGSF(std::string metric, std::string source, int male, double x, doubl
   l = LUT.col(1)(left);
   m = LUT.col(2)(left);
   s = LUT.col(3)(left);
+
+  Rcpp::Rcout << "l: " << l << "\n";
+  Rcpp::Rcout << "m: " << m << "\n";
+  Rcpp::Rcout << "s: " << s << "\n";
 
   if (type == "quantile") {
     z = R::qnorm(qp, 0, 1, 1, 0);
@@ -178,9 +162,131 @@ double cppPGSF(std::string metric, std::string source, int male, double x, doubl
       return R::pnorm(z, 0, 1, 1, 0);
     }
   }
+}
 
-  //return LUT.row(l);
-  //return z;
+Rcpp::NumericVector resize(Rcpp::NumericVector x, int length) {
+  Rcpp::NumericVector rtn(length);
+  for ( int i = 0; i < x.size(); ++i ) {
+    rtn[i] = x(i);
+  }
+  return rtn;
+}
+
+Rcpp::CharacterVector resize(Rcpp::CharacterVector x, int length) {
+  Rcpp::CharacterVector rtn(length);
+  for ( int i = 0; i < x.size(); ++i ) {
+    rtn[i] = x(i);
+  }
+  return rtn;
+}
+
+Rcpp::IntegerVector resize(Rcpp::IntegerVector x, int length) {
+  Rcpp::IntegerVector rtn(length);
+  for ( int i = 0; i < x.size(); ++i ) {
+    rtn[i] = x(i);
+  }
+  return rtn;
 }
 
 
+//' @title LMS data and distribution estimates
+//'
+//' @param metric
+//' @param male
+//' @param source
+//' @param age (in months)
+//' @param stature (in cm)
+//'
+//' @export
+// [[Rcpp::export]]
+Rcpp::NumericVector cppPGSF(
+    Rcpp::CharacterVector metric,
+    Rcpp::CharacterVector source,
+    Rcpp::IntegerVector male,
+    Rcpp::NumericVector x,
+    Rcpp::NumericVector qp,
+    Rcpp::CharacterVector type
+    )
+{
+
+  // vector length - either length 1, or equal length.
+  int max_length = std::max({metric.length(), source.length(), male.length(), x.length(), qp.length(), type.length()});
+  int min_length = std::min({metric.length(), source.length(), male.length(), x.length(), qp.length(), type.length()});
+
+  if (min_length == 0) {
+    Rf_error("zero length vector");
+  }
+
+  if (max_length > 1) {
+
+    if (metric.length() == 1) {
+      metric = resize(metric, max_length);
+      metric.fill(metric(0));
+    } else if (metric.length() > 1 && metric.length() < max_length) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    } else {
+      // metric should be the same length as max_length and there is nothing
+      // to do
+    }
+
+    if (source.length() == 1) {
+      source = resize(source, max_length);
+      source.fill(source(0));
+    } else if (source.length() > 1 && source.length() < max_length) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    } else {
+      // source should be the same length as max_length and there is nothing
+      // to do
+    }
+
+    if (male.length() == 1) {
+      male = resize(male, max_length);
+      male.fill(male(0));
+    } else if (male.length() > 1 && male.length() < max_length) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    } else {
+      // male should be the same length as max_length and there is nothing
+      // to do
+    }
+
+    if (x.length() == 1) {
+      x = resize(x, max_length);
+      x.fill(x(0));
+    } else if (x.length() > 1 && x.length() < max_length) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    } else {
+      // x should be the same length as max_length and there is nothing
+      // to do
+    }
+
+    if (qp.length() == 1) {
+      qp = resize(qp, max_length);
+      qp.fill(qp(0));
+    } else if (qp.length() > 1 && qp.length() < max_length) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    } else {
+      // qp should be the same length as max_length and there is nothing
+      // to do
+    }
+
+    if (type.length() == 1) {
+      type = resize(type, max_length);
+      type.fill(type(0));
+    } else if (type.length() > 1 && type.length() < max_length) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    } else {
+      // type should be the same length as max_length and there is nothing
+      // to do
+    }
+
+  } else {
+    // max_length is 1 sice test for zero is above an there is nothing to do
+  }
+
+  Rcpp::NumericVector rtn (max_length);
+  for(int i = 0; i < max_length; ++i) {
+    //Rcpp::Rcout << "i: " << i << "\n";
+    rtn(i) = cppPGSF1(Rcpp::as<std::string>(metric(i)), Rcpp::as<std::string>(source(i)), male(i), x(i), qp(i), Rcpp::as<std::string>(type(i)));
+  }
+  return rtn;
+}

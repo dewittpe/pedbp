@@ -12,17 +12,17 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cppPGSF
-double cppPGSF(std::string metric, std::string source, int male, double x, double qp, std::string type);
+Rcpp::NumericVector cppPGSF(Rcpp::CharacterVector metric, Rcpp::CharacterVector source, Rcpp::IntegerVector male, Rcpp::NumericVector x, Rcpp::NumericVector qp, Rcpp::CharacterVector type);
 RcppExport SEXP _pedbp_cppPGSF(SEXP metricSEXP, SEXP sourceSEXP, SEXP maleSEXP, SEXP xSEXP, SEXP qpSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type metric(metricSEXP);
-    Rcpp::traits::input_parameter< std::string >::type source(sourceSEXP);
-    Rcpp::traits::input_parameter< int >::type male(maleSEXP);
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type qp(qpSEXP);
-    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type metric(metricSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type source(sourceSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type male(maleSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type qp(qpSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type type(typeSEXP);
     rcpp_result_gen = Rcpp::wrap(cppPGSF(metric, source, male, x, qp, type));
     return rcpp_result_gen;
 END_RCPP
