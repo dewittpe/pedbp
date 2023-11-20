@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cppPGSF
-arma::mat cppPGSF(std::string metric, std::string source, int male, double x, double qp, std::string type);
+double cppPGSF(std::string metric, std::string source, int male, double x, double qp, std::string type);
 RcppExport SEXP _pedbp_cppPGSF(SEXP metricSEXP, SEXP sourceSEXP, SEXP maleSEXP, SEXP xSEXP, SEXP qpSEXP, SEXP typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;

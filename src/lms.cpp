@@ -1,6 +1,7 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
+#include <Rmath.h>
 #include "lms.h"
 
 //' @title LMS data and distribution estimates
@@ -13,7 +14,7 @@
 //'
 //' @export
 // [[Rcpp::export]]
-arma::mat cppPGSF(std::string metric, std::string source, int male, double x, double qp, std::string type) {
+double cppPGSF(std::string metric, std::string source, int male, double x, double qp, std::string type) {
   // get the needed look up table
   arma::mat LUT;
 
@@ -109,19 +110,40 @@ arma::mat cppPGSF(std::string metric, std::string source, int male, double x, do
 
   // use a binary search to get the row of LUT needed
   if (x < min(LUT.col(0))) {
-    Rf_error("age/stature below lower limit");
+    Rf_warning("age/stature below lower limit");
   } else if (x > max(LUT.col(0))) {
-    Rf_error("age/stature above upper limie");
+    Rf_warning("age/stature above upper limit");
   }
 
-  int l=0, r = LUT.n_rows - 1, m;
+  int left=0, right = LUT.n_rows - 1, mid;
   unsigned int i = 0;
-  while(l < r) {
-    m = l + (r - l) / 2;
-    if (LUT.col(0)(m) < x) {
-      l = m;
+  while(left < right) {
+
+    mid = left + ((right - left) / 2);
+
+    //Rcpp::Rcout << "i" << i << "\n";
+    //Rcpp::Rcout << "left" << left << "\n";
+    //Rcpp::Rcout << "right" << right << "\n";
+    //Rcpp::Rcout << "mid" << mid << "\n";
+    //Rcpp::Rcout << "LUT.col(0)(left)" << LUT.col(0)(left) << "\n";
+    //Rcpp::Rcout << "LUT.col(0)(mid)" << LUT.col(0)(mid) << "\n";
+    //Rcpp::Rcout << "LUT.col(0)(right)" << LUT.col(0)(right) << "\n";
+    //Rcpp::Rcout << "x" << x << "\n";
+
+    //if (LUT.col(0)(mid) == x) {
+    if (abs(LUT.col(0)(mid) - x) < 0.000001) {
+      //Rcpp::Rcout << "equality\n";
+      left = mid;
+      right = mid;
+    } else if (abs(LUT.col(0)(right) - x) < 0.000001) {
+      left = right;
+      mid = right;
+    } else if (LUT.col(0)(mid) < x) {
+      //Rcpp::Rcout << "left\n";
+      left = mid;
     } else {
-      r = m - 1;
+      //Rcpp::Rcout << "right\n";
+      right = mid - 1;
     }
     ++i;
     if (i > LUT.n_rows) {
@@ -129,7 +151,36 @@ arma::mat cppPGSF(std::string metric, std::string source, int male, double x, do
     }
   }
 
-  return LUT.row(l);
+  // get the p, q, or z-score
+  double z,l,m,s;
+  l = LUT.col(1)(left);
+  m = LUT.col(2)(left);
+  s = LUT.col(3)(left);
+
+  if (type == "quantile") {
+    z = R::qnorm(qp, 0, 1, 1, 0);
+    if (l == 0) {
+      return m * exp(s * z);
+    } else {
+      return m * pow(1.0 + l * s * z,   1.0 / l );
+    }
+  } else {
+    // zscore
+    if (l == 0) {
+      z = log(qp / m) / s;
+    } else {
+      z = ( pow( qp / m, l) - 1.0) / (l * s);
+    }
+    if (type == "zscore") {
+      return z;
+    } else {
+      // distribution value
+      return R::pnorm(z, 0, 1, 1, 0);
+    }
+  }
+
+  //return LUT.row(l);
+  //return z;
 }
 
 
