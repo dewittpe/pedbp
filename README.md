@@ -114,11 +114,7 @@ p_bp(  q_sbp  = d$sbp..mmHg.
 ```
 
 ```
-## $sbp_percentile
-## [1] 0.5533069 0.7680539 0.2622697 0.6195685 0.6101919
-## 
-## $dbp_percentile
-## [1] 0.4120704        NA 0.1356661 0.8028518 0.9011250
+## Error in (function (age, male, height = NA, height_percentile = 0.5, ...) : nrow(d) == 1L is not TRUE
 ```
 
 ```r

@@ -163,4 +163,5 @@ clean:
 	$(RM) -f *.Rout
 	$(RM) -f *.html
 	$(RM) -f vignettes/*.html
+	$(RM) -f src/*.o
 

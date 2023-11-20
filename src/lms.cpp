@@ -2,7 +2,7 @@
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
 #include <Rmath.h>
-#include "lms.h"
+#include "lms_data.h"
 
 double cppPGSF1(std::string metric, std::string source, int male, double x, double qp, std::string type) {
   // get the needed look up table
@@ -46,21 +46,21 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
     } else {
       Rf_error("Unknown source for head_circumference_for_age data");
     }
-  } else if (metric == "stature_for_age") {
+  } else if (metric == "height_for_age") {
     if (source == "WHO") {
       if (male == 1) {
-        LUT = stature_for_age_who_male();
+        LUT = height_for_age_who_male();
       } else {
-        LUT = stature_for_age_who_female();
+        LUT = height_for_age_who_female();
       }
     } else if (source == "CDC") {
       if (male == 1) {
-        LUT = stature_for_age_cdc_male();
+        LUT = height_for_age_cdc_male();
       } else {
-        LUT = stature_for_age_cdc_female();
+        LUT = height_for_age_cdc_female();
       }
     } else {
-      Rf_error("Unknown source for stature_for_age data");
+      Rf_error("Unknown source for height_for_age data");
     }
   } else if (metric == "weight_for_age") {
     if (source == "WHO") {
@@ -78,21 +78,69 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
     } else {
       Rf_error("Unknown source for weight_for_age data");
     }
-  } else if (metric == "weight_for_stature") {
+  } else if (metric == "weight_for_height") {
     if (source == "WHO") {
       if (male == 1) {
-        LUT = weight_for_stature_who_male();
+        LUT = weight_for_height_who_male();
       } else {
-        LUT = weight_for_stature_who_female();
+        LUT = weight_for_height_who_female();
       }
     } else if (source == "CDC") {
       if (male == 1) {
-        LUT = weight_for_stature_cdc_male();
+        LUT = weight_for_height_cdc_male();
       } else {
       }
-        LUT = weight_for_stature_cdc_female();
+        LUT = weight_for_height_cdc_female();
     } else {
-      Rf_error("Unknown source for weight_for_stature data");
+      Rf_error("Unknown source for weight_for_height data");
+    }
+  } else if (metric == "length_for_age") {
+    if (source == "WHO") {
+      if (male == 1) {
+        LUT = length_for_age_who_male();
+      } else {
+        LUT = length_for_age_who_female();
+      }
+    } else if (source == "CDC") {
+      if (male == 1) {
+        LUT = length_for_age_cdc_male();
+      } else {
+        LUT = length_for_age_cdc_female();
+      }
+    } else {
+      Rf_error("Unknown source for length_for_age data");
+    }
+  } else if (metric == "weight_for_age") {
+    if (source == "WHO") {
+      if (male == 1) {
+        LUT = weight_for_age_who_male();
+      } else {
+        LUT = weight_for_age_who_female();
+      }
+    } else if (source == "CDC") {
+      if (male == 1) {
+        LUT = weight_for_age_cdc_male();
+      } else {
+        LUT = weight_for_age_cdc_female();
+      }
+    } else {
+      Rf_error("Unknown source for weight_for_age data");
+    }
+  } else if (metric == "weight_for_length") {
+    if (source == "WHO") {
+      if (male == 1) {
+        LUT = weight_for_length_who_male();
+      } else {
+        LUT = weight_for_length_who_female();
+      }
+    } else if (source == "CDC") {
+      if (male == 1) {
+        LUT = weight_for_length_cdc_male();
+      } else {
+      }
+        LUT = weight_for_length_cdc_female();
+    } else {
+      Rf_error("Unknown source for weight_for_length data");
     }
   } else {
     Rf_error("Unknown metric");
@@ -137,9 +185,9 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
   m = LUT.col(2)(left);
   s = LUT.col(3)(left);
 
-  Rcpp::Rcout << "l: " << l << "\n";
-  Rcpp::Rcout << "m: " << m << "\n";
-  Rcpp::Rcout << "s: " << s << "\n";
+  //Rcpp::Rcout << "l: " << l << "\n";
+  //Rcpp::Rcout << "m: " << m << "\n";
+  //Rcpp::Rcout << "s: " << s << "\n";
 
   if (type == "quantile") {
     z = R::qnorm(qp, 0, 1, 1, 0);
