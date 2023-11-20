@@ -114,7 +114,7 @@ p_bp(  q_sbp  = d$sbp..mmHg.
 ```
 
 ```
-## Error in (function (age, male, height = NA, height_percentile = 0.5, ...) : nrow(d) == 1L is not TRUE
+## Error in p_stature_for_age(height, age = age, male = male, source = "CDC-WHO"): could not find function "p_stature_for_age"
 ```
 
 ```r
@@ -131,6 +131,12 @@ q_bp(  p_sbp = 0.50
 ## 
 ## $dbp
 ## [1] 57.74789
+## 
+## attr(,"bp_params")
+##     source male age sbp_mean sbp_sd dbp_mean dbp_sd height_percentile
+## 252 lo2013    1  96    100.7    9.7     59.8    8.1                NA
+## attr(,"class")
+## [1] "pedbp_bp"
 ```
 
 Plots show where an observed blood pressure is on the distribution curve

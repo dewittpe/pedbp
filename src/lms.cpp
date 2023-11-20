@@ -162,20 +162,35 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
 
     mid = left + ((right - left) / 2);
 
-    if (abs(LUT.col(0)(mid) - x) < 0.000001) {
+    // Useful for debugging
+    //Rcpp::Rcout << "i: " << i << "\n";
+    //Rcpp::Rcout << "left: " << left << "\n";
+    //Rcpp::Rcout << "mid: " << mid << "\n";
+    //Rcpp::Rcout << "right: " << right << "\n";
+    //Rcpp::Rcout << "LUT.col(0)(left)" << LUT.col(0)(left) << "\n";
+    //Rcpp::Rcout << "LUT.col(0)(mid)" << LUT.col(0)(mid) << "\n";
+    //Rcpp::Rcout << "LUT.col(0)(right)" << LUT.col(0)(right) << "\n\n";
+
+    if (abs(LUT.col(0)(left) - x) < 0.00000001) {
+      right = left;
+      mid = left;
+    } else if (abs(LUT.col(0)(mid) - x)  < 0.00000001) {
       left = mid;
       right = mid;
-    } else if (abs(LUT.col(0)(right) - x) < 0.000001) {
+    } else if (abs(LUT.col(0)(right) - x) < 0.0000001) {
       left = right;
       mid = right;
+    } else if (left == mid) {
+      right = mid;
     } else if (LUT.col(0)(mid) < x) {
       left = mid;
     } else {
-      right = mid - 1;
+      right = mid;
     }
+
     ++i;
     if (i > LUT.n_rows) {
-      Rf_error("somthing very bad has happended.");
+      Rf_error("something very bad has happended - a binary search when n steps.");
     }
   }
 
@@ -238,7 +253,7 @@ Rcpp::IntegerVector resize(Rcpp::IntegerVector x, int length) {
 
 
 //' @title Pediatric Growth Standards
-//' 
+//'
 //' @description Pediatric growth standard based on LMS data from the CDC and WHO.
 //'
 //' @details expect to call this from R after checking some functional

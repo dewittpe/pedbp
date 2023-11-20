@@ -8,46 +8,34 @@
 \alias{p_head_circ_for_age}
 \alias{q_head_circ_for_age}
 \alias{z_head_circ_for_age}
-\alias{p_stature_for_age}
-\alias{q_stature_for_age}
-\alias{z_stature_for_age}
+\alias{p_height_for_age}
+\alias{q_height_for_age}
+\alias{z_height_for_age}
+\alias{p_length_for_age}
+\alias{q_length_for_age}
+\alias{z_length_for_age}
 \alias{p_weight_for_age}
 \alias{q_weight_for_age}
 \alias{z_weight_for_age}
-\alias{p_weight_for_stature}
-\alias{q_weight_for_stature}
-\alias{z_weight_for_stature}
+\alias{p_weight_for_height}
+\alias{q_weight_for_height}
+\alias{z_weight_for_height}
+\alias{p_weight_for_length}
+\alias{q_weight_for_length}
+\alias{z_weight_for_length}
 \title{Pediatric Growth Standards}
 \usage{
-p_bmi_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
-  ...
-)
+p_bmi_for_age(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...)
 
-q_bmi_for_age(
-  p,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
-  ...
-)
+q_bmi_for_age(p, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...)
 
-z_bmi_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
-  ...
-)
+z_bmi_for_age(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...)
 
 p_head_circ_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
@@ -55,7 +43,7 @@ q_head_circ_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
@@ -63,31 +51,55 @@ z_head_circ_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
-p_stature_for_age(
+p_height_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
-q_stature_for_age(
+q_height_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
-z_stature_for_age(
+z_height_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
+  ...
+)
+
+p_length_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pgs_source", "CDC"),
+  ...
+)
+
+q_length_for_age(
+  p,
+  male,
+  age,
+  source = getOption("pedbp_pgs_source", "CDC"),
+  ...
+)
+
+z_length_for_age(
+  q,
+  male,
+  age,
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
@@ -95,7 +107,7 @@ p_weight_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
@@ -103,7 +115,7 @@ q_weight_for_age(
   p,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
@@ -111,31 +123,55 @@ z_weight_for_age(
   q,
   male,
   age,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
-p_weight_for_stature(
+p_weight_for_height(
   q,
   male,
-  stature,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  height,
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
-q_weight_for_stature(
+q_weight_for_height(
   p,
   male,
-  stature,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  height,
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 
-z_weight_for_stature(
+z_weight_for_height(
   q,
   male,
-  stature,
-  source = getOption("pedbp_pgs_source", "CDC-WHO"),
+  height,
+  source = getOption("pedbp_pgs_source", "CDC"),
+  ...
+)
+
+p_weight_for_length(
+  q,
+  male,
+  length,
+  source = getOption("pedbp_pgs_source", "CDC"),
+  ...
+)
+
+q_weight_for_length(
+  p,
+  male,
+  length,
+  source = getOption("pedbp_pgs_source", "CDC"),
+  ...
+)
+
+z_weight_for_length(
+  q,
+  male,
+  length,
+  source = getOption("pedbp_pgs_source", "CDC"),
   ...
 )
 }
@@ -153,7 +189,7 @@ parameters needed for the estimate.  See Details.}
 
 \item{p}{a vector of probabilities}
 
-\item{stature}{(height or length) in centimeters}
+\item{height, length}{in centimeters}
 }
 \value{
 The \code{p_} method return values from the estimated distribution
@@ -173,13 +209,6 @@ values.
 Note: CDC Recommends using WHO growth charts for infants and children ages 0
 to 2 years of age in the U.S. and CDC growth charts to monitor growth for
 children age 2 years and older in the U.S.
-
-To implement the CDC recommendation, the source \dQuote{CDC-WHO} will use
-CDC for ages over 2, and WHO for under 2.  \dQuote{CDC} will use only the CDC
-data, and \dQuote{WHO} will use only the WHO data.
-
-Further, when \code{source = "CDC-WHO"}, use either source if only one
-of the two is available.
 }
 \examples{
 
