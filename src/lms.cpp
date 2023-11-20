@@ -237,15 +237,21 @@ Rcpp::IntegerVector resize(Rcpp::IntegerVector x, int length) {
 }
 
 
-//' @title LMS data and distribution estimates
+//' @title Pediatric Growth Standards
+//' 
+//' @description Pediatric growth standard based on LMS data from the CDC and WHO.
 //'
-//' @param metric
-//' @param male
-//' @param source
-//' @param age (in months)
-//' @param stature (in cm)
+//' @details expect to call this from R after checking some functional
+//' arguments within R.
 //'
-//' @export
+//' @param metric string
+//' @param source string
+//' @param male  integer
+//' @param x is the age (in months), length (cm) or height (cm) as needed for
+//' the metric.
+//' @param qp the quantile or percentile, which ever is relevent for the type
+//' @param type quantile, distribition, or zscore
+//'
 // [[Rcpp::export]]
 Rcpp::NumericVector cppPGSF(
     Rcpp::CharacterVector metric,
