@@ -35,7 +35,29 @@ arma::mat cppPGSF(std::string metric, std::string source, int male, double x, do
     Rf_error("Not yet implemented");
   }
 
-  return LUT;
+  // use a binary search to get the row of LUT needed
+  if (x < min(LUT.col(0))) {
+    Rf_error("age/stature below lower limit");
+  } else if (x > max(LUT.col(0))) {
+    Rf_error("age/stature above upper limie");
+  }
+
+  int l=0, r = LUT.n_rows - 1, m;
+  unsigned int i = 0;
+  while(l < r) {
+    m = l + (r - l) / 2;
+    if (LUT.col(0)(m) < x) {
+      l = m;
+    } else {
+      r = m - 1;
+    }
+    ++i;
+    if (i > LUT.n_rows) {
+      Rf_error("somthing very bad has happended.");
+    }
+  }
+
+  return LUT.row(l);
 }
 
 
