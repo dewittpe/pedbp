@@ -1,5 +1,6 @@
 library(pedbp)
 
+# the data should be lazy loaded so this will fail if that assumtion isn't valid
 stopifnot(identical(class(gemelli1990), "data.frame"))
 
 # expected names:
