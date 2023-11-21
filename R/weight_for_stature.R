@@ -13,7 +13,7 @@
 #' @param q a vector of quantiles
 #' @param p a vector of probabilities
 #' @param male integer value, 1 = male, 0 = female
-#' @param age numeric age, in months
+#' @param height,length the stature, in centimeters
 #' @param source a character string denoting the data source providing the
 #' parameters needed for the estimate.
 #' @param ... pass through
@@ -29,6 +29,9 @@
 #'
 #' @examples
 #'
+#' @name weight_for_stature
+NULL
+
 #' @rdname weight_for_stature
 #' @export
 p_weight_for_height <- function(q, male, height, source = getOption("pedbp_pgs_source", "CDC"), ...) {
