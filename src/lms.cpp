@@ -171,13 +171,13 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
     //Rcpp::Rcout << "LUT.col(0)(mid)" << LUT.col(0)(mid) << "\n";
     //Rcpp::Rcout << "LUT.col(0)(right)" << LUT.col(0)(right) << "\n\n";
 
-    if (abs(LUT.col(0)(left) - x) < 0.00000001) {
+    if (std::abs(LUT.col(0)(left) - x) < 0.00000001) {
       right = left;
       mid = left;
-    } else if (abs(LUT.col(0)(mid) - x)  < 0.00000001) {
+    } else if (std::abs(LUT.col(0)(mid) - x)  < 0.00000001) {
       left = mid;
       right = mid;
-    } else if (abs(LUT.col(0)(right) - x) < 0.0000001) {
+    } else if (std::abs(LUT.col(0)(right) - x) < 0.0000001) {
       left = right;
       mid = right;
     } else if (left == mid) {
