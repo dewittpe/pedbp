@@ -2,185 +2,22 @@
 % Please edit documentation in R/growth-standards.R
 \name{pediatric_growth_standards}
 \alias{pediatric_growth_standards}
-\alias{p_head_circ_for_age}
-\alias{q_head_circ_for_age}
-\alias{z_head_circ_for_age}
-\alias{p_height_for_age}
-\alias{q_height_for_age}
-\alias{z_height_for_age}
-\alias{p_length_for_age}
-\alias{q_length_for_age}
-\alias{z_length_for_age}
-\alias{p_weight_for_age}
-\alias{q_weight_for_age}
-\alias{z_weight_for_age}
-\alias{p_weight_for_height}
-\alias{q_weight_for_height}
-\alias{z_weight_for_height}
-\alias{p_weight_for_length}
-\alias{q_weight_for_length}
-\alias{z_weight_for_length}
 \title{Pediatric Growth Standards}
-\usage{
-p_head_circ_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-q_head_circ_for_age(
-  p,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-z_head_circ_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-p_height_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-q_height_for_age(
-  p,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-z_height_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-p_length_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-q_length_for_age(
-  p,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-z_length_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-p_weight_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-q_weight_for_age(
-  p,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-z_weight_for_age(
-  q,
-  male,
-  age,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-p_weight_for_height(
-  q,
-  male,
-  height,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-q_weight_for_height(
-  p,
-  male,
-  height,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-z_weight_for_height(
-  q,
-  male,
-  height,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-p_weight_for_length(
-  q,
-  male,
-  length,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-q_weight_for_length(
-  p,
-  male,
-  length,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-
-z_weight_for_length(
-  q,
-  male,
-  length,
-  source = getOption("pedbp_pgs_source", "CDC"),
-  ...
-)
-}
 \arguments{
 \item{q}{a vector of quantiles}
+
+\item{p}{a vector of probabilities}
 
 \item{male}{integer value, 1 = male, 0 = female}
 
 \item{age}{numeric age, in months}
 
+\item{height, length}{in centimeters}
+
 \item{source}{a character string denoting the data source providing the
 parameters needed for the estimate.  See Details.}
 
 \item{...}{pass through}
-
-\item{p}{a vector of probabilities}
-
-\item{height, length}{in centimeters}
 }
 \value{
 The \code{p_} method return values from the estimated distribution
