@@ -78,7 +78,7 @@ all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 test:
 	${assert}
 
-$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS) $(SHINYAPPS)
+$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS) $(SHINYAPPS) $(SRC)
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
 
 .install_dev_deps.Rout : $(PKG_ROOT)/DESCRIPTION
