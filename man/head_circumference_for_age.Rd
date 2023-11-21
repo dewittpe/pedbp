@@ -2,12 +2,12 @@
 % Please edit documentation in R/head_circumference_for_age.R
 \name{head_circumference_for_age}
 \alias{head_circumference_for_age}
-\alias{p_head_circ_for_age}
-\alias{q_head_circ_for_age}
-\alias{z_head_circ_for_age}
+\alias{p_head_circumference_for_age}
+\alias{q_head_circumference_for_age}
+\alias{z_head_circumference_for_age}
 \title{Head Circumference for Age - Pediatric Growth Standard}
 \usage{
-p_head_circ_for_age(
+p_head_circumference_for_age(
   q,
   male,
   age,
@@ -15,7 +15,7 @@ p_head_circ_for_age(
   ...
 )
 
-q_head_circ_for_age(
+q_head_circumference_for_age(
   p,
   male,
   age,
@@ -23,7 +23,7 @@ q_head_circ_for_age(
   ...
 )
 
-z_head_circ_for_age(
+z_head_circumference_for_age(
   q,
   male,
   age,
@@ -46,21 +46,53 @@ parameters needed for the estimate.}
 \item{p}{a vector of probabilities}
 }
 \value{
-The \code{p_} method return values from the estimated distribution
-function.  \code{q_} methods return values from the estimated quantile
-function.  \code{z_} methods return standard scores, equivalent to
-\code{\link[stats]{qnorm}}.
+\code{p_} method return values from the estimated distribution function.
+
+\code{q_} methods return values from the estimated quantile function.
+
+\code{z_} methods return standard scores.
 }
 \description{
-BMI for age quantile, distribution, and zscore function based on LMS data
-from the CDC and WHO.
+Head Circumference for age quantile, distribution, and zscore function based
+on LMS data from the CDC and WHO.
 }
-\details{
-Note: CDC Recommends using WHO growth charts for infants and children ages 0
-to 2 years of age in the U.S. and CDC growth charts to monitor growth for
-children age 2 years and older in the U.S.
+\section{Notes}{
+ CDC Recommends using WHO growth charts for infants and
+children ages 0 to 2 years of age in the U.S. and CDC growth charts to
+monitor growth for children age 2 years and older in the U.S.
+}
+
+\examples{
+
+# The median head circumfernce for a two-year-old female:
+q_head_circumference_for_age(p = 0.5, male = 0, age = 24, source = "CDC")
+
+# Find the percentile for a 13 month old male with a head circumfernce of 46 cm:
+p <- p_head_circumference_for_age(q = 46, male = 1, age = 13, source = "CDC")
+p
+
+# the standard score is the quantile from a standard normal
+z_head_circumference_for_age(q = 46, male = 1, age = 13, source = "CDC")
+qnorm(p)
+
+\donttest{ # this will error -- WHO not yet implimented
+q_head_circumference_for_age(0.5, male = 0, age = 24, source = "WHO")
+}
+
 }
 \references{
 \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm},
 \url{https://www.who.int/tools/child-growth-standards/standards}
+}
+\seealso{
+\itemize{
+\item \code{vignette(topic = "growth-standards", package = "pedbp")}
+\item \code{\link{bmi_for_age}}
+\item \code{\link{head_circumference_for_age}}
+\item \code{\link{height_for_age}}
+\item \code{\link{length_for_age}}
+\item \code{\link{weight_for_age}}
+\item \code{\link{weight_for_length}}
+\item \code{\link{weight_for_height}}
+}
 }

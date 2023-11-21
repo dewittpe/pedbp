@@ -3,32 +3,34 @@
 #' Stature for age quantile, distribution, and zscore function based on LMS data
 #' from the CDC and WHO.
 #'
-#' Note: CDC Recommends using WHO growth charts for infants and children ages 0
-#' to 2 years of age in the U.S. and CDC growth charts to monitor growth for
-#' children age 2 years and older in the U.S.
-#' 
-#' Height for standing, length for lying down.
-#'
-#' @seealso
-#'
-#' @param q a vector of quantiles
-#' @param p a vector of probabilities
-#' @param male integer value, 1 = male, 0 = female
-#' @param age numeric age, in months
-#' @param source a character string denoting the data source providing the
-#' parameters needed for the estimate.
-#' @param ... pass through
-#'
-#' @return The \code{p_} method return values from the estimated distribution
-#' function.  \code{q_} methods return values from the estimated quantile
-#' function.  \code{z_} methods return standard scores, equivalent to
-#' \code{\link[stats]{qnorm}}.
-#'
-#' @references
-#' \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm},
-#' \url{https://www.who.int/tools/child-growth-standards/standards}
+#' @inherit growth-standards
 #'
 #' @examples
+#'
+#' # Find the first quartile height for a 66 month old female.
+#' # The quantile based on CDC data is slightly less than the quantile based on
+#' # the data from the WHO
+#' q_height_for_age(p = 0.25, age = 66, male = 0, source = c("CDC", "WHO"))
+#'
+#' # The 90th quantile length/height for a 24 month female: note that these
+#' # values are similar, but not identical
+#' q_length_for_age(p = 0.9, age = 24, male = 0, source = c("CDC"))
+#' q_height_for_age(p = 0.9, age = 24, male = 0, source = c("CDC"))
+#'
+#' # Find the percentile for a 28 month old male with a stature (height/length)
+#' # of 88 cm
+#' p_height_for_age(q = 88, male = 1, age = 28, source = "CDC")
+#' p_height_for_age(q = 88, male = 1, age = 28, source = "WHO")
+#' p_length_for_age(q = 88, male = 1, age = 28, source = "CDC")
+#' p_length_for_age(q = 88, male = 1, age = 28, source = "WHO")
+#'
+#' # correseponding standard scores
+#' z_height_for_age(q = 88, male = 1, age = 28, source = "CDC")
+#' z_height_for_age(q = 88, male = 1, age = 28, source = "WHO")
+#' z_length_for_age(q = 88, male = 1, age = 28, source = "CDC")
+#' z_length_for_age(q = 88, male = 1, age = 28, source = "WHO")
+#'
+#' @aliases height_for_age length_for_age
 #' @rdname stature_for_age
 #' @export
 p_height_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {

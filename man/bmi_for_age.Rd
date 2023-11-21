@@ -28,20 +28,22 @@ parameters needed for the estimate.}
 \item{p}{a vector of probabilities}
 }
 \value{
-The \code{p_} method return values from the estimated distribution
-function.  \code{q_} methods return values from the estimated quantile
-function.  \code{z_} methods return standard scores, equivalent to
-\code{\link[stats]{qnorm}}.
+\code{p_} method return values from the estimated distribution function.
+
+\code{q_} methods return values from the estimated quantile function.
+
+\code{z_} methods return standard scores.
 }
 \description{
 BMI for age quantile, distribution, and zscore function based on LMS data
 from the CDC and WHO.
 }
-\details{
-Note: CDC Recommends using WHO growth charts for infants and children ages 0
-to 2 years of age in the U.S. and CDC growth charts to monitor growth for
-children age 2 years and older in the U.S.
+\section{Notes}{
+ CDC Recommends using WHO growth charts for infants and
+children ages 0 to 2 years of age in the U.S. and CDC growth charts to
+monitor growth for children age 2 years and older in the U.S.
 }
+
 \examples{
 # The 54th percentile BMI (kg * m^(-2)) for a six year (72 month) old female
 # is
@@ -81,4 +83,16 @@ legend("bottomright", col = 1:2, pch = 1:2, legend = c("WHO", "CDC"))
 \references{
 \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm},
 \url{https://www.who.int/tools/child-growth-standards/standards}
+}
+\seealso{
+\itemize{
+\item \code{vignette(topic = "growth-standards", package = "pedbp")}
+\item \code{\link{bmi_for_age}}
+\item \code{\link{head_circumference_for_age}}
+\item \code{\link{height_for_age}}
+\item \code{\link{length_for_age}}
+\item \code{\link{weight_for_age}}
+\item \code{\link{weight_for_length}}
+\item \code{\link{weight_for_height}}
+}
 }

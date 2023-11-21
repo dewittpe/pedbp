@@ -8,27 +8,31 @@
 #' younger patients being in the _for_length set.  There is some overlap in
 #' numeric values of length and height.
 #'
-#' @seealso
-#'
-#' @param q a vector of quantiles
-#' @param p a vector of probabilities
-#' @param male integer value, 1 = male, 0 = female
-#' @param height,length the stature, in centimeters
-#' @param source a character string denoting the data source providing the
-#' parameters needed for the estimate.
-#' @param ... pass through
-#'
-#' @return The \code{p_} method return values from the estimated distribution
-#' function.  \code{q_} methods return values from the estimated quantile
-#' function.  \code{z_} methods return standard scores, equivalent to
-#' \code{\link[stats]{qnorm}}.
-#'
-#' @references
-#' \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm},
-#' \url{https://www.who.int/tools/child-growth-standards/standards}
+#' @inherit growth-standards
 #'
 #' @examples
+#' # The 60th weight qualtile for a 1.2 meter tall male is
+#' q_weight_for_height(p = 0.60, male = 1, height = 120, source = "CDC")
+#' q_weight_for_height(p = 0.60, male = 1, height = 120, source = "WHO")
 #'
+#' # There are slight differences in the quantiles for length and height
+#' q_weight_for_length(p = 0.60, male = 1, length = 97, source = "CDC")
+#' q_weight_for_height(p = 0.60, male = 1, height = 97, source = "WHO")
+#'
+#' # percentiles and standard scores for a 14 kg, 88 cm tall/long male
+#' p_weight_for_height(q = 14, male = 1, height = 88, source = "CDC")
+#' p_weight_for_height(q = 14, male = 1, height = 88, source = "WHO")
+#' p_weight_for_length(q = 14, male = 1, length = 88, source = "CDC")
+#' p_weight_for_length(q = 14, male = 1, length = 88, source = "WHO")
+#'
+#' # correseponding standard scores
+#' z_weight_for_height(q = 14, male = 1, height = 88, source = "CDC")
+#' z_weight_for_height(q = 14, male = 1, height = 88, source = "WHO")
+#' z_weight_for_length(q = 14, male = 1, length = 88, source = "CDC")
+#' z_weight_for_length(q = 14, male = 1, length = 88, source = "WHO")
+#'
+#'
+#' @aliases weight_for_length weight_for_height
 #' @name weight_for_stature
 NULL
 

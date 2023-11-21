@@ -3,30 +3,20 @@
 #' Weight for age quantile, distribution, and zscore function based on LMS data
 #' from the CDC and WHO.
 #'
-#' Note: CDC Recommends using WHO growth charts for infants and children ages 0
-#' to 2 years of age in the U.S. and CDC growth charts to monitor growth for
-#' children age 2 years and older in the U.S.
-#'
-#' @seealso
-#'
-#' @param q a vector of quantiles
-#' @param p a vector of probabilities
-#' @param male integer value, 1 = male, 0 = female
-#' @param age numeric age, in months
-#' @param source a character string denoting the data source providing the
-#' parameters needed for the estimate.
-#' @param ... pass through
-#'
-#' @return The \code{p_} method return values from the estimated distribution
-#' function.  \code{q_} methods return values from the estimated quantile
-#' function.  \code{z_} methods return standard scores, equivalent to
-#' \code{\link[stats]{qnorm}}.
-#'
-#' @references
-#' \url{https://www.cdc.gov/growthcharts/percentile_data_files.htm},
-#' \url{https://www.who.int/tools/child-growth-standards/standards}
+#' @inherit growth-standards
 #'
 #' @examples
+#'
+#' # find the 80th quantile for 56 month old females;
+#' # note - slight difference between CDC and WHO.
+#' q_weight_for_age(p = 0.80, age = 56, male = 0, source = c("CDC", "WHO"))
+#'
+#' # the percentiles for 42 kg 13 year old males:
+#' p_weight_for_age(q = 42, age = 13 * 12, male = 0, source = "CDC")
+#' p_weight_for_age(q = 42, age = 13 * 12, male = 0, source = "WHO")
+#'
+#' z_weight_for_age(q = 42, age = 13 * 12, male = 0, source = "CDC")
+#' z_weight_for_age(q = 42, age = 13 * 12, male = 0, source = "WHO")
 #'
 #' @name weight_for_age
 NULL
