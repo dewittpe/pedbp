@@ -61,18 +61,22 @@
 #' points(x = bmi_29$age, y = bmi_29$CDC, col = 2, pch = 2, type = "b")
 #' legend("bottomright", col = 1:2, pch = 1:2, legend = c("WHO", "CDC"))
 #'
+#' @name bmi_for_age
+NULL
+
+#' @rdname bmi_for_age
 #' @export
 p_bmi_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
   cppPGSF(qp = q, male = male, x = age, source = source, metric = "bmi_for_age", type = "distribution", ...)
 }
 
-#' @rdname pediatric_growth_standards
+#' @rdname bmi_for_age
 #' @export
 q_bmi_for_age <- function(p, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
   cppPGSF(qp = p, male = male, x = age, source = source, metric = "bmi_for_age", type = "quantile", ...)
 }
 
-#' @rdname pediatric_growth_standards
+#' @rdname bmi_for_age
 #' @export
 z_bmi_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
   cppPGSF(qp = q, male = male, x = age, source = source, metric = "bmi_for_age", type = "zscore", ...)
