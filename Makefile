@@ -128,15 +128,15 @@ $(PKG_ROOT)/R/sysdata.rda : data-raw/sysdata.R $(SYSDATA_SRCS)
 # working directory.
 #
 covr-report-tests.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("tests"), line_exclusions = list("R/pedbp-defunct.R"))'\
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("tests"), line_exclusions = list("R/pedbp-defunct.R", "R/zzz.R"))'\
 		-e 'covr::report(x, file = "covr-report-tests.html")'
 
 covr-report-vignettes.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("vignettes"), line_exclusions = list("R/pedbp-defunct.R"))'\
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("vignettes"), line_exclusions = list("R/pedbp-defunct.R", "R/zzz.R"))'\
 		-e 'covr::report(x, file = "covr-report-vignettes.html")'
 
 covr-report-examples.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("examples"), line_exclusions = list("R/pedbp-defunct.R"))'\
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("examples"), line_exclusions = list("R/pedbp-defunct.R", "R/zzz.R"))'\
 		-e 'covr::report(x, file = "covr-report-examples.html")'
 
 covr : covr-report-tests.html covr-report-vignettes.html covr-report-examples.html
