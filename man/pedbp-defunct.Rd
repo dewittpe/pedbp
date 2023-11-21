@@ -37,7 +37,7 @@ z_weight_for_length_inf(q, length, male)
 
 \item{male}{0 = female; 1 = male}
 
-\item{length}{length and height are term for stature depending on age, in centimeters}
+\item{length}{centimeters}
 }
 \description{
 These functions are fully defunct, no longer implemented, and will not work.

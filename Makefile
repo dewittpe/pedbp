@@ -17,6 +17,7 @@ SHINYAPPS = $(wildcard $(PKG_ROOT)/inst/shinyapps/*)
 # file
 VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd
 VIGNETTES += $(PKG_ROOT)/vignettes/growth-standards.Rmd
+VIGNETTES += $(PKG_ROOT)/vignettes/additional-utilities.Rmd
 
 ## Data targets
 DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda

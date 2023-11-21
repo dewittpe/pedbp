@@ -104,108 +104,108 @@ NULL
 #' @rdname pediatric_growth_standards
 #' @export
 p_head_circ_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "distribution", ...)
+  cppPGSF(qp = q, male = male, x = age, source = source, metric = "head_circumference_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 q_head_circ_for_age <- function(p, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = p, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "quantile", ...)
+  cppPGSF(qp = p, male = male, x = age, source = source, metric = "head_circumference_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 z_head_circ_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, age = age, source = source, metric = "head_circumference_for_age", type = "zscore", ...)
+  cppPGSF(qp = q, male = male, x = age, source = source, metric = "head_circumference_for_age", type = "zscore", ...)
 }
 
 
 #' @rdname pediatric_growth_standards
 #' @export
 p_height_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, age = age, source = source, metric = "height_for_age", type = "distribution", ...)
+  cppPGSF(qp = q, male = male, x = age, source = source, metric = "height_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 q_height_for_age <- function(p, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = p, male = male, age = age, source = source, metric = "height_for_age", type = "quantile", ...)
+  cppPGSF(qp = p, male = male, x = age, source = source, metric = "height_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 z_height_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, age = age, source = source, metric = "height_for_age", type = "zscore", ...)
+  cppPGSF(qp = q, male = male, x = age, source = source, metric = "height_for_age", type = "zscore", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 p_length_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, age = age, source = source, metric = "length_for_age", type = "distribution", ...)
+  cppPGSF(qp = q, male = male, x = age, source = source, metric = "length_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 q_length_for_age <- function(p, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = p, male = male, age = age, source = source, metric = "length_for_age", type = "quantile", ...)
+  cppPGSF(qp = p, male = male, x = age, source = source, metric = "length_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 z_length_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, age = age, source = source, metric = "length_for_age", type = "zscore", ...)
+  cppPGSF(qp = q, male = male, x = age, source = source, metric = "length_for_age", type = "zscore", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 p_weight_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, age = age, source = source, metric = "weight_for_age", type = "distribution", ...)
+  cppPGSF(qp = q, male = male, x = age, source = source, metric = "weight_for_age", type = "distribution", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 q_weight_for_age <- function(p, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = p, male = male, age = age, source = source, metric = "weight_for_age", type = "quantile", ...)
+  cppPGSF(qp = p, male = male, x = age, source = source, metric = "weight_for_age", type = "quantile", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 z_weight_for_age <- function(q, male, age, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, age = age, source = source, metric = "weight_for_age", type = "zscore", ...)
+  cppPGSF(qp = q, male = male, x = age, source = source, metric = "weight_for_age", type = "zscore", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 p_weight_for_height <- function(q, male, height, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, height = height, source = source, metric = "weight_for_height", type = "distribution", ...)
+  cppPGSF(qp = q, male = male, height = height, source = source, metric = "weight_for_height", type = "distribution", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 q_weight_for_height <- function(p, male, height, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = p, male = male, height = height, source = source, metric = "weight_for_height", type = "quantile", ...)
+  cppPGSF(qp = p, male = male, height = height, source = source, metric = "weight_for_height", type = "quantile", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 z_weight_for_height <- function(q, male, height, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, height = height, source = source, metric = "weight_for_height", type = "zscore", ...)
+  cppPGSF(qp = q, male = male, height = height, source = source, metric = "weight_for_height", type = "zscore", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 p_weight_for_length <- function(q, male, length, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, length = length, source = source, metric = "weight_for_length", type = "distribution", ...)
+  cppPGSF(qp = q, male = male, length = length, source = source, metric = "weight_for_length", type = "distribution", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 q_weight_for_length <- function(p, male, length, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = p, male = male, length = length, source = source, metric = "weight_for_length", type = "quantile", ...)
+  cppPGSF(qp = p, male = male, length = length, source = source, metric = "weight_for_length", type = "quantile", ...)
 }
 
 #' @rdname pediatric_growth_standards
 #' @export
 z_weight_for_length <- function(q, male, length, source = getOption("pedbp_pgs_source", "CDC"), ...) {
-  cppPGSF(x = q, male = male, length = length, source = source, metric = "weight_for_length", type = "zscore", ...)
+  cppPGSF(qp = q, male = male, length = length, source = source, metric = "weight_for_length", type = "zscore", ...)
 }
