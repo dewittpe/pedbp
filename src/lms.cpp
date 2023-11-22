@@ -32,10 +32,10 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
     if (source == "WHO") {
       if (male == 1) {
         //LUT = head_circumference_for_age_who_male();
-        Rf_warning("head circumference for age who male not yet defined");
+        Rf_error("head circumference for age WHO male not yet defined");
       } else {
         //LUT = head_circumference_for_age_who_female();
-        Rf_warning("head circumference for age who female not yet defined");
+        Rf_error("head circumference for age WHO female not yet defined");
       }
     } else if (source == "CDC") {
       if (male == 1) {

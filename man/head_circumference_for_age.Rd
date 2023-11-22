@@ -75,9 +75,9 @@ p
 z_head_circumference_for_age(q = 46, male = 1, age = 13, source = "CDC")
 qnorm(p)
 
-\donttest{ # this will error -- WHO not yet implimented
-q_head_circumference_for_age(0.5, male = 0, age = 24, source = "WHO")
-}
+# WHO not yet implimented
+tryCatch(q_head_circumference_for_age(0.5, male = 0, age = 24, source = "WHO"),
+         error = function(e) e)
 
 }
 \references{
