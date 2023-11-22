@@ -1,159 +1,95 @@
 library(pedbp)
-
-d <- pedbp:::lms_data
-d <- d[d$metric == "head_circumference_for_age", ]
-dwho <- d[d$source == "WHO", ]
-dcdc <- d[d$source == "CDC", ]
+library(data.table)
 
 ################################################################################
-##                           Testing p_head_circ_for_age                            ##
+##                    Testing against the published values                    ##
+internal_lms_data <-
+  pedbp:::lms_data |>
+  lapply(lapply, data.table::rbindlist, use.names = TRUE, fill = TRUE) |>
+  lapply(data.table::rbindlist, use.names = TRUE, fill = TRUE) |>
+  data.table::rbindlist(use.names = TRUE, fill = TRUE)
 
-# verify the 0.01 and 0.25 percentile is genereted as expected.  Assuming these
-# tests pass there will be additional tests of the quantile, distribution, and
-# zscore functions.
-
-p01_who_test <-
-  p_head_circ_for_age(  q      = dwho$P01
-                , age    = dwho$age
-                , male   = dwho$male
-                , source = "WHO"
-  )
-p01_cdc_test <-
-  p_head_circ_for_age(  q      = dwho$P01
-                , age    = dwho$age
-                , male   = dwho$male
-                , source = "CDC"
-  )
-p01_cdc_who_test <-
-  p_head_circ_for_age(  q      = dwho$P01
-                , age    = dwho$age
-                , male   = dwho$male
-                , source = "CDC-WHO"
+internal_lms_data <-
+  data.table::melt(
+    internal_lms_data
+  , id.vars = c("source", "metric", "male", "age", "height", "length", "L", "M", "S")
+  , measure.vars = patterns("P")
+  , variable.factor = FALSE
+  , variable.name = "published_percentile"
+  , value.name = "published_quantile"
   )
 
-# should return a vector the same length as the input
-stopifnot(identical(length(p01_who_test), nrow(dwho)))
-stopifnot(identical(length(p01_cdc_test), nrow(dwho)))
-stopifnot(identical(length(p01_cdc_who_test), nrow(dwho)))
+internal_lms_data <- internal_lms_data[metric == "head_circumference_for_age"]
+internal_lms_data <- internal_lms_data[!is.na(published_quantile) & !is.na(published_percentile)]
 
-# 0.001 to three digits, even 4 digits, for the WHO data
-stopifnot(identical(round(p01_who_test, digits = 3), rep(0.001, length = nrow(dwho))))
-stopifnot(identical(round(p01_who_test, digits = 4), rep(0.001, length = nrow(dwho))))
+internal_lms_data[published_percentile == "P01",  published_percentile := 0.001]
+internal_lms_data[published_percentile == "P1",   published_percentile := 0.010]
+internal_lms_data[published_percentile == "P3",   published_percentile := 0.030]
+internal_lms_data[published_percentile == "P5",   published_percentile := 0.050]
+internal_lms_data[published_percentile == "P10",  published_percentile := 0.100]
+internal_lms_data[published_percentile == "P15",  published_percentile := 0.150]
+internal_lms_data[published_percentile == "P25",  published_percentile := 0.250]
+internal_lms_data[published_percentile == "P50",  published_percentile := 0.500]
+internal_lms_data[published_percentile == "P75",  published_percentile := 0.750]
+internal_lms_data[published_percentile == "P85",  published_percentile := 0.850]
+internal_lms_data[published_percentile == "P90",  published_percentile := 0.900]
+internal_lms_data[published_percentile == "P95",  published_percentile := 0.950]
+internal_lms_data[published_percentile == "P97",  published_percentile := 0.970]
+internal_lms_data[published_percentile == "P99",  published_percentile := 0.990]
+internal_lms_data[published_percentile == "P999", published_percentile := 0.999]
+internal_lms_data[, published_percentile := as.numeric(published_percentile)]
 
-# for the pure cdc data, there should be NAs, for ages under 2 years = 24
-# months, and non-NA for ages >= 2 years = 24 months.  The non-missing values
-# should be near 0.001, but will not be there as the provided quantiles in the
-# test are for the WHO data and corresponding values for the CDC are not
-# available.
-stopifnot(isTRUE(all(is.na( p01_cdc_test[dwho$age < 24] ))))
-stopifnot(isTRUE(all(!is.na( p01_cdc_test[dwho$age >= 24] ))))
+internal_lms_data[, test_percentile := p_head_circumference_for_age(q = published_quantile, male = male, age = age, source = source)]
+internal_lms_data[, test_quantile   := q_head_circumference_for_age(p = published_percentile, male = male, age = age, source = source)]
+internal_lms_data[, test_zscore     := z_head_circumference_for_age(q = published_quantile, male = male, age = age, source = source)]
 
-# the p01_cdc_who_test result should be the who value were p01_cdc_test is NA
-# and cdc value otherwise
-expected <- p01_cdc_test
-expected[is.na(p01_cdc_test)] <- p01_who_test[is.na(p01_cdc_test)]
-stopifnot(isTRUE(all.equal(p01_cdc_who_test, expected)))
+stopifnot(internal_lms_data[, round(test_percentile, 3) == published_percentile])
 
-# do the same test for the first quantile
-p25_who_test <-
-  p_head_circ_for_age(  q      = dwho$P25
-                , age    = dwho$age
-                , male   = dwho$male
-                , source = "WHO"
-  )
-p25_cdc_test <-
-  p_head_circ_for_age(  q      = dwho$P25
-                , age    = dwho$age
-                , male   = dwho$male
-                , source = "CDC"
-  )
-p25_cdc_who_test <-
-  p_head_circ_for_age(  q      = dwho$P25
-                , age    = dwho$age
-                , male   = dwho$male
-                , source = "CDC-WHO"
-  )
+quantile_tests_3 <-
+  Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-3)) }
+      , x = internal_lms_data[["test_quantile"]]
+      , y = internal_lms_data[["published_quantile"]]) |>
+  do.call(c, args = _)
 
-stopifnot(identical(length(p25_who_test), nrow(dwho)))
-stopifnot(identical(length(p25_cdc_test), nrow(dwho)))
-stopifnot(identical(length(p25_cdc_who_test), nrow(dwho)))
+quantile_tests_4 <-
+  Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-4)) }
+      , x = internal_lms_data[["test_quantile"]]
+      , y = internal_lms_data[["published_quantile"]]) |>
+  do.call(c, args = _)
 
-stopifnot(identical(round(p25_who_test, digits = 3), rep(0.25, length = nrow(dwho))))
+quantile_tests_5 <-
+  Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-5)) }
+      , x = internal_lms_data[["test_quantile"]]
+      , y = internal_lms_data[["published_quantile"]]) |>
+  do.call(c, args = _)
 
-stopifnot(isTRUE(all(is.na( p25_cdc_test[dwho$age < 24] ))))
-stopifnot(isTRUE(all(!is.na( p25_cdc_test[dwho$age >= 24] ))))
-
-expected <- p25_cdc_test
-expected[is.na(p25_cdc_test)] <- p25_who_test[is.na(p25_cdc_test)]
-stopifnot(isTRUE(all.equal(p25_cdc_who_test, expected)))
-
-# testing on the CDC data
-p25_who_test <-
-  p_head_circ_for_age(  q      = dcdc$P25
-                , age    = dcdc$age
-                , male   = dcdc$male
-                , source = "WHO"
-  )
-p25_cdc_test <-
-  p_head_circ_for_age(  q      = dcdc$P25
-                , age    = dcdc$age
-                , male   = dcdc$male
-                , source = "CDC"
-  )
-p25_cdc_who_test <-
-  p_head_circ_for_age(  q      = dcdc$P25
-                , age    = dcdc$age
-                , male   = dcdc$male
-                , source = "CDC-WHO"
-  )
-
-stopifnot(identical(length(p25_who_test), nrow(dcdc)))
-stopifnot(identical(length(p25_cdc_test), nrow(dcdc)))
-stopifnot(identical(length(p25_cdc_who_test), nrow(dcdc)))
-
-stopifnot(identical(round(p25_cdc_test, digits = 3), rep(0.25, length = nrow(dcdc))))
-
-stopifnot(isTRUE(all(is.na( p25_cdc_test[dcdc$age < 24] ))))
-stopifnot(isTRUE(all(!is.na( p25_cdc_test[dcdc$age >= 24] ))))
-
-expected <- p25_cdc_test
-expected[is.na(p25_cdc_test)] <- p25_who_test[is.na(p25_cdc_test)]
-stopifnot(isTRUE(all.equal(p25_cdc_who_test, expected)))
+stopifnot(quantile_tests_3)
+stopifnot(quantile_tests_4)
+stopifnot(quantile_tests_5)
 
 ################################################################################
-##           Testing of quantile, distribution, and zscore methods            ##
-set.seed(42)
-ages    <- runif(1000, min = 0, max = 240.5)
-genders <- as.integer(runif(1000) < 0.5)
-ps      <- runif(1000)
+## Test that the default will return the value based on the floor of the age  ##
 
-test_df <-
-  data.frame(
-    age       = ages
-  , male      = genders
-  , p         = ps
-  , z         = qnorm(ps)
-  , q_cdc.who = suppressWarnings(q_head_circ_for_age(p = ps, male = genders, age = ages, source = "CDC-WHO"))
-  , q_cdc     = suppressWarnings(q_head_circ_for_age(p = ps, male = genders, age = ages, source = "CDC"))
-  , q_who     = suppressWarnings(q_head_circ_for_age(p = ps, male = genders, age = ages, source = "WHO"))
-  )
+# take sequential ages known exactly for CDC data
+cdc <- internal_lms_data[age > 6 & age < 8 & source == "CDC"]
+stopifnot(length(unique(cdc$age)) == 2L)
 
-test_df[["p_cdc.who"]] <- suppressWarnings(p_head_circ_for_age(q = test_df$q_cdc.who, male = genders, age = ages, source = "CDC-WHO"))
-test_df[["p_cdc"]] <- suppressWarnings(p_head_circ_for_age(q = test_df$q_cdc, male = genders, age = ages, source = "CDC"))
-test_df[["p_who"]] <- suppressWarnings(p_head_circ_for_age(q = test_df$q_who, male = genders, age = ages, source = "WHO"))
+# define testing ages between the two values above
+testing_ages <- seq(from = min(cdc$age), to = max(cdc$age), length.out = 7)
 
-test_df[["z_cdc.who"]] <- suppressWarnings(z_head_circ_for_age(q = test_df$q_cdc.who, male = genders, age = ages, source = "CDC-WHO"))
-test_df[["z_cdc"]] <- suppressWarnings(z_head_circ_for_age(q = test_df$q_cdc, male = genders, age = ages, source = "CDC"))
-test_df[["z_who"]] <- suppressWarnings(z_head_circ_for_age(q = test_df$q_who, male = genders, age = ages, source = "WHO"))
+d <- data.table::CJ(male = 0:1, age = testing_ages)
 
-head(test_df)
+d[, p := p_head_circumference_for_age(q = 16.19, male = male, age = age, source = "CDC")]
+d[, q := q_head_circumference_for_age(p = 0.42, male = male, age = age, source = "CDC")]
+d[, z := z_head_circumference_for_age(q = 15.26, male = male, age = age, source = "CDC")]
 
-stopifnot(identical(test_df[test_df$age <  24, "q_cdc.who"], test_df[test_df$age <  24, "q_who"]))
-stopifnot(identical(test_df[test_df$age >= 24, "q_cdc.who"], test_df[test_df$age >= 24, "q_cdc"]))
-
-stopifnot(with(test_df[!is.na(test_df$z_cdc), ], isTRUE(all.equal(z, z_cdc))))
-stopifnot(with(test_df[!is.na(test_df$z_who), ], isTRUE(all.equal(z, z_who))))
-stopifnot(with(test_df[!is.na(test_df$z_cdc.who), ], isTRUE(all.equal(z, z_cdc.who))))
+# Expected behavior is that ignoring age should result in four unique rows,
+# male/female by range(age)
+d[, dup := duplicated(d, by = c("male", "p", "q", "z"))]
+stopifnot(
+          d[!(dup), identical(male, c(0L, 0L, 1L, 1L))],
+          d[!(dup), all.equal(age, rep(range(testing_ages), 2))]
+)
 
 ################################################################################
 ##                               End of center                                ##
