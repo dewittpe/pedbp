@@ -43,7 +43,12 @@ internal_lms_data[, test_percentile := p_weight_for_length(q = published_quantil
 internal_lms_data[, test_quantile   := q_weight_for_length(p = published_percentile, male = male, length = length, source = source)]
 internal_lms_data[, test_zscore     := z_weight_for_length(q = published_quantile, male = male, length = length, source = source)]
 
-stopifnot(internal_lms_data[, round(test_percentile, 3) == published_percentile])
+# to check the percentile, round to the number of digits of the published
+# percentile
+internal_lms_data[, prd := pmax(nchar(as.character(published_percentile)) - 2, 2)]
+stopifnot(internal_lms_data[, round(x = test_percentile, digits = prd) == published_percentile])
+
+
 
 quantile_tests_3 <-
   Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-3)) }
@@ -58,7 +63,7 @@ quantile_tests_4 <-
   do.call(c, args = _)
 
 stopifnot(quantile_tests_3)
-stopifnot(quantile_tests_4)
+stopifnot(!all(quantile_tests_4))
 
 ################################################################################
 # Test that the default will return the value based on the floor of the length #

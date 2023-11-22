@@ -45,6 +45,25 @@ internal_lms_data[, test_zscore     := z_weight_for_height(q = published_quantil
 
 stopifnot(internal_lms_data[, round(test_percentile, 3) == published_percentile])
 
+#internal_lms_data[ round(test_percentile, 3) != published_percentile]
+#pedbp:::plms(x = 8.972919, l = -0.9992942, m = 10.27441, s = 0.07711584)
+#p_weight_for_height(q = 8.972919, male = 1, height = 77.0)# = -0.9992942, m = 10.27441, s = 0.07711584)
+
+
+# arma::mat weight_for_height_cdc_male() {
+# 	arma::mat LMS = {
+# { 77, -0.999294215, 10.27440527, 0.077115837 },
+# { 77.5, -0.979897716, 10.38901871, 0.076995353 },
+# { 78.5, -0.943555181, 10.61724901, 0.076769511 },
+
+# arma::mat weight_for_height_cdc_female() {
+# 	arma::mat LMS = {
+# { 77, -0.957840869, 10.08653219, 0.081713853 },
+# { 77.5, -0.935908436, 10.19868351, 0.081394448 },
+# { 78.5, -0.89621042, 10.42217324, 0.080780644 },
+
+#stop()
+
 quantile_tests_3 <-
   Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-3)) }
       , x = internal_lms_data[["test_quantile"]]

@@ -89,8 +89,8 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
       if (male == 1) {
         LUT = weight_for_height_cdc_male();
       } else {
-      }
         LUT = weight_for_height_cdc_female();
+      }
     } else {
       Rf_error("Unknown source for weight_for_height data");
     }
@@ -137,8 +137,8 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
       if (male == 1) {
         LUT = weight_for_length_cdc_male();
       } else {
-      }
         LUT = weight_for_length_cdc_female();
+      }
     } else {
       Rf_error("Unknown source for weight_for_length data");
     }
@@ -200,6 +200,10 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
   m = LUT.col(2)(left);
   s = LUT.col(3)(left);
 
+  //Rcpp::Rcout << "LUT.col(0)(left)" << LUT.col(0)(left) << "\n";
+  //Rcpp::Rcout << "LUT.col(1)(left)" << LUT.col(1)(left) << "\n";
+  //Rcpp::Rcout << "LUT.col(2)(left)" << LUT.col(2)(left) << "\n";
+  //Rcpp::Rcout << "LUT.col(3)(left)" << LUT.col(3)(left) << "\n";
   //Rcpp::Rcout << "l: " << l << "\n";
   //Rcpp::Rcout << "m: " << m << "\n";
   //Rcpp::Rcout << "s: " << s << "\n";
