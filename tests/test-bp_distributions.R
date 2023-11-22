@@ -16,6 +16,7 @@ stopifnot(
 ################################################################################
 # verify error if length(age) > 1L and length(age) != length(q_sbp) or p_sbp
 # verify error if length(male) > 1L and length(male) != length(q_sbp) or p_sbp
+# verify error if length(height) > 1L and length(male) != length(q_sbp) or p_sbp
 tryCatch(
   q_bp(p_sbp = c(0.5, 0.5), p_dbp = c(0.4, 0.32), age = numeric(0), male = 1)
   , error = function(e) e
@@ -49,6 +50,24 @@ identical(c("simpleError", "error", "condition")) |>
 stopifnot()
 
 tryCatch(
+  q_bp(p_sbp = c(0.5, 0.5), p_dbp = c(0.4, 0.32), age = 3, male = 1, height = numeric(0))
+  , error = function(e) e
+) |>
+class() |>
+identical(c("simpleError", "error", "condition")) |>
+stopifnot()
+
+tryCatch(
+  q_bp(p_sbp = c(0.5, 0.5), p_dbp = c(0.4, 0.32), age = 3, male = 1, height = 77:79)
+  , error = function(e) e
+) |>
+class() |>
+identical(c("simpleError", "error", "condition")) |>
+stopifnot()
+
+
+
+tryCatch(
   p_bp(q_sbp = c(90,87), q_dbp = c(52, 32), age = numeric(0), male = 1)
   , error = function(e) e
 ) |>
@@ -79,6 +98,23 @@ tryCatch(
 class() |>
 identical(c("simpleError", "error", "condition")) |>
 stopifnot()
+
+tryCatch(
+  p_bp(q_sbp = c(90,87), q_dbp = c(52, 32), age = 3, male = 1, height = numeric(0))
+  , error = function(e) e
+) |>
+class() |>
+identical(c("simpleError", "error", "condition")) |>
+stopifnot()
+
+tryCatch(
+  p_bp(q_sbp = c(90,87), q_dbp = c(52, 32), age = 3, male = 1, height = 77:79)
+  , error = function(e) e
+) |>
+class() |>
+identical(c("simpleError", "error", "condition")) |>
+stopifnot()
+
 
 
 ################################################################################
