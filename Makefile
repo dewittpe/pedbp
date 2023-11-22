@@ -128,7 +128,7 @@ $(PKG_ROOT)/R/sysdata.rda : data-raw/sysdata.R $(SYSDATA_SRCS)
 # working directory.
 #
 covr-report-tests.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("tests"), line_exclusions = list("R/pedbp-defunct.R", "R/zzz.R"))'\
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("tests"), function_exclusions = c("plot\\\\."), line_exclusions = list("R/pedbp-defunct.R", "R/zzz.R"))'\
 		-e 'covr::report(x, file = "covr-report-tests.html")'
 
 covr-report-vignettes.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
