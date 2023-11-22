@@ -45,7 +45,7 @@ d <- d[d$age >= 12 & d$age < 36 & !is.na(d$height_percentile), ]
 nrow(d)
 
 d$ht <-
-  q_stature_for_age(p = d$height_percentile / 100, age = d$age, male = d$male)
+  q_length_for_age(p = d$height_percentile / 100, age = d$age, male = d$male, source = "WHO")
 
 for( i in 1:nrow(d)) {
   if (interactive()) {
@@ -82,7 +82,7 @@ d <- d[d$age >= 36 & !is.na(d$height_percentile), ]
 nrow(d)
 
 d$ht <-
-  q_stature_for_age( p = d$height_percentile / 100, age = d$age, male = d$male)
+  q_height_for_age( p = d$height_percentile / 100, age = d$age, male = d$male, source = "CDC")
 
 for( i in 1:nrow(d)) {
   if (interactive()) {
