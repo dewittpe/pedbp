@@ -20,11 +20,16 @@ qlms(x, l, m, s, ...)
 
 \item{...}{pass through}
 }
+\value{
+a numeric vector
+}
 \description{
 Functions for getting estimated distribution, quantile, and standard scores
 (z-scores) given LMS parameters.
 }
 \details{
+The parameters need to be either length 1 or of equal length.
+
 L is the power in the Box-Cox transformation, M the median, and S a
 generalized coefficient of variation. For a given standard score (z-score),
 Z, the value X of interest is
@@ -35,8 +40,36 @@ Z, the value X of interest is
 To get the z-score for a value X:
 
 \deqn{Z = \begin{cases} \frac{ \left(\frac{X}{M}\right)^{L} - 1 }{LS} & L
-\neq 0 \\ \frac{\log\left(\frac{X}{M}}{S} & L = 0.}{ ( (X/M)^L - 1) / (LS)
-for L != 0; log(X/M) / S for L = 0.}
+\neq 0 \\ \frac{\log\left(\frac{X}{M}\right)}{S} & L = 0. \end{cases}}{
+( (X/M)^L - 1) / (LS) for L != 0; log(X/M) / S for L = 0.}
+}
+\examples{
+
+l <- -0.1600954
+m <-  9.476500305
+s <-  0.11218624
+
+# the 5th quantile:
+qlms(x = 0.05, l = l, m = m, s = s)
+
+# What percentile is the value 8.2?
+plms(x = 8.2, l = l, m = m, s = s)
+
+# What is the standard score for the value 8.2
+zlms(x = 8.2, l = l, m = m, s = s)
+
+all.equal(
+  zlms(x = 8.2, l = l, m = m, s = s)
+  ,
+  qnorm(plms(x = 8.2, l = l, m = m, s = s))
+)
+
+# get all the quantiles form the 5th through 95th for a set of LMS parameters
+ps <- seq(0.05, 0.95, by = 0.05)
+qs <- qlms(x = ps, l = l, m = m, s = s)
+all.equal(plms(qs, l, m, s), ps)
+all.equal(zlms(x = qs, l = l, m = m, s = s), qnorm(ps))
+
 }
 \references{
 Cole, Timothy J., and Pamela J. Green. "Smoothing reference
