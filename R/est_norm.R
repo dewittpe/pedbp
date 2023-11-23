@@ -6,8 +6,9 @@
 #' For X ~ N(mu, sigma), Pr[X <= q] = p
 #'
 #' Given the set of quantiles and probabilities, \code{est_norm} uses
-#' \code{\link[stats]{optim}} to find the preferable mean and standard deviation
-#' of a normal distribution to fit the provided quantiles.
+#' \code{\link[stats]{optim}} (with \code{method = "L-BFGS-B"}, \code{lower =
+#' c(-Inf, 0)}, \code{upper = c(Inf, Inf)}) to find the preferable mean and
+#' standard deviation of a normal distribution to fit the provided quantiles.
 #'
 #' Use the \code{weight} argument to emphasize which, if any, of the provided
 #' quantiles needs to be approximated closer than others.  By default all the
@@ -17,7 +18,8 @@
 #' @param p probabilities corresponding to the \code{q} quantiles.
 #' @param weights relative weight of each quantile.  The higher the weight the
 #' better the approximated distribution will be at fitting that quantile.
-#' @param ... passed to \code{\link[stats]{optim}}.
+#' @param ... additional arguments passed to \code{\link[stats]{optim}}. See
+#' Details.
 #'
 #' @return a \code{pedbp_est_norm} object.  This is a list with elements:
 #' \itemize{
@@ -67,6 +69,10 @@ est_norm <- function(q, p, weights = rep(1, length(p)), ...) {
   stopifnot(length(q) == length(p))
   stopifnot(all(p > 0) & all(p < 1))
   stopifnot(is.numeric(q))
+  
+  if (any(diff(q) < 0) | any(diff(p) < 0)) {
+    stop("q and p are expected to be sorted in ascending order.")
+  }
 
   # get an initial estimate for the mean and standard deviation
   # mean estimated by the median
@@ -78,9 +84,6 @@ est_norm <- function(q, p, weights = rep(1, length(p)), ...) {
 
   # define a function to minimize via stats::optim
   sum_squared_resid <- function(x) {
-    if (x[2] < 0) {
-      x[2] <- 0.01
-    }
     res <- stats::pnorm(q = q, mean = x[1], sd = x[2]) - p
     res <- res * weights
     sum(res**2)
@@ -89,6 +92,9 @@ est_norm <- function(q, p, weights = rep(1, length(p)), ...) {
   # call optim
   optim <- stats::optim(par = c(mean_est, sd_est),
                         fn  = sum_squared_resid,
+                        method = "L-BFGS-B",
+                        lower = c(-Inf, 0),
+                        upper = c(Inf, Inf),
                         ...)
 
   rtn <- list(
@@ -111,10 +117,8 @@ print.pedbp_est_norm <- function(x, ...) {
 
 #' @export
 plot.pedbp_est_norm <- function(x, ...) {
-  ggplot2::ggplot(data = data.frame(x = x$qp[, "q"], y = x$qp[, "p"])) +
-    ggplot2::aes_string(x = "x", y = "y") +
-    ggplot2::xlab("Quantile") +
-    ggplot2::ylab("Probability") +
+  ggplot2::ggplot(data = data.frame(Quantile = x$qp[, "q"], Probability = x$qp[, "p"])) +
+    eval(substitute(ggplot2::aes(x = X, y = Y), list(X = as.name("Quantile"), Y = as.name("Probability")))) +
     ggplot2::geom_point(pch = 1) +
     ggplot2::geom_function(fun = stats::pnorm, args = list(mean = x$par[1], sd = x$par[2]))
 }

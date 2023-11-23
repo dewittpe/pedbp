@@ -1,261 +1,96 @@
 library(pedbp)
+library(data.table)
 
-d <- pedbp:::cdc_lms_data
+################################################################################
+##                    Testing against the published values                    ##
+internal_lms_data <-
+  pedbp:::lms_data |>
+  lapply(lapply, data.table::rbindlist, use.names = TRUE, fill = TRUE) |>
+  lapply(data.table::rbindlist, use.names = TRUE, fill = TRUE) |>
+  data.table::rbindlist(use.names = TRUE, fill = TRUE)
 
+internal_lms_data <-
+  data.table::melt(
+    internal_lms_data
+  , id.vars = c("source", "metric", "male", "age", "height", "length", "L", "M", "S")
+  , measure.vars = patterns("P")
+  , variable.factor = FALSE
+  , variable.name = "published_percentile"
+  , value.name = "published_quantile"
+  )
 
-# Testing p_weight_for_age {{{
-test_p03 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p03"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+internal_lms_data <- internal_lms_data[metric == "weight_for_age"]
+internal_lms_data <- internal_lms_data[!is.na(published_quantile) & !is.na(published_percentile)]
 
-test_p05 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p05"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-test_p10 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p10"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+internal_lms_data[published_percentile == "P01",  published_percentile := 0.001]
+internal_lms_data[published_percentile == "P1",   published_percentile := 0.010]
+internal_lms_data[published_percentile == "P3",   published_percentile := 0.030]
+internal_lms_data[published_percentile == "P5",   published_percentile := 0.050]
+internal_lms_data[published_percentile == "P10",  published_percentile := 0.100]
+internal_lms_data[published_percentile == "P15",  published_percentile := 0.150]
+internal_lms_data[published_percentile == "P25",  published_percentile := 0.250]
+internal_lms_data[published_percentile == "P50",  published_percentile := 0.500]
+internal_lms_data[published_percentile == "P75",  published_percentile := 0.750]
+internal_lms_data[published_percentile == "P85",  published_percentile := 0.850]
+internal_lms_data[published_percentile == "P90",  published_percentile := 0.900]
+internal_lms_data[published_percentile == "P95",  published_percentile := 0.950]
+internal_lms_data[published_percentile == "P97",  published_percentile := 0.970]
+internal_lms_data[published_percentile == "P99",  published_percentile := 0.990]
+internal_lms_data[published_percentile == "P999", published_percentile := 0.999]
+internal_lms_data[, published_percentile := as.numeric(published_percentile)]
 
-test_p25 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p25"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+internal_lms_data[, test_percentile := p_weight_for_age(q = published_quantile, male = male, age = age, source = source)]
+internal_lms_data[, test_quantile   := q_weight_for_age(p = published_percentile, male = male, age = age, source = source)]
+internal_lms_data[, test_zscore     := z_weight_for_age(q = published_quantile, male = male, age = age, source = source)]
 
-test_p50 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p50"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+stopifnot(internal_lms_data[, round(test_percentile, 3) == published_percentile])
 
-test_p75 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p75"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+quantile_tests_3 <-
+  Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-3)) }
+      , x = internal_lms_data[["test_quantile"]]
+      , y = internal_lms_data[["published_quantile"]]) |>
+  do.call(c, args = _)
 
-stopifnot(all(is.na(d[d$set == "weight_for_age", "p85"])))
-# test_p85 <-
-#   p_weight_for_age(
-#            q    = d[d$set == "weight_for_age", "p85"]
-#          , age  = d[d$set == "weight_for_age", "age"]
-#          , male = d[d$set == "weight_for_age", "male"]
-#          )
+quantile_tests_4 <-
+  Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-4)) }
+      , x = internal_lms_data[["test_quantile"]]
+      , y = internal_lms_data[["published_quantile"]]) |>
+  do.call(c, args = _)
 
-test_p90 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p90"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+quantile_tests_5 <-
+  Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-5)) }
+      , x = internal_lms_data[["test_quantile"]]
+      , y = internal_lms_data[["published_quantile"]]) |>
+  do.call(c, args = _)
 
-test_p95 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p95"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+stopifnot(quantile_tests_3)
+stopifnot(!all(quantile_tests_4))
+stopifnot(!all(quantile_tests_5))
 
-test_p97 <-
-  p_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p97"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+################################################################################
+## Test that the default will return the value based on the floor of the age  ##
 
+# take sequential ages known exactly for CDC data
+cdc <- internal_lms_data[age > 36 & age < 38 & source == "CDC"]
+stopifnot(length(unique(cdc$age)) == 2L)
 
-stopifnot(all(round(test_p03, 2) == 0.03))
-stopifnot(all(round(test_p05, 2) == 0.05))
-stopifnot(all(round(test_p10, 2) == 0.10))
-stopifnot(all(round(test_p25, 2) == 0.25))
-stopifnot(all(round(test_p50, 2) == 0.50))
-stopifnot(all(round(test_p75, 2) == 0.75))
-# stopifnot(all(round(test_p85, 2) == 0.85))
-stopifnot(all(round(test_p90, 2) == 0.90))
-stopifnot(all(round(test_p95, 2) == 0.95))
-stopifnot(all(round(test_p97, 2) == 0.97))
+# define testing ages between the two values above
+testing_ages <- seq(from = min(cdc$age), to = max(cdc$age), length.out = 7)
 
-# }}}
+d <- data.table::CJ(male = 0:1, age = testing_ages)
 
-# Tesing q_weight_for_age {{{
-test_q03 <-
-  q_weight_for_age(
-           p    = c(0.03)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+d[, p := p_weight_for_age(q = 16.19, male = male, age = age, source = "CDC")]
+d[, q := q_weight_for_age(p = 0.42, male = male, age = age, source = "CDC")]
+d[, z := z_weight_for_age(q = 15.26, male = male, age = age, source = "CDC")]
 
-test_q05 <-
-  q_weight_for_age(
-           p    = c(0.05)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
+# Expected behavior is that ignoring age should result in four unique rows,
+# male/female by range(age)
+d[, dup := duplicated(d, by = c("male", "p", "q", "z"))]
+stopifnot(
+          d[!(dup), identical(male, c(0L, 0L, 1L, 1L))],
+          d[!(dup), all.equal(age, rep(range(testing_ages), 2))]
+)
 
-test_q10 <-
-  q_weight_for_age(
-           p    = c(0.10)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_q25 <-
-  q_weight_for_age(
-           p    = c(0.25)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_q50 <-
-  q_weight_for_age(
-           p    = c(0.50)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_q75 <-
-  q_weight_for_age(
-           p    = c(0.75)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-stopifnot(all(is.na(d[d$set == "weight_for_age", "p85"])))
-# test_q85 <-
-#   q_weight_for_age(
-#            p    = c(0.85)
-#          , age  = d[d$set == "weight_for_age", "age"]
-#          , male = d[d$set == "weight_for_age", "male"]
-#          )
-
-test_q90 <-
-  q_weight_for_age(
-           p    = c(0.90)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_q95 <-
-  q_weight_for_age(
-           p    = c(0.95)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_q97 <-
-  q_weight_for_age(
-           p    = c(0.97)
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-stopifnot(all.equal(test_q03, d[d$set == "weight_for_age", "p03"]))
-stopifnot(all.equal(test_q05, d[d$set == "weight_for_age", "p05"]))
-stopifnot(all.equal(test_q10, d[d$set == "weight_for_age", "p10"]))
-stopifnot(all.equal(test_q25, d[d$set == "weight_for_age", "p25"]))
-stopifnot(all.equal(test_q50, d[d$set == "weight_for_age", "p50"]))
-stopifnot(all.equal(test_q75, d[d$set == "weight_for_age", "p75"]))
-# stopifnot(all.equal(test_q85, d[d$set == "weight_for_age", "p85"]))
-stopifnot(all.equal(test_q90, d[d$set == "weight_for_age", "p90"]))
-stopifnot(all.equal(test_q95, d[d$set == "weight_for_age", "p95"]))
-stopifnot(all.equal(test_q97, d[d$set == "weight_for_age", "p97"]))
-
-# end testing q_weight_for_age }}}
-
-# Testing z_weight_for_age {{{
-test_z03 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p03"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_z05 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p05"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_z10 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p10"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_z25 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p25"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_z50 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p50"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_z75 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p75"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-stopifnot(all(is.na(d[d$set == "weight_for_age", "p85"])))
-# test_z85 <-
-#   z_weight_for_age(
-#            q    = d[d$set == "weight_for_age", "p85"]
-#          , age  = d[d$set == "weight_for_age", "age"]
-#          , male = d[d$set == "weight_for_age", "male"]
-#          )
-
-test_z90 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p90"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_z95 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p95"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-test_z97 <-
-  z_weight_for_age(
-           q    = d[d$set == "weight_for_age", "p97"]
-         , age  = d[d$set == "weight_for_age", "age"]
-         , male = d[d$set == "weight_for_age", "male"]
-         )
-
-
-stopifnot(all.equal(test_z03, rep(qnorm(0.03), length(test_z03))))
-stopifnot(all.equal(test_z05, rep(qnorm(0.05), length(test_z05))))
-stopifnot(all.equal(test_z10, rep(qnorm(0.10), length(test_z10))))
-stopifnot(all.equal(test_z25, rep(qnorm(0.25), length(test_z25))))
-stopifnot(all.equal(test_z50, rep(qnorm(0.50), length(test_z50))))
-stopifnot(all.equal(test_z75, rep(qnorm(0.75), length(test_z75))))
-# stopifnot(all.equal(test_z85, rep(qnorm(0.85), length(test_z85))))
-stopifnot(all.equal(test_z90, rep(qnorm(0.90), length(test_z90))))
-stopifnot(all.equal(test_z95, rep(qnorm(0.95), length(test_z95))))
-stopifnot(all.equal(test_z97, rep(qnorm(0.97), length(test_z97))))
-
-# }}}
-
+################################################################################
+##                               End of center                                ##
+################################################################################

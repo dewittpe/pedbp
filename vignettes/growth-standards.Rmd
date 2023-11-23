@@ -1,0 +1,167 @@
+---
+title: "Growth Standards"
+output:
+ rmarkdown::html_vignette:
+   toc: true
+   number_sections: true
+bibliography: references.bib
+vignette: >
+ %\VignetteIndexEntry{Growth Standards}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
+---
+
+
+```{r label = "setup", include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, fig.align = "center")
+library(pedbp)
+```
+
+
+# CDC Growth Charts
+
+Using the [Percentile Data Files with LMS values](https://www.cdc.gov/growthcharts/percentile_data_files.htm)
+provided by the CDC, we provide eight distribution tables which have been
+combinded into seven.  A
+
+| CDC Source                    | pedbp metric               |
+| :---------------------------- | :------------------------- |
+| BMI for age                   | bmi_for_age                |
+| head circumference for age    | head_circumference_for_age |
+| length for age for infants    | length_for_age             |
+| stature for age               | height_for_age             |
+| weight for age for infants    | weight_for_age             |
+| weight for age                | weight_for_age             |
+| weight for length for infants | weight_for_length          |
+| weight for stature            | weight_for_height          |
+
+All lengths/heights are in centimeters, ages in months, and weights in
+kilograms.
+
+The length-for-age and height-for-age methods were needed for the blood
+pressure methods.
+
+# WHO Growth Charts
+
+# LMS
+
+All methods use the published LMS parameters to define z-scores,
+percentiles, and quantiles for skewed distributions.  L is a $\lambda$
+parameter, the Box-Cox transformation power; $M$ the median value, and $S$ a
+generalized coefficient of variation.  For a given percentile or z-score, the
+corresponding physical measurement, $X,$ is defined as
+
+$$X = \begin{cases}
+   M \left(1 + \lambda S Z \right)^{\frac{1}{\lambda}} & \lambda \neq 0 \\
+   M \exp\left( S Z \right) & \lambda = 0.
+\end{cases}$$
+
+From this we can get the z-score for a given measurement $X:$
+
+$$ Z = \begin{cases}
+  \frac{\left(\frac{X}{M}\right)^{\lambda} - 1}{\lambda S} & \lambda \neq 0 \\
+  \frac{\log\left(\frac{X}{M}\right) }{ S } & \lambda = 0.
+  \end{cases}$$
+
+Percentiles are determined using the standard normal distribution of z-scores.
+
+For all eight of the noted methods we provide a distribution function,
+quantile function, and function that returns z-scores.
+
+# Metrics
+
+## Height for Age
+
+A height for age chart based on the CDC data:
+
+```{r echo = FALSE}
+lfa <- data.table::CJ(p = c(0.01, 0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95, 0.99),
+                      age = seq(0, 18*12, by = 3),
+                      male = 0:1)
+
+lfa[age <  36, l := q_height_for_age(p = p, age = age, male = male), by = .(p, age, male)]
+lfa[age >= 36, l := q_height_for_age(p = p, age = age, male = male), by = .(p, age, male)]
+lfa[, lab := paste(p * 100, "%")]
+lfa[, male := factor(male, 0:1, c("Female", "Male"))]
+percentile_factor <- function(p) {
+  factor(p, levels = sort(unique(p)), labels = paste0(sort(unique(p)) * 100, "th"))
+}
+lfa[, p := percentile_factor(p)]
+
+g <- function(lfa) {
+  ggplot2::ggplot(lfa) +
+    ggplot2::theme_bw() +
+    ggplot2::aes(x = age, y = l, color = p) +
+    ggplot2::geom_line() +
+    ggplot2::facet_wrap( ~ male) +
+    ggplot2::scale_x_continuous(name = "Age"
+                                , breaks = seq(0, max(lfa$age) + 12, by = 12)
+                                , labels = paste(
+                                                   paste0(seq(0, max(lfa$age) + 12, by = 12), "m")
+                                                 , paste0(seq(0, max(lfa$age) + 12, by = 12) / 12, "yr")
+                                                 , sep = "\n")
+                                ) +
+    ggplot2::scale_y_continuous(name = "Length or Height (cm)") +
+    ggplot2::scale_color_hue(name = "Length for Age percentile") +
+    ggplot2::theme(
+                   legend.position = "bottom"
+                   )
+}
+```
+
+
+
+
+```{r label = "lfa_female", echo = FALSE, fig.width = 8, fig.height = 6}
+g(lfa[male == "Female"])
+```
+
+
+
+
+```{r label = "lfa_male", echo = FALSE, fig.width = 8, fig.height = 6}
+g(lfa[male == "Male"])
+```
+
+
+## Weight for Age
+
+There are two methods for determining weight for age both based on CDC
+National Center for Health Statistics data: one for infants (weighed laying
+flat) up to 36 months [@cdc_weight_for_age_0_36],
+and one for children (weighed on a standing scale) over 24 months
+[@cdc_weight_for_age].
+
+A 33 pound (
+`r  round(33 * 0.453592, 2) `
+kg) 4 year old male is in the
+`r  paste0(round(100 * p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1), 2), 'th')  `
+percentile.
+
+```{r}
+p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1)
+```
+
+
+The 20th percentile weight for an 18 month old infant female is
+`r  round(q_weight_for_age(p = 0.2, age = 18, male = 0), 5) `
+kg.
+
+```{r}
+round(q_weight_for_age(p = 0.2, age = 18, male = 0), 5)
+```
+
+
+
+
+
+
+# References
+<div id="refs"></div>
+
+# Session Info
+
+```{r label = "sessioninfo"}
+sessionInfo()
+```
+

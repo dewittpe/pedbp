@@ -16,6 +16,8 @@ SHINYAPPS = $(wildcard $(PKG_ROOT)/inst/shinyapps/*)
 # These are both targets for building and dependencies for the package tar.gz
 # file
 VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd
+VIGNETTES += $(PKG_ROOT)/vignettes/growth-standards.Rmd
+VIGNETTES += $(PKG_ROOT)/vignettes/additional-utilities.Rmd
 
 ## Data targets
 DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda
@@ -23,6 +25,48 @@ DATATARGETS += $(PKG_ROOT)/data/gemelli1990.rda
 DATATARGETS += $(PKG_ROOT)/data/nhlbi_bp_norms.rda
 DATATARGETS += $(PKG_ROOT)/data/bp_parameters.rda
 DATATARGETS += $(PKG_ROOT)/R/sysdata.rda
+
+## sysdata sources
+SYSDATA_SRCS  = $(PKG_ROOT)/data-raw/cdc2000/bmiagerev.csv
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/hcageinf.csv
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/lenageinf.csv
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/statage.csv
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/wtage.csv
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/wtageinf.csv
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/wtleninf.csv
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/wtstat.csv
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/lhfa-girls-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/lhfa-girls-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/lhfa-boys-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/lhfa-boys-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfl-girls-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfh-girls-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfl-girls-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfh-girls-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfl-boys-zscore.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfh-boys-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfl-boys-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfh-boys-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-girls-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-girls-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-boys-zscore.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-boys-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hfa-girls-5-19-zscores.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hfa-boys-5-19-zscore.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hfa-girls-5-19-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hfa-boys-5-19-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-girls-5-19-zscore.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-boys-5-19-zscore.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-girls-5-19-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-boys-5-19-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-5-19-zscore.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-5-19-zscore.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-5-19-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-5-19-percentiles.xlsx
 
 ################################################################################
 # Recipes
@@ -34,7 +78,7 @@ all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 test:
 	${assert}
 
-$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS) $(SHINYAPPS)
+$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS) $(SHINYAPPS) $(SRC)
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
 
 .install_dev_deps.Rout : $(PKG_ROOT)/DESCRIPTION
@@ -76,7 +120,7 @@ $(PKG_ROOT)/data/gemelli1990.rda : data-raw/gemelli1990.R data-raw/gemelli1990_f
 $(PKG_ROOT)/data/bp_parameters.rda : data-raw/gaussian_parameters.R R/est_norm.R data/gemelli1990.rda  data/nhlbi_bp_norms.rda data/lo2013.rda
 	R CMD BATCH --vanilla $<
 
-$(PKG_ROOT)/R/sysdata.rda : data-raw/sysdata.R data-raw/cdc_percentile_data_with_lms_values/bmiagerev.csv data-raw/cdc_percentile_data_with_lms_values/hcageinf.csv data-raw/cdc_percentile_data_with_lms_values/lenageinf.csv data-raw/cdc_percentile_data_with_lms_values/statage.csv data-raw/cdc_percentile_data_with_lms_values/wtageinf.csv data-raw/cdc_percentile_data_with_lms_values/wtage.csv data-raw/cdc_percentile_data_with_lms_values/wtleninf.csv data-raw/cdc_percentile_data_with_lms_values/wtstat.csv
+$(PKG_ROOT)/R/sysdata.rda : data-raw/sysdata.R $(SYSDATA_SRCS)
 	R CMD BATCH --vanilla $<
 
 ################################################################################
@@ -84,15 +128,15 @@ $(PKG_ROOT)/R/sysdata.rda : data-raw/sysdata.R data-raw/cdc_percentile_data_with
 # working directory.
 #
 covr-report-tests.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("tests")'\
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("tests"), function_exclusions = c("plot\\\\."), line_exclusions = list("R/pedbp-defunct.R", "R/zzz.R"))'\
 		-e 'covr::report(x, file = "covr-report-tests.html")'
 
 covr-report-vignettes.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("vignettes")'\
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("vignettes"), line_exclusions = list("R/pedbp-defunct.R", "R/zzz.R"))'\
 		-e 'covr::report(x, file = "covr-report-vignettes.html")'
 
 covr-report-examples.html : $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("examples"))'\
+	R --vanilla --quiet -e 'x <- covr::package_coverage(type = c("examples"), line_exclusions = list("R/pedbp-defunct.R", "R/zzz.R"))'\
 		-e 'covr::report(x, file = "covr-report-examples.html")'
 
 covr : covr-report-tests.html covr-report-vignettes.html covr-report-examples.html
@@ -119,4 +163,6 @@ clean:
 	$(RM) -f .*.Rout
 	$(RM) -f *.Rout
 	$(RM) -f *.html
+	$(RM) -f vignettes/*.html
+	$(RM) -f src/*.o
 
