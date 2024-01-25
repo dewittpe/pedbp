@@ -1,4 +1,4 @@
-# pedbp : Pediatric Blood Pressure <img src="man/figures/pedbplogo.png" align = "right"/>
+# pedbp : Pediatric Blood Pressure <img src="man/figures/pedbplogo.png" align="right" height="150"/>
 An R package for estimating expected blood pressure of children and adolescences
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
