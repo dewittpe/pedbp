@@ -1,5 +1,16 @@
 # pedbp 2.0.0
 
+* Added features to blood pressure distriubtion functions
+  * functions gain the arguement `source` to specify the reference values used
+    to generate the percentiles.  Default to `martin2022` to keep the same
+    functionallity as verion 1.
+  * Add a new source of blood pressure percentiles called `fourth` referencing
+    The Fourth Report on the Diagnosis, Evaluation, and Treatment of High Blood
+    Pressure in Children and Adolescents National High Blood Pressure Education
+    Program Working Group on High Blood Pressure in Children and Adolescents
+    Pediatrics 2004;114;555-576
+    [doi:10.1542/peds.114.2.S2.555](doi:10.1542/peds.114.2.S2.555)
+
 * API change to the growth standard distribution functions
   * this includes a name change from "vital signs" to "growth stardards"
   * complete redo for how the methods are implemented
