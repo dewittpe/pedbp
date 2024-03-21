@@ -194,12 +194,10 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
   if (age < 12) {
     d <- d[d$age == min(d$age) | d$age <= age, ]
     d <- d[d$age == max(d$age), ]
-    height_percentile <- NA_real_
   } else if (is.na(height) & age >= 36) {
     d <- d[is.na(d$height_percentile), ]
     d <- d[((age >= 36) & (d$age <= age)), ]
     d <- d[d$age == max(d$age), ]
-    height_percentile <- NA_real_
   } else {
     d <- d[!is.na(d$height_percentile), ]
     d <- d[d$age <= age, ]
