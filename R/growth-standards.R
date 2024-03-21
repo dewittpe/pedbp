@@ -13,7 +13,8 @@
 #' @param age numeric age, in months
 #' @param length,height in centimeters
 #' @param source a character string denoting the data source providing the
-#' parameters needed for the estimate.
+#' parameters needed for the estimate.  Valid values are "CDC" and "WHO".  This
+#' can be set explicitly, or by using the \code{pedbp_pgs_source} option.
 #' @param ... pass through
 #'
 #' @return
