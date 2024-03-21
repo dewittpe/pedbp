@@ -6,9 +6,27 @@
 \alias{q_bp}
 \title{Estimate Pediatric Blood Pressure Distribution}
 \usage{
-p_bp(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.5, ...)
+p_bp(
+  q_sbp,
+  q_dbp,
+  age,
+  male,
+  height = NA,
+  height_percentile = 0.5,
+  source = getOption("pedbp_bp_source", "martin2022"),
+  ...
+)
 
-q_bp(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.5, ...)
+q_bp(
+  p_sbp,
+  p_dbp,
+  age,
+  male,
+  height = NA,
+  height_percentile = 0.5,
+  source = getOption("pedbp_bp_source", "martin2022"),
+  ...
+)
 }
 \arguments{
 \item{q_sbp}{a vector of systolic blood pressures}
@@ -23,6 +41,8 @@ q_bp(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.5, ...)
 
 \item{height_percentile}{default height percentile to use if \code{height} is
 missing.}
+
+\item{source}{the method, or data set, to use as the reference.  See Details.}
 
 \item{...}{not currently used}
 
@@ -39,6 +59,22 @@ estimates.
 }
 \description{
 Percentile and quantile functions for pediatric blood pressure.
+}
+\details{
+\code{source} is used to specify the method or source data sets by which the
+percentiles are generated.  This can be controlled by the option
+\code{"pedbp_bp_source"}.
+End users are encouraged to set the option if not using the default so all
+calls to these functions will use the same source.
+
+Options:
+\itemize{
+  \item \code{'martin2022'} (default) uses a combination of refernces to generate
+  perentiles ages from 0 to 18, without or without known stature.  This was
+  the only method impimented in version 1 of the pedbp package.
+
+  \item
+}
 }
 \examples{
 

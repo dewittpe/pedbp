@@ -2,6 +2,22 @@
 #'
 #' Percentile and quantile functions for pediatric blood pressure.
 #'
+#' \code{source} is used to specify the method or source data sets by which the
+#' percentiles are generated.  This can be controlled by the option
+#' \code{"pedbp_bp_source"}.
+#' End users are encouraged to set the option if not using the default so all
+#' calls to these functions will use the same source.
+#'
+#' Options:
+#' \itemize{
+#'   \item \code{'martin2022'} (default) uses a combination of refernces to generate
+#'   perentiles ages from 0 to 18, without or without known stature.  This was
+#'   the only method impimented in version 1 of the pedbp package.
+#'
+#'   \item
+#' }
+#'
+#'
 #' @param q_sbp a vector of systolic blood pressures
 #' @param q_dbp a vector of diastolic blood pressures
 #' @param p_sbp a vector of systolic blood percentiles
@@ -11,6 +27,7 @@
 #' @param height numeric, in centimeters, can be missing.
 #' @param height_percentile default height percentile to use if \code{height} is
 #' missing.
+#' @param source the method, or data set, to use as the reference.  See Details.
 #' @param ... not currently used
 #'
 #' @seealso \code{vignette("bp-distriution", package = "pedbp")}
@@ -20,6 +37,8 @@
 #' (diastolic blood pressure).  Additionally, the \code{bp_params} attribute
 #' provides details on the data source and parameters used in the percentile
 #' estimates.
+#'
+#' @references
 #'
 #' @examples
 #'
@@ -74,7 +93,7 @@ NULL
 
 #' @rdname bp_distribution
 #' @export
-p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50, ...) {
+p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
 
   stopifnot(length(q_sbp) == length(q_dbp))
 
@@ -114,7 +133,7 @@ p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50,
 
 #' @rdname bp_distribution
 #' @export
-q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50, ...) {
+q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
 
   stopifnot(length(p_sbp) == length(p_dbp))
 
@@ -142,7 +161,7 @@ q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50,
     stop("length(height) needs to be at least 1L")
   }
 
-  d <- v_bp_params(age = age, male = male, height = height, height_percentile = height_percentile)
+  d <- v_bp_params(age = age, male = male, height = height, height_percentile = height_percentile, source = source)
 
   rtn <-
     list(sbp = stats::qnorm(p_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
@@ -163,15 +182,15 @@ print.pedbp_bp <- function(x, ...) {
 # was easier to build assuming age, male, height were single values. v_bp_params
 # will make functions easier to use for end users.
 
-v_bp_params <- function(age, male, height, height_percentile = 0.50, ...) {
+v_bp_params <- function(age, male, height, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
 
-  rtn <- Map(bp_params, age = age, male = male, height = height, height_percentile = height_percentile)
+  rtn <- Map(bp_params, age = age, male = male, height = height, height_percentile = height_percentile, source = source)
   do.call(rbind, rtn)
 
 }
 
 
-bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
+bp_params <- function(age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
   stopifnot(length(age) == 1L)
   stopifnot(length(male) == 1L)
   stopifnot(all(age >=0) & all(age < 19 * 12))
@@ -179,6 +198,10 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
   stopifnot(all(stats::na.omit(height > 0)))
   stopifnot(0 < height_percentile & height_percentile < 1)
 
+  source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "fourth"), several.ok = FALSE)
+
+  # get the height_percentile if height is not NA
+  # used for source %in% c("martin2022", "fourth")
   if (!is.na(height)) {
     if (age < 36) {
       height_percentile <- p_length_for_age(q = height, age = age, male = male, source = "WHO")
@@ -191,18 +214,31 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, ...) {
   utils::data(list = "bp_parameters", package = "pedbp", envir = e)
   d <- e$bp_parameters[e$bp_parameters$male == male, ]
 
-  if (age < 12) {
-    d <- d[d$age == min(d$age) | d$age <= age, ]
+  if (source == "martin2022") {
+    if (age < 12) {
+      d <- d[d$age == min(d$age) | d$age <= age, ]
+      d <- d[d$age == max(d$age), ]
+    } else if (is.na(height) & age >= 36) {
+      d <- d[is.na(d$height_percentile), ]
+      d <- d[((age >= 36) & (d$age <= age)), ]
+      d <- d[d$age == max(d$age), ]
+    } else {
+      d <- d[!is.na(d$height_percentile), ]
+      d <- d[d$age <= age, ]
+      d <- d[d$age == max(d$age), ]
+      d <- d[which.min(abs(d$height_percentile/100 - height_percentile)), ]
+    }
+  } else if (source %in% c("gemelli1990", "lo2013")) {
+    d <- d[d$source == source, ]
+    d <- d[d$age <= age, ]
     d <- d[d$age == max(d$age), ]
-  } else if (is.na(height) & age >= 36) {
-    d <- d[is.na(d$height_percentile), ]
-    d <- d[((age >= 36) & (d$age <= age)), ]
-    d <- d[d$age == max(d$age), ]
-  } else {
-    d <- d[!is.na(d$height_percentile), ]
+  } else if (source %in% c("nhlbi", "fourth")) {
+    d <- d[d$source == source, ]
     d <- d[d$age <= age, ]
     d <- d[d$age == max(d$age), ]
     d <- d[which.min(abs(d$height_percentile/100 - height_percentile)), ]
+  } else {
+    stop("unknown source")
   }
 
   stopifnot(nrow(d) == 1L)
