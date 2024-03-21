@@ -87,9 +87,9 @@ wall_of_software_1200x1200 <-
   ggplot2::geom_rect(fill = "#009F96", mapping = ggplot2::aes(xmin = -10, xmax = 10, ymin = -10, ymax = 10)) +
   ggplot2::annotation_custom(heart_cuff_grob, xmin = -6, xmax = 6, ymin = -6 - 0.5, ymax = 6 - 0.5) +
   ggplot2::geom_point() +
-  ggplot2::geom_polygon(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2) +
-  ggplot2::geom_point(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2)  +
-  ggplot2::geom_path(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2)  +
+#  ggplot2::geom_polygon(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2) +
+#  ggplot2::geom_point(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2)  +
+#  ggplot2::geom_path(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2)  +
   ggplot2::theme(
     plot.margin = ggplot2::unit(c(-1, -1, -1, -1), "cm")
                  )
@@ -109,9 +109,9 @@ wall_of_software_with_title_1200x1200 <-
                      ) +
   ggplot2::annotation_custom(heart_cuff_grob, xmin = -5.5, xmax = 5.5, ymin = -5.5 - 1.5, ymax = 5.5 - 1.5) +
   ggplot2::geom_point() +
-  ggplot2::geom_polygon(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2) +
-  ggplot2::geom_point(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2)  +
-  ggplot2::geom_path(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2)  +
+#  ggplot2::geom_polygon(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2) +
+#  ggplot2::geom_point(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2)  +
+#  ggplot2::geom_path(data = hexagon, mapping = ggplot2::aes(x = x, y = y), alpha = 0.2)  +
   ggplot2::theme(
     plot.margin = ggplot2::unit(c(-1, -1, -1, -1), "cm")
                  )
