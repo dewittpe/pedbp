@@ -50,6 +50,11 @@
 #' Program Working Group on High Blood Pressure in Children and Adolescents
 #' Pediatrics 2004;114;555-576 <doi:10.1542/peds.114.2.S2.555>
 #'
+#' Flynn, Joseph T., David C. Kaelber, Carissa M. Baker-Smith, Douglas Blowey,
+#' Aaron E. Carroll, Stephen R. Daniels, Sarah D. De Ferranti et al. "Clinical
+#' practice guideline for screening and management of high blood pressure in
+#' children and adolescents." Pediatrics 140, no. 3 (2017).
+#'
 #' @name bpdata
 #' @keywords datasets
 NULL

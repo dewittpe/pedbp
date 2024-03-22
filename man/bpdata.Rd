@@ -6,7 +6,7 @@
 \alias{lo2013}
 \alias{gemelli1990}
 \alias{nhlbi_bp_norms}
-\alias{fourth_bp_norms}
+\alias{flynn2017}
 \alias{bp_parameters}
 \title{Data Sets Informing Blood Pressure Percentile Estimates}
 \format{
@@ -16,7 +16,7 @@ An object of class \code{data.frame} with 8 rows and 6 columns.
 
 An object of class \code{data.frame} with 952 rows and 6 columns.
 
-An object of class \code{data.frame} with 952 rows and 6 columns.
+An object of class \code{data.frame} with 714 rows and 6 columns.
 
 An object of class \code{data.frame} with 514 rows and 8 columns.
 }
@@ -27,7 +27,7 @@ gemelli1990
 
 nhlbi_bp_norms
 
-fourth_bp_norms
+flynn2017
 
 bp_parameters
 }
@@ -79,6 +79,11 @@ The Fourth Report on the Diagnosis, Evaluation, and Treatment of High Blood
 Pressure in Children and Adolescents National High Blood Pressure Education
 Program Working Group on High Blood Pressure in Children and Adolescents
 Pediatrics 2004;114;555-576 <doi:10.1542/peds.114.2.S2.555>
+
+Flynn, Joseph T., David C. Kaelber, Carissa M. Baker-Smith, Douglas Blowey,
+Aaron E. Carroll, Stephen R. Daniels, Sarah D. De Ferranti et al. "Clinical
+practice guideline for screening and management of high blood pressure in
+children and adolescents." Pediatrics 140, no. 3 (2017).
 }
 \seealso{
 \code{vignette("bp-distributions", package = "pedbp")}

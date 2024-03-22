@@ -16,7 +16,7 @@ stopifnot(identical(nrow(bp_parameters), 514L))
 
 stopifnot(identical(
           sort(unique(bp_parameters[["source"]]))
-          , c("fourth", "gemelli1990", "lo2013", "nhlbi")
+          , c("flynn2017", "gemelli1990", "lo2013", "nhlbi")
           ))
 
 stopifnot(identical(
