@@ -45,6 +45,10 @@
 #' Lo, Joan C., et.al. "Prehypertension and hypertension in community-based
 #' pediatric practice." Pediatrics 131.2 (2013): e415-e424.
 #'
+#' The Fourth Report on the Diagnosis, Evaluation, and Treatment of High Blood
+#' Pressure in Children and Adolescents National High Blood Pressure Education
+#' Program Working Group on High Blood Pressure in Children and Adolescents
+#' Pediatrics 2004;114;555-576 <doi:10.1542/peds.114.2.S2.555>
 #'
 #' @name bpdata
 #' @keywords datasets
@@ -58,6 +62,9 @@ NULL
 
 #' @rdname bpdata
 "nhlbi_bp_norms"
+
+#' @rdname bpdata
+"fourth_bp_norms"
 
 #' @rdname bpdata
 "bp_parameters"

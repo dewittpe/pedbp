@@ -215,6 +215,7 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, source =
   d <- e$bp_parameters[e$bp_parameters$male == male, ]
 
   if (source == "martin2022") {
+    d <- d[d$source %in% c("gemelli1990", "lo2013", "nhlbi"), ]
     if (age < 12) {
       d <- d[d$age == min(d$age) | d$age <= age, ]
       d <- d[d$age == max(d$age), ]

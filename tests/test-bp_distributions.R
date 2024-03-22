@@ -119,8 +119,9 @@ stopifnot()
 
 ################################################################################
 # verify you get the exact row back from bp_parameters when height is ommited
-
+# When using the original method from Martin et al. (2022)
 d <- bp_parameters
+d <- d[d$source %in% c("gemelli1990", "lo2013", "nhlbi"), ]
 nrow(d)
 d <- d[is.na(d$height_percentile), ]
 nrow(d)
@@ -155,7 +156,9 @@ for( i in 1:nrow(d)) {
 
 ################################################################################
 # verify expected row back for under 36 months of age with known height
+# This is specifically for the original method from Martin et al. (2022)
 d <- bp_parameters
+d <- d[d$source %in% c("gemelli1990", "lo2013", "nhlbi"), ]
 nrow(d)
 d <- d[d$age >= 12 & d$age < 36 & !is.na(d$height_percentile), ]
 nrow(d)
@@ -169,7 +172,7 @@ for( i in 1:nrow(d)) {
   }
   stopifnot(
     all.equal(
-              attr(q_bp(0.5, 0.5, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
+              attr(q_bp(p_sbp = 0.5, p_dbp = 0.5, age = d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
               d[i, 1:8]
               )
@@ -192,7 +195,9 @@ for( i in 1:nrow(d)) {
 
 ################################################################################
 # verify expected row back for 36 months or older with known height
+# When using the original method from Martin et al. (2022)
 d <- bp_parameters
+d <- d[d$source %in% c("gemelli1990", "lo2013", "nhlbi"), ]
 nrow(d)
 d <- d[d$age >= 36 & !is.na(d$height_percentile), ]
 nrow(d)
