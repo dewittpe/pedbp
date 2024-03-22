@@ -126,6 +126,21 @@
 #'   , male  = d$male
 #'   )
 #'
+#' #############################################################################
+#' # Selecting different source values
+#'
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "martin2022") # defualt
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "gemelli1990")
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "lo2013")
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+#'
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "martin2022") # defualt
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "gemelli1990")
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "lo2013")
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+#'
 #'
 #' @name bp_distribution
 NULL
@@ -160,7 +175,7 @@ p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50,
     stop("length(height) needs to be at least 1L")
   }
 
-  d <- v_bp_params(age = age, male = male, height = height, height_percentile = height_percentile)
+  d <- v_bp_params(age = age, male = male, height = height, height_percentile = height_percentile, source = source)
 
   rtn <-
     list(sbp_percentile = stats::pnorm(q_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
@@ -230,6 +245,7 @@ v_bp_params <- function(age, male, height, height_percentile = 0.50, source = ge
 
 
 bp_params <- function(age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+
   stopifnot(length(age) == 1L)
   stopifnot(length(male) == 1L)
   stopifnot(all(age >=0) & all(age < 19 * 12))
@@ -269,9 +285,15 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, source =
       d <- d[which.min(abs(d$height_percentile/100 - height_percentile)), ]
     }
   } else if (source %in% c("gemelli1990", "lo2013")) {
-    d <- d[d$source == source, ]
-    d <- d[d$age <= age, ]
-    d <- d[d$age == max(d$age), ]
+    if (source == "gemelli1990" & age > 12) {
+      d <- d[0, ]
+    } else {
+      d <- d[d$source == source, ]
+      d <- d[d$age <= age, ]
+      if (nrow(d) > 1L) {
+        d <- d[d$age == max(d$age), ]
+      }
+    }
   } else if (source %in% c("nhlbi", "flynn2017")) {
     d <- d[d$source == source, ]
     d <- d[d$age <= age, ]
@@ -281,7 +303,7 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, source =
     stop("unknown source")
   }
 
-  stopifnot(nrow(d) == 1L)
+  stopifnot(nrow(d) <= 1L)
   d
 }
 
