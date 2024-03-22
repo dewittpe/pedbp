@@ -248,12 +248,23 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, source =
 
   stopifnot(length(age) == 1L)
   stopifnot(length(male) == 1L)
-  stopifnot(all(age >=0) & all(age < 19 * 12))
-  stopifnot(all(male %in% c(0L, 1L)))
-  stopifnot(all(stats::na.omit(height > 0)))
+  #stopifnot(all(age >=0))# & all(age < 19 * 12))
+  #stopifnot(all(male %in% c(0L, 1L)))
+  #stopifnot(all(stats::na.omit(height > 0)))
   stopifnot(0 < height_percentile & height_percentile < 1)
 
   source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
+
+  e <- new.env()
+  utils::data(list = "bp_parameters", package = "pedbp", envir = e)
+  d <- e$bp_parameters[e$bp_parameters$male == male, ]
+
+  if (age < 0 | age >= 19*12) {
+    d <- e$bp_parameters[1, ]
+    for (j in names(d)) {
+      d[j] <- NA
+    }
+  }
 
   # get the height_percentile if height is not NA
   # used for source %in% c("martin2022", "flynn2017")
@@ -265,23 +276,26 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, source =
     }
   }
 
-  e <- new.env()
-  utils::data(list = "bp_parameters", package = "pedbp", envir = e)
-  d <- e$bp_parameters[e$bp_parameters$male == male, ]
 
   if (source == "martin2022") {
     d <- d[d$source %in% c("gemelli1990", "lo2013", "nhlbi"), ]
     if (age < 12) {
-      d <- d[d$age == min(d$age) | d$age <= age, ]
-      d <- d[d$age == max(d$age), ]
+      d <- d[d$age <= age, ]
+      if (nrow(d) > 1L) {
+        d <- d[d$age == max(d$age), ]
+      }
     } else if (is.na(height) & age >= 36) {
       d <- d[is.na(d$height_percentile), ]
       d <- d[((age >= 36) & (d$age <= age)), ]
-      d <- d[d$age == max(d$age), ]
+      if (nrow(d) > 1L) {
+        d <- d[d$age == max(d$age), ]
+      }
     } else {
       d <- d[!is.na(d$height_percentile), ]
       d <- d[d$age <= age, ]
-      d <- d[d$age == max(d$age), ]
+      if (nrow(d) > 1L) {
+        d <- d[d$age == max(d$age), ]
+      }
       d <- d[which.min(abs(d$height_percentile/100 - height_percentile)), ]
     }
   } else if (source %in% c("gemelli1990", "lo2013")) {
@@ -297,13 +311,23 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, source =
   } else if (source %in% c("nhlbi", "flynn2017")) {
     d <- d[d$source == source, ]
     d <- d[d$age <= age, ]
-    d <- d[d$age == max(d$age), ]
+    if (nrow(d) > 1L) {
+      d <- d[d$age == max(d$age), ]
+    }
     d <- d[which.min(abs(d$height_percentile/100 - height_percentile)), ]
   } else {
     stop("unknown source")
   }
 
-  stopifnot(nrow(d) <= 1L)
+  if (nrow(d) == 0L) {
+    d <- e$bp_parameters[1, ]
+    for (j in names(d)) {
+      d[[j]] <- NA
+    }
+  }
+
+  stopifnot(nrow(d) == 1L)
+
   d
 }
 

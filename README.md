@@ -121,10 +121,10 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "gemelli1
 
 ```
 ## $sbp_percentile
-## numeric(0)
+## [1] NA
 ## 
 ## $dbp_percentile
-## numeric(0)
+## [1] NA
 ```
 
 ```r
@@ -133,10 +133,10 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "lo2013")
 
 ```
 ## $sbp_percentile
-## numeric(0)
+## [1] NA
 ## 
 ## $dbp_percentile
-## numeric(0)
+## [1] NA
 ```
 
 ```r
@@ -196,10 +196,10 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 
 ```
 ## $sbp
-## numeric(0)
+## [1] NA
 ## 
 ## $dbp
-## numeric(0)
+## [1] NA
 ```
 
 ```r
