@@ -4,17 +4,33 @@
 #'
 #' \code{source} is used to specify the method or source data sets by which the
 #' percentiles are generated.  This can be controlled by the option
-#' \code{"pedbp_bp_source"}.
+#' \code{pedbp_bp_source}.
 #' End users are encouraged to set the option if not using the default so all
 #' calls to these functions will use the same source.
 #'
 #' Options:
 #' \itemize{
-#'   \item \code{'martin2022'} (default) uses a combination of refernces to generate
-#'   perentiles ages from 0 to 18, without or without known stature.  This was
-#'   the only method impimented in version 1 of the pedbp package.
+#'   \item \code{martin2022} (default) uses a combination of references to generate
+#'   percentiles ages from 1 months through 18 years, without or without known
+#'   stature.  This was the only method implemented in version 1 of the pedbp package.
 #'
-#'   \item
+#'   \item \code{gemelli1990} uses only the reference values from Gemelli et al.
+#'   (1990).  These values are applicable to patients from 1 month to 12 months
+#'   of age. Stature is not used in the look up for the parameters.
+#'
+#'   \item \code{lo2013} uses only the reference values from Lo et al. (2013).
+#'   This is applicable to patients of at least three years of age.  Height is
+#'   not considered when looking up the parameters.
+#'
+#'   \item \code{nhlbi} uses only reference values from the National Heart,
+#'   Lung, and Blood Institute [NHLBI] and the Centers for Disease Control and
+#'   Prevention [CDC] published in 2011.  These are for patients of at least one
+#'   year of age and with a known stature.  These values were publish
+#'
+#'   \item \code{flynn2017} uses only reference values from Flynn et al. (2017).
+#'   These values are similar to the nhlbi values _but_ "do not include children
+#'   and adolescents with overweight and obesity (ie, those with a BMI >= 85th
+#'   percentile).
 #' }
 #'
 #'
@@ -39,6 +55,29 @@
 #' estimates.
 #'
 #' @references
+#'
+#' Gemelli, Marina, Rosa Manganaro, Carmelo Mamì, and F. De Luca. "Longitudinal
+#' study of blood pressure during the 1st year of life." European journal of
+#' pediatrics 149 (1990): 318-320.
+#'
+#' Lo, Joan C., Alan Sinaiko, Malini Chandra, Matthew F. Daley, Louise C.
+#' Greenspan, Emily D. Parker, Elyse O. Kharbanda et al. "Prehypertension and
+#' hypertension in community-based pediatric practice." Pediatrics 131, no. 2
+#' (2013): e415-e424.
+#'
+#' "Expert panel on integrated guidelines for cardiovascular health and risk
+#' reduction in children and adolescents: summary report." Pediatrics 128, no.
+#' Suppl 5 (2011): S213. <doi:10.1542/peds.2009-2107C>
+#'
+#' The Fourth Report on the Diagnosis, Evaluation, and Treatment of High Blood
+#' Pressure in Children and Adolescents National High Blood Pressure Education
+#' Program Working Group on High Blood Pressure in Children and Adolescents
+#' Pediatrics 2004;114;555-576 <doi:10.1542/peds.114.2.S2.555>
+#'
+#' Flynn, Joseph T., David C. Kaelber, Carissa M. Baker-Smith, Douglas Blowey,
+#' Aaron E. Carroll, Stephen R. Daniels, Sarah D. De Ferranti et al. "Clinical
+#' practice guideline for screening and management of high blood pressure in
+#' children and adolescents." Pediatrics 140, no. 3 (2017).
 #'
 #' @examples
 #'
@@ -198,10 +237,10 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, source =
   stopifnot(all(stats::na.omit(height > 0)))
   stopifnot(0 < height_percentile & height_percentile < 1)
 
-  source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "fourth"), several.ok = FALSE)
+  source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
 
   # get the height_percentile if height is not NA
-  # used for source %in% c("martin2022", "fourth")
+  # used for source %in% c("martin2022", "flynn2017")
   if (!is.na(height)) {
     if (age < 36) {
       height_percentile <- p_length_for_age(q = height, age = age, male = male, source = "WHO")
@@ -233,7 +272,7 @@ bp_params <- function(age, male, height = NA, height_percentile = 0.50, source =
     d <- d[d$source == source, ]
     d <- d[d$age <= age, ]
     d <- d[d$age == max(d$age), ]
-  } else if (source %in% c("nhlbi", "fourth")) {
+  } else if (source %in% c("nhlbi", "flynn2017")) {
     d <- d[d$source == source, ]
     d <- d[d$age <= age, ]
     d <- d[d$age == max(d$age), ]

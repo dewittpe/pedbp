@@ -64,7 +64,7 @@ NULL
 "nhlbi_bp_norms"
 
 #' @rdname bpdata
-"fourth_bp_norms"
+"flynn2017"
 
 #' @rdname bpdata
 "bp_parameters"
