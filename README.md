@@ -12,17 +12,26 @@ An R package for estimating expected blood pressure of children and adolescences
 [![License](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
 
-## Objective
-Provide a method for translating pediatric blood pressures, dependent on age,
-sex, and height (if known), to percentiles.
+## Objectives
 
-## Publications
+1. Provide a method for translating pediatric blood pressures, dependent on age,
+   sex, and height (if known), to percentiles.
 
-If you use this package in your research please cite it via:
+2. Provide functions to get the percentiles for other growth standards.
 
-Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric Blood
-Pressure Percentile Tool for Clinical Decision Support. JAMA Netw Open.
-2022;5(10):e2236918. doi:10.1001/jamanetworkopen.2022.36918
+## Citing pedbp
+
+If you use this package in your research please cite the package
+
+```r
+citation("pedbp", auto = TRUE)
+```
+
+```
+## Error in citation("pedbp", auto = TRUE): (converted from warning) could not determine year for 'pedbp' from package DESCRIPTION file
+```
+
+And the research letter:
 
 
 ```r
@@ -55,14 +64,223 @@ citation("pedbp")
 ##   }
 ```
 
-## Method
+## Methodology
+
 Blood pressure percentiles are based on Gaussian distributions defined by published
 values for the mean and standard deviation, or derived mean and standard
-deviations based on published percentiles.
+deviations based on published percentiles.  Growth standards are based on LMS
+approximations.  All the methods get parameters based on lookup tables.
+
+## Blood Pressure
+There are several data sources used to inform the blood pressure percentiles
+estimates:
+
+1. Gemelli et al. (1990)
+2. Lo et al. (2013)
+3. NHLBI/CDC (2011)
+4. Flynn et al. (2017)
+
+The default method is to use the workflow defined in Martin, DeWitt, et al.
+(2022).
 
 ![](inst/images/flowchart.png)
 
-## How to Install
+End users may opt to use any single data source.
+
+Example: A 28 month old female with a stature of 92 cm has a recorded blood
+pressure of 95/50.  Find the precentiles.
+
+```r
+library(pedbp)
+p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92) # Default
+```
+
+```
+## $sbp_percentile
+## [1] 0.7086064
+## 
+## $dbp_percentile
+## [1] 0.6428859
+```
+
+```r
+p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "martin2022")  # Default
+```
+
+```
+## $sbp_percentile
+## [1] 0.7086064
+## 
+## $dbp_percentile
+## [1] 0.6428859
+```
+
+```r
+p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "gemelli1990")
+```
+
+```
+## $sbp_percentile
+## numeric(0)
+## 
+## $dbp_percentile
+## numeric(0)
+```
+
+```r
+p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "lo2013")
+```
+
+```
+## $sbp_percentile
+## numeric(0)
+## 
+## $dbp_percentile
+## numeric(0)
+```
+
+```r
+p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "nhlbi")
+```
+
+```
+## $sbp_percentile
+## [1] 0.7086064
+## 
+## $dbp_percentile
+## [1] 0.6428859
+```
+
+```r
+p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "flynn2017")
+```
+
+```
+## $sbp_percentile
+## [1] 0.6797595
+## 
+## $dbp_percentile
+## [1] 0.5422765
+```
+
+You can also find the quantile values.  Example: what is the SBP/DBP values for
+the 42nd percentile of 13 year (156 month) old males in the 90th height percentile?
+
+```r
+q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90)
+```
+
+```
+## $sbp
+## [1] 108.5792
+## 
+## $dbp
+## [1] 62.12428
+```
+
+```r
+q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "martin2022")
+```
+
+```
+## $sbp
+## [1] 108.5792
+## 
+## $dbp
+## [1] 62.12428
+```
+
+```r
+q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "gemelli1990")
+```
+
+```
+## $sbp
+## numeric(0)
+## 
+## $dbp
+## numeric(0)
+```
+
+```r
+q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "lo2013")
+```
+
+```
+## $sbp
+## [1] 108.5792
+## 
+## $dbp
+## [1] 62.12428
+```
+
+```r
+q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "nhlbi")
+```
+
+```
+## $sbp
+## [1] 108.7961
+## 
+## $dbp
+## [1] 61.65239
+```
+
+```r
+q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "flynn2017")
+```
+
+```
+## $sbp
+## [1] 108.6517
+## 
+## $dbp
+## [1] 61.93385
+```
+
+More examples can be found in the vignette.
+
+```r
+vignette("bp-distributions", package = "pedbp")
+```
+
+## Growth Standards
+
+Growth standards based on both CDC and WHO data are provided in this package.
+Read more in the vignette
+
+```r
+vignette(topic = "growth-standards", package = "pedbp")
+```
+
+Growth standards implemented in the package are:
+* `bmi_for_age`
+* `head_circumference_for_age`
+* `height_for_age`
+* `length_for_age`
+* `weight_for_age`
+* `weight_for_length`
+* `weight_for_height`
+
+
+```r
+# Example: what is the percentile for a BMI of 23 in a 14.5 year old male?
+p_bmi_for_age(q = 23, male = 1, age = 14.5*12, source = "CDC")
+```
+
+```
+## [1] 0.8502674
+```
+
+```r
+p_bmi_for_age(q = 23, male = 1, age = 14.5*12, source = "WHO")
+```
+
+```
+## [1] 0.8880632
+```
+
+## How to Install `pedbp`
 
 Install from CRAN:
 
@@ -77,89 +295,15 @@ Install the developmental version:
 remotes::install_github("dewittpe/pedbp", dependencies = TRUE)
 ```
 
-## Tools
+*NOTE:* If you are working on a Windows machine you will need to download and
+install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
 
-### Blood Pressure Distribution and Quantile Functions
+## Shiny Application
 
-Inputs for these functions are:
-
-* age: in months, _required_
-* male: indicator for for sex; 0 = female, 1 = male, _required_
-* height: in centimeters, _if known_
-* sbp,dbp: systolic and diastolic blood pressure in mmHg, _if known_
-
-
-```r
-d <- read.csv(system.file("example_data", "for_batch.csv", package = "pedbp"))
-d
-```
-
-```
-##           pid age_months male height..cm. sbp..mmHg. dbp..mmHg.
-## 1   patient_A         96    1          NA        102         58
-## 2   patient_B        144    0         153        113         NA
-## 3   patient_C          4    0          62         82         43
-## 4 patient_D_1         41    1          NA         96         62
-## 5 patient_D_2         41    1         101         96         62
-```
-
-```r
-# distribution function
-p_bp(  q_sbp  = d$sbp..mmHg.
-     , q_dbp  = d$dbp..mmHg.
-     , age    = d$age_months
-     , male   = d$male
-     , height = d$height..cm.
-     )
-```
-
-```
-## $sbp_percentile
-## [1] 0.5533069 0.7680539 0.2622697 0.6195685 0.6101919
-## 
-## $dbp_percentile
-## [1] 0.4120704        NA 0.1356661 0.8028518 0.9011250
-```
-
-```r
-# quantile function
-q_bp(  p_sbp = 0.50
-     , p_dbp = 0.40
-     , age   = 96
-     , male  = 1)
-```
-
-```
-## $sbp
-## [1] 100.7
-## 
-## $dbp
-## [1] 57.74789
-```
-
-Plots show where an observed blood pressure is on the distribution curve
-
-```r
-bp_cdf(  sbp = 105
-       , dbp = 59
-       , age   = 96
-       , male  = 1)
-```
-
-![plot of chunk bp_cdf_example](inst/images/bp_cdf_example-1.png)
-
-More examples and details for the blood pressure distribution functions, along
-with additional features such as CDC growth charts, can be found in the package
-vignette.
-
-```r
-vignette("bp-distributions", package = "pedbp")
-```
-
-### Shiny Application
 An interactive [Shiny](https://shiny.rstudio.com/) application is also available.
 After installing the pedbp package and the suggested
 packages, you can run the app locally via
+
 
 ```r
 shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
@@ -177,3 +321,4 @@ The shiny app is also live on [shinyapps.io](https://dewittpe.shinyapps.io/pedbp
 
 * Martin, Blake, Peter E. DeWitt, Scout HF, SK Parker, and Tellen D. Bennett. 2022. “Machine Learning Approach to Predicting Absence of Serious Bacterial Infection at PICU Admission.” Hospital Pediatrics.
 
+* Flynn, Joseph T., David C. Kaelber, Carissa M. Baker-Smith, Douglas Blowey, Aaron E. Carroll, Stephen R. Daniels, Sarah D. De Ferranti et al. "Clinical practice guideline for screening and management of high blood pressure in children and adolescents." Pediatrics 140, no. 3 (2017).
