@@ -444,6 +444,203 @@ ggplot2::ggsave(file = "inst/images/median_bp_male_known_height.svg", plot = g(d
 # */
 
 #'
+#' # Select Source Data
+#'
+#' The default method for estimating blood pressure percentiles is based on the
+#' method of @martin2022machine and @martin2022development which uses three
+#' different references depending on age and known/unknown stature.  If you want
+#' to use a specific reference then you can do so by using the
+{{ qwraps2::backtick(source) }}
+#' argument.
+#'
+#' If you have a project with the want/need to use a specific source and you'd
+#' to use you can set it as an option:
+#'
+#+ eval = FALSE
+# /*
+while (FALSE) {
+# */
+options("pedbp_bp_source", "martin2022")  # default
+# /*
+}
+# */
+#'
+#' There are four sources:
+#'
+#' 1. @gemelli1990longitudinal for kids under one year of age.
+#' 2. @lo2013prehypertension for kids over three years of age and when height is unknown.
+#' 3. @nhlbi2011exper for kids 1 through 18 years of age with known stature.
+#' 4. @flynn2017clinical for kids 1 through 18 years of age with known stature.
+#'
+#' The data from @flynn2017clinical and @nhlbi2011exper are similar but for one
+#' major difference.  @flynn2017clinical excluded overweight and obese ( BMI
+#' above the 85th percentile) children.
+#'
+#' For example, the estimated percentile for a blood pressure of 92/60 in a 29.2
+#' month old female in the 95th height percentile are:
+#'
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "martin2022") # default
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "gemelli1990")
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "lo2013")
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+
+#'
+#' The estimated 85th quantile SBP/DBP for a 29.2 month old female, who is in
+#' the 95th height percentile are:
+#'
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "martin2022") # default
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "gemelli1990")
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "lo2013")
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+
+#'
+#'
+#' # Comparing to Published Percentiles
+#'
+#' The percentils published in @nhlbi2011expert and @flynn2017clinical where
+#' used to estimate a Gaussian mean and standard deviation.  This was in part to
+#' be consistent with the values from @gemelli1990 and @lo2013.  As a result,
+#' the calculated percentiles and qualtiles from the pedbp package will be
+#' slightly different from the published values.
+#'
+# /*
+#  NOTE: This is also in the test suite
+# */
+#'
+#' ## Flynn et al.
+#'
+fq <-
+  q_bp(
+     p_sbp = flynn2017$bp_percentile/100,
+     p_dbp = flynn2017$bp_percentile/100,
+     male  = flynn2017$male,
+     age   = flynn2017$age,
+     height_percentile = flynn2017$height_percentile/100,
+     source = "flynn2017")
+
+fp <-
+  p_bp(
+     q_sbp = flynn2017$sbp,
+     q_dbp = flynn2017$dbp,
+     male  = flynn2017$male,
+     age   = flynn2017$age,
+     height_percentile = flynn2017$height_percentile/100,
+     source = "flynn2017")
+
+f_bp <-
+  cbind(flynn2017,
+        pedbp_sbp = fq$sbp,
+        pedbp_dbp = fq$dbp,
+        pedbp_sbp_percentile = fp$sbp_percentile * 100,
+        pedbp_dbp_percentile = fp$dbp_percentile * 100
+  )
+
+#'
+#' All the quantile estimates are within 2 mmHg:
+stopifnot(max(abs(f_bp$pedbp_sbp - f_bp$sbp)) < 2)
+stopifnot(max(abs(f_bp$pedbp_dbp - f_bp$dbp)) < 2)
+
+#'
+#' All the percentiles are within 2 percentile points:
+#'
+stopifnot(max(abs(f_bp$pedbp_sbp_percentile - f_bp$bp_percentile)) < 2)
+stopifnot(max(abs(f_bp$pedbp_dbp_percentile - f_bp$bp_percentile)) < 2)
+
+
+#'
+#' ## NHLBI/CDC
+#'
+nq <-
+  q_bp(
+     p_sbp = nhlbi_bp_norms$bp_percentile/100,
+     p_dbp = nhlbi_bp_norms$bp_percentile/100,
+     male  = nhlbi_bp_norms$male,
+     age   = nhlbi_bp_norms$age,
+     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     source = "nhlbi")
+
+np <-
+  p_bp(
+     q_sbp = nhlbi_bp_norms$sbp,
+     q_dbp = nhlbi_bp_norms$dbp,
+     male  = nhlbi_bp_norms$male,
+     age   = nhlbi_bp_norms$age,
+     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     source = "nhlbi")
+
+nhlbi_bp <-
+  cbind(nhlbi_bp_norms,
+        pedbp_sbp = nq$sbp,
+        pedbp_dbp = nq$dbp,
+        pedbp_sbp_percentile = np$sbp_percentile * 100,
+        pedbp_dbp_percentile = np$dbp_percentile * 100
+  )
+
+
+#'
+#' All the quantile estimates are within 2 mmHg:
+#'
+stopifnot(max(abs(nhlbi_bp$pedbp_sbp - nhlbi_bp$sbp)) < 2)
+stopifnot(max(abs(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)) < 2)
+
+#'
+#' All the percentiles are within 2 percentile points:
+#'
+stopifnot(max(abs(nhlbi_bp$pedbp_sbp_percentile - nhlbi_bp$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp$pedbp_dbp_percentile - nhlbi_bp$bp_percentile)) < 2)
+
+#'
+#'
+#+ echo = FALSE
+fsbp <- ggplot2::ggplot(f_bp) +
+  ggplot2::theme_bw() +
+  ggplot2::aes(x = sbp, y = pedbp_sbp) +
+  ggplot2::geom_point() +
+  ggplot2::geom_abline(intercept = 0, slope = 1)
+fdbp <- ggplot2::ggplot(f_bp) +
+  ggplot2::theme_bw() +
+  ggplot2::aes(x = dbp, y = pedbp_dbp) +
+  ggplot2::geom_point() +
+  ggplot2::geom_abline(intercept = 0, slope = 1)
+
+ggpubr::ggarrange(fsbp, qwraps2::qblandaltman(f_bp[, c("sbp", "pedbp_sbp")]) + ggplot2::theme_bw(),
+                  fdbp, qwraps2::qblandaltman(f_bp[, c("dbp", "pedbp_dbp")]) + ggplot2::theme_bw())
+
+
+if (interactive()) {
+  par(mfrow = c(1, 2))
+  plot(flynn2017$sbp, flynn2017$pedbp_sbp); abline(0, 1)
+  plot(flynn2017$dbp, flynn2017$pedbp_dbp); abline(0, 1)
+  summary(flynn2017$pedbp_sbp - flynn2017$sbp)
+  summary(flynn2017$pedbp_dbp - flynn2017$dbp)
+  summary(flynn2017$pedbp_sbp_percentile*100 - flynn2017$bp_percentile)
+  summary(flynn2017$pedbp_dbp_percentile*100 - flynn2017$bp_percentile)
+
+  qwraps2::qblandaltman(flynn2017[, c("sbp", "pedbp_sbp")])
+  qwraps2::qblandaltman(flynn2017[, c("dbp", "pedbp_dbp")])
+  qwraps2::qblandaltman(flynn2017[, c("bp_percentile", "pedbp_sbp_percentile")])
+  qwraps2::qblandaltman(flynn2017[, c("bp_percentile", "pedbp_dbp_percentile")])
+
+  par(mfrow = c(1, 2))
+  plot(nhlbi_bp_norms$sbp, nhlbi_bp_norms$pedbp_sbp); abline(0, 1)
+  plot(nhlbi_bp_norms$dbp, nhlbi_bp_norms$pedbp_dbp); abline(0, 1)
+  summary(nhlbi_bp_norms$pedbp_sbp - nhlbi_bp_norms$sbp)
+  summary(nhlbi_bp_norms$pedbp_dbp - nhlbi_bp_norms$dbp)
+  summary(nhlbi_bp_norms$pedbp_sbp_percentile*100 - nhlbi_bp_norms$bp_percentile)
+  summary(nhlbi_bp_norms$pedbp_dbp_percentile*100 - nhlbi_bp_norms$bp_percentile)
+
+  qwraps2::qblandaltman(nhlbi_bp_norms[, c("sbp", "pedbp_sbp")])
+  qwraps2::qblandaltman(nhlbi_bp_norms[, c("dbp", "pedbp_dbp")])
+  qwraps2::qblandaltman(nhlbi_bp_norms[, c("bp_percentile", "pedbp_sbp_percentile")])
+  qwraps2::qblandaltman(nhlbi_bp_norms[, c("bp_percentile", "pedbp_dbp_percentile")])
+}
+
+
+
+#'
+#'
 #' # Shiny Application
 #'
 #' An interactive [Shiny](https://shiny.rstudio.com/) application is also

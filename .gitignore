@@ -7,3 +7,4 @@ lib/*
 sbi.zip
 references/sbi/*
 .Rproj.user
+.DS_Store

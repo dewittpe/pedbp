@@ -1,6 +1,6 @@
 Package: pedbp
 Title: Pediatric Blood Pressure
-Version: 1.0.2-9000
+Version: 1.0.2-9001
 Authors@R: c(
     person(given = "Peter", family = "DeWitt",  email = "peter.dewitt@cuanschutz.edu",        role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6391-0795")),
     person(given = "Blake", family = "Martin",  email = "blake.martin@childrenscolorado.org", role = c("ctb"),        comment = c(ORCID = "0000-0001-5683-8310")),
@@ -34,6 +34,7 @@ Suggests:
     covr,
     data.table,
     DT,
+    ggpubr,
     gridExtra,
     knitr,
     png,
@@ -44,4 +45,4 @@ Suggests:
 LinkingTo: Rcpp (>= 1.0.11),
     RcppArmadillo
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

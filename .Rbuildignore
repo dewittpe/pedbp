@@ -2,8 +2,7 @@
 ^\.github/*
 ^codecov\.yml$
 ^README.Rmd$
-^logo.png$
-^logo-518x600.png$
+^logo/*
 ^.*\.Rout$
 ^.*\.Rproj$
 ^\.Rproj\.user$

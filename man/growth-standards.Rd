@@ -15,7 +15,8 @@
 \item{length, height}{in centimeters}
 
 \item{source}{a character string denoting the data source providing the
-parameters needed for the estimate.}
+parameters needed for the estimate.  Valid values are "CDC" and "WHO".  This
+can be set explicitly, or by using the \code{pedbp_pgs_source} option.}
 
 \item{...}{pass through}
 }
