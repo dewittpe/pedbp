@@ -169,12 +169,12 @@ stopifnot(
 
 ################################################################################
 # nhlbi and flynn2017 values will be different from the publications.
-# The difference is due to having a gaussian mean and variance estimated by the
-# three or four precentiles published.  The tests here are to verify that the
+# The difference is due to having a Gaussian mean and variance estimated by the
+# three or four percentiles published.  The tests here are to verify that the
 # estimates are not too different.
 
-nhlbi_bp_norms |> head()
-flynn2017 |> head()
+# NOTE: IF THIS FAILS UPDATE THE VIGNETTE
+
 
 fq <-
   q_bp(
