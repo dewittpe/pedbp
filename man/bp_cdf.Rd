@@ -9,6 +9,7 @@ bp_cdf(
   male,
   height = NA,
   height_percentile = 0.5,
+  source = getOption("pedbp_bp_source", "martin2022"),
   sbp = NA,
   dbp = NA,
   ...
@@ -17,16 +18,14 @@ bp_cdf(
 \arguments{
 \item{age}{numeric age, in months}
 
-\item{male}{integer value, 1 = male, 0 = female, indicating sex of the
-patient}
+\item{male}{integer value, 1 = male, 0 = female}
 
-\item{height}{numeric, in centimeters, can be missing.  This is the length
-for patients under three years of age}
+\item{height}{numeric, in centimeters, can be missing.}
 
 \item{height_percentile}{default height percentile to use if \code{height} is
 missing.}
 
-\item{sbp, dbp}{observed values to plot on the CDF}
+\item{source}{the method, or data set, to use as the reference.  See Details.}
 
 \item{...}{not currently used}
 }
