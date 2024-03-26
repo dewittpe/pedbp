@@ -1,8 +1,9 @@
-citHeader("To cite pedbp please cite the research letter")
+citHeader("To cite pedbp please cite the research letter
+and the package itself via citation('pedbp', auto = TRUE)
+")
 
-citEntry(
-    textVersion = "Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric Blood Pressure Percentile Tool for Clinical Decision Support. JAMA Netw Open. 2022;5(10):e2236918. doi:10.1001/jamanetworkopen.2022.36918",
-    entry = "article",
+bibentry(
+    bibtype = "article",
     author = "Martin, Blake and DeWitt, Peter E. and Albers, David and Bennett, Tellen D.",
     title = "Development of a Pediatric Blood Pressure Percentile Tool for Clinical Decision Support",
     journal = "JAMA Network Open",
