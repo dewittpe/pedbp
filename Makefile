@@ -169,4 +169,6 @@ clean:
 	$(RM) -f *.html
 	$(RM) -f vignettes/*.html
 	$(RM) -f src/*.o
+	$(RM) -f docs
+	$(RM) -f lib
 
