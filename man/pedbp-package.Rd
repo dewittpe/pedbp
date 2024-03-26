@@ -12,6 +12,8 @@ Data and utilities for estimating pediatric blood pressure percentiles by sex, a
 Useful links:
 \itemize{
   \item \url{https://github.com/dewittpe/pedbp/}
+  \item \url{http://www.peteredewitt.com/pedbp/}
+  \item Report bugs at \url{https://github.com/dewittpe/pedbp/issues/}
 }
 
 }

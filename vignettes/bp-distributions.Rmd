@@ -698,7 +698,7 @@ if (interactive()) {
 
 # Shiny Application
 
-An interactive [Shiny](https://shiny.rstudio.com/) application is also
+An interactive [Shiny](https://shiny.posit.co/) application is also
 available. After installing the pedbp package and the suggested packages, you
 can run the app locally via
 

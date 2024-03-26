@@ -1,4 +1,4 @@
-# pedbp : Pediatric Blood Pressure <img src="man/figures/pedbplogo.png" align="right" height="150"/>
+# pedbp : Pediatric Blood Pressure <img src="man/figures/pedbplogo.png" align="right" width="150px" height="150px"/>
 An R package for estimating expected blood pressure of children and adolescences
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -39,12 +39,17 @@ citation("pedbp")
 ```
 
 ```
-## To cite pedbp please cite the research letter
+## To cite pedbp please cite the research letter and the package itself
+## via citation('pedbp', auto = TRUE)
 ## 
-##   Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric
-##   Blood Pressure Percentile Tool for Clinical Decision Support. JAMA
-##   Netw Open. 2022;5(10):e2236918.
+##   Martin, Blake, DeWitt, E. P, Albers, David, Bennett, D. T (2022).
+##   "Development of a Pediatric Blood Pressure Percentile Tool for
+##   Clinical Decision Support." _JAMA Network Open_, *5*(10),
+##   e2236918-e2236918. ISSN 2574-3805,
 ##   doi:10.1001/jamanetworkopen.2022.36918
+##   <https://doi.org/10.1001/jamanetworkopen.2022.36918>,
+##   https://jamanetwork.com/journals/jamanetworkopen/articlepdf/2797401/martin_2022_ld_220236_1665075001.39453.pdf,
+##   <https://doi.org/10.1001/jamanetworkopen.2022.36918>.
 ## 
 ## A BibTeX entry for LaTeX users is
 ## 
@@ -300,7 +305,7 @@ install [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/).
 
 ## Shiny Application
 
-An interactive [Shiny](https://shiny.rstudio.com/) application is also available.
+An interactive [Shiny](https://shiny.posit.co/) application is also available.
 After installing the pedbp package and the suggested
 packages, you can run the app locally via
 
