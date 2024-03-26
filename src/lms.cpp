@@ -268,8 +268,8 @@ Rcpp::IntegerVector resize(Rcpp::IntegerVector x, int length) {
 //' @param male  integer
 //' @param x is the age (in months), length (cm) or height (cm) as needed for
 //' the metric.
-//' @param qp the quantile or percentile, which ever is relevent for the type
-//' @param type quantile, distribition, or zscore
+//' @param qp the quantile or percentile, whichever is relevant for the type
+//' @param type quantile, distribution, or zscore
 //'
 // [[Rcpp::export]]
 Rcpp::NumericVector cppPGSF(
@@ -353,12 +353,11 @@ Rcpp::NumericVector cppPGSF(
     }
 
   } else {
-    // max_length is 1 sice test for zero is above an there is nothing to do
+    // max_length is 1 since test for zero is above an there is nothing to do
   }
 
   Rcpp::NumericVector rtn (max_length);
   for(int i = 0; i < max_length; ++i) {
-    //Rcpp::Rcout << "i: " << i << "\n";
     rtn(i) = cppPGSF1(Rcpp::as<std::string>(metric(i)), Rcpp::as<std::string>(source(i)), male(i), x(i), qp(i), Rcpp::as<std::string>(type(i)));
   }
   return rtn;

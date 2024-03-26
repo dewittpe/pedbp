@@ -13,8 +13,8 @@
 #' @param male  integer
 #' @param x is the age (in months), length (cm) or height (cm) as needed for
 #' the metric.
-#' @param qp the quantile or percentile, which ever is relevent for the type
-#' @param type quantile, distribition, or zscore
+#' @param qp the quantile or percentile, whichever is relevant for the type
+#' @param type quantile, distribution, or zscore
 #'
 cppPGSF <- function(metric, source, male, x, qp, type) {
     .Call('_pedbp_cppPGSF', PACKAGE = 'pedbp', metric, source, male, x, qp, type)
