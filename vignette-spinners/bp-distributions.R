@@ -5,6 +5,8 @@
 #'    toc: true
 #'    number_sections: true
 #'bibliography: references.bib
+#'resource_files:
+#'  - images/flowchart.png
 #'vignette: >
 #'  %\VignetteIndexEntry{Pediatric Blood Pressure Distributions}
 #'  %\VignetteEngine{knitr::rmarkdown}
@@ -44,7 +46,7 @@ library(pedbp)
 #' will be used to inform the blood pressure percentiles.  Under one year of
 #' age, the data from @gemelli1990longitudinal will be used; a height input is
 #' not required for this patient subset. For those at least one year of age with
-#' a known height, data from @nhlbi2011exper (hereafter referred to as
+#' a known height, data from @nhlbi2011expert (hereafter referred to as
 #' 'NHLBI/CDC' as the report incorporates recommendations and inputs from the
 #' National Heart, Lung, and Blood Institute [NHLBI] and the Centers for Disease
 #' Control and Prevention [CDC]). If height is unknown and age is at least three
@@ -54,7 +56,15 @@ library(pedbp)
 #' height for each patient's sex and age.
 #'
 #+ echo = FALSE, results = "asis"
-cat(paste0("<img src=\"", normalizePath(system.file("images", "flowchart.png", package = "pedbp")), "\">\n"))
+#cat(paste0("<img src=\"", normalizePath(system.file("images", "flowchart.png", package = "pedbp")), "\">\n"))
+#knitr::include_graphics('man/figures/flowchart.png')
+#knitr::include_graphics(system.file("images", "flowchart.png", package = "pedbp"))
+
+#file.exists('man/figures/flowchart.png')
+#file.exists('../man/figures/flowchart.png')
+#file.exists('../../man/figures/flowchart.png')
+knitr::include_graphics("../man/figures/flowchart.png")
+
 #'
 #'
 #' # Estimating Pediatric Blood Pressure Distributions
@@ -469,10 +479,10 @@ options("pedbp_bp_source", "martin2022")  # default
 #'
 #' 1. @gemelli1990longitudinal for kids under one year of age.
 #' 2. @lo2013prehypertension for kids over three years of age and when height is unknown.
-#' 3. @nhlbi2011exper for kids 1 through 18 years of age with known stature.
+#' 3. @nhlbi2011expert for kids 1 through 18 years of age with known stature.
 #' 4. @flynn2017clinical for kids 1 through 18 years of age with known stature.
 #'
-#' The data from @flynn2017clinical and @nhlbi2011exper are similar but for one
+#' The data from @flynn2017clinical and @nhlbi2011expert are similar but for one
 #' major difference.  @flynn2017clinical excluded overweight and obese ( BMI
 #' above the 85th percentile) children.
 #'

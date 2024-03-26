@@ -51,7 +51,7 @@ estimates:
 The default method is to use the workflow defined in Martin, DeWitt, et al.
 (2022).
 
-![](inst/images/flowchart.png)
+![](man/figures/flowchart.png)
 
 End users may opt to use any single data source.
 

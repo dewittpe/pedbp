@@ -76,7 +76,9 @@ x <- p_bp(q_sbp = rep(100, 2),
 bp_cdf(x)
 
 # Plotting a cdf from a call to q_bp
-x <- q_bp(p_sbp = 0.85, p_dbp = 0.95, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+x <- q_bp(p_sbp = 0.85, p_dbp = 0.95,
+          age = 29.2, male = 0, height_percentile = 0.95,
+          source = "flynn2017")
 
 bp_cdf(x)
 
