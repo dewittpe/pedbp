@@ -16,9 +16,9 @@ cppPGSF(metric, source, male, x, qp, type)
 \item{x}{is the age (in months), length (cm) or height (cm) as needed for
 the metric.}
 
-\item{qp}{the quantile or percentile, which ever is relevent for the type}
+\item{qp}{the quantile or percentile, whichever is relevant for the type}
 
-\item{type}{quantile, distribition, or zscore}
+\item{type}{quantile, distribution, or zscore}
 }
 \description{
 Pediatric growth standard based on LMS data from the CDC and WHO.

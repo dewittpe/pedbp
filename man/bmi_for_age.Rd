@@ -46,20 +46,16 @@ monitor growth for children age 2 years and older in the U.S.
 }
 
 \examples{
-# The 54th percentile BMI (kg * m^(-2)) for a six year (72 month) old female
+# The 54th quantile BMI (kg * m^(-2)) for a six year (72 month) old female
 # is
-bmi <- q_bmi_for_age(p = 0.54, male = 0, age = 71.5)
-bmi <- q_bmi_for_age(p = 0.54, male = 0, age = 71.6)
-# lms_data[["bmi_for_age"]][["CDC"]][["Female"]]
-
+bmi <- q_bmi_for_age(p = 0.54, male = 0, age = 72.0)
 all.equal(p_bmi_for_age(q = bmi, male = 0, age = 72), 0.54)
 all.equal(z_bmi_for_age(q = bmi, male = 0, age = 72), qnorm(0.54))
-
 
 # Find the 29th percentile for females from ages 0 through 6 years in three
 # month increments.  Sourcing the only CDC will generate a warning;
 # suppressed in this example.
-ages <- seq(0, 72, by = 3)
+ages <- seq(0, 72, by = 1)
 bmi_29 <-
   data.frame(
     age = ages
@@ -67,18 +63,16 @@ bmi_29 <-
   , "WHO"     = q_bmi_for_age(p = 0.29, male = 0, age = ages, source = "WHO")
   )
 
-bmi_29
-
 plot(
-  x = bmi_29$age
-, y = bmi_29$WHO
-, col = 1
-, pch = 1
-, xlab = "Age (months)", ylab = "29th percentile BMI (kg * m^(-2))"
-, type = "b"
+    x = bmi_29$age
+  , y = bmi_29$WHO
+  , col = 1
+  , pch = 16
+  , xlab = "Age (months)", ylab = "29th percentile BMI (kg * m^(-2))"
+  , type = "b"
 )
-points(x = bmi_29$age, y = bmi_29$CDC, col = 2, pch = 2, type = "b")
-legend("bottomright", col = 1:2, pch = 1:2, legend = c("WHO", "CDC"))
+points(x = bmi_29$age, y = bmi_29$CDC, col = 2, pch = 17, type = "b")
+legend("bottomright", col = 1:2, pch = 16:17, legend = c("WHO", "CDC"))
 
 }
 \references{

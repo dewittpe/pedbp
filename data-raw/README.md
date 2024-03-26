@@ -24,10 +24,12 @@ Data objects written into the file `R/sysdata.rda`
 
  | File                                  | Source                |
  | :------------------------------------ | :-------------------- |
- | `flynn2017_male.txt`                  | Flynn et.al. (2017)   |
- | `flynn2017_female.txt`                | Flynn et.al. (2017)   |
+ | `flynn2017_bp_boys.txt`               | Flynn et.al. (2017)   |
+ | `flynn2017_bp_girls.txt`              | Flynn et.al. (2017)   |
  | `gemelli1990_male.txt`                | Gemelli et.al. (1990) |
  | `gemelli1990_female.txt`              | Gemelli et.al. (1990) |
+ | `nhlbi_bp_norms_boys.csv`             | Expert Panel (2011)   |
+ | `nhlbi_bp_norms_girls.csv`            | Expert Panel (2011)   |
  | `lo2013_bp_weight_height_bmi.txt`     | Lo et.al. (2013)      |
 
 ### CDC Growth Charts
@@ -54,3 +56,8 @@ circumference-for-age) and older children (weight-for-stature; weight-for-age;
 stature-for-age; and BMI-for-age). The file and corresponding chart names are
 below. These data remain unchanged from the initial release on May 30, 2000 of
 the growth charts.
+
+### WHO data
+
+See the `data-raw/who/` directory and the `download.sh` script.
+
