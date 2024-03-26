@@ -181,7 +181,7 @@ p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50,
     list(sbp_percentile = stats::pnorm(q_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
       ,  dbp_percentile = stats::pnorm(q_dbp, mean = d$dbp_mean, sd = d$dbp_sd))
   attr(rtn, "bp_params") <- d
-  class(rtn) <- "pedbp_bp"
+  class(rtn) <- c("pedbp_bp", "pedbp_p_bp")
   rtn
 }
 
@@ -221,7 +221,7 @@ q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50,
     list(sbp = stats::qnorm(p_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
       ,  dbp = stats::qnorm(p_dbp, mean = d$dbp_mean, sd = d$dbp_sd))
   attr(rtn, "bp_params") <- d
-  class(rtn) <- "pedbp_bp"
+  class(rtn) <- c("pedbp_bp", "pedbp_q_bp")
   rtn
 }
 
