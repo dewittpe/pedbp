@@ -136,22 +136,18 @@ monitor growth for children age 2 years and older in the U.S.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># The 54th percentile BMI (kg * m^(-2)) for a six year (72 month) old female</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># The 54th quantile BMI (kg * m^(-2)) for a six year (72 month) old female</span></span></span>
 <span class="r-in"><span><span class="co"># is</span></span></span>
-<span class="r-in"><span><span class="va">bmi</span> <span class="op">&lt;-</span> <span class="fu">q_bmi_for_age</span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.54</span>, male <span class="op">=</span> <span class="fl">0</span>, age <span class="op">=</span> <span class="fl">71.5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">bmi</span> <span class="op">&lt;-</span> <span class="fu">q_bmi_for_age</span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.54</span>, male <span class="op">=</span> <span class="fl">0</span>, age <span class="op">=</span> <span class="fl">71.6</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># lms_data[["bmi_for_age"]][["CDC"]][["Female"]]</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">bmi</span> <span class="op">&lt;-</span> <span class="fu">q_bmi_for_age</span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.54</span>, male <span class="op">=</span> <span class="fl">0</span>, age <span class="op">=</span> <span class="fl">72.0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="fu">p_bmi_for_age</span><span class="op">(</span>q <span class="op">=</span> <span class="va">bmi</span>, male <span class="op">=</span> <span class="fl">0</span>, age <span class="op">=</span> <span class="fl">72</span><span class="op">)</span>, <span class="fl">0.54</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="fu">z_bmi_for_age</span><span class="op">(</span>q <span class="op">=</span> <span class="va">bmi</span>, male <span class="op">=</span> <span class="fl">0</span>, age <span class="op">=</span> <span class="fl">72</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">qnorm</a></span><span class="op">(</span><span class="fl">0.54</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Find the 29th percentile for females from ages 0 through 6 years in three</span></span></span>
 <span class="r-in"><span><span class="co"># month increments.  Sourcing the only CDC will generate a warning;</span></span></span>
 <span class="r-in"><span><span class="co"># suppressed in this example.</span></span></span>
-<span class="r-in"><span><span class="va">ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">72</span>, by <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">72</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bmi_29</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    age <span class="op">=</span> <span class="va">ages</span></span></span>
@@ -159,44 +155,16 @@ monitor growth for children age 2 years and older in the U.S.</p>
 <span class="r-in"><span>  , <span class="st">"WHO"</span>     <span class="op">=</span> <span class="fu">q_bmi_for_age</span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.29</span>, male <span class="op">=</span> <span class="fl">0</span>, age <span class="op">=</span> <span class="va">ages</span>, source <span class="op">=</span> <span class="st">"WHO"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bmi_29</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    age      CDC      WHO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0      NaN 12.67033</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    3      NaN 15.53532</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    6      NaN 16.08579</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    9      NaN 15.94470</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   12      NaN 15.58724</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   15      NaN 15.25878</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   18      NaN 15.00184</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   21      NaN 14.81601</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   24 15.68162 14.70335</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  27 15.53750 14.90094</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  30 15.37760 14.82785</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  33 15.23180 14.75899</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13  36 15.09999 14.69611</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14  39 14.98199 14.64092</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15  42 14.87758 14.59255</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16  45 14.78649 14.54999</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17  48 14.70835 14.51571</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18  51 14.64276 14.49249</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19  54 14.58929 14.48076</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20  57 14.54750 14.47800</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21  60 14.51692 14.48110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22  63 14.49714 14.45896</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23  66 14.48772 14.45255</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24  69 14.48827 14.45139</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25  72 14.49839 14.45592</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  x <span class="op">=</span> <span class="va">bmi_29</span><span class="op">$</span><span class="va">age</span></span></span>
-<span class="r-in"><span>, y <span class="op">=</span> <span class="va">bmi_29</span><span class="op">$</span><span class="va">WHO</span></span></span>
-<span class="r-in"><span>, col <span class="op">=</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span>, pch <span class="op">=</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span>, xlab <span class="op">=</span> <span class="st">"Age (months)"</span>, ylab <span class="op">=</span> <span class="st">"29th percentile BMI (kg * m^(-2))"</span></span></span>
-<span class="r-in"><span>, type <span class="op">=</span> <span class="st">"b"</span></span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="va">bmi_29</span><span class="op">$</span><span class="va">age</span></span></span>
+<span class="r-in"><span>  , y <span class="op">=</span> <span class="va">bmi_29</span><span class="op">$</span><span class="va">WHO</span></span></span>
+<span class="r-in"><span>  , col <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>  , pch <span class="op">=</span> <span class="fl">16</span></span></span>
+<span class="r-in"><span>  , xlab <span class="op">=</span> <span class="st">"Age (months)"</span>, ylab <span class="op">=</span> <span class="st">"29th percentile BMI (kg * m^(-2))"</span></span></span>
+<span class="r-in"><span>  , type <span class="op">=</span> <span class="st">"b"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bmi_29</span><span class="op">$</span><span class="va">age</span>, y <span class="op">=</span> <span class="va">bmi_29</span><span class="op">$</span><span class="va">CDC</span>, col <span class="op">=</span> <span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">2</span>, type <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WHO"</span>, <span class="st">"CDC"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bmi_29</span><span class="op">$</span><span class="va">age</span>, y <span class="op">=</span> <span class="va">bmi_29</span><span class="op">$</span><span class="va">CDC</span>, col <span class="op">=</span> <span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">17</span>, type <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">:</span><span class="fl">17</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WHO"</span>, <span class="st">"CDC"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="bmi_for_age-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

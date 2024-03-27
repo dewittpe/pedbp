@@ -339,35 +339,41 @@ children and adolescents." Pediatrics 140, no. 3 (2017).</p>
 <span class="r-in"><span><span class="co">#############################################################################</span></span></span>
 <span class="r-in"><span><span class="co"># Selecting different source values</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"martin2022"</span><span class="op">)</span> <span class="co"># defualt</span></span></span>
+<span class="r-in"><span><span class="co"># default</span></span></span>
+<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"martin2022"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.536445</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8830337</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"gemelli1990"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"gemelli1990"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"lo2013"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"lo2013"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.536445</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8830337</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"flynn2017"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_bp</span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">92</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"flynn2017"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp_percentile</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5345658</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -375,35 +381,40 @@ children and adolescents." Pediatrics 140, no. 3 (2017).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8480019</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"martin2022"</span><span class="op">)</span> <span class="co"># defualt</span></span></span>
+<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"martin2022"</span><span class="op">)</span> <span class="co"># defualt</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 102.3197</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 58.31975</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"gemelli1990"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"gemelli1990"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"lo2013"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"lo2013"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 102.3197</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $dbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 58.31975</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>, source <span class="op">=</span> <span class="st">"flynn2017"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">q_bp</span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.85</span>, p_dbp <span class="op">=</span> <span class="fl">0.85</span>, age <span class="op">=</span> <span class="fl">29.2</span>, male <span class="op">=</span> <span class="fl">0</span>, height_percentile <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>     source <span class="op">=</span> <span class="st">"flynn2017"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sbp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 102.8184</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
