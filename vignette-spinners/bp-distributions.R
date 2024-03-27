@@ -23,6 +23,13 @@ library(qwraps2)
 
 #'
 #'
+#+ label = "helper functions", include = FALSE
+percentile_factor <- function(p) {
+  factor(p, levels = sort(unique(p)), labels = paste0(sort(unique(p)) * 100, "th"))
+}
+
+#'
+#'
 library(pedbp)
 #'
 #' # Introduction
@@ -56,14 +63,13 @@ library(pedbp)
 #' height for each patient's sex and age.
 #'
 #+ echo = FALSE, results = "asis"
-#cat(paste0("<img src=\"", normalizePath(system.file("images", "flowchart.png", package = "pedbp")), "\">\n"))
-#knitr::include_graphics('man/figures/flowchart.png')
-#knitr::include_graphics(system.file("images", "flowchart.png", package = "pedbp"))
-
-#file.exists('man/figures/flowchart.png')
-#file.exists('../man/figures/flowchart.png')
-#file.exists('../../man/figures/flowchart.png')
+#/*
+while(FALSE) {
+#*/
 knitr::include_graphics("../man/figures/flowchart.png")
+#/*
+}
+#*/
 
 #'
 #'
@@ -201,22 +207,12 @@ q_bp(
 #' is unknown, or irrelevant (for those under 12 months of age).
 #'
 #+ label = "chart1_setup", echo = FALSE
-percentile_factor <- function(p) {
-  factor(p, levels = sort(unique(p)), labels = paste0(sort(unique(p)) * 100, "th"))
-}
-
-q_bp_with_source <- function(bpp, age, male, height = NA, height_percentile = 0.5) {
-  d <- q_bp(bpp, bpp, age, male, height, height_percentile)
-  data.table::data.table(source = attr(d, "bp_params")$source, sbp = d$sbp, dbp = d$dbp)
-}
-
 d <- data.table::CJ(male = 0:1
                     , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
-                    # , age = unique(bp_parameters$age)
                     , bp_percentile = c(5, 10, 25, 50, 75, 90, 95) / 100)
 
-d <- d[, as.list(q_bp_with_source(bp_percentile, age, male))
-       , by = .(male, age, bp_percentile)]
+x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
+d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
 
 d <- data.table::melt(d
                       , id.vars = c("source", "male", "age", "bp_percentile")
@@ -304,9 +300,9 @@ d <- data.table::CJ(male = 0:1
                     , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
                     , bp_percentile = 50 / 100
                     , height_percentile = unique(na.omit(bp_parameters$height_percentile)) / 100)
-d <- d[, as.list(q_bp_with_source(bp_percentile, age, male, height_percentile = height_percentile))
-       , by = .(male, age, bp_percentile, height_percentile)]
 
+x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
+d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
 d <- data.table::melt(d
                       , id.vars = c("source", "male", "age", "bp_percentile","height_percentile")
                       , measure.vars = c("sbp", "dbp")
@@ -388,9 +384,8 @@ d[, height := NA_real_]
 d[age < 36, height := q_length_for_age(p = height_percentile, male = male, age = age), by = .(male, age, height_percentile)]
 d[age >= 36, height := q_height_for_age(p = height_percentile, male = male, age = age), by = .(male, age, height_percentile)]
 
-
-d <-
-  d[, as.list(q_bp_with_source(bp_percentile, age, male, height)) , by = .(male, age, bp_percentile, height_percentile)]
+x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
+d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
 
 d <- data.table::melt(d
                       , id.vars = c("source", "male", "age", "bp_percentile", "height_percentile")
@@ -621,30 +616,30 @@ ggpubr::ggarrange(fsbp, qwraps2::qblandaltman(f_bp[, c("sbp", "pedbp_sbp")]) + g
 
 if (interactive()) {
   par(mfrow = c(1, 2))
-  plot(flynn2017$sbp, flynn2017$pedbp_sbp); abline(0, 1)
-  plot(flynn2017$dbp, flynn2017$pedbp_dbp); abline(0, 1)
-  summary(flynn2017$pedbp_sbp - flynn2017$sbp)
-  summary(flynn2017$pedbp_dbp - flynn2017$dbp)
-  summary(flynn2017$pedbp_sbp_percentile*100 - flynn2017$bp_percentile)
-  summary(flynn2017$pedbp_dbp_percentile*100 - flynn2017$bp_percentile)
+  plot(f_bp$sbp, f_bp$pedbp_sbp); abline(0, 1)
+  plot(f_bp$dbp, f_bp$pedbp_dbp); abline(0, 1)
+  summary(f_bp$pedbp_sbp - f_bp$sbp)
+  summary(f_bp$pedbp_dbp - f_bp$dbp)
+  summary(f_bp$pedbp_sbp_percentile*100 - f_bp$bp_percentile)
+  summary(f_bp$pedbp_dbp_percentile*100 - f_bp$bp_percentile)
 
-  qwraps2::qblandaltman(flynn2017[, c("sbp", "pedbp_sbp")])
-  qwraps2::qblandaltman(flynn2017[, c("dbp", "pedbp_dbp")])
-  qwraps2::qblandaltman(flynn2017[, c("bp_percentile", "pedbp_sbp_percentile")])
-  qwraps2::qblandaltman(flynn2017[, c("bp_percentile", "pedbp_dbp_percentile")])
+  qwraps2::qblandaltman(f_bp[, c("sbp", "pedbp_sbp")])
+  qwraps2::qblandaltman(f_bp[, c("dbp", "pedbp_dbp")])
+  qwraps2::qblandaltman(f_bp[, c("bp_percentile", "pedbp_sbp_percentile")])
+  qwraps2::qblandaltman(f_bp[, c("bp_percentile", "pedbp_dbp_percentile")])
 
   par(mfrow = c(1, 2))
-  plot(nhlbi_bp_norms$sbp, nhlbi_bp_norms$pedbp_sbp); abline(0, 1)
-  plot(nhlbi_bp_norms$dbp, nhlbi_bp_norms$pedbp_dbp); abline(0, 1)
-  summary(nhlbi_bp_norms$pedbp_sbp - nhlbi_bp_norms$sbp)
-  summary(nhlbi_bp_norms$pedbp_dbp - nhlbi_bp_norms$dbp)
-  summary(nhlbi_bp_norms$pedbp_sbp_percentile*100 - nhlbi_bp_norms$bp_percentile)
-  summary(nhlbi_bp_norms$pedbp_dbp_percentile*100 - nhlbi_bp_norms$bp_percentile)
+  plot(nhlbi_bp$sbp, nhlbi_bp$pedbp_sbp); abline(0, 1)
+  plot(nhlbi_bp$dbp, nhlbi_bp$pedbp_dbp); abline(0, 1)
+  summary(nhlbi_bp$pedbp_sbp - nhlbi_bp$sbp)
+  summary(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)
+  summary(nhlbi_bp$pedbp_sbp_percentile*100 - nhlbi_bp$bp_percentile)
+  summary(nhlbi_bp$pedbp_dbp_percentile*100 - nhlbi_bp$bp_percentile)
 
-  qwraps2::qblandaltman(nhlbi_bp_norms[, c("sbp", "pedbp_sbp")])
-  qwraps2::qblandaltman(nhlbi_bp_norms[, c("dbp", "pedbp_dbp")])
-  qwraps2::qblandaltman(nhlbi_bp_norms[, c("bp_percentile", "pedbp_sbp_percentile")])
-  qwraps2::qblandaltman(nhlbi_bp_norms[, c("bp_percentile", "pedbp_dbp_percentile")])
+  qwraps2::qblandaltman(nhlbi_bp[, c("sbp", "pedbp_sbp")])
+  qwraps2::qblandaltman(nhlbi_bp[, c("dbp", "pedbp_dbp")])
+  qwraps2::qblandaltman(nhlbi_bp[, c("bp_percentile", "pedbp_sbp_percentile")])
+  qwraps2::qblandaltman(nhlbi_bp[, c("bp_percentile", "pedbp_dbp_percentile")])
 }
 
 
