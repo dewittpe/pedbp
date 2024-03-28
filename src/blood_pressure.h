@@ -1,11 +1,7 @@
-// [[Rcpp::depends(RcppArmadillo)]]
-#include <RcppArmadillo.h>
 #include <Rcpp.h>
 #include <Rmath.h>
-#include "growth_standards.h"
-#include "bp_params.h"
-#include "utilities.h"
-using namespace Rcpp;
+#ifndef pedbp_blood_pressure_H
+#define pedbp_blood_pressure_H
 
 // cppBPF1 - Blood Pressure Function 1
 //
@@ -41,6 +37,8 @@ Rcpp::List cppBP(
     Rcpp::CharacterVector source,
     Rcpp::CharacterVector type
     );
+
+#endif
 
 // -------------------------------------------------------------------------- //
 //                                End of File                                 //
