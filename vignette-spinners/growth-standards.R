@@ -13,7 +13,7 @@
 #'
 #+ label = "setup", include = FALSE
 #/*
-devtools::load_all() # load the dev version while editting
+devtools::load_all() # load the dev version while editing
 #*/
 knitr::opts_chunk$set(collapse = TRUE, fig.align = "center")
 library(pedbp)
@@ -22,7 +22,7 @@ library(pedbp)
 #'
 #' Using the [Percentile Data Files with LMS values](https://www.cdc.gov/growthcharts/percentile_data_files.htm)
 #' provided by the CDC, we provide eight distribution tables which have been
-#' combinded into seven.  A
+#' combined into seven.  A
 #'
 #' | CDC Source                    | pedbp metric               |
 #' | :---------------------------- | :------------------------- |
@@ -135,11 +135,7 @@ p_weight_for_age(33 * 0.453592, age = 4 * 12, male = 1)
 #' kg.
 #+
 round(q_weight_for_age(p = 0.2, age = 18, male = 0), 5)
-#'
-#'
 
-#'
-#'
 #'
 #' # References
 #'<div id="refs"></div>

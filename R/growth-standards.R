@@ -1,4 +1,4 @@
-#' Pediatric Growth Standard Distribuiton Functions
+#' Pediatric Growth Standard Distribution Functions
 #'
 #' Growth standards based on data from the Centers for Disease Control and the
 #' World Health Organization.

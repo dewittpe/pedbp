@@ -2,7 +2,7 @@
 % Please edit documentation in R/growth-standards.R
 \name{growth-standards}
 \alias{growth-standards}
-\title{Pediatric Growth Standard Distribuiton Functions}
+\title{Pediatric Growth Standard Distribution Functions}
 \arguments{
 \item{q}{a vector of quantiles}
 

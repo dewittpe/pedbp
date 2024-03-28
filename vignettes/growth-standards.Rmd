@@ -22,7 +22,7 @@ library(pedbp)
 
 Using the [Percentile Data Files with LMS values](https://www.cdc.gov/growthcharts/percentile_data_files.htm)
 provided by the CDC, we provide eight distribution tables which have been
-combinded into seven.  A
+combined into seven.  A
 
 | CDC Source                    | pedbp metric               |
 | :---------------------------- | :------------------------- |
@@ -150,10 +150,6 @@ kg.
 ```{r}
 round(q_weight_for_age(p = 0.2, age = 18, male = 0), 5)
 ```
-
-
-
-
 
 
 # References
