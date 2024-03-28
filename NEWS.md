@@ -1,17 +1,19 @@
 # pedbp 2.0.0
 
-* Added features to blood pressure distriubtion functions
-  * functions gain the arguement `source` to specify the reference values used
+* Added features to blood pressure distribution functions
+  * functions gain the argument `source` to specify the reference values used
     to generate the percentiles.  Default to `martin2022` to keep the same
-    functionallity as verion 1.
+    functionality as version 1.
   * Add a new source of blood pressure percentiles called `flynn2017` referencing
     Flynn, Joseph T., David C. Kaelber, Carissa M. Baker-Smith, Douglas Blowey,
     Aaron E. Carroll, Stephen R. Daniels, Sarah D. De Ferranti et al. "Clinical
     practice guideline for screening and management of high blood pressure in
     children and adolescents." Pediatrics 140, no. 3 (2017).
+  * Implementation has be moved into c++ and the speed improvement compared to
+    version 1 is huge.  v2 is more than 200 times faster than v1.
 
 * API change to the growth standard distribution functions
-  * this includes a name change from "vital signs" to "growth stardards"
+  * this includes a name change from "vital signs" to "growth standards"
   * complete redo for how the methods are implemented
   * extended data sources
 
