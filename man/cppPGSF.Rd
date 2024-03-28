@@ -7,11 +7,11 @@
 cppPGSF(metric, source, male, x, qp, type)
 }
 \arguments{
-\item{metric}{string}
+\item{metric}{string, for example bmi_for_age}
 
-\item{source}{string}
+\item{source}{string, CDC or WHO}
 
-\item{male}{integer}
+\item{male}{integer, 0 = female; 1 = male}
 
 \item{x}{is the age (in months), length (cm) or height (cm) as needed for
 the metric.}

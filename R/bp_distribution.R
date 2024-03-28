@@ -33,6 +33,13 @@
 #'   percentile).
 #' }
 #'
+#' There is a hierarchy for the use of the \code{height},
+#' \code{height_percentile}, and \code{default_height_percentile}.  If
+#' \code{height} is provided, it takes precedence over the other two arguments.
+#' \code{height_percentile} is used if \code{height} is missing and takes
+#' precedence over \code{default_height_percentile}.  The height is only needed
+#' if using the \code{nhlbi} or \code{flynn2017} data sources (including as part
+#' of the \code{martin2022} workflow).
 #'
 #' @param q_sbp a vector of systolic blood pressures
 #' @param q_dbp a vector of diastolic blood pressures
@@ -47,7 +54,9 @@
 #' @param source the method, or data set, to use as the reference.  See Details.
 #' @param ... not currently used
 #'
-#' @seealso \code{vignette("bp-distriution", package = "pedbp")}
+#' @seealso \code{vignette("bp-distributions", package = "pedbp")},
+#' \code{\link{bp_cdf}} for plotting cumulative distribution functions for the
+#' blood pressures.
 #'
 #' @return a \code{pedbp_bp} object.  This is a list of two numeric vectors:
 #' \code{sbp_percentile} (systolic blood pressure) and \code{dbp_percentile}

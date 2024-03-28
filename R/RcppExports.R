@@ -5,7 +5,13 @@
 #'
 #' @description Pediatric Blood Pressure quantiles and percentiles
 #'
-#' @detail
+#' @details
+#'
+#' \code{height} is used preferentially over \code{height_percentile} over
+#' \code{default_height_percentile}.
+#'
+#' \code{source} can be one of \code{"gemelli1990"}, \code{"lo2013"},
+#' \code{"nhlbi"}, \code{"flynn2017"}, or \code{"martin2022"}.
 #'
 #' @param qp_sbp the quantile(s) or percentile(s) for systolic blood pressure
 #' @param qp_dbp the quantile(s) or percentile(s) for diastolic blood pressure
@@ -15,8 +21,15 @@
 #' @param default_height_percentile default height percentile to use if \code{height} is missing
 #' @param source the method, or data set, to use as the reference.
 #' @param type quantile or percentile to return
-NULL
-
+#'
+#' @return
+#' A list:
+#'
+#' [[1]] systolic blood pressure quantiles or percentiles (defined by the input value of \code{type}).
+#' [[2]] diastolic blood pressure quantiles or percentiles (defined by the input value of \code{type}).
+#'
+#' \code{attr(, "bp_params")} is a \code{data.frame} with the values for the
+#' look up table(s) needed to inform the sbp and dbp values.
 cppBP <- function(qp_sbp, qp_dbp, age, male, height, height_percentile, default_height_percentile, source, type) {
     .Call('_pedbp_cppBP', PACKAGE = 'pedbp', qp_sbp, qp_dbp, age, male, height, height_percentile, default_height_percentile, source, type)
 }
@@ -28,9 +41,9 @@ cppBP <- function(qp_sbp, qp_dbp, age, male, height, height_percentile, default_
 #' @details expect to call this from R after checking some functional
 #' arguments within R.
 #'
-#' @param metric string
-#' @param source string
-#' @param male  integer
+#' @param metric string, for example bmi_for_age
+#' @param source string, CDC or WHO
+#' @param male  integer, 0 = female; 1 = male
 #' @param x is the age (in months), length (cm) or height (cm) as needed for
 #' the metric.
 #' @param qp the quantile or percentile, whichever is relevant for the type

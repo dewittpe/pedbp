@@ -95,6 +95,14 @@ Options:
   and adolescents with overweight and obesity (ie, those with a BMI >= 85th
   percentile).
 }
+
+There is a hierarchy for the use of the \code{height},
+\code{height_percentile}, and \code{default_height_percentile}.  If
+\code{height} is provided, it takes precedence over the other two arguments.
+\code{height_percentile} is used if \code{height} is missing and takes
+precedence over \code{default_height_percentile}.  The height is only needed
+if using the \code{nhlbi} or \code{flynn2017} data sources (including as part
+of the \code{martin2022} workflow).
 }
 \examples{
 
@@ -196,5 +204,7 @@ practice guideline for screening and management of high blood pressure in
 children and adolescents." Pediatrics 140, no. 3 (2017).
 }
 \seealso{
-\code{vignette("bp-distriution", package = "pedbp")}
+\code{vignette("bp-distributions", package = "pedbp")},
+\code{\link{bp_cdf}} for plotting cumulative distribution functions for the
+blood pressures.
 }

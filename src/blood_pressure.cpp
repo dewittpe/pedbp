@@ -173,7 +173,6 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 //'
 //' \code{attr(, "bp_params")} is a \code{data.frame} with the values for the
 //' look up table(s) needed to inform the sbp and dbp values.
-//
 // [[Rcpp::export]]
 Rcpp::List cppBP(
     Rcpp::NumericVector qp_sbp,
