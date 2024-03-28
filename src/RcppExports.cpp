@@ -11,24 +11,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// cppBPF1
-Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int known_height, double height_percentile, std::string source, std::string type);
-RcppExport SEXP _pedbp_cppBPF1(SEXP sbpSEXP, SEXP dbpSEXP, SEXP ageSEXP, SEXP maleSEXP, SEXP known_heightSEXP, SEXP height_percentileSEXP, SEXP sourceSEXP, SEXP typeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type sbp(sbpSEXP);
-    Rcpp::traits::input_parameter< double >::type dbp(dbpSEXP);
-    Rcpp::traits::input_parameter< double >::type age(ageSEXP);
-    Rcpp::traits::input_parameter< int >::type male(maleSEXP);
-    Rcpp::traits::input_parameter< int >::type known_height(known_heightSEXP);
-    Rcpp::traits::input_parameter< double >::type height_percentile(height_percentileSEXP);
-    Rcpp::traits::input_parameter< std::string >::type source(sourceSEXP);
-    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
-    rcpp_result_gen = Rcpp::wrap(cppBPF1(sbp, dbp, age, male, known_height, height_percentile, source, type));
-    return rcpp_result_gen;
-END_RCPP
-}
 // cppPGSF
 Rcpp::NumericVector cppPGSF(Rcpp::CharacterVector metric, Rcpp::CharacterVector source, Rcpp::IntegerVector male, Rcpp::NumericVector x, Rcpp::NumericVector qp, Rcpp::CharacterVector type);
 RcppExport SEXP _pedbp_cppPGSF(SEXP metricSEXP, SEXP sourceSEXP, SEXP maleSEXP, SEXP xSEXP, SEXP qpSEXP, SEXP typeSEXP) {
@@ -66,7 +48,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pedbp_cppBPF1", (DL_FUNC) &_pedbp_cppBPF1, 8},
     {"_pedbp_cppPGSF", (DL_FUNC) &_pedbp_cppPGSF, 6},
     {"_pedbp_cppBP", (DL_FUNC) &_pedbp_cppBP, 9},
     {NULL, NULL, 0}

@@ -4,8 +4,6 @@
 \alias{bp_distribution}
 \alias{p_bp}
 \alias{q_bp}
-\alias{p_bp_old}
-\alias{q_bp_old}
 \title{Estimate Pediatric Blood Pressure Distribution}
 \usage{
 p_bp(
@@ -28,28 +26,6 @@ q_bp(
   height = NA,
   height_percentile = NA,
   default_height_percentile = 0.5,
-  source = getOption("pedbp_bp_source", "martin2022"),
-  ...
-)
-
-p_bp_old(
-  q_sbp,
-  q_dbp,
-  age,
-  male,
-  height = NA,
-  height_percentile = 0.5,
-  source = getOption("pedbp_bp_source", "martin2022"),
-  ...
-)
-
-q_bp_old(
-  p_sbp,
-  p_dbp,
-  age,
-  male,
-  height = NA,
-  height_percentile = 0.5,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
