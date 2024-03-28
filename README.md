@@ -101,7 +101,11 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92) # Default
 ```
 
 ```
-## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp_percentile
+## [1] 0.7086064
+## 
+## $dbp_percentile
+## [1] 0.6428859
 ```
 
 ```r
@@ -109,7 +113,11 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "martin20
 ```
 
 ```
-## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp_percentile
+## [1] 0.7086064
+## 
+## $dbp_percentile
+## [1] 0.6428859
 ```
 
 ```r
@@ -117,7 +125,11 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "gemelli1
 ```
 
 ```
-## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp_percentile
+## [1] NA
+## 
+## $dbp_percentile
+## [1] NA
 ```
 
 ```r
@@ -125,7 +137,11 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "lo2013")
 ```
 
 ```
-## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp_percentile
+## [1] NA
+## 
+## $dbp_percentile
+## [1] NA
 ```
 
 ```r
@@ -133,7 +149,11 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "nhlbi")
 ```
 
 ```
-## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp_percentile
+## [1] 0.7086064
+## 
+## $dbp_percentile
+## [1] 0.6428859
 ```
 
 ```r
@@ -141,7 +161,11 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "flynn201
 ```
 
 ```
-## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp_percentile
+## [1] 0.6797595
+## 
+## $dbp_percentile
+## [1] 0.5422765
 ```
 
 You can also find the quantile values.  Example: what is the SBP/DBP values for
@@ -152,7 +176,11 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90)
 ```
 
 ```
-## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp
+## [1] 108.5792
+## 
+## $dbp
+## [1] 62.12428
 ```
 
 ```r
@@ -160,7 +188,11 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp
+## [1] 108.5792
+## 
+## $dbp
+## [1] 62.12428
 ```
 
 ```r
@@ -168,7 +200,11 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp
+## [1] NA
+## 
+## $dbp
+## [1] NA
 ```
 
 ```r
@@ -176,7 +212,11 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp
+## [1] 108.5792
+## 
+## $dbp
+## [1] 62.12428
 ```
 
 ```r
@@ -184,7 +224,11 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp
+## [1] 108.7961
+## 
+## $dbp
+## [1] 61.65239
 ```
 
 ```r
@@ -192,7 +236,11 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
+## $sbp
+## [1] 108.6517
+## 
+## $dbp
+## [1] 61.93385
 ```
 
 More examples can be found in the vignette.

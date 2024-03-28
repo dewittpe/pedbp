@@ -15,7 +15,7 @@ p_bp(
   male,
   height = NA,
   height_percentile = NA,
-  defualt_height_percentile = 0.5,
+  default_height_percentile = 0.5,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -27,7 +27,7 @@ q_bp(
   male,
   height = NA,
   height_percentile = NA,
-  defualt_height_percentile = 0.5,
+  default_height_percentile = 0.5,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -63,9 +63,11 @@ q_bp_old(
 
 \item{male}{integer value, 1 = male, 0 = female}
 
-\item{height}{numeric, in centimeters, can be missing.}
+\item{height}{numeric, in centimeters, can be missing. See Details.}
 
-\item{height_percentile}{default height percentile to use if \code{height} is
+\item{height_percentile}{height percentile to use. See Details.}
+
+\item{default_height_percentile}{default height percentile to use if \code{height} is
 missing.}
 
 \item{source}{the method, or data set, to use as the reference.  See Details.}
@@ -169,26 +171,26 @@ q_bp(
 # Selecting different source values
 
 # default
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "martin2022")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "gemelli1990")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "lo2013")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "nhlbi")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "flynn2017")
 
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
-     source = "martin2022") # defualt
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+     source = "martin2022") # default
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "gemelli1990")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "lo2013")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "nhlbi")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "flynn2017")
 
 

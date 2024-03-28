@@ -364,7 +364,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
   //Rcpp::Rcout << "LUT: " << LUT << "\n";
   //Rcpp::Rcout << "aindex: " << aindex << "\n";
 
-  if (aindex.n_elem == 0) {
+  if (aindex.n_elem == 0 || age > 216.0 || (source == "gemelli1990" && age > 12)) {
     Rcpp::NumericVector rtn (9);
     for (int i = 0; i < 9; ++i) {
       rtn(i) = NA_REAL;
