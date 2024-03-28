@@ -40,7 +40,7 @@ cppPGSF <- function(metric, source, male, x, qp, type) {
     .Call('_pedbp_cppPGSF', PACKAGE = 'pedbp', metric, source, male, x, qp, type)
 }
 
-cppBP <- function(qp_sbp, qp_dbp, age, male, height, default_height_percentile, source, type) {
-    .Call('_pedbp_cppBP', PACKAGE = 'pedbp', qp_sbp, qp_dbp, age, male, height, default_height_percentile, source, type)
+cppBP <- function(qp_sbp, qp_dbp, age, male, height, height_percentile, default_height_percentile, source, type) {
+    .Call('_pedbp_cppBP', PACKAGE = 'pedbp', qp_sbp, qp_dbp, age, male, height, height_percentile, default_height_percentile, source, type)
 }
 

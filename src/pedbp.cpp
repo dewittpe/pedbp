@@ -290,14 +290,14 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     type) {
   arma::mat LUT;
 
-  Rcpp::Rcout << "sbp: " << sbp << "\n";
-  Rcpp::Rcout << "dbp: " << dbp << "\n";
-  Rcpp::Rcout << "age: " << age << "\n";
-  Rcpp::Rcout << "male: " << male << "\n";
-  Rcpp::Rcout << "known_height: " << known_height << "\n";
-  Rcpp::Rcout << "height_percentile: " << height_percentile << "\n";
-  Rcpp::Rcout << "source: " << source << "\n";
-  Rcpp::Rcout << "type: " << type << "\n";
+  //Rcpp::Rcout << "sbp: " << sbp << "\n";
+  //Rcpp::Rcout << "dbp: " << dbp << "\n";
+  //Rcpp::Rcout << "age: " << age << "\n";
+  //Rcpp::Rcout << "male: " << male << "\n";
+  //Rcpp::Rcout << "known_height: " << known_height << "\n";
+  //Rcpp::Rcout << "height_percentile: " << height_percentile << "\n";
+  //Rcpp::Rcout << "source: " << source << "\n";
+  //Rcpp::Rcout << "type: " << type << "\n";
 
   if (!(male == 0 || male == 1)) {
     Rf_error("male needs to be a 0 or 1");
@@ -361,6 +361,9 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 
   arma::uvec aindex = arma::find((LUT.col(0) <= age) && (abs(LUT.col(5) - height_percentile*100)) == arma::min(abs(LUT.col(5) - height_percentile*100)));
 
+  //Rcpp::Rcout << "LUT: " << LUT << "\n";
+  //Rcpp::Rcout << "aindex: " << aindex << "\n";
+
   if (aindex.n_elem == 0) {
     Rcpp::NumericVector rtn (9);
     for (int i = 0; i < 9; ++i) {
@@ -380,7 +383,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     }
 
     return Rcpp::wrap(LUT);
-  } 
+  }
 
 }
 
@@ -519,6 +522,7 @@ Rcpp::List cppBP(
     Rcpp::NumericVector age,
     Rcpp::IntegerVector male,
     Rcpp::NumericVector height,
+    Rcpp::NumericVector height_percentile,
     double default_height_percentile,
     Rcpp::CharacterVector source,
     Rcpp::CharacterVector type
@@ -537,8 +541,8 @@ Rcpp::List cppBP(
     Rf_error("'type' should have length 1");
   }
   // vector length - either length 1, or equal length.
-  int max_length = std::max({qp_sbp.length(), qp_dbp.length(), age.length(), male.length(), height.length()});
-  int min_length = std::min({qp_sbp.length(), qp_dbp.length(), age.length(), male.length(), height.length()});
+  int max_length = std::max({qp_sbp.length(), qp_dbp.length(), age.length(), male.length(), height.length(), height_percentile.length()});
+  int min_length = std::min({qp_sbp.length(), qp_dbp.length(), age.length(), male.length(), height.length(), height_percentile.length()});
 
   if (min_length == 0) {
     Rf_error("zero length vector");
@@ -585,28 +589,45 @@ Rcpp::List cppBP(
     } else {
       // nothing to do
     }
+    if (height_percentile.length() == 1) {
+      height_percentile = resize(height_percentile, max_length);
+      height_percentile.fill(height_percentile(0));
+    } else if (height_percentile.length() > 1 && height_percentile.length() < max_length) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    } else {
+      // nothing to do
+    }
     source = resize(source, max_length);
     source.fill(source(0));
     type = resize(type, max_length);
     type.fill(type(0));
   }
 
-  Rcpp::NumericVector height_percentile (max_length);
-  Rcpp::LogicalVector known_height = Rcpp::is_na(height);
+  Rcpp::LogicalVector known_height = !Rcpp::is_na(height);
+  Rcpp::LogicalVector known_heightp = !Rcpp::is_na(height_percentile);
   Rcpp::NumericMatrix lutbp (max_length, 9);
   int i = 0;
 
+  //Rcpp::Rcout << "known_height: " << known_height << "\n";
+  //Rcpp::Rcout << "known_heightp: " << known_heightp << "\n";
+  //Rcpp::Rcout << "height_percentile: " << height_percentile << "\n";
+  //Rcpp::Rcout << "default_height_percentile: " << default_height_percentile << "\n";
+
   for (i = 0; i < max_length; ++i) {
+    //Rcpp::Rcout << "i: " << i << "\n";
+    //Rcpp::Rcout << "NumericVector::is_na(height_percentile(i)): " << NumericVector::is_na(height_percentile(i)) << "\n";
     if (known_height(i)) {
       if (age(i) < 36) {
         height_percentile(i) = cppPGSF1("length_for_age", "WHO", male(i), age(i), height(i), "percentile");
       } else {
         height_percentile(i) = cppPGSF1("height_for_age", "CDC", male(i), age(i), height(i), "percentile");
       }
-    } else {
+    } else if (!known_heightp(i)) {
       height_percentile(i) = default_height_percentile;
     }
   }
+
+  //Rcpp::Rcout << "height_percentile: " << height_percentile << "\n";
 
   for (i = 0; i < max_length; ++i) {
     lutbp(i, _) = cppBPF1(
@@ -620,8 +641,6 @@ Rcpp::List cppBP(
         Rcpp::as<std::string>(type(i))
         );
   }
-
-  //return lutbp;
 
   // Create Return object
   Rcpp::List rtn;
@@ -644,7 +663,6 @@ Rcpp::List cppBP(
     } else if (NumericVector::is_na(lutbp(i, 6))) {
       src(i) = NA_STRING;
     } else {
-      Rcpp::Rcout << lutbp(i, 6) << "\n";
       Rf_error("unknown source");
     }
     if (lutbp(i, 5) == 101) {

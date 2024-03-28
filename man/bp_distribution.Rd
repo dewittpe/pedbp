@@ -14,7 +14,8 @@ p_bp(
   age,
   male,
   height = NA,
-  height_percentile = 0.5,
+  height_percentile = NA,
+  defualt_height_percentile = 0.5,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -25,7 +26,8 @@ q_bp(
   age,
   male,
   height = NA,
-  height_percentile = 0.5,
+  height_percentile = NA,
+  defualt_height_percentile = 0.5,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )

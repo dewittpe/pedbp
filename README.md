@@ -101,7 +101,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92) # Default
 ```
 
 ```
-## Error in eval(expr, envir, enclos): Mat::operator(): index out of bounds
+## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -109,7 +109,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "martin20
 ```
 
 ```
-## Error in eval(expr, envir, enclos): Mat::operator(): index out of bounds
+## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -117,11 +117,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "gemelli1
 ```
 
 ```
-## $sbp_percentile
-## [1] 0.5398278
-## 
-## $dbp_percentile
-## [1] 0.190787
+## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -129,7 +125,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "lo2013")
 ```
 
 ```
-## Error in eval(expr, envir, enclos): Mat::operator(): index out of bounds
+## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -137,11 +133,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "nhlbi")
 ```
 
 ```
-## $sbp_percentile
-## [1] 0.7534673
-## 
-## $dbp_percentile
-## [1] 0.6764343
+## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -149,11 +141,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "flynn201
 ```
 
 ```
-## $sbp_percentile
-## [1] 0.7124685
-## 
-## $dbp_percentile
-## [1] 0.583755
+## Error in cppBP(q_sbp, q_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 You can also find the quantile values.  Example: what is the SBP/DBP values for
@@ -164,11 +152,7 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90)
 ```
 
 ```
-## $sbp
-## [1] 108.5792
-## 
-## $dbp
-## [1] 62.12428
+## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -176,11 +160,7 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## $sbp
-## [1] 108.5792
-## 
-## $dbp
-## [1] 62.12428
+## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -188,11 +168,7 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## $sbp
-## [1] 97.18296
-## 
-## $dbp
-## [1] 57.98107
+## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -200,11 +176,7 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## $sbp
-## [1] 108.5792
-## 
-## $dbp
-## [1] 62.12428
+## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -212,11 +184,7 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## $sbp
-## [1] 108.7961
-## 
-## $dbp
-## [1] 61.65239
+## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 ```r
@@ -224,11 +192,7 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 ```
 
 ```
-## $sbp
-## [1] 108.6517
-## 
-## $dbp
-## [1] 61.93385
+## Error in cppBP(p_sbp, p_dbp, age, male, known_height = as.integer(!is.na(height)), : unused argument (known_height = as.integer(!is.na(height)))
 ```
 
 More examples can be found in the vignette.

@@ -40,8 +40,9 @@
 #' @param p_dbp a vector of diastolic blood percentiles
 #' @param age numeric age, in months
 #' @param male integer value, 1 = male, 0 = female
-#' @param height numeric, in centimeters, can be missing.
-#' @param height_percentile default height percentile to use if \code{height} is
+#' @param height numeric, in centimeters, can be missing. See Details.
+#' @param height_percentile height percentile to use. See Details.
+#' @param default_height_percentile default height percentile to use if \code{height} is
 #' missing.
 #' @param source the method, or data set, to use as the reference.  See Details.
 #' @param ... not currently used
@@ -130,26 +131,26 @@
 #' # Selecting different source values
 #'
 #' # default
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "martin2022")
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "gemelli1990")
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "lo2013")
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "nhlbi")
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "flynn2017")
 #'
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
-#'      source = "martin2022") # defualt
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+#'      source = "martin2022") # default
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "gemelli1990")
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "lo2013")
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "nhlbi")
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "flynn2017")
 #'
 #'
@@ -158,16 +159,25 @@ NULL
 
 #' @rdname bp_distribution
 #' @export
-p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
-  rtn <- cppBP(q_sbp, q_dbp, age, male, height = as.integer(!is.na(height)), default_height_percentile = height_percentile, source, type = "percentile")
+p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  rtn <- cppBP(qp_sbp = q_sbp, qp_dbp = q_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "percentile")
   class(rtn) <- c("pedbp_bp", "pedbp_p_bp")
   rtn
 }
 
 #' @rdname bp_distribution
 #' @export
-q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
-  rtn <- cppBP(p_sbp, p_dbp, age, male, height = as.integer(!is.na(height)), default_height_percentile = height_percentile, source, type = "quantile")
+q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  #cat("p_sbp: ", p_sbp, "\n",
+  #    "p_dbp: ", p_dbp, "\n",
+  #    "age: ", age, "\n",
+  #    "male: ", male, "\n",
+  #    "height: ", height, "\n",
+  #    "height_percentile: ", height_percentile, "\n",
+  #    "default_height_percentile: ", default_height_percentile, "\n",
+  #    "source: ", source, "\n"
+  #    )
+  rtn <- cppBP(qp_sbp = p_sbp, qp_dbp = p_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "quantile")
   class(rtn) <- c("pedbp_bp", "pedbp_q_bp")
   rtn
 }
