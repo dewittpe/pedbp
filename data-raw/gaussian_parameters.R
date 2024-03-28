@@ -63,8 +63,9 @@ for (src in unique(bp_parameters$source)) {
     d <- subset(bp_parameters, bp_parameters$source == src & bp_parameters$male == sex)
     d <- as.matrix(d[, c("age", "sbp_mean", "sbp_sd", "dbp_mean", "dbp_sd", "height_percentile")])
     if (all(is.na(d[, "height_percentile"]))) {
-      d[, "height_percentile"] <- 100 # if there is no percentile, then everyone is in this percentile
+      d[, "height_percentile"] <- 101 # if there is no percentile, then everyone is in this percentile
     }
+    d <- cbind(d, source = ifelse(src == "gemelli1990", 1, ifelse(src == "lo2013", 2, ifelse(src == "nhlbi", 3, ifelse(src == "flynn2017", 4, stop("unknown src"))))))
     d <- apply(d, MARGIN = 1, function(x) paste("{", paste(x, collapse = ", "), "}"))
     d <- paste(d, collapse = ", \n")
     nm <- paste0(src, "_", ifelse(sex == 0, "female", "male"))
