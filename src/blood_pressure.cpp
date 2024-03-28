@@ -8,7 +8,38 @@
 using namespace Rcpp;
 
 // -------------------------------------------------------------------------- //
+// cpp Blood Pressure Function 1
 //
+// Find the percentile or quantile for one observation of age, male, height
+//
+// args:
+//    sbp: the quantile or percentile systolic blood pressure
+//    dbp: the quantile or percentile diastolic blood pressure
+//    age: in months
+//    male: 0 = female, 1 = male
+//    known_height: 0 = height is not known
+//    height_percentile: the height percentile to use in the look up table.
+//                       This is only relevant to nhlbi and flynn2017 data
+//    source: the data source or method defining the look up table
+//    type: percentile or quantile
+//
+//  return:
+//
+//    A numeric vector of lenght 9
+//
+//      (0) look up table age
+//      (1) look up table systolic blood pressure mean
+//      (2) look up table systolic blood pressure sd
+//      (3) look up table diastolic blood pressure mean
+//      (4) look up table diastolic blood pressure sd
+//      (5) look up table height percentile
+//      (6) integer value denoting source:
+//          1 = gemelli1990
+//          2 = lo2013
+//          3 = nhlbi
+//          4 = flynn2017
+//      (7) systolic blood pressure - quantile or percentile; as defined by type
+//      (8) diastolic blood pressure - quantile or percentile; as defined by type
 //
 Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     known_height, double height_percentile, std::string source, std::string
@@ -109,17 +140,21 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 
     return Rcpp::wrap(LUT);
   }
-
 }
 
 // -------------------------------------------------------------------------- //
-
 
 //' @title Pediatric Blood Pressure
 //'
 //' @description Pediatric Blood Pressure quantiles and percentiles
 //'
-//' @detail
+//' @details
+//'
+//' \code{height} is used preferentially over \code{height_percentile} over
+//' \code{default_height_percentile}.
+//'
+//' \code{source} can be one of \code{"gemelli1990"}, \code{"lo2013"},
+//' \code{"nhlbi"}, \code{"flynn2017"}, or \code{"martin2022"}.
 //'
 //' @param qp_sbp the quantile(s) or percentile(s) for systolic blood pressure
 //' @param qp_dbp the quantile(s) or percentile(s) for diastolic blood pressure
@@ -129,6 +164,15 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 //' @param default_height_percentile default height percentile to use if \code{height} is missing
 //' @param source the method, or data set, to use as the reference.
 //' @param type quantile or percentile to return
+//'
+//' @return
+//' A list:
+//'
+//' [[1]] systolic blood pressure quantiles or percentiles (defined by the input value of \code{type}).
+//' [[2]] diastolic blood pressure quantiles or percentiles (defined by the input value of \code{type}).
+//'
+//' \code{attr(, "bp_params")} is a \code{data.frame} with the values for the
+//' look up table(s) needed to inform the sbp and dbp values.
 //
 // [[Rcpp::export]]
 Rcpp::List cppBP(

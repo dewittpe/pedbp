@@ -1,9 +1,10 @@
 #include <Rcpp.h>
 #include <Rmath.h>
+#include "utilities.h"
 
 // Resize
 //
-// Resize a R-like vector retaining data
+// Resize a R-like vector while retaining data
 //
 // Args:
 //   x  the vector to resize

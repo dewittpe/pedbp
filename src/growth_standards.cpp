@@ -260,9 +260,9 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
 //' @details expect to call this from R after checking some functional
 //' arguments within R.
 //'
-//' @param metric string
-//' @param source string
-//' @param male  integer
+//' @param metric string, for example bmi_for_age
+//' @param source string, CDC or WHO
+//' @param male  integer, 0 = female; 1 = male
 //' @param x is the age (in months), length (cm) or height (cm) as needed for
 //' the metric.
 //' @param qp the quantile or percentile, whichever is relevant for the type

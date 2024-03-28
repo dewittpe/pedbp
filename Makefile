@@ -162,13 +162,13 @@ shiny: install
 	R -e "shiny::runApp(normalizePath(system.file('shinyapps', 'pedbp', package = 'pedbp')), port = 4492)"
 
 clean:
-	$(RM) -f  $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	$(RM) -rf $(PKG_NAME).Rcheck
-	$(RM) -f .*.Rout
-	$(RM) -f *.Rout
-	$(RM) -f *.html
-	$(RM) -f vignettes/*.html
-	$(RM) -f src/*.o
-	$(RM) -f docs
-	$(RM) -f lib
+	$(RM) $(PKG_NAME)_$(PKG_VERSION).tar.gz
+	$(RM) -r $(PKG_NAME).Rcheck
+	$(RM) .*.Rout
+	$(RM) *.Rout
+	$(RM) *.html
+	$(RM) vignettes/*.html
+	$(RM) src/*.o
+	$(RM) docs
+	$(RM) -r lib
 
