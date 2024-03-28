@@ -14,6 +14,12 @@ stopifnot(
 )
 
 ################################################################################
+# verify error is male != 0 and male != 1
+x <- tryCatch(q_bp(0.5, 0.5, male = 2, age = 55), error = function(e) e)
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "male needs to be a 0 or 1"))
+
+################################################################################
 # verify error if length(age) > 1L and length(age) != length(q_sbp) or p_sbp
 # verify error if length(male) > 1L and length(male) != length(q_sbp) or p_sbp
 # verify error if length(height) > 1L and length(male) != length(q_sbp) or p_sbp
@@ -151,7 +157,7 @@ for( i in 1:nrow(d)) {
               attr(p_bp(90, 60, d$age[i], male = d$male[i]), "bp_params")
               ,
               d[i, ]
-              , 
+              ,
               check.attributes = FALSE
               )
   )
