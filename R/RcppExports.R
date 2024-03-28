@@ -18,6 +18,8 @@
 #' @param age numeric vector, in months
 #' @param male integer vector; 0 = female, 1 = male
 #' @param height numeric vector of stature
+#' @param height_percentile numeric vector for height percentiles, expected
+#'        values between 0 and 1.
 #' @param default_height_percentile default height percentile to use if \code{height} is missing
 #' @param source the method, or data set, to use as the reference.
 #' @param type quantile or percentile to return
