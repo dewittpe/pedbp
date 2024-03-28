@@ -135,6 +135,8 @@ for( i in 1:nrow(d)) {
               attr(q_bp(0.5, 0.5, d$age[i], male = d$male[i]), "bp_params")
               ,
               d[i, ]
+              ,
+              check.attributes = FALSE
               )
     )
   )
@@ -149,6 +151,8 @@ for( i in 1:nrow(d)) {
               attr(p_bp(90, 60, d$age[i], male = d$male[i]), "bp_params")
               ,
               d[i, ]
+              , 
+              check.attributes = FALSE
               )
   )
 }
@@ -175,6 +179,8 @@ for( i in 1:nrow(d)) {
               attr(q_bp(p_sbp = 0.5, p_dbp = 0.5, age = d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
               d[i, 1:8]
+              ,
+              check.attributes = FALSE
               )
   )
 }
@@ -188,6 +194,8 @@ for( i in 1:nrow(d)) {
               attr(p_bp(90, 60, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
               d[i, 1:8]
+              ,
+              check.attributes = FALSE
               )
   )
 }
@@ -214,6 +222,8 @@ for( i in 1:nrow(d)) {
               attr(q_bp(0.5, 0.5, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
               d[i, 1:8]
+              ,
+              check.attributes = FALSE
               )
   )
 }
@@ -227,6 +237,8 @@ for( i in 1:nrow(d)) {
               attr(p_bp(90, 60, d$age[i], male = d$male[i], height = d$ht[i]), "bp_params")
               ,
               d[i, 1:8]
+              ,
+              check.attributes = FALSE
               )
   )
 }
