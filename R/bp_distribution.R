@@ -159,7 +159,22 @@ NULL
 #' @rdname bp_distribution
 #' @export
 p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  rtn <- cppBP(q_sbp, q_dbp, age, male, height = as.integer(!is.na(height)), default_height_percentile = height_percentile, source, type = "percentile")
+  class(rtn) <- c("pedbp_bp", "pedbp_p_bp")
+  rtn
+}
 
+#' @rdname bp_distribution
+#' @export
+q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  rtn <- cppBP(p_sbp, p_dbp, age, male, height = as.integer(!is.na(height)), default_height_percentile = height_percentile, source, type = "quantile")
+  class(rtn) <- c("pedbp_bp", "pedbp_q_bp")
+  rtn
+}
+
+#' @rdname bp_distribution
+#' @export
+p_bp_old <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
   stopifnot(length(q_sbp) == length(q_dbp))
 
   if (length(age) == 1L) {
@@ -198,8 +213,7 @@ p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50,
 
 #' @rdname bp_distribution
 #' @export
-q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
-
+q_bp_old <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
   stopifnot(length(p_sbp) == length(p_dbp))
 
   if (length(age) == 1L) {

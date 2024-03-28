@@ -290,6 +290,15 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     type) {
   arma::mat LUT;
 
+  Rcpp::Rcout << "sbp: " << sbp << "\n";
+  Rcpp::Rcout << "dbp: " << dbp << "\n";
+  Rcpp::Rcout << "age: " << age << "\n";
+  Rcpp::Rcout << "male: " << male << "\n";
+  Rcpp::Rcout << "known_height: " << known_height << "\n";
+  Rcpp::Rcout << "height_percentile: " << height_percentile << "\n";
+  Rcpp::Rcout << "source: " << source << "\n";
+  Rcpp::Rcout << "type: " << type << "\n";
+
   if (!(male == 0 || male == 1)) {
     Rf_error("male needs to be a 0 or 1");
   }
@@ -326,7 +335,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
         LUT = gemelli1990_female();
       }
     } else if (known_height == 0) {
-      if (age < 3) {
+      if (age < 36) {
         if (male == 1) {
           LUT = nhlbi_male();
         } else {
@@ -352,18 +361,26 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 
   arma::uvec aindex = arma::find((LUT.col(0) <= age) && (abs(LUT.col(5) - height_percentile*100)) == arma::min(abs(LUT.col(5) - height_percentile*100)));
 
-  LUT = LUT.row(aindex(aindex.n_elem - 1));
-  LUT.resize(LUT.n_rows, LUT.n_cols + 2);
+  if (aindex.n_elem == 0) {
+    Rcpp::NumericVector rtn (9);
+    for (int i = 0; i < 9; ++i) {
+      rtn(i) = NA_REAL;
+    }
+    return rtn;
+  }  else {
+    LUT = LUT.row(aindex(aindex.n_elem - 1));
+    LUT.resize(LUT.n_rows, LUT.n_cols + 2);
 
-  if (type == "percentile") {
-    LUT.col(LUT.n_cols - 2) = R::pnorm(sbp, LUT.col(1)(0), LUT.col(2)(0), 1, 0);
-    LUT.col(LUT.n_cols - 1) = R::pnorm(dbp, LUT.col(3)(0), LUT.col(4)(0), 1, 0);
-  } else {
-    LUT.col(LUT.n_cols - 2) = R::qnorm(sbp, LUT.col(1)(0), LUT.col(2)(0), 1, 0);
-    LUT.col(LUT.n_cols - 1) = R::qnorm(dbp, LUT.col(3)(0), LUT.col(4)(0), 1, 0);
-  }
+    if (type == "percentile") {
+      LUT.col(LUT.n_cols - 2) = R::pnorm(sbp, LUT.col(1)(0), LUT.col(2)(0), 1, 0);
+      LUT.col(LUT.n_cols - 1) = R::pnorm(dbp, LUT.col(3)(0), LUT.col(4)(0), 1, 0);
+    } else {
+      LUT.col(LUT.n_cols - 2) = R::qnorm(sbp, LUT.col(1)(0), LUT.col(2)(0), 1, 0);
+      LUT.col(LUT.n_cols - 1) = R::qnorm(dbp, LUT.col(3)(0), LUT.col(4)(0), 1, 0);
+    }
 
-  return Rcpp::wrap(LUT);
+    return Rcpp::wrap(LUT);
+  } 
 
 }
 
@@ -624,7 +641,10 @@ Rcpp::List cppBP(
       src(i) = "nhlbi";
     } else if (lutbp(i, 6) == 4) {
       src(i) = "flynn2017";
+    } else if (NumericVector::is_na(lutbp(i, 6))) {
+      src(i) = NA_STRING;
     } else {
+      Rcpp::Rcout << lutbp(i, 6) << "\n";
       Rf_error("unknown source");
     }
     if (lutbp(i, 5) == 101) {
@@ -636,6 +656,7 @@ Rcpp::List cppBP(
 
   Rcpp::DataFrame df = Rcpp::DataFrame::create(
       _["source"]   = src,
+      _["male"]     = male,
       _["age"]      = lutbp(_, 0),
       _["sbp_mean"] = lutbp(_, 1),
       _["sbp_sd"]   = lutbp(_, 2),

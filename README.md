@@ -101,11 +101,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92) # Default
 ```
 
 ```
-## $sbp_percentile
-## [1] 0.7086064
-## 
-## $dbp_percentile
-## [1] 0.6428859
+## Error in eval(expr, envir, enclos): Mat::operator(): index out of bounds
 ```
 
 ```r
@@ -113,11 +109,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "martin20
 ```
 
 ```
-## $sbp_percentile
-## [1] 0.7086064
-## 
-## $dbp_percentile
-## [1] 0.6428859
+## Error in eval(expr, envir, enclos): Mat::operator(): index out of bounds
 ```
 
 ```r
@@ -126,10 +118,10 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "gemelli1
 
 ```
 ## $sbp_percentile
-## [1] NA
+## [1] 0.5398278
 ## 
 ## $dbp_percentile
-## [1] NA
+## [1] 0.190787
 ```
 
 ```r
@@ -137,11 +129,7 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "lo2013")
 ```
 
 ```
-## $sbp_percentile
-## [1] NA
-## 
-## $dbp_percentile
-## [1] NA
+## Error in eval(expr, envir, enclos): Mat::operator(): index out of bounds
 ```
 
 ```r
@@ -150,10 +138,10 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "nhlbi")
 
 ```
 ## $sbp_percentile
-## [1] 0.7086064
+## [1] 0.7534673
 ## 
 ## $dbp_percentile
-## [1] 0.6428859
+## [1] 0.6764343
 ```
 
 ```r
@@ -162,10 +150,10 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "flynn201
 
 ```
 ## $sbp_percentile
-## [1] 0.6797595
+## [1] 0.7124685
 ## 
 ## $dbp_percentile
-## [1] 0.5422765
+## [1] 0.583755
 ```
 
 You can also find the quantile values.  Example: what is the SBP/DBP values for
@@ -201,10 +189,10 @@ q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, 
 
 ```
 ## $sbp
-## [1] NA
+## [1] 97.18296
 ## 
 ## $dbp
-## [1] NA
+## [1] 57.98107
 ```
 
 ```r
