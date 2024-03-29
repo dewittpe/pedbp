@@ -19,12 +19,12 @@
 //   male   0 = female; 1 = male
 //   x      the age, length, or height; as needed for the metric ---\  qp_for_x
 //   qp     the quantile or percentile for bmi, length,...       ---/  qp_for_x
-//   type   one of 'quantile', 'percentile', or 'zscore', the value of type
-//          defines the output
+//   type   one of 'quantile', 'distribution' (for percentiles), or 'zscore',
+//          the value of type defines the output
 //
 // return:
-//   a double; the quantile, percentile, or zscore (as defined by the value
-//   of the input 'type').
+//   a double; the quantile, percentile (distribution value), or zscore (as
+//   defined by the value of the input 'type').
 //
 double cppPGSF1(std::string metric, std::string source, int male, double x, double qp, std::string type) {
   // get the needed look up table
@@ -246,9 +246,11 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
     }
     if (type == "zscore") {
       return z;
-    } else {
+    } else if (type == "distribution") {
       // distribution value
       return R::pnorm(z, 0, 1, 1, 0);
+    } else {
+      Rf_error("type needs to one of 'quantile', 'distribution', or 'zscore'");
     }
   }
 }

@@ -46,15 +46,6 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     type) {
   arma::mat LUT;
 
-  //Rcpp::Rcout << "sbp: " << sbp << "\n";
-  //Rcpp::Rcout << "dbp: " << dbp << "\n";
-  //Rcpp::Rcout << "age: " << age << "\n";
-  //Rcpp::Rcout << "male: " << male << "\n";
-  //Rcpp::Rcout << "known_height: " << known_height << "\n";
-  //Rcpp::Rcout << "height_percentile: " << height_percentile << "\n";
-  //Rcpp::Rcout << "source: " << source << "\n";
-  //Rcpp::Rcout << "type: " << type << "\n";
-
   if (!(male == 0 || male == 1)) {
     Rf_error("male needs to be a 0 or 1");
   }
@@ -117,9 +108,6 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 
   arma::uvec aindex = arma::find((LUT.col(0) <= age) && (abs(LUT.col(5) - height_percentile*100)) == arma::min(abs(LUT.col(5) - height_percentile*100)));
 
-  //Rcpp::Rcout << "LUT: " << LUT << "\n";
-  //Rcpp::Rcout << "aindex: " << aindex << "\n";
-
   if (aindex.n_elem == 0 || age > 216.0 || (source == "gemelli1990" && age > 12)) {
     Rcpp::NumericVector rtn (9);
     for (int i = 0; i < 9; ++i) {
@@ -133,9 +121,11 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     if (type == "percentile") {
       LUT.col(LUT.n_cols - 2) = R::pnorm(sbp, LUT.col(1)(0), LUT.col(2)(0), 1, 0);
       LUT.col(LUT.n_cols - 1) = R::pnorm(dbp, LUT.col(3)(0), LUT.col(4)(0), 1, 0);
-    } else {
+    } else if (type == "quantile") {
       LUT.col(LUT.n_cols - 2) = R::qnorm(sbp, LUT.col(1)(0), LUT.col(2)(0), 1, 0);
       LUT.col(LUT.n_cols - 1) = R::qnorm(dbp, LUT.col(3)(0), LUT.col(4)(0), 1, 0);
+    } else {
+      Rf_error("type needs to be either 'percentile' or 'quantile'");
     }
 
     return Rcpp::wrap(LUT);
@@ -209,54 +199,45 @@ Rcpp::List cppBP(
   }
 
   if (max_length > 1) {
+    if ( (qp_sbp.length()            > 1 && qp_sbp.length()            < max_length) ||
+         (qp_dbp.length()            > 1 && qp_dbp.length()            < max_length) ||
+         (age.length()               > 1 && age.length()               < max_length) ||
+         (male.length()              > 1 && male.length()              < max_length) ||
+         (height.length()            > 1 && height.length()            < max_length) ||
+         (height_percentile.length() > 1 && height_percentile.length() < max_length)) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    }
+
     if (qp_sbp.length() == 1) {
       qp_sbp = resize(qp_sbp, max_length);
       qp_sbp.fill(qp_sbp(0));
-    } else if (qp_sbp.length() > 1 && qp_sbp.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // nothing to do
     }
+
     if (qp_dbp.length() == 1) {
       qp_dbp = resize(qp_dbp, max_length);
       qp_dbp.fill(qp_dbp(0));
-    } else if (qp_dbp.length() > 1 && qp_dbp.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // nothing to do
     }
+
     if (age.length() == 1) {
       age = resize(age, max_length);
       age.fill(age(0));
-    } else if (age.length() > 1 && age.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // nothing to do
     }
+
     if (male.length() == 1) {
       male = resize(male, max_length);
       male.fill(male(0));
-    } else if (male.length() > 1 && male.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // nothing to do
     }
+
     if (height.length() == 1) {
       height = resize(height, max_length);
       height.fill(height(0));
-    } else if (height.length() > 1 && height.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // nothing to do
     }
+
     if (height_percentile.length() == 1) {
       height_percentile = resize(height_percentile, max_length);
       height_percentile.fill(height_percentile(0));
-    } else if (height_percentile.length() > 1 && height_percentile.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // nothing to do
     }
+
     source = resize(source, max_length);
     source.fill(source(0));
     type = resize(type, max_length);
@@ -268,46 +249,36 @@ Rcpp::List cppBP(
   Rcpp::NumericMatrix lutbp (max_length, 9);
   int i = 0;
 
-  //Rcpp::Rcout << "known_height: " << known_height << "\n";
-  //Rcpp::Rcout << "known_heightp: " << known_heightp << "\n";
-  //Rcpp::Rcout << "height_percentile: " << height_percentile << "\n";
-  //Rcpp::Rcout << "default_height_percentile: " << default_height_percentile << "\n";
-
   for (i = 0; i < max_length; ++i) {
-    //Rcpp::Rcout << "i: " << i << "\n";
-    //Rcpp::Rcout << "NumericVector::is_na(height_percentile(i)): " << NumericVector::is_na(height_percentile(i)) << "\n";
     if (known_height(i)) {
       if (age(i) < 36) {
-        height_percentile(i) = cppPGSF1("length_for_age", "WHO", male(i), age(i), height(i), "percentile");
+        height_percentile(i) = cppPGSF1("length_for_age", "WHO", male(i), age(i), height(i), "distribution");
       } else {
-        height_percentile(i) = cppPGSF1("height_for_age", "CDC", male(i), age(i), height(i), "percentile");
+        height_percentile(i) = cppPGSF1("height_for_age", "CDC", male(i), age(i), height(i), "distribution");
       }
     } else if (!known_heightp(i)) {
       height_percentile(i) = default_height_percentile;
     }
   }
 
-  //Rcpp::Rcout << "height_percentile: " << height_percentile << "\n";
-
   for (i = 0; i < max_length; ++i) {
-    lutbp(i, _) = cppBPF1(
-        qp_sbp(i),
-        qp_dbp(i),
-        age(i),
-        male(i),
-        known_height(i),
-        height_percentile(i),
-        Rcpp::as<std::string>(source(i)),
-        Rcpp::as<std::string>(type(i))
-        );
+    lutbp(i, _) = cppBPF1(qp_sbp(i), qp_dbp(i), age(i), male(i),
+                          known_height(i), height_percentile(i),
+                          Rcpp::as<std::string>(source(i)),
+                          Rcpp::as<std::string>(type(i))
+                          );
   }
 
   // Create Return object
   Rcpp::List rtn;
   if (type(0) == "percentile") {
     rtn = Rcpp::List::create(_["sbp_percentile"] = lutbp(_, 7), _["dbp_percentile"] = lutbp(_, 8));
-  } else {
+  } else if (type(0) == "quantile") {
     rtn = Rcpp::List::create(_["sbp"] = lutbp(_, 7), _["dbp"] = lutbp(_, 8));
+  } else {
+    // this is here to be robust but should be impossible to get to as the call
+    // to cppBPF1 will error out first
+    Rf_error("type needs to be either 'percentile' or 'quantile'");
   }
 
   Rcpp:: CharacterVector src(max_length);
@@ -323,6 +294,8 @@ Rcpp::List cppBP(
     } else if (NumericVector::is_na(lutbp(i, 6))) {
       src(i) = NA_STRING;
     } else {
+      // this is here to be robust but should be impossible to get to as the
+      // call to cppBPF1 will error out first
       Rf_error("unknown source");
     }
     if (lutbp(i, 5) == 101) {
