@@ -290,68 +290,47 @@ Rcpp::NumericVector cppPGSF(
 
   if (max_length > 1) {
 
+    if (
+        (metric.length() > 1 && metric.length() < max_length) ||
+        (source.length() > 1 && source.length() < max_length) ||
+        (male.length()   > 1 && male.length()   < max_length) ||
+        (x.length()      > 1 && x.length()      < max_length) ||
+        (qp.length()     > 1 && qp.length()     < max_length) ||
+        (type.length()   > 1 && type.length()   < max_length)
+       ) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    }
+
     if (metric.length() == 1) {
       metric = resize(metric, max_length);
       metric.fill(metric(0));
-    } else if (metric.length() > 1 && metric.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // metric should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (source.length() == 1) {
       source = resize(source, max_length);
       source.fill(source(0));
-    } else if (source.length() > 1 && source.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // source should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (male.length() == 1) {
       male = resize(male, max_length);
       male.fill(male(0));
-    } else if (male.length() > 1 && male.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // male should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (x.length() == 1) {
       x = resize(x, max_length);
       x.fill(x(0));
-    } else if (x.length() > 1 && x.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // x should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (qp.length() == 1) {
       qp = resize(qp, max_length);
       qp.fill(qp(0));
-    } else if (qp.length() > 1 && qp.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // qp should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (type.length() == 1) {
       type = resize(type, max_length);
       type.fill(type(0));
-    } else if (type.length() > 1 && type.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // type should be the same length as max_length and there is nothing
-      // to do
     }
 
-  } else {
-    // max_length is 1 since test for zero is above an there is nothing to do
   }
 
   Rcpp::NumericVector rtn (max_length);
