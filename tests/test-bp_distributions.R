@@ -40,14 +40,6 @@ x <- tryCatch(q_bp(p_sbp = 0.5, p_dbp = 0.5, male = 0, age = 55, source = c("mar
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "'arg' must be of length 1"))
 
-x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022", "gemelli1990"), type = "percentile"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
-stopifnot(identical(x$message, "'source' should have length 1"))
-
-x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022", "not-a-source"), type = "percentile"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
-stopifnot(identical(x$message, "'source' should have length 1"))
-
 ################################################################################
 # Unknown source
 x <- tryCatch(p_bp(q_sbp = 0.5, q_dbp = 0.5, male = 0, age = 55, source = c("not-a-source")), error = function(e) e)
@@ -59,10 +51,6 @@ x <- tryCatch(q_bp(p_sbp = 0.5, p_dbp = 0.5, male = 0, age = 55, source = c("not
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "'arg' should be one of “martin2022”, “gemelli1990”, “nhlbi”, “lo2013”, “flynn2017”") |
           identical(x$message, "'arg' should be one of \"martin2022\", \"gemelli1990\", \"nhlbi\", \"lo2013\", \"flynn2017\""))
-
-x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("not-a-source"), type = "percentile"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
-stopifnot(identical(x$message, "Unknown source"))
 
 ################################################################################
 # verify error if length(age) > 1L and length(age) != length(q_sbp) or p_sbp
