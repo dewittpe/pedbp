@@ -174,6 +174,147 @@ stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 ################################################################################
+# verify error if male is not 0 or 1
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = character(1)
+        , source = character(1)
+        , male   = 2
+        , x      = numeric(1)
+        , qp     = numeric(1)
+        , type   = numeric(1)
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "male needs to be a 0 or 1"))
+
+################################################################################
+# verify error for unknown source
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "bmi_for_age"
+        , source = "not-a-source"
+        , male   = 0
+        , x      = numeric(1)
+        , qp     = numeric(1)
+        , type   = numeric(1)
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "Unknown source for bmi_for_age data"))
+
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "head_circumference_for_age"
+        , source = "not-a-source"
+        , male   = 0
+        , x      = numeric(1)
+        , qp     = numeric(1)
+        , type   = numeric(1)
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "Unknown source for head_circumference_for_age data"))
+
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "height_for_age"
+        , source = "not-a-source"
+        , male   = 0
+        , x      = numeric(1)
+        , qp     = numeric(1)
+        , type   = numeric(1)
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "Unknown source for height_for_age data"))
+
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "weight_for_age"
+        , source = "not-a-source"
+        , male   = 0
+        , x      = numeric(1)
+        , qp     = numeric(1)
+        , type   = numeric(1)
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "Unknown source for weight_for_age data"))
+
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "weight_for_height"
+        , source = "not-a-source"
+        , male   = 0
+        , x      = numeric(1)
+        , qp     = numeric(1)
+        , type   = numeric(1)
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "Unknown source for weight_for_height data"))
+
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "weight_for_length"
+        , source = "not-a-source"
+        , male   = 0
+        , x      = numeric(1)
+        , qp     = numeric(1)
+        , type   = numeric(1)
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "Unknown source for weight_for_length data"))
+
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "length_for_age"
+        , source = "not-a-source"
+        , male   = 0
+        , x      = numeric(1)
+        , qp     = numeric(1)
+        , type   = numeric(1)
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "Unknown source for length_for_age data"))
+
+################################################################################
+# verify error if unknown type
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "bmi_for_age"
+        , source = "CDC"
+        , male   = 0
+        , x      = 48
+        , qp     = 15
+        , type   = "Not-a-type"
+      )
+    , error = function(e) e
+  )
+stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(identical(x$message, "type needs to be one of 'quantile', 'distribution', or 'zscore'"))
+
+################################################################################
 # check output against published values
 internal_lms_data <-
   pedbp:::lms_data |>

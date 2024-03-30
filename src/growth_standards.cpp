@@ -132,22 +132,6 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
     } else {
       Rf_error("Unknown source for length_for_age data");
     }
-  } else if (metric == "weight_for_age") {
-    if (source == "WHO") {
-      if (male == 1) {
-        LUT = weight_for_age_who_male();
-      } else {
-        LUT = weight_for_age_who_female();
-      }
-    } else if (source == "CDC") {
-      if (male == 1) {
-        LUT = weight_for_age_cdc_male();
-      } else {
-        LUT = weight_for_age_cdc_female();
-      }
-    } else {
-      Rf_error("Unknown source for weight_for_age data");
-    }
   } else if (metric == "weight_for_length") {
     if (source == "WHO") {
       if (male == 1) {
@@ -250,7 +234,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
       // distribution value
       return R::pnorm(z, 0, 1, 1, 0);
     } else {
-      Rf_error("type needs to one of 'quantile', 'distribution', or 'zscore'");
+      Rf_error("type needs to be one of 'quantile', 'distribution', or 'zscore'");
     }
   }
 }
