@@ -27,10 +27,6 @@ If you use this package in your research please cite the package
 citation("pedbp", auto = TRUE)
 ```
 
-```
-## Error in citation("pedbp", auto = TRUE): (converted from warning) could not determine year for 'pedbp' from package DESCRIPTION file
-```
-
 And the research letter:
 
 

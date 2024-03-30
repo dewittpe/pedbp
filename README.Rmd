@@ -22,7 +22,7 @@ An R package for estimating expected blood pressure of children and adolescences
 ## Citing pedbp
 
 If you use this package in your research please cite the package
-```{r}
+```{r, eval = FALSE}
 citation("pedbp", auto = TRUE)
 ```
 
