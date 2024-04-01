@@ -76,8 +76,8 @@ bp_cdf.pedbp_q_bp <- function(x, ...) {
       , male = attr(x, "bp_params")[["male"]]
       , height_percentile = attr(x, "bp_params")[["height_percentile"]] / 100
       , source = attr(x, "bp_params")[["source"]]
-      , sbp = x$sbp#stats::qnorm(x$sbp_percentile, mean = attr(x, "bp_params")$sbp_mean, sd = attr(x, "bp_params")$sbp_sd)
-      , dbp = x$dbp#stats::qnorm(x$dbp_percentile, mean = attr(x, "bp_params")$dbp_mean, sd = attr(x, "bp_params")$dbp_sd)
+      , sbp = x$sbp
+      , dbp = x$dbp
   )
 }
 
