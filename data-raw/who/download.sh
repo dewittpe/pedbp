@@ -110,3 +110,42 @@ wget\
 wget\
   "https://cdn.who.int/media/docs/default-source/child-growth/growth-reference-5-19-years/weight-for-age-(5-10-years)/hfa-boys-perc-who2007-exp_07eb5053-9a09-4910-aa6b-c7fb28012ce6.xlsx?sfvrsn=97ab852c_4"\
   -O wfa-boys-5-19-percentiles.xlsx
+
+# head-circumference velocity
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_girls_2mon_z.xlsx?sfvrsn=5721a52d_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_girls_2mon_p.xlsx?sfvrsn=54d55e10_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_boys_2mon_z.xlsx?sfvrsn=c84c1459_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_boys_2mon_p.xlsx?sfvrsn=d03f9b8a_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_girls_3mon_z.xlsx?sfvrsn=cb9b09bf_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_girls_3mon_p.xlsx?sfvrsn=eb83efa1_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_boys_3mon_z.xlsx?sfvrsn=3f69413_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_boys_3mon_p.xlsx?sfvrsn=94bbcfad_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_girls_4mon_z.xlsx?sfvrsn=ff25e169_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_girls_4mon_p.xlsx?sfvrsn=a99d3189_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_boys_4mon_z.xlsx?sfvrsn=f2809fc6_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_boys_4mon_p.xlsx?sfvrsn=62bae02f_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_girls_6mon_z.xlsx?sfvrsn=2a29fe3a_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_girls_6mon_p.xlsx?sfvrsn=1eb6b0a4_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_boys_6mon_z.xlsx?sfvrsn=51e69394_7
+# https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-velocity/ttt_headc_boys_6mon_p.xlsx?sfvrsn=59ea7ede_7
+# 
+
+# head-circumference for age
+wget\
+  "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-for-age/expanded-tables/hcfa-girls-zscore-expanded-tables.xlsx?sfvrsn=3a34b8b0_8"\
+  -O hcfa-girls-zscore.xlsx
+
+wget\
+  "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-for-age/expanded-tables/hcfa-girls-percentiles-expanded-tables.xlsx?sfvrsn=71b282d1_13"\
+  -O hcfa-girls-percentiles.xlsx
+
+wget\
+  "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-for-age/expanded-tables/hcfa-boys-zscore-expanded-tables.xlsx?sfvrsn=2ab1bec8_8"\
+  -O hcfa-boys-zscore.xlsx
+
+wget\
+  "https://cdn.who.int/media/docs/default-source/child-growth/child-growth-standards/indicators/head-circumference-for-age/expanded-tables/hcfa-boys-percentiles-expanded-tables.xlsx?sfvrsn=c266c88f_7"\
+  -O hcfa-boys-percentiles.xlsx
+
+
+
