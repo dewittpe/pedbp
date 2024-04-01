@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2-9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2-9002</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,14 +138,16 @@ convention to the distribution functions found in the stats library in
 R.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="va">p_bp</span><span class="op">)</span></span>
-<span><span class="co">## function (q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.5, </span></span>
-<span><span class="co">##     source = getOption("pedbp_bp_source", "martin2022"), ...) </span></span>
+<span><span class="co">## function (q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, </span></span>
+<span><span class="co">##     default_height_percentile = 0.5, source = getOption("pedbp_bp_source", </span></span>
+<span><span class="co">##         "martin2022"), ...) </span></span>
 <span><span class="co">## NULL</span></span>
 <span></span>
 <span><span class="co"># Quantile Function</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="va">q_bp</span><span class="op">)</span></span>
-<span><span class="co">## function (p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.5, </span></span>
-<span><span class="co">##     source = getOption("pedbp_bp_source", "martin2022"), ...) </span></span>
+<span><span class="co">## function (p_sbp, p_dbp, age, male, height = NA, height_percentile = NA, </span></span>
+<span><span class="co">##     default_height_percentile = 0.5, source = getOption("pedbp_bp_source", </span></span>
+<span><span class="co">##         "martin2022"), ...) </span></span>
 <span><span class="co">## NULL</span></span></code></pre></div>
 <p>Both methods expect an age in months and an indicator for sex. If
 height is missing, e.g., NA, then the default height percentile of 50
@@ -180,7 +182,7 @@ for a 44 month old male with unknown height?</p>
 percentiles corresponding to a child of a given height percentile. First
 find the height quantile using the q_height_for_age function, and then
 use this height measurement (provided in centimeters) as the height
-input for the p_bp function.</p>
+input for the <code>p_bp</code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ht</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stature_for_age.html">q_height_for_age</a></span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0.90</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">ht</span></span>
@@ -215,13 +217,14 @@ NA.</p>
 <span><span class="co">## $dbp_percentile</span></span>
 <span><span class="co">## [1] 0.8485739 0.9982486 0.4998918</span></span></code></pre></div>
 <p>If you want to know which data source was used in computing each of
-the percentile estimates you can look at the bp_params attribute:</p>
+the percentile estimates you can look at the <code>bp_params</code>
+attribute:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">bps</span>, <span class="st">"bp_params"</span><span class="op">)</span></span>
-<span><span class="co">##      source male age sbp_mean   sbp_sd dbp_mean   dbp_sd height_percentile</span></span>
-<span><span class="co">## 147   nhlbi    1  36 94.00094 10.92093 48.00316 11.64362                90</span></span>
-<span><span class="co">## 1471  nhlbi    1  36 94.00094 10.92093 48.00316 11.64362                90</span></span>
-<span><span class="co">## 1472  nhlbi    1  36 94.00094 10.92093 48.00316 11.64362                90</span></span>
+<span><span class="co">##   source male age sbp_mean   sbp_sd dbp_mean   dbp_sd height_percentile</span></span>
+<span><span class="co">## 1  nhlbi    1  36 94.00094 10.92093 48.00316 11.64362                90</span></span>
+<span><span class="co">## 2  nhlbi    1  36 94.00094 10.92093 48.00316 11.64362                90</span></span>
+<span><span class="co">## 3  nhlbi    1  36 94.00094 10.92093 48.00316 11.64362                90</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">bps</span><span class="op">)</span></span>
 <span><span class="co">## List of 2</span></span>
 <span><span class="co">##  $ sbp_percentile: num [1:3] 0.709 NA 0.357</span></span>
@@ -234,7 +237,7 @@ the percentile estimates you can look at the bp_params attribute:</p>
 <span><span class="co">##   ..$ sbp_sd           : num [1:3] 10.9 10.9 10.9</span></span>
 <span><span class="co">##   ..$ dbp_mean         : num [1:3] 48 48 48</span></span>
 <span><span class="co">##   ..$ dbp_sd           : num [1:3] 11.6 11.6 11.6</span></span>
-<span><span class="co">##   ..$ height_percentile: int [1:3] 90 90 90</span></span>
+<span><span class="co">##   ..$ height_percentile: num [1:3] 90 90 90</span></span>
 <span><span class="co">##  - attr(*, "class")= chr [1:2] "pedbp_bp" "pedbp_p_bp"</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -259,9 +262,9 @@ systolic and diastolic blood pressures:</p>
 <div class="section level3">
 <h3 id="working-with-more-than-one-patient">Working With More Than One Patient<a class="anchor" aria-label="anchor" href="#working-with-more-than-one-patient"></a>
 </h3>
-<p>The p_bp and q_bp methods are designed accept vectors for each of the
-arguments. These methods expected each argument to be length 1 or all
-the same length.</p>
+<p>The <code>p_bp</code> and <code>q_bp</code> methods are designed
+accept vectors for each of the arguments. These methods expected each
+argument to be length 1 or all the same length.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eg_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"example_data"</span>, <span class="st">"for_batch.csv"</span>, package <span class="op">=</span> <span class="st">"pedbp"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">eg_data</span></span>
@@ -299,7 +302,7 @@ the same length.</p>
 <span><span class="co">##   ..$ sbp_sd           : num [1:5] 9.7 10.9 11 9.2 10.7</span></span>
 <span><span class="co">##   ..$ dbp_mean         : num [1:5] 59.8 62 54 55.1 47</span></span>
 <span><span class="co">##   ..$ dbp_sd           : num [1:5] 8.1 10.9 10 8.1 11.6</span></span>
-<span><span class="co">##   ..$ height_percentile: int [1:5] NA 50 NA NA 75</span></span>
+<span><span class="co">##   ..$ height_percentile: num [1:5] NA 50 NA NA 75</span></span>
 <span><span class="co">##  - attr(*, "class")= chr [1:2] "pedbp_bp" "pedbp_p_bp"</span></span></code></pre></div>
 <p>Going from percentiles back to quantiles:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -459,13 +462,13 @@ is in the 95th height percentile are:</p>
 <div class="section level2">
 <h2 id="comparing-to-published-percentiles">Comparing to Published Percentiles<a class="anchor" aria-label="anchor" href="#comparing-to-published-percentiles"></a>
 </h2>
-<p>The percentils published in <span class="citation">Expert Panel on
+<p>The percentiles published in <span class="citation">Expert Panel on
 Integrated Guidelines for Cardiovascular Health and Risk Reduction in
 Children and Adolescents (2011)</span> and <span class="citation">Flynn
 et al. (2017)</span> where used to estimate a Gaussian mean and standard
-deviation. This was in part to be consistent with the values from <span class="citation">(<strong>gemelli1990?</strong>)</span> and <span class="citation">(<strong>lo2013?</strong>)</span>. As a result, the
-calculated percentiles and qualtiles from the pedbp package will be
-slightly different from the published values.</p>
+deviation. This was in part to be consistent with the values from <span class="citation">Gemelli et al. (1990)</span> and <span class="citation">Lo et al. (2013)</span>. As a result, the calculated
+percentiles and quantiles from the pedbp package will be slightly
+different from the published values.</p>
 <div class="section level3">
 <h3 id="flynn-et-al-">Flynn et al.<a class="anchor" aria-label="anchor" href="#flynn-et-al-"></a>
 </h3>
@@ -579,7 +582,7 @@ Blood Pressure in Children and Adolescents.”</span> <em>Pediatrics</em>
 140 (3).
 </div>
 <div id="ref-gemelli1990longitudinal" class="csl-entry">
-Gemelli, M, R Manganaro, C Mami, and F De Luca. 1990.
+Gemelli, M, R Manganaro, C Mamí, and F De Luca. 1990.
 <span>“Longitudinal Study of Blood Pressure During the 1st Year of
 Life.”</span> <em>European Journal of Pediatrics</em> 149 (5): 318–20.
 <a href="https://doi.org/10.1007/BF02171556" class="external-link">https://doi.org/10.1007/BF02171556</a>.
@@ -630,7 +633,7 @@ Pediatrics</em> 12 (6): 590–603. https://doi.org/<a href="https://doi.org/10.1
 <span><span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">## [1] pedbp_1.0.2-9001 qwraps2_0.6.0   </span></span>
+<span><span class="co">## [1] pedbp_1.0.2-9002 qwraps2_0.6.0   </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] sass_0.4.9        utf8_1.2.4        generics_0.1.3    tidyr_1.3.1      </span></span>
@@ -644,7 +647,7 @@ Pediatrics</em> 12 (6): 590–603. https://doi.org/<a href="https://doi.org/10.1
 <span><span class="co">## [33] broom_1.0.5       vctrs_0.6.5       R6_2.5.1          png_0.1-8        </span></span>
 <span><span class="co">## [37] lifecycle_1.0.4   car_3.1-2         fs_1.6.3          ragg_1.3.0       </span></span>
 <span><span class="co">## [41] pkgconfig_2.0.3   desc_1.4.3        pkgdown_2.0.7     pillar_1.9.0     </span></span>
-<span><span class="co">## [45] bslib_0.6.2       gtable_0.3.4      glue_1.7.0        data.table_1.15.2</span></span>
+<span><span class="co">## [45] bslib_0.7.0       gtable_0.3.4      glue_1.7.0        data.table_1.15.4</span></span>
 <span><span class="co">## [49] Rcpp_1.0.12       systemfonts_1.0.6 xfun_0.43         tibble_3.2.1     </span></span>
 <span><span class="co">## [53] tidyselect_1.2.1  highr_0.10        knitr_1.45        farver_2.1.1     </span></span>
 <span><span class="co">## [57] htmltools_0.5.8   carData_3.0-5     rmarkdown_2.26    labeling_0.4.3   </span></span>
