@@ -12,7 +12,8 @@ p_bp(
   age,
   male,
   height = NA,
-  height_percentile = 0.5,
+  height_percentile = NA,
+  default_height_percentile = 0.5,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -23,7 +24,8 @@ q_bp(
   age,
   male,
   height = NA,
-  height_percentile = 0.5,
+  height_percentile = NA,
+  default_height_percentile = 0.5,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -37,9 +39,11 @@ q_bp(
 
 \item{male}{integer value, 1 = male, 0 = female}
 
-\item{height}{numeric, in centimeters, can be missing.}
+\item{height}{numeric, in centimeters, can be missing. See Details.}
 
-\item{height_percentile}{default height percentile to use if \code{height} is
+\item{height_percentile}{height percentile to use. See Details.}
+
+\item{default_height_percentile}{default height percentile to use if \code{height} is
 missing.}
 
 \item{source}{the method, or data set, to use as the reference.  See Details.}
@@ -91,6 +95,14 @@ Options:
   and adolescents with overweight and obesity (ie, those with a BMI >= 85th
   percentile).
 }
+
+There is a hierarchy for the use of the \code{height},
+\code{height_percentile}, and \code{default_height_percentile}.  If
+\code{height} is provided, it takes precedence over the other two arguments.
+\code{height_percentile} is used if \code{height} is missing and takes
+precedence over \code{default_height_percentile}.  The height is only needed
+if using the \code{nhlbi} or \code{flynn2017} data sources (including as part
+of the \code{martin2022} workflow).
 }
 \examples{
 
@@ -143,26 +155,26 @@ q_bp(
 # Selecting different source values
 
 # default
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "martin2022")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "gemelli1990")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "lo2013")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "nhlbi")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "flynn2017")
 
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
-     source = "martin2022") # defualt
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+     source = "martin2022") # default
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "gemelli1990")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "lo2013")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "nhlbi")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
      source = "flynn2017")
 
 
@@ -192,5 +204,7 @@ practice guideline for screening and management of high blood pressure in
 children and adolescents." Pediatrics 140, no. 3 (2017).
 }
 \seealso{
-\code{vignette("bp-distriution", package = "pedbp")}
+\code{vignette("bp-distributions", package = "pedbp")},
+\code{\link{bp_cdf}} for plotting cumulative distribution functions for the
+blood pressures.
 }

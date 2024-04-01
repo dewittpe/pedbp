@@ -37,10 +37,9 @@ bp_cdf(...)
 
 \item{male}{integer value, 1 = male, 0 = female}
 
-\item{height}{numeric, in centimeters, can be missing.}
+\item{height}{numeric, in centimeters, can be missing. See Details.}
 
-\item{height_percentile}{default height percentile to use if \code{height} is
-missing.}
+\item{height_percentile}{height percentile to use. See Details.}
 
 \item{source}{the method, or data set, to use as the reference.  See Details.}
 

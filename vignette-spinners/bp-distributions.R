@@ -15,7 +15,7 @@
 #'
 #+ label = "setup", include = FALSE
 #/*
-devtools::load_all() # load the dev version while editting
+devtools::load_all() # load the dev version while editing
 require("svglite") # needed for saving svg images
 #*/
 knitr::opts_chunk$set(collapse = TRUE, fig.align = "center")
@@ -117,7 +117,9 @@ p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 183)
 #' corresponding to a child of a given height percentile.
 #' First find the height quantile using the q_height_for_age function, and then
 #' use this height measurement (provided in centimeters) as the height input for
-#' the p_bp function.
+#' the
+{{ qwraps2::backtick(p_bp) }}
+#' function.
 #+
 ht <- q_height_for_age(p = 0.90, age = 44, male = 1)
 ht
@@ -148,7 +150,9 @@ bps <-
 bps
 #'
 #' If you want to know which data source was used in computing each of the
-#' percentile estimates you can look at the bp_params attribute:
+#' percentile estimates you can look at the
+{{ qwraps2::backtick(bp_params) }}
+#' attribute:
 attr(bps, "bp_params")
 str(bps)
 
@@ -169,7 +173,11 @@ q_bp(
 #'
 #' ## Working With More Than One Patient
 #'
-#' The p_bp and q_bp methods are designed accept vectors for each of the arguments.
+#' The
+{{ qwraps2::backtick(p_bp) }}
+#' and
+{{ qwraps2::backtick(q_bp) }}
+#' methods are designed accept vectors for each of the arguments.
 #' These methods expected each argument to be length 1 or all the same length.
 #'
 #+ label = "bp_batch_example"
@@ -504,11 +512,12 @@ q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
 #'
 #' # Comparing to Published Percentiles
 #'
-#' The percentils published in @nhlbi2011expert and @flynn2017clinical where
+#' The percentiles published in @nhlbi2011expert and @flynn2017clinical where
 #' used to estimate a Gaussian mean and standard deviation.  This was in part to
-#' be consistent with the values from @gemelli1990 and @lo2013.  As a result,
-#' the calculated percentiles and qualtiles from the pedbp package will be
-#' slightly different from the published values.
+#' be consistent with the values from @gemelli1990longitudinal and
+#' @lo2013prehypertension.  As a result, the calculated percentiles and
+#' quantiles from the pedbp package will be slightly different from the
+#' published values.
 #'
 # /*
 #  NOTE: This is also in the test suite

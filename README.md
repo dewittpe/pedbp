@@ -6,8 +6,8 @@ An R package for estimating expected blood pressure of children and adolescences
 [![codecov](https://codecov.io/gh/dewittpe/pedbp/branch/main/graph/badge.svg?token=DYiVkUwKrP)](https://app.codecov.io/gh/dewittpe/pedbp)
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/pedbp)](https://cran.r-project.org/package=pedbp)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/pedbp)](https://www.r-pkg.org/pkg/pedbp)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/pedbp)](https://www.r-pkg.org/pkg/pedbp)
+[![CRAN mirror downloads](http://cranlogs.r-pkg.org/badges/pedbp)](https://www.r-pkg.org/pkg/pedbp)
+[![Total CRAN mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/pedbp)](https://www.r-pkg.org/pkg/pedbp)
 
 [![License](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.5.0-6666ff.svg)](https://cran.r-project.org/)
@@ -25,10 +25,6 @@ If you use this package in your research please cite the package
 
 ```r
 citation("pedbp", auto = TRUE)
-```
-
-```
-## Error in citation("pedbp", auto = TRUE): (converted from warning) could not determine year for 'pedbp' from package DESCRIPTION file
 ```
 
 And the research letter:
@@ -93,7 +89,7 @@ The default method is to use the workflow defined in Martin, DeWitt, et al.
 End users may opt to use any single data source.
 
 Example: A 28 month old female with a stature of 92 cm has a recorded blood
-pressure of 95/50.  Find the precentiles.
+pressure of 95/50.  Find the percentiles.
 
 ```r
 library(pedbp)

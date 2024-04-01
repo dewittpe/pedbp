@@ -2,7 +2,7 @@
 #'
 #' These functions are fully defunct, no longer implemented, and will not work.
 #'
-#' @param q,p quantile or perenctile
+#' @param q,p quantile or percentile
 #' @param age age in months
 #' @param male 0 = female; 1 = male
 #' @param length centimeters

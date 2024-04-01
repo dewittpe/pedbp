@@ -15,8 +15,6 @@ stopifnot(
 )
 
 ################################################################################
-# gemelli1990
-
 qbp_expected <- list(sbp = rep(NA_real_, 9), dbp = rep(NA_real_, 9))
 
 # return NA for age out of bounds
@@ -94,7 +92,7 @@ stopifnot(
 )
 
 
-#too old
+# too old
 stopifnot(
   isTRUE(
     all.equal(
@@ -174,8 +172,6 @@ stopifnot(
 # estimates are not too different.
 
 # NOTE: IF THIS FAILS UPDATE THE VIGNETTE
-
-
 fq <-
   q_bp(
      p_sbp = flynn2017$bp_percentile/100,
@@ -265,6 +261,57 @@ if (interactive()) {
   qwraps2::qblandaltman(nhlbi_bp_norms[, c("bp_percentile", "pedbp_sbp_percentile")])
   qwraps2::qblandaltman(nhlbi_bp_norms[, c("bp_percentile", "pedbp_dbp_percentile")])
 }
+
+################################################################################
+# Verify that the expected median is returned from q_bp calls for gemelli1990
+# and lo2013
+stopifnot(
+  isTRUE(
+    all.equal(
+      unname(q_bp(p_sbp = 0.5, p_dbp = 0.5, male = gemelli1990$male, age = gemelli1990$age, source = "gemelli1990"))
+      ,
+      unname(as.list(gemelli1990[c("sbp_mean", "dbp_mean")]))
+      ,
+      check.attributes = FALSE
+    )
+  )
+)
+
+stopifnot(
+  isTRUE(
+    all.equal(
+      unname(q_bp(p_sbp = 0.5, p_dbp = 0.5, male = lo2013$male, age = lo2013$age, source = "lo2013"))
+      ,
+      unname(as.list(lo2013[c("sbp_mean", "dbp_mean")]))
+      ,
+      check.attributes = FALSE
+    )
+  )
+)
+
+stopifnot(
+  isTRUE(
+    all.equal(
+      unname(p_bp(q_sbp = gemelli1990$sbp_mean, q_dbp = gemelli1990$dbp_mean, male = gemelli1990$male, age = gemelli1990$age, source = "gemelli1990"))
+      ,
+      list(rep(0.5, nrow(gemelli1990)), rep(0.5, nrow(gemelli1990)))
+      ,
+      check.attributes = FALSE
+    )
+  )
+)
+
+stopifnot(
+  isTRUE(
+    all.equal(
+      unname(p_bp(q_sbp = lo2013$sbp_mean, q_dbp = lo2013$dbp_mean, male = lo2013$male, age = lo2013$age, source = "lo2013"))
+      ,
+      list(rep(0.5, nrow(lo2013)), rep(0.5, nrow(lo2013)))
+      ,
+      check.attributes = FALSE
+    )
+  )
+)
 
 ################################################################################
 #                                 End of file                                  #

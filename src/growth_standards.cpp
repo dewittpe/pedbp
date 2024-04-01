@@ -2,8 +2,30 @@
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
 #include <Rmath.h>
+#include "growth_standards.h"
 #include "lms_data.h"
+#include "utilities.h"
 
+// -------------------------------------------------------------------------- //
+// cpp Pediatric Growth Standardards Function 1
+//
+// Find the percentile, quantile, or z-score for a growth standard given the
+// inputs
+//
+// args:
+//   metric bmi_for_age, length_for_age, height_for_age, weight_for_length,
+//          weight_for_height, ...
+//   source CDC or WHO
+//   male   0 = female; 1 = male
+//   x      the age, length, or height; as needed for the metric ---\  qp_for_x
+//   qp     the quantile or percentile for bmi, length,...       ---/  qp_for_x
+//   type   one of 'quantile', 'distribution' (for percentiles), or 'zscore',
+//          the value of type defines the output
+//
+// return:
+//   a double; the quantile, percentile (distribution value), or zscore (as
+//   defined by the value of the input 'type').
+//
 double cppPGSF1(std::string metric, std::string source, int male, double x, double qp, std::string type) {
   // get the needed look up table
   arma::mat LUT;
@@ -110,22 +132,6 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
     } else {
       Rf_error("Unknown source for length_for_age data");
     }
-  } else if (metric == "weight_for_age") {
-    if (source == "WHO") {
-      if (male == 1) {
-        LUT = weight_for_age_who_male();
-      } else {
-        LUT = weight_for_age_who_female();
-      }
-    } else if (source == "CDC") {
-      if (male == 1) {
-        LUT = weight_for_age_cdc_male();
-      } else {
-        LUT = weight_for_age_cdc_female();
-      }
-    } else {
-      Rf_error("Unknown source for weight_for_age data");
-    }
   } else if (metric == "weight_for_length") {
     if (source == "WHO") {
       if (male == 1) {
@@ -224,37 +230,14 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
     }
     if (type == "zscore") {
       return z;
-    } else {
+    } else if (type == "distribution") {
       // distribution value
       return R::pnorm(z, 0, 1, 1, 0);
+    } else {
+      Rf_error("type needs to be one of 'quantile', 'distribution', or 'zscore'");
     }
   }
 }
-
-Rcpp::NumericVector resize(Rcpp::NumericVector x, int length) {
-  Rcpp::NumericVector rtn(length);
-  for ( int i = 0; i < x.size(); ++i ) {
-    rtn[i] = x(i);
-  }
-  return rtn;
-}
-
-Rcpp::CharacterVector resize(Rcpp::CharacterVector x, int length) {
-  Rcpp::CharacterVector rtn(length);
-  for ( int i = 0; i < x.size(); ++i ) {
-    rtn[i] = x(i);
-  }
-  return rtn;
-}
-
-Rcpp::IntegerVector resize(Rcpp::IntegerVector x, int length) {
-  Rcpp::IntegerVector rtn(length);
-  for ( int i = 0; i < x.size(); ++i ) {
-    rtn[i] = x(i);
-  }
-  return rtn;
-}
-
 
 //' @title Pediatric Growth Standards
 //'
@@ -263,9 +246,9 @@ Rcpp::IntegerVector resize(Rcpp::IntegerVector x, int length) {
 //' @details expect to call this from R after checking some functional
 //' arguments within R.
 //'
-//' @param metric string
-//' @param source string
-//' @param male  integer
+//' @param metric string, for example bmi_for_age
+//' @param source string, CDC or WHO
+//' @param male  integer, 0 = female; 1 = male
 //' @param x is the age (in months), length (cm) or height (cm) as needed for
 //' the metric.
 //' @param qp the quantile or percentile, whichever is relevant for the type
@@ -281,7 +264,6 @@ Rcpp::NumericVector cppPGSF(
     Rcpp::CharacterVector type
     )
 {
-
   // vector length - either length 1, or equal length.
   int max_length = std::max({metric.length(), source.length(), male.length(), x.length(), qp.length(), type.length()});
   int min_length = std::min({metric.length(), source.length(), male.length(), x.length(), qp.length(), type.length()});
@@ -292,68 +274,47 @@ Rcpp::NumericVector cppPGSF(
 
   if (max_length > 1) {
 
+    if (
+        (metric.length() > 1 && metric.length() < max_length) ||
+        (source.length() > 1 && source.length() < max_length) ||
+        (male.length()   > 1 && male.length()   < max_length) ||
+        (x.length()      > 1 && x.length()      < max_length) ||
+        (qp.length()     > 1 && qp.length()     < max_length) ||
+        (type.length()   > 1 && type.length()   < max_length)
+       ) {
+      Rf_error("all input vectors need to be of equal length, or length 1.");
+    }
+
     if (metric.length() == 1) {
       metric = resize(metric, max_length);
       metric.fill(metric(0));
-    } else if (metric.length() > 1 && metric.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // metric should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (source.length() == 1) {
       source = resize(source, max_length);
       source.fill(source(0));
-    } else if (source.length() > 1 && source.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // source should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (male.length() == 1) {
       male = resize(male, max_length);
       male.fill(male(0));
-    } else if (male.length() > 1 && male.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // male should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (x.length() == 1) {
       x = resize(x, max_length);
       x.fill(x(0));
-    } else if (x.length() > 1 && x.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // x should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (qp.length() == 1) {
       qp = resize(qp, max_length);
       qp.fill(qp(0));
-    } else if (qp.length() > 1 && qp.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // qp should be the same length as max_length and there is nothing
-      // to do
     }
 
     if (type.length() == 1) {
       type = resize(type, max_length);
       type.fill(type(0));
-    } else if (type.length() > 1 && type.length() < max_length) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
-    } else {
-      // type should be the same length as max_length and there is nothing
-      // to do
     }
 
-  } else {
-    // max_length is 1 since test for zero is above an there is nothing to do
   }
 
   Rcpp::NumericVector rtn (max_length);
@@ -362,3 +323,6 @@ Rcpp::NumericVector cppPGSF(
   }
   return rtn;
 }
+// -------------------------------------------------------------------------- //
+//                                End of File                                 //
+// -------------------------------------------------------------------------- //

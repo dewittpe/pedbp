@@ -33,6 +33,13 @@
 #'   percentile).
 #' }
 #'
+#' There is a hierarchy for the use of the \code{height},
+#' \code{height_percentile}, and \code{default_height_percentile}.  If
+#' \code{height} is provided, it takes precedence over the other two arguments.
+#' \code{height_percentile} is used if \code{height} is missing and takes
+#' precedence over \code{default_height_percentile}.  The height is only needed
+#' if using the \code{nhlbi} or \code{flynn2017} data sources (including as part
+#' of the \code{martin2022} workflow).
 #'
 #' @param q_sbp a vector of systolic blood pressures
 #' @param q_dbp a vector of diastolic blood pressures
@@ -40,13 +47,16 @@
 #' @param p_dbp a vector of diastolic blood percentiles
 #' @param age numeric age, in months
 #' @param male integer value, 1 = male, 0 = female
-#' @param height numeric, in centimeters, can be missing.
-#' @param height_percentile default height percentile to use if \code{height} is
+#' @param height numeric, in centimeters, can be missing. See Details.
+#' @param height_percentile height percentile to use. See Details.
+#' @param default_height_percentile default height percentile to use if \code{height} is
 #' missing.
 #' @param source the method, or data set, to use as the reference.  See Details.
 #' @param ... not currently used
 #'
-#' @seealso \code{vignette("bp-distriution", package = "pedbp")}
+#' @seealso \code{vignette("bp-distributions", package = "pedbp")},
+#' \code{\link{bp_cdf}} for plotting cumulative distribution functions for the
+#' blood pressures.
 #'
 #' @return a \code{pedbp_bp} object.  This is a list of two numeric vectors:
 #' \code{sbp_percentile} (systolic blood pressure) and \code{dbp_percentile}
@@ -130,26 +140,26 @@
 #' # Selecting different source values
 #'
 #' # default
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "martin2022")
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "gemelli1990")
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "lo2013")
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "nhlbi")
-#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95,
+#' p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "flynn2017")
 #'
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
-#'      source = "martin2022") # defualt
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+#'      source = "martin2022") # default
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "gemelli1990")
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "lo2013")
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "nhlbi")
-#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
+#' q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
 #'      source = "flynn2017")
 #'
 #'
@@ -158,80 +168,18 @@ NULL
 
 #' @rdname bp_distribution
 #' @export
-p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
-
-  stopifnot(length(q_sbp) == length(q_dbp))
-
-  if (length(age) == 1L) {
-    age <- rep(age, length(q_dbp))
-  } else if (length(age) > 1L) {
-    stopifnot(length(q_sbp) == length(age), length(q_dbp) == length(age))
-  } else {
-    stop("length(age) needs to be at least 1L")
-  }
-
-  if (length(male) == 1L) {
-    male <- rep(male, length(q_dbp))
-  } else if (length(male) > 1L) {
-    stopifnot(length(q_sbp) == length(male), length(q_dbp) == length(male))
-  } else {
-    stop("length(male) needs to be at least 1L")
-  }
-
-  if (length(height) == 1L) {
-    height <- rep(height, length(q_dbp))
-  } else if (length(height) > 1L) {
-    stopifnot(length(q_sbp) == length(height), length(q_dbp) == length(height))
-  } else {
-    stop("length(height) needs to be at least 1L")
-  }
-
-  d <- v_bp_params(age = age, male = male, height = height, height_percentile = height_percentile, source = source)
-
-  rtn <-
-    list(sbp_percentile = stats::pnorm(q_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
-      ,  dbp_percentile = stats::pnorm(q_dbp, mean = d$dbp_mean, sd = d$dbp_sd))
-  attr(rtn, "bp_params") <- d
+p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
+  rtn <- cppBP(qp_sbp = q_sbp, qp_dbp = q_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "percentile")
   class(rtn) <- c("pedbp_bp", "pedbp_p_bp")
   rtn
 }
 
 #' @rdname bp_distribution
 #' @export
-q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
-
-  stopifnot(length(p_sbp) == length(p_dbp))
-
-  if (length(age) == 1L) {
-    age <- rep(age, length(p_dbp))
-  } else if (length(age) > 1L) {
-    stopifnot(length(p_sbp) == length(age), length(p_dbp) == length(age))
-  } else {
-    stop("length(age) needs to be at least 1L")
-  }
-
-  if (length(male) == 1L) {
-    male <- rep(male, length(p_dbp))
-  } else if (length(male) > 1L) {
-    stopifnot(length(p_sbp) == length(male), length(p_dbp) == length(male))
-  } else {
-    stop("length(male) needs to be at least 1L")
-  }
-
-  if (length(height) == 1L) {
-    height <- rep(height, length(p_dbp))
-  } else if (length(height) > 1L) {
-    stopifnot(length(p_sbp) == length(height), length(p_dbp) == length(height))
-  } else {
-    stop("length(height) needs to be at least 1L")
-  }
-
-  d <- v_bp_params(age = age, male = male, height = height, height_percentile = height_percentile, source = source)
-
-  rtn <-
-    list(sbp = stats::qnorm(p_sbp, mean = d$sbp_mean, sd = d$sbp_sd)
-      ,  dbp = stats::qnorm(p_dbp, mean = d$dbp_mean, sd = d$dbp_sd))
-  attr(rtn, "bp_params") <- d
+q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
+  rtn <- cppBP(qp_sbp = p_sbp, qp_dbp = p_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "quantile")
   class(rtn) <- c("pedbp_bp", "pedbp_q_bp")
   rtn
 }
@@ -241,105 +189,3 @@ print.pedbp_bp <- function(x, ...) {
   print(x[1:2])
   invisible(x)
 }
-
-
-# v_bp_params is a vectorized version of bp_params.  The use of a look up table
-# was easier to build assuming age, male, height were single values. v_bp_params
-# will make functions easier to use for end users.
-
-v_bp_params <- function(age, male, height, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
-
-  rtn <- Map(bp_params, age = age, male = male, height = height, height_percentile = height_percentile, source = source)
-  do.call(rbind, rtn)
-
-}
-
-
-bp_params <- function(age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
-
-  stopifnot(length(age) == 1L)
-  stopifnot(length(male) == 1L)
-  #stopifnot(all(age >=0))# & all(age < 19 * 12))
-  #stopifnot(all(male %in% c(0L, 1L)))
-  #stopifnot(all(stats::na.omit(height > 0)))
-  stopifnot(0 < height_percentile & height_percentile < 1)
-
-  source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
-
-  e <- new.env()
-  utils::data(list = "bp_parameters", package = "pedbp", envir = e)
-  d <- e$bp_parameters[e$bp_parameters$male == male, ]
-
-  if (age < 0 | age >= 19*12) {
-    d <- e$bp_parameters[1, ]
-    for (j in names(d)) {
-      d[j] <- NA
-    }
-  }
-
-  # get the height_percentile if height is not NA
-  # used for source %in% c("martin2022", "flynn2017")
-  if (!is.na(height)) {
-    if (age < 36) {
-      height_percentile <- p_length_for_age(q = height, age = age, male = male, source = "WHO")
-    } else {
-      height_percentile <- p_height_for_age(q = height, age = age, male = male, source = "CDC")
-    }
-  }
-
-
-  if (source == "martin2022") {
-    d <- d[d$source %in% c("gemelli1990", "lo2013", "nhlbi"), ]
-    if (age < 12) {
-      d <- d[d$age <= age, ]
-      if (nrow(d) > 1L) {
-        d <- d[d$age == max(d$age), ]
-      }
-    } else if (is.na(height) & age >= 36) {
-      d <- d[is.na(d$height_percentile), ]
-      d <- d[((age >= 36) & (d$age <= age)), ]
-      if (nrow(d) > 1L) {
-        d <- d[d$age == max(d$age), ]
-      }
-    } else {
-      d <- d[!is.na(d$height_percentile), ]
-      d <- d[d$age <= age, ]
-      if (nrow(d) > 1L) {
-        d <- d[d$age == max(d$age), ]
-      }
-      d <- d[which.min(abs(d$height_percentile/100 - height_percentile)), ]
-    }
-  } else if (source %in% c("gemelli1990", "lo2013")) {
-    if (source == "gemelli1990" & age > 12) {
-      d <- d[0, ]
-    } else {
-      d <- d[d$source == source, ]
-      d <- d[d$age <= age, ]
-      if (nrow(d) > 1L) {
-        d <- d[d$age == max(d$age), ]
-      }
-    }
-  } else if (source %in% c("nhlbi", "flynn2017")) {
-    d <- d[d$source == source, ]
-    d <- d[d$age <= age, ]
-    if (nrow(d) > 1L) {
-      d <- d[d$age == max(d$age), ]
-    }
-    d <- d[which.min(abs(d$height_percentile/100 - height_percentile)), ]
-  } else {
-    stop("unknown source")
-  }
-
-  if (nrow(d) == 0L) {
-    d <- e$bp_parameters[1, ]
-    for (j in names(d)) {
-      d[[j]] <- NA
-    }
-  }
-
-  stopifnot(nrow(d) == 1L)
-
-  d
-}
-
-

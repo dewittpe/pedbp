@@ -69,7 +69,7 @@ est_norm <- function(q, p, weights = rep(1, length(p)), ...) {
   stopifnot(length(q) == length(p))
   stopifnot(all(p > 0) & all(p < 1))
   stopifnot(is.numeric(q))
-  
+
   if (any(diff(q) < 0) | any(diff(p) < 0)) {
     stop("q and p are expected to be sorted in ascending order.")
   }
