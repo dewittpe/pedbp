@@ -11,6 +11,8 @@ arma::mat bmi_for_age_who_female();
 arma::mat bmi_for_age_who_male();
 arma::mat head_circumference_for_age_cdc_female();
 arma::mat head_circumference_for_age_cdc_male();
+arma::mat head_circumference_for_age_who_female();
+arma::mat head_circumference_for_age_who_male();
 arma::mat height_for_age_cdc_female();
 arma::mat height_for_age_cdc_male();
 arma::mat height_for_age_who_female();

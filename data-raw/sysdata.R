@@ -40,12 +40,15 @@ who_lms_data[ , male := as.integer(grepl("boy", file))]
 
 # define the "metric"
 who_lms_data[, metric := data.table::tstrsplit(file, split = "-", keep = 1L)]
+
 who_lms_data[, metric := data.table::fcase(metric == "bfa", "bmi_for_age",
                                            metric == "hfa", "height_for_age",
                                            metric == "lhfa", "length_for_age",
                                            metric == "wfa", "weight_for_age",
                                            metric == "wfh", "weight_for_height",
-                                           metric == "wfl", "weight_for_length")]
+                                           metric == "wfl", "weight_for_length",
+                                           metric == "hcfa", "head_circumference_for_age"
+                                           )]
 
 who_lms_data[, .N, by=metric]
 who_lms_data[, file := NULL]

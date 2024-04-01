@@ -57,6 +57,7 @@ quantile_tests_4 <-
       , y = internal_lms_data[["published_quantile"]]) |>
   do.call(c, args = _)
 
+# tests_5 should pass for CDC but fail for WHO
 quantile_tests_5 <-
   Map(function(x, y) { isTRUE(all.equal(x, y, tol = 1e-5)) }
       , x = internal_lms_data[["test_quantile"]]
@@ -65,7 +66,9 @@ quantile_tests_5 <-
 
 stopifnot(quantile_tests_3)
 stopifnot(quantile_tests_4)
-stopifnot(quantile_tests_5)
+
+stopifnot(quantile_tests_5[internal_lms_data$source == "CDC"])
+stopifnot(!all(quantile_tests_5[internal_lms_data$source == "WHO"]))
 
 ################################################################################
 ## Test that the default will return the value based on the floor of the age  ##
