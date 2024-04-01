@@ -315,6 +315,42 @@ stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "type needs to be one of 'quantile', 'distribution', or 'zscore'"))
 
 ################################################################################
+# verify warning if age is out of bounds
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "bmi_for_age"
+        , source = "CDC"
+        , male   = 0
+        , x      = -1
+        , qp     = 15
+        , type   = "quantile"
+      )
+    , warning = function(w) w
+  )
+stopifnot(identical(class(x), c("simpleWarning", "warning", "condition")))
+stopifnot(identical(x$message, "age/stature below lower limit"))
+
+# verify warning if age is out of bounds
+x <-
+  tryCatch(
+      pedbp:::cppPGSF(
+          metric = "bmi_for_age"
+        , source = "CDC"
+        , male   = 0
+        , x      = 1000
+        , qp     = 15
+        , type   = "quantile"
+      )
+    , warning = function(w) w
+  )
+stopifnot(identical(class(x), c("simpleWarning", "warning", "condition")))
+stopifnot(identical(x$message, "age/stature above upper limit"))
+
+
+
+
+################################################################################
 # check output against published values
 internal_lms_data <-
   pedbp:::lms_data |>
@@ -365,6 +401,28 @@ stopifnot(isTRUE(internal_lms_data[, max(abs(test_quantile - published_quantile)
 stopifnot(isTRUE(internal_lms_data[, max(abs(test_percentile - published_percentile)) <= 0.001]))
 stopifnot(isTRUE(internal_lms_data[, max(abs(test_percentile - published_percentile)) <= 0.001]))
 stopifnot(isTRUE(all.equal(pnorm(internal_lms_data$test_zscore), internal_lms_data$test_percentile)))
+
+################################################################################
+# verify that the inputs will be extended as needed
+
+stopifnot(
+  internal_lms_data[metric == "bmi_for_age" & source == "CDC" & male == 0,
+                    isTRUE(all.equal(
+                    test_percentile,
+                    pedbp:::cppPGSF(metric = "bmi_for_age", source = "CDC", male = 0, x = x, qp = published_quantile, type = "distribution")
+                    ))]
+  )
+
+stopifnot(
+  isTRUE(
+    all.equal(
+      pedbp:::cppPGSF(metric = "bmi_for_age", source = c("CDC", "WHO"), male = 0, x = 56, qp = 15, type = "distribution"),
+      c(0.4390000, 0.4294214),
+      tol = 1e-7
+    )
+  )
+)
+
 
 ################################################################################
 ##                                End of file                                 ##
