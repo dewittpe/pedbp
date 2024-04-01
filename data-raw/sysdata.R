@@ -50,7 +50,8 @@ who_lms_data[, metric := data.table::fcase(metric == "bfa", "bmi_for_age",
                                            metric == "hcfa", "head_circumference_for_age"
                                            )]
 
-who_lms_data[, .N, by=metric]
+print(who_lms_data[, .N, by = .(metric, file)], n = Inf)
+
 who_lms_data[, file := NULL]
 
 # because percentiles a zscores where provided in seperate files the metric,
@@ -79,6 +80,7 @@ who_lms_data[, source := "WHO"]
 
 # verify that the metric, male, age/stature are unique
 stopifnot( who_lms_data[, .N, by = .(metric, male, age, height, length)][, N == 1L])
+
 
 
 ################################################################################

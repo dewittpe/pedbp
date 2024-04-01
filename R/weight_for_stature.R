@@ -17,7 +17,7 @@
 #'
 #' # There are slight differences in the quantiles for length and height
 #' q_weight_for_length(p = 0.60, male = 1, length = 97, source = "CDC")
-#' q_weight_for_height(p = 0.60, male = 1, height = 97, source = "WHO")
+#' q_weight_for_height(p = 0.60, male = 1, height = 97, source = "CDC")
 #'
 #' # percentiles and standard scores for a 14 kg, 88 cm tall/long male
 #' p_weight_for_height(q = 14, male = 1, height = 88, source = "CDC")
