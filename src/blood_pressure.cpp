@@ -17,7 +17,7 @@ using namespace Rcpp;
 //    dbp: the quantile or percentile diastolic blood pressure
 //    age: in months
 //    male: 0 = female, 1 = male
-//    known_height: 0 = height is not known
+//    known_height: 0 = height is not known; 1 = height is known
 //    height_percentile: the height percentile to use in the look up table.
 //                       This is only relevant to nhlbi and flynn2017 data
 //    source: the data source or method defining the look up table
@@ -246,24 +246,30 @@ Rcpp::List cppBP(
 
   Rcpp::LogicalVector known_height = !Rcpp::is_na(height);
   Rcpp::LogicalVector known_heightp = !Rcpp::is_na(height_percentile);
+  Rcpp::NumericVector hp(max_length);
   Rcpp::NumericMatrix lutbp (max_length, 9);
   int i = 0;
 
   for (i = 0; i < max_length; ++i) {
     if (known_height(i)) {
       if (age(i) < 36) {
-        height_percentile(i) = cppPGSF1("length_for_age", "WHO", male(i), age(i), height(i), "distribution");
+        hp(i) = cppPGSF1("length_for_age", "WHO", male(i), age(i), height(i), "distribution");
       } else {
-        height_percentile(i) = cppPGSF1("height_for_age", "CDC", male(i), age(i), height(i), "distribution");
+        hp(i) = cppPGSF1("height_for_age", "CDC", male(i), age(i), height(i), "distribution");
       }
-    } else if (!known_heightp(i)) {
-      height_percentile(i) = default_height_percentile;
+    } else {
+      if (known_heightp(i)) {
+        known_height(i) = 1;
+        hp(i) = height_percentile(i);
+      } else {
+        hp(i) = default_height_percentile;
+      }
     }
   }
 
   for (i = 0; i < max_length; ++i) {
     lutbp(i, _) = cppBPF1(qp_sbp(i), qp_dbp(i), age(i), male(i),
-                          known_height(i), height_percentile(i),
+                          known_height(i), hp(i),
                           Rcpp::as<std::string>(source(i)),
                           Rcpp::as<std::string>(type(i))
                           );
@@ -281,7 +287,8 @@ Rcpp::List cppBP(
     Rf_error("type needs to be either 'percentile' or 'quantile'");
   }
 
-  Rcpp:: CharacterVector src(max_length);
+  Rcpp::CharacterVector src(max_length);
+
   for(i = 0; i < max_length; ++i) {
     if (lutbp(i, 6) == 1) {
       src(i) = "gemelli1990";
@@ -299,9 +306,9 @@ Rcpp::List cppBP(
       Rf_error("unknown source");
     }
     if (lutbp(i, 5) == 101) {
-      height_percentile(i) = NA_REAL;
+      hp(i) = NA_REAL;
     } else {
-      height_percentile(i) = lutbp(i, 5);
+      hp(i) = lutbp(i, 5);
     }
   }
 
@@ -313,7 +320,7 @@ Rcpp::List cppBP(
       _["sbp_sd"]   = lutbp(_, 2),
       _["dbp_mean"] = lutbp(_, 3),
       _["dbp_sd"]   = lutbp(_, 4),
-      _["height_percentile"] = height_percentile
+      _["height_percentile"] = hp
       );
 
   rtn.attr("bp_params") = df;

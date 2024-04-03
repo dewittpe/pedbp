@@ -379,31 +379,36 @@ stopifnot(max(abs(flynn2017$pedbp_dbp_percentile - flynn2017$bp_percentile)) < 2
 
 ################################################################################
 # test output for martin2022
-
 test_martin2022 <-
   expand.grid(age = seq(0, 217, by = 1),
               male = 0:1,
-              height = c(NA, 120),
-              height_percentile = c(NA, 0.2),
+              height = c(NA, seq(75, 160, by = 10)),
+              height_percentile = c(NA, seq(0.01, 0.99, by = 0.1)),
               source = NA_character_,
               stringsAsFactors = FALSE
   )
+# build up the expected source
+test_martin2022$source[test_martin2022$age < 12] <- "gemelli1990"
 
-test_martin2022$source[ test_martin2022$age > 0 & test_martin2022$age < 12 & test_martin2022$age <= 216] <- "gemelli1990"
-test_martin2022$source[
-                       (test_martin2022$age > 0 & test_martin2022$age >= 12 & test_martin2022$age <= 216) &
-                       (!is.na(test_martin2022$height))
+test_martin2022$source[(test_martin2022$age >= 12) &
+                       (!is.na(test_martin2022$height) | !is.na(test_martin2022$height_percentile))
                       ] <- "nhlbi"
-test_martin2022$source[
-                       (test_martin2022$age > 0 & test_martin2022$age >= 12 & test_martin2022$age <= 216) &
-                       (is.na(test_martin2022$height)) &
+
+test_martin2022$source[(test_martin2022$age >= 12) &
+                       (is.na(test_martin2022$height) & is.na(test_martin2022$height_percentile)) &
                        (test_martin2022$age < 36)
                       ] <- "nhlbi"
-test_martin2022$source[
-                       (test_martin2022$age > 0 & test_martin2022$age >= 12 & test_martin2022$age <= 216) &
-                       (is.na(test_martin2022$height)) &
+
+test_martin2022$source[(test_martin2022$age >= 12) &
+                       (is.na(test_martin2022$height) & is.na(test_martin2022$height_percentile)) &
                        (test_martin2022$age >= 36)
                       ] <- "lo2013"
+
+# clean up expected source
+test_martin2022$source[test_martin2022$age <= 0] <- NA_character_
+test_martin2022$source[test_martin2022$age > 216] <- NA_character_
+
+original_hash <- digest::digest(test_martin2022)  # needed for testing against error seen in #18
 
 x <-
   pedbp:::cppBP(
@@ -416,6 +421,27 @@ x <-
     default_height_percentile = 0.8,
     source = "martin2022",
     type = 'quantile')
+
+new_hash <- digest::digest(test_martin2022)
+stopifnot(identical(original_hash, new_hash))
+
+x <- attr(x, 'bp_params')
+stopifnot(identical(test_martin2022$source, x$source) )
+
+x <-
+  pedbp:::cppBP(
+    qp_sbp = numeric(1),
+    qp_dbp = numeric(1),
+    age = test_martin2022$age,
+    male = test_martin2022$male,
+    height = test_martin2022$height,
+    height_percentile = test_martin2022$height_percentile,
+    default_height_percentile = 0.8,
+    source = "martin2022",
+    type = 'percentile')
+
+new_hash <- digest::digest(test_martin2022)
+stopifnot(identical(original_hash, new_hash))
 
 x <- attr(x, 'bp_params')
 stopifnot(identical(test_martin2022$source, x$source) )
