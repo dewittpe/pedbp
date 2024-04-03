@@ -212,27 +212,33 @@ stopifnot(max(abs(flynn2017$pedbp_dbp_percentile - flynn2017$bp_percentile)) < 2
 test_martin2022 <-
   expand.grid(age = seq(0, 217, by = 1),
               male = 0:1,
-              height = c(NA, 120),
-              height_percentile = c(NA, 0.2),
+              height = c(NA, seq(75, 160, by = 10)),
+              height_percentile = c(NA, seq(0.01, 0.99, by = 0.1)),
               source = NA_character_,
               stringsAsFactors = FALSE
   )
+# build up the expected source
+test_martin2022$source[test_martin2022$age < 12] <- "gemelli1990"
 
-test_martin2022$source[ test_martin2022$age > 0 & test_martin2022$age < 12 & test_martin2022$age <= 216] <- "gemelli1990"
-test_martin2022$source[
-                       (test_martin2022$age > 0 & test_martin2022$age >= 12 & test_martin2022$age <= 216) &
-                       (!is.na(test_martin2022$height))
+test_martin2022$source[(test_martin2022$age >= 12) &
+                       (!is.na(test_martin2022$height) | !is.na(test_martin2022$height_percentile))
                       ] <- "nhlbi"
-test_martin2022$source[
-                       (test_martin2022$age > 0 & test_martin2022$age >= 12 & test_martin2022$age <= 216) &
-                       (is.na(test_martin2022$height)) &
+
+test_martin2022$source[(test_martin2022$age >= 12) &
+                       (is.na(test_martin2022$height) & is.na(test_martin2022$height_percentile)) &
                        (test_martin2022$age < 36)
                       ] <- "nhlbi"
-test_martin2022$source[
-                       (test_martin2022$age > 0 & test_martin2022$age >= 12 & test_martin2022$age <= 216) &
-                       (is.na(test_martin2022$height)) &
+
+test_martin2022$source[(test_martin2022$age >= 12) &
+                       (is.na(test_martin2022$height) & is.na(test_martin2022$height_percentile)) &
                        (test_martin2022$age >= 36)
                       ] <- "lo2013"
+
+# clean up expected source
+test_martin2022$source[test_martin2022$age <= 0] <- NA_character_
+test_martin2022$source[test_martin2022$age > 216] <- NA_character_
+
+original_hash <- digest::digest(test_martin2022)
 
 x <-
   p_bp(
@@ -245,6 +251,9 @@ x <-
     default_height_percentile = 0.8,
     source = "martin2022"
     )
+
+new_hash <- digest::digest(test_martin2022)
+stopifnot(identical(original_hash, new_hash))
 
 x <- attr(x, 'bp_params')
 stopifnot(identical(test_martin2022$source, x$source) )
@@ -261,8 +270,68 @@ x <-
     source = "martin2022"
     )
 
+new_hash <- digest::digest(test_martin2022)
+stopifnot(identical(original_hash, new_hash))
+
 x <- attr(x, 'bp_params')
 stopifnot(identical(test_martin2022$source, x$source) )
+
+################################################################################
+# Verify that p_bp and q_bp undo each other
+x <-
+  expand.grid(age = seq(1, 216, by = 1),
+              male = 0:1,
+              height = c(NA, seq(75, 160, by = 10)),
+              height_percentile = c(NA, seq(0.01, 0.99, by = 0.1)),
+              p = seq(0, 1, by = 0.05),
+              stringsAsFactors = FALSE)
+
+original_hash <- digest::digest(x)
+
+yq <-
+  q_bp(p_sbp = x$p,
+       p_dbp = x$p,
+       age = x$age,
+       male = x$male,
+       height = x$height,
+       height_percentile = x$height_percentile,
+       default_height_percentile = 0.8,
+       source = "martin2022")
+
+new_hash <- digest::digest(x)
+stopifnot(identical(original_hash, new_hash)) # test needed re #18
+
+yp <-
+  p_bp(q_sbp = yq$sbp,
+       q_dbp = yq$dbp,
+       age = x$age,
+       male = x$male,
+       height = x$height,
+       height_percentile = x$height_percentile,
+       default_height_percentile = 0.8,
+       source = "martin2022")
+
+new_hash <- digest::digest(x)
+stopifnot(identical(original_hash, new_hash)) # test needed re #18
+
+bp_params1 <- attr(yq, "bp_params")
+bp_params2 <- attr(yp, "bp_params")
+stopifnot(isTRUE(all.equal(bp_params1, bp_params2))) # test needed re #18
+
+x$q_sbp <- yq$sbp
+x$q_dbp <- yq$dbp
+x$p_sbp <- yp$sbp_percentile
+x$p_dbp <- yp$dbp_percentile
+
+#names(bp_params1) <- paste0(names(bp_params1), "1")
+#names(bp_params2) <- paste0(names(bp_params2), "2")
+x <- cbind(x, bp_params1)
+#head(x)
+
+stopifnot(isTRUE(with(x, all.equal(pnorm(q_sbp, mean = sbp_mean, sd = sbp_sd), p_sbp))))
+stopifnot(isTRUE(with(x, all.equal(pnorm(q_dbp, mean = dbp_mean, sd = dbp_sd), p_dbp))))
+stopifnot(isTRUE(with(x, all.equal(qnorm(p_sbp, mean = sbp_mean, sd = sbp_sd), q_sbp))))
+stopifnot(isTRUE(with(x, all.equal(qnorm(p_dbp, mean = dbp_mean, sd = dbp_sd), q_dbp))))
 
 ################################################################################
 ##                                End of file                                 ##
