@@ -165,6 +165,29 @@ server <- function(input, output, session) {
   gs_weight <- reactive({
     ifelse(grepl("kg", input$gs_weight_units), input$gs_weight_kg, input$gs_weight_lbs / 2.205)
   })
+  gs_metric <- reactive({
+    if (input$gs_standard == "BMI for Age") {
+      "bmi_for_age"
+    } else if (input$gs_standard == "Head Circumference for Age") {
+     "head_circumference_for_age"
+    } else if (input$gs_standard == "Weight for Age") {
+      "weight_for_age"
+    } else if (input$gs_standard == "Stature for Age") {
+      if (grepl("Height", input$gs_stature_units)) {
+        "height_for_age"
+      } else {
+        "length_for_age"
+      }
+    } else if (input$gs_standard == "Weight for Stature") {
+      if (grepl("Height", input$gs_stature_units)) {
+        "weight_for_height"
+      } else {
+        "weight_for_length"
+      }
+    } else {
+      stop("Unknown input$gs_standard")
+    }
+  })
 
   gs <- reactive({
     cdf_data <- data.table(p = seq(0.001, 0.999, length.out = 200))
@@ -173,7 +196,7 @@ server <- function(input, output, session) {
       observed <- data.table(q = input$gs_bmi, p = p_bmi_for_age(q = input$gs_bmi, male = gs_male(), age = gs_age(), source = input$gs_source))
       cdf_data[, q := q_bmi_for_age(p = p, male = gs_male(), gs_age(), source = input$gs_source)]
       qplabel <- "BMI"
-    } else if (input$gs_standard == "Head Circumference For Age") {
+    } else if (input$gs_standard == "Head Circumference for Age") {
       hc <- ifelse(input$gs_head_circ_units == "cm", input$gs_head_circ_cm, input$gs_head_circ_inches * 2.54)
       observed <- data.table(q = hc, p = p_head_circumference_for_age(q = hc, male = gs_male(), age = gs_age(), source = input$gs_source))
       cdf_data[, q := q_head_circumference_for_age(p = p, male = gs_male(), gs_age(), source = input$gs_source)]
@@ -207,7 +230,7 @@ server <- function(input, output, session) {
 
     obs_seg <- data.table(p = c(observed$p, observed$p, 0), q = c(-Inf, observed$q, observed$q))
 
-    plot <- ggplot2::ggplot() +
+    cdf <- ggplot2::ggplot() +
       ggplot2::aes(x = q, y = p) +
       ggplot2::geom_line(data = cdf_data) +
       ggplot2::geom_point(data = observed) +
@@ -215,11 +238,19 @@ server <- function(input, output, session) {
       ggplot2::scale_y_continuous(name = "Percentile", labels = scales::label_percent(suffix = "th")) +
       ggplot2::xlab(qplabel)
 
-    list(observed = observed, plot = plot, qplabel = qplabel)
+    chart_point <- switch(input$gs_standard,
+                  "Weight for Height" = ggplot2::geom_point(x = gs_stature(), y = observed$q),
+                  "Weight for Length" = ggplot2::geom_point(x = gs_stature(), y = observed$q),
+                  ggplot2::geom_point(x = gs_age(), y = observed$q))
+
+    chart <- gs_chart(metric = gs_metric(), male = gs_male()) + chart_point
+
+    list(observed = observed, cdf = cdf, chart = chart, qplabel = qplabel)
 
   })
 
-  output$gs_cdf_plot <- renderPlot({ gs()$plot })
+  output$gs_cdf_plot <- renderPlot({ gs()$cdf })
+  output$gs_chart_plot <- renderPlot({ gs()$chart })
   output$gs_cdf_table <- renderTable({
     DT <- data.table::copy(gs()$observed)
     DT[, p := paste0(qwraps2::frmt(p*100, digits = 1), "th")]
