@@ -1,5 +1,4 @@
-# pedbp : Pediatric Blood Pressure <img src="man/figures/pedbplogo.png" align="right" width="150px" height="150px"/>
-An R package for estimating expected blood pressure of children and adolescences
+# pedbp : Pediatric Blood Pressure and Growth Standard Distributions <img src="man/figures/pedbplogo.png" align="right" width="150px"/>
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/dewittpe/pedbp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dewittpe/pedbp/actions/workflows/R-CMD-check.yaml)
@@ -83,7 +82,7 @@ estimates:
 The default method is to use the workflow defined in Martin, DeWitt, et al.
 (2022).
 
-![](man/figures/flowchart.png)
+<img src="man/figures/flowchart.png"/>
 
 End users may opt to use any single data source.
 
@@ -92,75 +91,17 @@ pressure of 95/50.  Find the percentiles.
 
 ```r
 library(pedbp)
-p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92) # Default
+p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92)
 ```
 
-```
-## $sbp_percentile
-## [1] 0.7086064
-## 
-## $dbp_percentile
-## [1] 0.6428859
-```
+Selecting the source data is also possible
 
 ```r
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "martin2022")  # Default
-```
-
-```
-## $sbp_percentile
-## [1] 0.7086064
-## 
-## $dbp_percentile
-## [1] 0.6428859
-```
-
-```r
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "gemelli1990")
-```
-
-```
-## $sbp_percentile
-## [1] NA
-## 
-## $dbp_percentile
-## [1] NA
-```
-
-```r
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "lo2013")
-```
-
-```
-## $sbp_percentile
-## [1] NA
-## 
-## $dbp_percentile
-## [1] NA
-```
-
-```r
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "nhlbi")
-```
-
-```
-## $sbp_percentile
-## [1] 0.7086064
-## 
-## $dbp_percentile
-## [1] 0.6428859
-```
-
-```r
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "flynn2017")
-```
-
-```
-## $sbp_percentile
-## [1] 0.6797595
-## 
-## $dbp_percentile
-## [1] 0.5422765
 ```
 
 You can also find the quantile values.  Example: what is the SBP/DBP values for
@@ -168,74 +109,6 @@ the 42nd percentile of 13 year (156 month) old males in the 90th height percenti
 
 ```r
 q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90)
-```
-
-```
-## $sbp
-## [1] 108.7961
-## 
-## $dbp
-## [1] 61.65239
-```
-
-```r
-q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "martin2022")
-```
-
-```
-## $sbp
-## [1] 108.7961
-## 
-## $dbp
-## [1] 61.65239
-```
-
-```r
-q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "gemelli1990")
-```
-
-```
-## $sbp
-## [1] NA
-## 
-## $dbp
-## [1] NA
-```
-
-```r
-q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "lo2013")
-```
-
-```
-## $sbp
-## [1] 108.5792
-## 
-## $dbp
-## [1] 62.12428
-```
-
-```r
-q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "nhlbi")
-```
-
-```
-## $sbp
-## [1] 108.7961
-## 
-## $dbp
-## [1] 61.65239
-```
-
-```r
-q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90, source = "flynn2017")
-```
-
-```
-## $sbp
-## [1] 108.6517
-## 
-## $dbp
-## [1] 61.93385
 ```
 
 More examples can be found in the vignette.
@@ -256,11 +129,13 @@ vignette(topic = "growth-standards", package = "pedbp")
 Growth standards implemented in the package are:
 * `bmi_for_age`
 * `head_circumference_for_age`
-* `height_for_age`
-* `length_for_age`
+* Stature for Age
+  * `height_for_age`
+  * `length_for_age`
 * `weight_for_age`
-* `weight_for_length`
-* `weight_for_height`
+* Weight for Stature
+  * `weight_for_length`
+  * `weight_for_height`
 
 
 ```r
