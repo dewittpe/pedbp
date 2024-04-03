@@ -1,10 +1,9 @@
 library(shiny)
 library(shinydashboard)
-library(pedbp)
 library(data.table)
 library(markdown)
 library(ggplot2)
-library(DT)
+library(pedbp)
 
 server <- function(input, output, session) {
 
@@ -12,8 +11,9 @@ server <- function(input, output, session) {
     list(src = normalizePath(system.file("images", "flowchart.png", package = "pedbp")))
   }, deleteFile = FALSE)
 
-  bp_calls <- reactive({
-
+  ##############################################################################
+  # Blood Pressure
+  bp <- reactive({
     other_args <-
       list(source = input$bp_source,
            age = ifelse(input$bp_age_units == "months", input$bp_age_months, input$bp_age_years * 12),
@@ -122,21 +122,108 @@ server <- function(input, output, session) {
   })
 
   output$bp_cdf <- renderPlot({
-    bp_calls()$plot
+    bp()$plot
   })
 
-
   output$bp_params <- renderTable({
-    bp_calls()$bp_params
+    bp()$bp_params
   })
 
   output$bp_mmHg_percentile <- renderTable({
-    x <- bp_calls()
+    x <- bp()
     data.table("bp" = c("Systolic", "Diastolic"),
                "mmHg" = c(x$sbp_mmHg, x$dbp_mmHg),
                "%itle" = 100*c(x$sbp_percentile, x$dbp_percentile))
   })
 
+  ##############################################################################
+  # Growth Standards
+
+  gs_male <- reactive({as.integer(input$gs_sex == "Male")})
+  gs_age  <- reactive({
+    switch(input$gs_age_units,
+           "days"   = input$gs_age_days * 365.25 / 12,
+           "months" = input$gs_age_months,
+           "years"  = input$gs_age_years / 12)
+  })
+  gs_stature <- reactive({
+    if (grepl("Height", input$gs_stature_units)) {
+      ifelse(grepl("inches", input$gs_stature_units), input$gs_stature_height_inches * 2.54, input$gs_stature_height_cm)
+    } else {
+      ifelse(grepl("inches", input$gs_stature_units), input$gs_stature_length_inches * 2.54, input$gs_stature_length_cm)
+    }
+  })
+  gs_weight <- reactive({
+    ifelse(grepl("kg", input$gs_weight_units), input$gs_weight_kg, input$gs_weight_lbs / 2.205)
+  })
+
+  gs <- reactive({
+    cdf_data <- data.table(p = seq(0.001, 0.999, length.out = 200))
+
+    if (input$gs_standard == "BMI for Age") {
+      observed <- data.table(q = input$gs_bmi, p = p_bmi_for_age(q = input$gs_bmi, male = gs_male(), age = gs_age(), source = input$gs_source))
+      cdf_data[, q := q_bmi_for_age(p = p, male = gs_male(), gs_age(), source = input$gs_source)]
+      qplabel <- "BMI"
+    } else if (input$gs_standard == "Head Circumference For Age") {
+      hc <- ifelse(input$gs_head_circ_units == "cm", input$gs_head_circ_cm, input$gs_head_circ_inches * 2.54)
+      observed <- data.table(q = hc, p = p_head_circumference_for_age(q = hc, male = gs_male(), age = gs_age(), source = input$gs_source))
+      cdf_data[, q := q_head_circumference_for_age(p = p, male = gs_male(), gs_age(), source = input$gs_source)]
+      qplabel <- "Head Circumference (cm)"
+    } else if (input$gs_standard == "Stature for Age") {
+      if (grepl("Height", input$gs_stature_units)) {
+        observed <- data.table(q = gs_stature(), p = p_height_for_age(q = gs_stature(), male = gs_male(), age = gs_age(), source = input$gs_source))
+        cdf_data[, q := q_height_for_age(p = p, male = gs_male(), gs_age(), source = input$gs_source)]
+        qplabel <- "Height (cm)"
+      } else {
+        observed <- data.table(q = gs_stature(), p = p_length_for_age(q = gs_stature(), male = gs_male(), age = gs_age(), source = input$gs_source))
+        cdf_data[, q := q_length_for_age(p = p, male = gs_male(), gs_age(), source = input$gs_source)]
+        qplabel <- "Length (cm)"
+      }
+    } else if (input$gs_standard == "Weight for Age") {
+        observed <- data.table(q = gs_weight(), p = p_weight_for_age(q = gs_weight(), male = gs_male(), age = gs_age(), source = input$gs_source))
+        cdf_data[, q := q_weight_for_age(p = p, male = gs_male(), gs_age(), source = input$gs_source)]
+        qplabel <- "Weight (kg)"
+    } else if (input$gs_standard == "Weight for Stature") {
+      if (grepl("Height", input$gs_stature_units)) {
+        observed <- data.table(q = gs_weight(), p = p_weight_for_height(q = gs_weight(), male = gs_male(), height = gs_stature(), source = input$gs_source))
+        cdf_data[, q := q_weight_for_height(p = p, male = gs_male(), gs_stature(), source = input$gs_source)]
+      } else {
+        observed <- data.table(q = gs_weight(), p = p_weight_for_length(q = gs_weight(), male = gs_male(), length = gs_stature(), source = input$gs_source))
+        cdf_data[, q := q_weight_for_length(p = p, male = gs_male(), gs_stature(), source = input$gs_source)]
+      }
+      qplabel <- "Weight (kg)"
+    } else {
+      stop("Unknown gs_standard")
+    }
+
+    obs_seg <- data.table(p = c(observed$p, observed$p, 0), q = c(-Inf, observed$q, observed$q))
+
+    plot <- ggplot2::ggplot() +
+      ggplot2::aes(x = q, y = p) +
+      ggplot2::geom_line(data = cdf_data) +
+      ggplot2::geom_point(data = observed) +
+      ggplot2::geom_line(data = obs_seg) +
+      ggplot2::scale_y_continuous(name = "Percentile", labels = scales::label_percent(suffix = "th")) +
+      ggplot2::xlab(qplabel)
+
+    list(observed = observed, plot = plot, qplabel = qplabel)
+
+  })
+
+  output$gs_cdf_plot <- renderPlot({ gs()$plot })
+  output$gs_cdf_table <- renderTable({
+    DT <- data.table::copy(gs()$observed)
+    DT[, p := paste0(qwraps2::frmt(p*100, digits = 1), "th")]
+    setnames(DT, old = c("q", "p"), new = c(gs()$qplabel, "%ile"))
+    DT
+  })
+
+
+
+
+
+
+# OLD STUFF BELOW
 #  output$csv_for_batch <- renderImage({
 #    list(height = "90%", src = normalizePath(system.file("images", "csv_for_batch.png", package = "pedbp")))
 #  }, deleteFile = FALSE)

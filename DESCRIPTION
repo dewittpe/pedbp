@@ -35,7 +35,6 @@ Suggests:
     covr,
     data.table,
     digest,
-    DT,
     ggpubr,
     gridExtra,
     knitr,

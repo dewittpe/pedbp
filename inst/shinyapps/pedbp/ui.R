@@ -1,10 +1,211 @@
 library(shiny)
 library(shinydashboard)
-library(pedbp)
 library(data.table)
 library(markdown)
 library(ggplot2)
-library(DT)
+library(pedbp)
+
+gs_age_box <-
+  box(
+    title = "Age",
+    solidHeader = FALSE,
+    width = 12,
+    collapsible = TRUE,
+    collapsed = FALSE,
+    selectInput(
+      inputId = "gs_age_units",
+      label = NULL,
+      choices = c("days", "months", "years"),
+      selected = "months",
+      multiple = FALSE
+    ),
+    conditionalPanel(
+      condition = "input.gs_age_units == 'days'",
+      sliderInput(
+        inputId = "gs_age_days",
+        label = NULL,
+        min = 0,
+        max = ceiling(18 * 365.25),
+        value = 365,
+        step = 1
+      )
+    ),
+    conditionalPanel(
+      condition = "input.gs_age_units == 'months'",
+      sliderInput(
+        inputId = "gs_age_months",
+        label = NULL,
+        min = 0,
+        max = 18*12,
+        value = 8 * 12,
+        step = 0.25
+      )
+    ),
+    conditionalPanel(
+      condition = "input.gs_age_units == 'years'",
+      sliderInput(
+        inputId = "gs_age_years",
+        label = NULL,
+        min = 0,
+        max = 18,
+        value = 8,
+        step = 0.1
+      )
+    )
+  )
+
+gs_bmi_box <-
+  box(
+    title = "BMI",
+    solidHeader = FALSE,
+    width = 12,
+    collapsible = TRUE,
+    collapsed = FALSE,
+    sliderInput(
+      inputId = "gs_bmi",
+      label = NULL,
+      min = 0,
+      max = 50,
+      value = 20,
+      step = 0.1
+    )
+  )
+
+gs_weight_box <-
+  box(
+    title = "Weight",
+    solidHeader = FALSE,
+    width = 12,
+    collapsible = TRUE,
+    collapsed = FALSE,
+    selectInput(
+      inputId = "gs_weight_units",
+      label = NULL,
+      choices = c("kg", "lbs"),
+      selected = "kg",
+      multiple = FALSE
+    ),
+    conditionalPanel(
+      condition = "input.gs_weight_units == 'kg'",
+      sliderInput(
+        inputId = "gs_weight_kg",
+        label = NULL,
+        min = 0,
+        max = 135, # about 300 lbs
+        value = 45,
+        step = 0.1
+      )
+    ),
+    conditionalPanel(
+      condition = "input.gs_weight_units == 'lbs'",
+      sliderInput(
+        inputId = "gs_weight_lbs",
+        label = NULL,
+        min = 0,
+        max = 300,
+        value = 100,
+        step = 0.1
+      )
+    )
+  )
+
+gs_stature_box <-
+  box(
+    title = "Stature",
+    solidHeader = FALSE,
+    width = 12,
+    collapsible = TRUE,
+    collapsed = FALSE,
+    selectInput(
+      inputId = "gs_stature_units",
+      label = NULL,
+      choices = c("Height (cm)", "Height (inches)", "Length (cm)", "Length (inches)"),
+      selected = "Height (cm)",
+      multiple = FALSE
+    ),
+    conditionalPanel(
+      condition = "input.gs_stature_units == 'Height (cm)'",
+      sliderInput(
+        inputId = "gs_stature_height_cm",
+        label = NULL,
+        min = 0,
+        max = 225,
+        value = 100,
+        step = 1
+      )
+    ),
+    conditionalPanel(
+      condition = "input.gs_stature_units == 'Height (inches)'",
+      sliderInput(
+        inputId = "gs_stature_height_inches",
+        label = NULL,
+        min = 0,
+        max = 100,
+        value = 48,
+        step = 1
+      )
+    ),
+    conditionalPanel(
+      condition = "input.gs_stature_units == 'Length (cm)'",
+      sliderInput(
+        inputId = "gs_stature_length_cm",
+        label = NULL,
+        min = 0,
+        max = 225,
+        value = 100,
+        step = 1
+      )
+    ),
+    conditionalPanel(
+      condition = "input.gs_stature_units == 'Length (inches)'",
+      sliderInput(
+        inputId = "gs_stature_length_inches",
+        label = NULL,
+        min = 0,
+        max = 100,
+        value = 48,
+        step = 1
+      )
+    )
+  )
+
+gs_head_circ_box <-
+  box(
+    title = "Head Circumference",
+    solidHeader = FALSE,
+    width = 12,
+    collapsible = TRUE,
+    collapsed = FALSE,
+    selectInput(
+      inputId = "gs_head_circ_units",
+      label = NULL,
+      choices = c("cm", "inches"),
+      selected = "cm",
+      multiple = FALSE
+    ),
+    conditionalPanel(
+      condition = "input.gs_head_circ_units == 'cm'",
+      sliderInput(
+        inputId = "gs_head_circ_cm",
+        label = NULL,
+        min = 0,
+        max = 225,
+        value = 100,
+        step = 1
+      )
+    ),
+    conditionalPanel(
+      condition = "input.gs_head_circ_units == 'inches'",
+      sliderInput(
+        inputId = "gs_head_circ_inches",
+        label = NULL,
+        min = 0,
+        max = 100,
+        value = 48,
+        step = 1
+      )
+    )
+  )
 
 ui <-
   dashboardPage(
@@ -34,6 +235,7 @@ ui <-
           )
         ),
         tabItem(tabName = "bp",
+          h1("Pediatric Blood Pressure"),
           box(
             title = "Inputs",
             solidHeader = TRUE,
@@ -233,7 +435,82 @@ ui <-
             box(title = NULL, width = 3, tableOutput(outputId = "bp_mmHg_percentile"))
           )
         ),
-        tabItem(tabName = "gs"
+        tabItem(tabName = "gs",
+          h1("Pediatric Growth Standards"),
+          box(
+            title = "Inputs",
+            width = 3,
+            solidHeader = TRUE,
+            status = "primary",
+            box(
+              title = "Growth Standard",
+              width = 12,
+              collapsible = TRUE,
+              collapsed = FALSE,
+              selectInput(
+                inputId = "gs_standard",
+                label = NULL,
+                choices = c("BMI for Age", "Head Circumference for Age", "Stature for Age", "Weight for Age", "Weight for Stature"),
+                selected = "BMI for Age",
+                multiple = FALSE
+              )
+            ),
+            box(
+              title = "Source",
+              width = 12,
+              collapsible = TRUE,
+              collapsed = FALSE,
+              selectInput(
+                inputId = "gs_source",
+                label = NULL,
+                choices = c("CDC", "WHO"),
+                selected = "CDC",
+                multiple = FALSE
+              )
+            ),
+            box(
+              title = "Sex",
+              width = 12,
+              collapsible = TRUE,
+              collapsed = FALSE,
+              selectInput(
+                inputId = "gs_sex",
+                label = NULL, #"Sex",
+                choices = c("Male", "Female"),
+                selected = "Male",
+                multiple = FALSE
+              )
+            ),
+            conditionalPanel(
+              condition = "input.gs_standard == 'BMI for Age' || input.gs_standard == 'Head Circumference for Age' || input.gs_standard == 'Stature for Age' || input.gs_standard == 'Weight for Age'",
+              gs_age_box
+            ),
+            conditionalPanel(
+              condition = "input.gs_standard == 'BMI for Age'",
+              gs_bmi_box
+            ),
+            conditionalPanel(
+              condition = "input.gs_standard == 'Head Circumference for Age'",
+              gs_head_circ_box
+            ),
+            conditionalPanel(
+              condition = "input.gs_standard == 'Stature for Age' || input.gs_standard == 'Weight for Stature'",
+              gs_stature_box
+            ),
+            conditionalPanel(
+              condition = "input.gs_standard == 'Weight for Age' || input.gs_standard == 'Weight for Stature'",
+              gs_weight_box
+            )
+          ),
+          box(
+            title = "Output",
+            width = 9,
+            solidHeader = TRUE,
+            status = "info",
+            #plotOutput("gs_plot_1"),
+            plotOutput("gs_cdf_plot"),
+            tableOutput("gs_cdf_table")
+          )
         ),
         tabItem(tabName = "batch"
             , h2("Batch Processing")
