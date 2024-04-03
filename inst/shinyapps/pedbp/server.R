@@ -11,6 +11,15 @@ server <- function(input, output, session) {
     list(src = normalizePath(system.file("images", "flowchart.png", package = "pedbp")))
   }, deleteFile = FALSE)
 
+  output$citation_research_letter <- renderPrint({
+    x <- citation(package = "pedbp")
+    attr(x, "mheader") <- "Cite the research letter"
+    x
+  })
+  output$citation_package <- renderPrint({
+    citation(package = "pedbp", auto = TRUE)
+  })
+
   ##############################################################################
   # Blood Pressure
   bp <- reactive({

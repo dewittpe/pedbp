@@ -1,7 +1,9 @@
-# Pediatric Blood Pressure Distributions
+# Pediatrics Blood Pressure and Growth Standard Distributions
+
+## Pediatric Blood Pressure Distributions
 
 __Motivation:__
-Part of the work of Martin et.al.(2022) required transforming blood
+Part of the work of Martin et al. (2022) required transforming blood
 pressure measurement into percentiles based on published norms.  This
 work was complicated by the fact that data for pediatric blood pressure
 percentiles is sparse and generally only applicable to children at least one
@@ -44,21 +46,32 @@ __This Application:__
 On the right side there is a "Blood Pressure" option where you may enter details
 for one patient and view the percentiles and other information.
 
-Batch Entry -- __under development__ Enter data for many patients and get the
-blood pressure percentiles returned in a batch process.
+You also have the option to specifically select a source for the percentile
+estimation instead of using the logic defined above.  This extends to using data
+from Flynn (2017) which is similar to the NHLBI/CDC data but Flynn (2017)
+excluded overweight and obese children whereas the NHLBI/CDC data includes
+overweight and obese children.
 
 __Additional Resources:__
 Please consider reading the vignette for the pedbp package and/or using that
 package in your work.
 
-__To Cite This Work:__
+## Pediatric Growth Standards
 
+Growth standards based on data from the CDC and the World Health Organization
+(WHO) are provided as well.
 
-Martin B, DeWitt PE, Albers D, Bennett TD. Development of a Pediatric Blood
-Pressure Percentile Tool for Clinical Decision Support. JAMA Netw Open.
-2022;5(10):e2236918. doi:10.1001/jamanetworkopen.2022.36918
+* BMI for age
+* Head Circumference for Age
+* Stature for Age
+  * Height for Age
+  * Length for Age
+* Weight for Age
+* Weight for Stature
+  * Weight for Height
+  * Weight for Length
 
-__References:__
+## References:
 
 * EXPERT PANEL ON INTEGRATED GUIDELINES FOR CARDIOVASCULAR HEALTH AND RISK REDUCTION IN CHILDREN AND ADOLESCENTS. 2011. “Expert Panel on Integrated Guidelines for Cardiovascular Health and Risk Reduction in Children and Adolescents: Summary Report.” Pediatrics 128 (Supplement_5): S213–56. https://doi.org/10.1542/peds.2009-2107C.
 
@@ -68,4 +81,4 @@ __References:__
 
 * Martin, Blake, Peter E. DeWitt, Scout HF, SK Parker, and Tellen D. Bennett. 2022. “Machine Learning Approach to Predicting Absence of Serious Bacterial Infection at PICU Admission.” Hospital Pediatrics.
 
-
+* Flynn, Joseph T., David C. Kaelber, Carissa M. Baker-Smith, Douglas Blowey, Aaron E. Carroll, Stephen R. Daniels, Sarah D. De Ferranti et al. "Clinical practice guideline for screening and management of high blood pressure in children and adolescents." Pediatrics 140, no. 3 (2017).

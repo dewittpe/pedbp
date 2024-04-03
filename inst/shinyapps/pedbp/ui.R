@@ -230,7 +230,13 @@ ui <-
             column(
               width = 6,
               p("Flowchart for selection of data set to build blood pressure percentiles one."),
-              plotOutput("flowchart")
+              plotOutput("flowchart"),
+              br(),
+              h3("Cite this work:"),
+              h4("Research Letter"),
+              verbatimTextOutput("citation_research_letter"),
+              h4("pedbp Package"),
+              verbatimTextOutput("citation_package")
             )
           )
         ),
