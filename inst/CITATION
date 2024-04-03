@@ -4,7 +4,7 @@ and the package itself via citation('pedbp', auto = TRUE)
 
 bibentry(
     bibtype = "article",
-    author = "Martin, Blake and DeWitt, Peter E. and Albers, David and Bennett, Tellen D.",
+    author = "Blake Martin and Peter E. DeWit and David Albers and Tellen D. Bennett",
     title = "Development of a Pediatric Blood Pressure Percentile Tool for Clinical Decision Support",
     journal = "JAMA Network Open",
     volume = "5",

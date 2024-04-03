@@ -38,11 +38,10 @@ citation("pedbp")
 ## To cite pedbp please cite the research letter and the package itself
 ## via citation('pedbp', auto = TRUE)
 ## 
-##   Martin, Blake, DeWitt, E. P, Albers, David, Bennett, D. T (2022).
-##   "Development of a Pediatric Blood Pressure Percentile Tool for
-##   Clinical Decision Support." _JAMA Network Open_, *5*(10),
-##   e2236918-e2236918. ISSN 2574-3805,
-##   doi:10.1001/jamanetworkopen.2022.36918
+##   Martin B, DeWit PE, Albers D, Bennett TD (2022). "Development of a
+##   Pediatric Blood Pressure Percentile Tool for Clinical Decision
+##   Support." _JAMA Network Open_, *5*(10), e2236918-e2236918. ISSN
+##   2574-3805, doi:10.1001/jamanetworkopen.2022.36918
 ##   <https://doi.org/10.1001/jamanetworkopen.2022.36918>,
 ##   https://jamanetwork.com/journals/jamanetworkopen/articlepdf/2797401/martin_2022_ld_220236_1665075001.39453.pdf,
 ##   <https://doi.org/10.1001/jamanetworkopen.2022.36918>.
@@ -50,7 +49,7 @@ citation("pedbp")
 ## A BibTeX entry for LaTeX users is
 ## 
 ##   @Article{,
-##     author = {{Martin} and {Blake} and {DeWitt} and Peter E. and {Albers} and {David} and {Bennett} and Tellen D.},
+##     author = {Blake Martin and Peter E. DeWit and David Albers and Tellen D. Bennett},
 ##     title = {Development of a Pediatric Blood Pressure Percentile Tool for Clinical Decision Support},
 ##     journal = {JAMA Network Open},
 ##     volume = {5},
