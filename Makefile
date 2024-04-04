@@ -13,11 +13,14 @@ SHINYAPPS = $(wildcard $(PKG_ROOT)/inst/shinyapps/*)
 # Targets
 #
 ## Vignettes
-# These are both targets for building and dependencies for the package tar.gz
-# file
 VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd
 VIGNETTES += $(PKG_ROOT)/vignettes/growth-standards.Rmd
 VIGNETTES += $(PKG_ROOT)/vignettes/additional-utilities.Rmd
+
+## Articles - pkgdown site only
+ARTICLES  = $(PKG_ROOT)/vignettes/articles/bp-distributions.Rmd
+ARTICLES += $(PKG_ROOT)/vignettes/articles/growth-standards.Rmd
+ARTICLES += $(PKG_ROOT)/vignettes/articles/additional-utilities.Rmd
 
 ## Data targets
 DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda
@@ -68,13 +71,17 @@ SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-5-19-zscore.xlsx
 SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-5-19-zscore.xlsx
 SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-5-19-percentiles.xlsx
 SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-5-19-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-boys-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-boys-zscore.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-girls-percentiles.xlsx
+SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-girls-zscore.xlsx
 
 ################################################################################
 # Recipes
 
 .PHONY: all check install clean
 
-all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
+all: $(PKG_NAME)_$(PKG_VERSION).tar.gz $(ARTICLES)
 
 test:
 	${assert}
@@ -102,9 +109,19 @@ $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNE
 #
 # List the explicit targets above
 
-$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R $(PKG_ROOT)/vignettes/references.bib
+$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%_CRAN.R $(PKG_ROOT)/vignettes/references.bib | $(PKG_ROOT)/vignettes
 	R --vanilla --quiet -e "knitr::spin(hair = '$<', knit = FALSE)"
 	mv $(basename $<).Rmd $@
+
+$(PKG_ROOT)/vignettes/articles/%.Rmd : $(PKG_ROOT)/vignette-spinners/%_ARTICLE.R $(PKG_ROOT)/vignettes/references.bib | $(PKG_ROOT)/vignettes/articles
+	R --vanilla --quiet -e "knitr::spin(hair = '$<', knit = FALSE)"
+	mv $(basename $<).Rmd $@
+
+$(PKG_ROOT)/vignettes/articles:
+	mkdir -p $@
+
+$(PKG_ROOT)/vignettes:
+	mkdir -p $@
 
 ################################################################################
 # Data Sets
