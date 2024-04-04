@@ -175,6 +175,9 @@ uninstall :
 shiny: install
 	R -e "shiny::runApp(normalizePath(system.file('shinyapps', 'pedbp', package = 'pedbp')), port = 4492)"
 
+site:
+	R -e "pkgdown::build_site()"
+
 clean:
 	$(RM) $(PKG_NAME)_$(PKG_VERSION).tar.gz
 	$(RM) -r $(PKG_NAME).Rcheck
