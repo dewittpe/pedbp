@@ -83,9 +83,6 @@ SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-girls-zscore.xlsx
 
 all: $(PKG_NAME)_$(PKG_VERSION).tar.gz $(ARTICLES)
 
-test:
-	${assert}
-
 $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS) $(SHINYAPPS) $(SRC)
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
 
