@@ -31,9 +31,14 @@
 #'
 #' gs_chart("bmi_for_age", male = 0)
 #' gs_chart("bmi_for_age", male = 1)
-#' gs_chart("height_for_age", male = 1)
-#' gs_chart("weight_for_height", male = 0:1)
+#' gs_chart("bmi_for_age", male = 0:1)
 #'
+#' # add a point for a specific patient
+#' pt <- data.frame(p = 0.82, age = 156, bmi = q_bmi_for_age(p = 0.82, male = 1, age = 156))
+#' gs_chart("bmi_for_age", male = 1) +
+#'   ggplot2::geom_point(data = pt, mapping = ggplot2::aes(x = age, y = bmi))
+#'
+#' # select specific percentiles to plot
 #' gs_chart("weight_for_height", male = 0:1, p = c(0.10, 0.80))
 #'
 #' @export
@@ -85,11 +90,9 @@ gs_chart <- function(metric, male = 0:1, source = getOption("pedbp_pgs_source", 
                                               ))
 
   ggplot2::ggplot(data = qs) +
-    eval(substitute(ggplot2::aes(x = X, y = value, color = p), list(X = as.name(xnm)))) +
-    ggplot2::geom_line() +
+    ggplot2::geom_line(data = qs, mapping = eval(substitute(ggplot2::aes(x = X, y = value, color = p), list(X = as.name(xnm))))) +
     ggplot2::facet_wrap( ~ factor(male, 0:1, c("Female", "Male"))) +
     xaxis +
     yaxis +
     ggplot2::theme(legend.title = ggplot2::element_blank(), legend.position = "bottom")
-
 }

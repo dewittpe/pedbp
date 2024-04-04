@@ -40,9 +40,14 @@ monitor growth for children age 2 years and older in the U.S.
 
 gs_chart("bmi_for_age", male = 0)
 gs_chart("bmi_for_age", male = 1)
-gs_chart("height_for_age", male = 1)
-gs_chart("weight_for_height", male = 0:1)
+gs_chart("bmi_for_age", male = 0:1)
 
+# add a point for a specific patient
+pt <- data.frame(p = 0.82, age = 156, bmi = q_bmi_for_age(p = 0.82, male = 1, age = 156))
+gs_chart("bmi_for_age", male = 1) +
+  ggplot2::geom_point(data = pt, mapping = ggplot2::aes(x = age, y = bmi))
+
+# select specific percentiles to plot
 gs_chart("weight_for_height", male = 0:1, p = c(0.10, 0.80))
 
 }
