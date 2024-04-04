@@ -20,7 +20,6 @@ vignette: >
 # vignette-spinners/ directory.  Any changes needed to the .Rmd file need to   #
 # be made in the .R file                                                       #
 ################################################################################
-
 knitr::opts_chunk$set(collapse = TRUE, fig.align = "center")
 library(qwraps2)
 ```

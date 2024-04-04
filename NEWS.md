@@ -26,6 +26,8 @@
 
 * Add `gs_chart` for building growth standard charts
 
+* Add `bp_chart` for building blood pressure charts
+
 * Rebuild of the Shiny application to use the new features of v2.0.0
 
 ## Improvements
