@@ -24,6 +24,10 @@
 
 * New "growth-standards" vignette
 
+* Add `gs_chart` for building growth standard charts
+
+* Rebuild of the Shiny application to use the new features of v2.0.0
+
 ## Improvements
 
 * `est_norm` calls `stats::optim` with `method = "L-BFGS-B"`, `lower = c(-Inf, 0)`, and `upper = c(Inf, Inf))` to make sure the sd estimate is non-negative.
