@@ -156,7 +156,7 @@ bp_cdf(sbp = 100, dbp = 60, age = 44, male = 1, height_percentile = 0.80, source
 
 Vectors of blood pressures can be used as well.
 `r qwraps2::backtick(NA) `
-values will return 
+values will return
 `r qwraps2::backtick(NA) %s% "." `
 
 
@@ -243,323 +243,25 @@ q_bp(
 
 # Blood Pressure Charts
 
-## When Height is Unknown or Irrelevant
-
-The following graphic shows the percentile curves by age and sex when height
-is unknown, or irrelevant (for those under 12 months of age).
-
-
-```{r label = "chart1_setup", echo = FALSE}
-d <- data.table::CJ(male = 0:1
-                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
-                    , bp_percentile = c(5, 10, 25, 50, 75, 90, 95) / 100)
-
-x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
-d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
-
-d <- data.table::melt(d
-                      , id.vars = c("source", "male", "age", "bp_percentile")
-                      , measure.vars = c("sbp", "dbp")
-                      )
-d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
-d[, bp_percentile := percentile_factor(bp_percentile)]
-
-bkgrnd <-
-  data.table::data.table(
-      source = c("Gemelli", "NHLBI", "Lo")
-    , xmin   = c(0, 12, 36)
-    , xmax   = c(12, 36, 204)
-    , ymin   = rep(-Inf, 3)
-    , ymax   = rep(Inf, 3)
-    )
-
-g <- function(d) {
-  ggplot2::ggplot(d) +
-    ggplot2::theme_bw() +
-    ggplot2::aes(x = age, y = value, linetype = variable, color = bp_percentile) +
-    ggplot2::geom_rect(data = bkgrnd
-                       , inherit.aes = FALSE
-                       , alpha = 0.3
-                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
-    ggplot2::geom_line() +
-    ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
-    ggplot2::scale_x_continuous(name = "Age"
-                                , breaks = seq(0, max(d$age) + 12, by = 12)
-                                , labels = paste(
-                                                   paste0(seq(0, max(d$age) + 12, by = 12), "m")
-                                                 , paste0(seq(0, max(d$age) + 12, by = 12) / 12, "yr")
-                                                 , sep = "\n")
-                                ) +
-    ggplot2::scale_y_continuous(name = "mmHg",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
-    ggplot2::scale_linetype(name = "") +
-    ggplot2::scale_color_hue(name = "BP\nPercentile") +
-    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
-                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
-                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
-                                                                )) +
-    ggplot2::guides(
-                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
-                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
-                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
-                    ) +
-    ggplot2::theme(
-                   legend.position = "bottom"
-                   )
-}
-```
-
-
-
-
-```{r label = "chart1_female", echo = FALSE, fig.width = 8, fig.height = 6}
-g(d[male == 0])
-```
-
-
-
-
-```{r label = "chart1_male", echo = FALSE, fig.width = 8, fig.height = 6}
-g(d[male == 1])
-```
-
-
-
-## Median Blood Pressures -- Varying default height percentile
-
-If height is unknown, there will be no difference in the estimated percentile
-for blood pressures when modifying the default height_percentile with the
-exception of values for patients between the ages of 12 and 36 months.
-Patients under 12 months of age have percentiles estimated using data from
-@gemelli1990longitudinal which does not consider height (length).  For
-patients over 36 months of age data from @lo2013prehypertension, which also
-does not consider height, is used.
-
-The following graphic shows the median blood pressure in mmHg by age when
-varying the default height percentile used.  The colors refer to the height
-percentile.
-
-
-```{r label = "chart2_setup", echo = FALSE, results = FALSE}
-d <- data.table::CJ(male = 0:1
-                    # , age = unique(bp_parameters$age)
-                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
-                    , bp_percentile = 50 / 100
-                    , height_percentile = unique(na.omit(bp_parameters$height_percentile)) / 100)
-
-x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
-d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
-d <- data.table::melt(d
-                      , id.vars = c("source", "male", "age", "bp_percentile","height_percentile")
-                      , measure.vars = c("sbp", "dbp")
-                      )
-d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
-d[, height_percentile := percentile_factor(height_percentile)]
-d <- subset(d, age <= 84)
-d[, range(age), by = .(source)]
-bkgrnd <-
-  data.table::data.table(
-      source = c("Gemelli", "NHLBI", "Lo")
-    , xmin   = c(0, 12, 36)
-    , xmax   = c(12, 36, max(d$age))
-    , ymin   = rep(-Inf, 3)
-    , ymax   = rep(Inf, 3)
-    )
-
-g <- function(d) {
-  ggplot2::ggplot(d) +
-    ggplot2::theme_bw() +
-    ggplot2::aes(x = age, y = value, linetype = variable, color = height_percentile) +
-    ggplot2::geom_rect(data = bkgrnd
-                       , inherit.aes = FALSE
-                       , alpha = 0.3
-                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
-    ggplot2::geom_line() +
-    ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
-    ggplot2::scale_x_continuous(name = "Age"
-                                , breaks = seq(0, 84, by = 12)
-                                , labels = paste(
-                                                   paste0(seq(0, 84, by = 12), "m")
-                                                 , paste0(seq(0, 84, by = 12) / 12, "yr")
-                                                 , sep = "\n")
-                                ) +
-    ggplot2::scale_y_continuous(name = "Median BP (mmHg)",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
-    ggplot2::scale_linetype(name = "") +
-    ggplot2::scale_color_hue(name = "Height\nPercentile") +
-    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
-                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
-                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
-                                                                )) +
-    ggplot2::guides(
-                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
-                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
-                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
-                    ) +
-    ggplot2::theme(
-                   legend.position = "bottom"
-                   )
-}
-```
-
-
-
-
-```{r label = "chart2_female", echo = FALSE, fig.width = 8, fig.height = 6}
-g(d[male == 0])
-```
-
-
-
-
-```{r label = "chart2_male", echo = FALSE, fig.width = 8, fig.height = 6}
-g(d[male == 1])
-```
-
-
-
-## Median Blood Pressures for Children with Known Heights
-
-The following chart shows the median blood pressure by age for different
-heights based on percentiles for age.
-
-
-```{r label = "chart3", echo = FALSE, results = "hide"}
-d <- data.table::CJ(male = 0:1
-                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
-                    , bp_percentile = 50 / 100
-                    , height_percentile = unique(na.omit(bp_parameters$height_percentile)) / 100)
-
-d[, height := NA_real_]
-d[age < 36, height := q_length_for_age(p = height_percentile, male = male, age = age), by = .(male, age, height_percentile)]
-d[age >= 36, height := q_height_for_age(p = height_percentile, male = male, age = age), by = .(male, age, height_percentile)]
-
-x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
-d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
-
-d <- data.table::melt(d
-                      , id.vars = c("source", "male", "age", "bp_percentile", "height_percentile")
-                      , measure.vars = c("sbp", "dbp")
-                      )
-
-d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
-d[, height_percentile := percentile_factor(height_percentile)]
-
-d[, .(xmin = min(age), xmax = max(age)), by = .(source)]
-bkgrnd <- data.table::data.table(source = c("Gemelli", "NHLBI"), xmin = c(0, 12), xmax = c(12, max(d$age)), ymin = c(-Inf, -Inf), ymax = c(Inf, Inf))
-
-g <- function(d) {
-  ggplot2::ggplot(d) +
-    ggplot2::theme_bw() +
-    ggplot2::geom_rect(data = bkgrnd
-                       , inherit.aes = FALSE
-                       , alpha = 0.3
-                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
-    ggplot2::aes(x = age, y = value, linetype = variable, color = height_percentile) +
-    ggplot2::geom_line() +
-    ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
-    ggplot2::scale_x_continuous(name = "Age"
-                                , breaks = seq(0, max(d$age) + 12, by = 12)
-                                , labels = paste(
-                                                   paste0(seq(0, max(d$age) + 12, by = 12), "m")
-                                                 , paste0(seq(0, max(d$age) + 12, by = 12) / 12, "yr")
-                                                 , sep = "\n")
-                                ) +
-    ggplot2::scale_y_continuous(name = "Median BP (mmHg)",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
-    ggplot2::scale_linetype(name = "") +
-    ggplot2::scale_color_hue(name = "Height\nPercentile") +
-    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
-                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
-                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
-                                                                )) +
-    ggplot2::guides(
-                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
-                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
-                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
-                    ) +
-    ggplot2::theme(
-                   legend.position = "bottom"
-                   # , legend.direction = "vertical"
-                   )
-}
-```
-
-
-
-
-```{r label = "chart3_female", echo = FALSE, fig.width = 8, fig.height = 6}
-g(d[male == 0])
-```
-
-
-
-
-```{r label = "chart3_male", echo = FALSE, fig.width = 8, fig.height = 6}
-g(d[male == 1])
-```
-
-
-# Select Source Data
-
-The default method for estimating blood pressure percentiles is based on the
-method of @martin2022machine and @martin2022development which uses three
-different references depending on age and known/unknown stature.  If you want
-to use a specific reference then you can do so by using the
-`r  qwraps2::backtick(source)  `
-argument.
-
-If you have a project with the want/need to use a specific source and you'd
-to use you can set it as an option:
-
-
-```{r eval = FALSE}
-options("pedbp_bp_source", "martin2022")  # default
-```
-
-
-There are four sources:
-
-1. @gemelli1990longitudinal for kids under one year of age.
-2. @lo2013prehypertension for kids over three years of age and when height is unknown.
-3. @nhlbi2011expert for kids 1 through 18 years of age with known stature.
-4. @flynn2017clinical for kids 1 through 18 years of age with known stature.
-
-The data from @flynn2017clinical and @nhlbi2011expert are similar but for one
-major difference.  @flynn2017clinical excluded overweight and obese ( BMI
-above the 85th percentile) children.
-
-For example, the estimated percentile for a blood pressure of 92/60 in a 29.2
-month old female in the 95th height percentile are:
-
+Percentiles over age:
 
 ```{r}
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "martin2022") # default
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "gemelli1990")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "lo2013")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+bp_chart()
 ```
 
 
-The estimated 85th quantile SBP/DBP for a 29.2 month old female, who is in
-the 95th height percentile are:
-
+The percentiles curves for a males in the 75th height percentile based on the
+@flynn2017clinical data:
 
 ```{r}
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "martin2022") # default
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "gemelli1990")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "lo2013")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+bp_chart(male = 1, height_percentile = 75, source = "flynn2017")
 ```
 
 
 
+Additional details and examples can be found on the [pacakge
+webpage](https://peteredewitt.com/pedbp).
 
 # References
 <div id="refs"></div>
-
-# Session Info
-
-```{r label = "sessioninfo"}
-sessionInfo()
-```
 
