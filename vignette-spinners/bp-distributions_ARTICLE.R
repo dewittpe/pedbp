@@ -5,6 +5,8 @@
 #'    toc: true
 #'    number_sections: true
 #'bibliography: ../references.bib
+#'resource_files:
+#'  - '../man/figures/flowchart.png'
 #'vignette: >
 #'  %\VignetteIndexEntry{Pediatric Blood Pressure Distributions}
 #'  %\VignetteEngine{knitr::rmarkdown}
@@ -67,16 +69,7 @@ library(pedbp)
 #' percentiles are estimated by the NHLBI/CDC data using as a default the median
 #' height for each patient's sex and age.
 #'
-#+ echo = FALSE, results = "asis"
-#/*
-while(FALSE) {
-#*/
-knitr::include_graphics("../../man/figures/flowchart.png")
-#/*
-}
-#*/
-
-#'
+#' <img src = "reference/figures/flowchart.png"/>
 #'
 #' # Estimating Pediatric Blood Pressure Distributions
 #'
@@ -536,7 +529,7 @@ fq <-
      p_dbp = flynn2017$bp_percentile/100,
      male  = flynn2017$male,
      age   = flynn2017$age,
-     height_percentile = flynn2017$height_percentile/100,
+     height_percentile = flynn2017$height_percentile,
      source = "flynn2017")
 
 fp <-
@@ -545,7 +538,7 @@ fp <-
      q_dbp = flynn2017$dbp,
      male  = flynn2017$male,
      age   = flynn2017$age,
-     height_percentile = flynn2017$height_percentile/100,
+     height_percentile = flynn2017$height_percentile,
      source = "flynn2017")
 
 f_bp <-
@@ -577,7 +570,7 @@ nq <-
      p_dbp = nhlbi_bp_norms$bp_percentile/100,
      male  = nhlbi_bp_norms$male,
      age   = nhlbi_bp_norms$age,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     height_percentile = nhlbi_bp_norms$height_percentile,
      source = "nhlbi")
 
 np <-
@@ -586,7 +579,7 @@ np <-
      q_dbp = nhlbi_bp_norms$dbp,
      male  = nhlbi_bp_norms$male,
      age   = nhlbi_bp_norms$age,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     height_percentile = nhlbi_bp_norms$height_percentile,
      source = "nhlbi")
 
 nhlbi_bp <-

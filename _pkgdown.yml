@@ -1,4 +1,9 @@
 url: http://www.peteredewitt.com/pedbp/
 template:
   bootstrap: 5
-
+articles:
+  - title:
+    contents:
+    - articles/bp-distributions
+    - articles/growth-standards
+    - articles/additional-utilities

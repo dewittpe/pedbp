@@ -29,14 +29,26 @@
 #' \url{https://www.who.int/tools/child-growth-standards/standards}
 #'
 #' @seealso \itemize{
-#' \item \code{vignette(topic = "growth-standards", package = "pedbp")}
-#' \item \code{\link{bmi_for_age}}
-#' \item \code{\link{head_circumference_for_age}}
-#' \item \code{\link{height_for_age}}
-#' \item \code{\link{length_for_age}}
-#' \item \code{\link{weight_for_age}}
-#' \item \code{\link{weight_for_length}}
-#' \item \code{\link{weight_for_height}}
+#' \item Distribuiton functions:
+#'   \itemize{
+#'     \item \code{\link{bmi_for_age}}
+#'     \item \code{\link{head_circumference_for_age}}
+#'     \item \code{\link{height_for_age}}
+#'     \item \code{\link{length_for_age}}
+#'     \item \code{\link{weight_for_age}}
+#'     \item \code{\link{weight_for_length}}
+#'     \item \code{\link{weight_for_height}}
+#'   }
+#' \item Plotting functions:
+#'   \itemize{
+#'     \item \code{\link{gs_chart}}
+#'     \item \code{\link{gs_cdf}}
+#'   }
+#' \item Other things:
+#'   \itemize{
+#'     \item \code{vignette(topic = "growth-standards", package = "pedbp")}
+#'     \item package website \url{https://www.peteredewitt.com/pedbp}
+#'   }
 #' }
 #'
 #' @name growth-standards
