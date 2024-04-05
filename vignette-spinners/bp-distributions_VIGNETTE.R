@@ -36,6 +36,7 @@ percentile_factor <- function(p) {
 #'
 #'
 library(pedbp)
+
 #'
 #' # Introduction
 #'
@@ -77,6 +78,21 @@ knitr::include_graphics("../man/figures/flowchart.png")
 #*/
 
 #'
+#' With version 2.0.0 and later, the option to select the specific reference
+#' source data was introduced along with the additional @flynn2017clinical
+#' reference.
+#'
+#' The sources are:
+#'
+#' 1. @gemelli1990longitudinal for kids under one year of age.
+#' 2. @lo2013prehypertension for kids over three years of age and when height is unknown.
+#' 3. @nhlbi2011expert for kids 1 through 18 years of age with known stature.
+#' 4. @flynn2017clinical for kids 1 through 18 years of age with known stature.
+#'
+#' The data from @flynn2017clinical and @nhlbi2011expert are similar but for one
+#' major difference.  @flynn2017clinical excluded overweight and obese ( BMI
+#' above the 85th percentile) children and @nhlbi2011expert included overweight
+#' and obese children.
 #'
 #' # Estimating Pediatric Blood Pressure Distributions
 #'
@@ -90,69 +106,56 @@ knitr::include_graphics("../man/figures/flowchart.png")
 #' similar naming convention to the distribution functions found in the stats
 #' library in R.
 #'
-#+ Distribution Function
-args(p_bp)
-
-# Quantile Function
-args(q_bp)
-#'
-#'
-#' Both methods expect an age in months and an indicator for sex.  If height is
-#' missing, e.g., NA, then the default height percentile of 50 will be used as
-#' applicable based on the patient's age group.  The end user may modify the
-#' default height percentile.
-#'
-#' If height is entered, then the height percentile is determined via an LMS
-#' method for age and sex using corresponding LMS data from the CDC (more
-#' information on LMS methods and data is provided later in this vignette). The
-#' parameters for the blood pressure distribution are found in a look up table
-#' using the nearest age and height percentile.
-#'
 #' ## Percentiles
 #'
 #' What percentile for systolic and diastolic blood pressure is 100/60 for a 44
 #' month old male with unknown height?
 #'
 p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1)
-#'
-#' Those percentiles would be modified if height was 183 cm:
-p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 183)
-#'
-#' The package can also be used to determine the blood pressure percentiles
-#' corresponding to a child of a given height percentile.
-#' First find the height quantile using the q_height_for_age function, and then
-#' use this height measurement (provided in centimeters) as the height input for
-#' the
-{{ qwraps2::backtick(p_bp) }}
-#' function.
-#+
-ht <- q_height_for_age(p = 0.90, age = 44, male = 1)
-ht
 
-p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = ht)
+#'
+#' Using the default source of
+{{ qwraps2::backtick(martin2022) }}
+#' the data source for the above is @lo2013prehypertension since height was not
+#' specified.  The same result could be found by explicitly using the
+{{ qwraps2::backtick(lo2013) }}
+#' source.
+p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, source = "lo2013")
+
+#'
+#' Those percentiles would be modified if height was 103 cm:
+p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 103)
+p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 103, source = "nhlbi")
+
+#'
+#' If you don't have the height, but you do have the height percentiles you can
+#' use that instead:
+p_height_for_age(103, male = 1, age = 44)
+x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
+x
 
 #'
 #' A plotting method to show where the observed blood pressures are on the
 #' distribution function is also provided.
 #+ fig.width = 5, fig.height = 5
-bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60)
+bp_cdf(sbp = 100, dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
 
 #'
+#' Vectors of blood pressures can be used as well.
+{{qwraps2::backtick(NA)}}
+#' values will return 
+{{qwraps2::backtick(NA) %s% "."}}
 #'
-# /*
-ggplot2::ggsave(file = "inst/images/fig3.svg", plot = bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60))
-# */
-#'
-#' Vectors of blood pressures can be used as well.  NA values will return NA.
 bps <-
   p_bp(
          q_sbp  = c(100, NA, 90)
        , q_dbp  = c(60, 82, 48)
        , age    = 44
        , male   = 1
-       , height = ht
       )
 bps
+
+
 #'
 #' If you want to know which data source was used in computing each of the
 #' percentile estimates you can look at the
@@ -172,7 +175,6 @@ q_bp(
      , p_dbp = c(0.85, 0.99, 0.50)
      , age = 44
      , male = 1
-     , height = ht
     )
 #'
 #'
@@ -513,102 +515,6 @@ q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
 q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
 q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
 
-#'
-#'
-#' # Comparing to Published Percentiles
-#'
-#' The percentiles published in @nhlbi2011expert and @flynn2017clinical where
-#' used to estimate a Gaussian mean and standard deviation.  This was in part to
-#' be consistent with the values from @gemelli1990longitudinal and
-#' @lo2013prehypertension.  As a result, the calculated percentiles and
-#' quantiles from the pedbp package will be slightly different from the
-#' published values.
-#'
-# /*
-#  NOTE: This is also in the test suite
-# */
-#'
-#' ## Flynn et al.
-#'
-fq <-
-  q_bp(
-     p_sbp = flynn2017$bp_percentile/100,
-     p_dbp = flynn2017$bp_percentile/100,
-     male  = flynn2017$male,
-     age   = flynn2017$age,
-     height_percentile = flynn2017$height_percentile/100,
-     source = "flynn2017")
-
-fp <-
-  p_bp(
-     q_sbp = flynn2017$sbp,
-     q_dbp = flynn2017$dbp,
-     male  = flynn2017$male,
-     age   = flynn2017$age,
-     height_percentile = flynn2017$height_percentile/100,
-     source = "flynn2017")
-
-f_bp <-
-  cbind(flynn2017,
-        pedbp_sbp = fq$sbp,
-        pedbp_dbp = fq$dbp,
-        pedbp_sbp_percentile = fp$sbp_percentile * 100,
-        pedbp_dbp_percentile = fp$dbp_percentile * 100
-  )
-
-#'
-#' All the quantile estimates are within 2 mmHg:
-stopifnot(max(abs(f_bp$pedbp_sbp - f_bp$sbp)) < 2)
-stopifnot(max(abs(f_bp$pedbp_dbp - f_bp$dbp)) < 2)
-
-#'
-#' All the percentiles are within 2 percentile points:
-#'
-stopifnot(max(abs(f_bp$pedbp_sbp_percentile - f_bp$bp_percentile)) < 2)
-stopifnot(max(abs(f_bp$pedbp_dbp_percentile - f_bp$bp_percentile)) < 2)
-
-
-#'
-#' ## NHLBI/CDC
-#'
-nq <-
-  q_bp(
-     p_sbp = nhlbi_bp_norms$bp_percentile/100,
-     p_dbp = nhlbi_bp_norms$bp_percentile/100,
-     male  = nhlbi_bp_norms$male,
-     age   = nhlbi_bp_norms$age,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
-     source = "nhlbi")
-
-np <-
-  p_bp(
-     q_sbp = nhlbi_bp_norms$sbp,
-     q_dbp = nhlbi_bp_norms$dbp,
-     male  = nhlbi_bp_norms$male,
-     age   = nhlbi_bp_norms$age,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
-     source = "nhlbi")
-
-nhlbi_bp <-
-  cbind(nhlbi_bp_norms,
-        pedbp_sbp = nq$sbp,
-        pedbp_dbp = nq$dbp,
-        pedbp_sbp_percentile = np$sbp_percentile * 100,
-        pedbp_dbp_percentile = np$dbp_percentile * 100
-  )
-
-
-#'
-#' All the quantile estimates are within 2 mmHg:
-#'
-stopifnot(max(abs(nhlbi_bp$pedbp_sbp - nhlbi_bp$sbp)) < 2)
-stopifnot(max(abs(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)) < 2)
-
-#'
-#' All the percentiles are within 2 percentile points:
-#'
-stopifnot(max(abs(nhlbi_bp$pedbp_sbp_percentile - nhlbi_bp$bp_percentile)) < 2)
-stopifnot(max(abs(nhlbi_bp$pedbp_dbp_percentile - nhlbi_bp$bp_percentile)) < 2)
 
 
 
