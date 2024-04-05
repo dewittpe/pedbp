@@ -17,9 +17,9 @@ cppBP(
 )
 }
 \arguments{
-\item{qp_sbp}{the quantile(s) or percentile(s) for systolic blood pressure}
+\item{qp_sbp}{the quantile(s) or probability(s) for systolic blood pressure}
 
-\item{qp_dbp}{the quantile(s) or percentile(s) for diastolic blood pressure}
+\item{qp_dbp}{the quantile(s) or probability(s) for diastolic blood pressure}
 
 \item{age}{numeric vector, in months}
 
@@ -34,19 +34,20 @@ values between 0 and 1.}
 
 \item{source}{the method, or data set, to use as the reference.}
 
-\item{type}{quantile or percentile to return}
+\item{type}{quantile or distribution to return}
 }
 \value{
 A list:
 
-[[1]] systolic blood pressure quantiles or percentiles (defined by the input value of \code{type}).
-[[2]] diastolic blood pressure quantiles or percentiles (defined by the input value of \code{type}).
+[[1]] systolic blood pressure quantiles or probability (defined by the input value of \code{type}).
+[[2]] diastolic blood pressure quantiles or probability (defined by the input value of \code{type}).
 
 \code{attr(, "bp_params")} is a \code{data.frame} with the values for the
 look up table(s) needed to inform the sbp and dbp values.
 }
 \description{
-Pediatric Blood Pressure quantiles and percentiles
+Pediatric Blood Pressure quantile and probability
+(distribution function) values
 }
 \details{
 \code{height} is used preferentially over \code{height_percentile} over

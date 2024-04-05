@@ -18,7 +18,7 @@
 #' \neq 0 \\ \frac{\log\left(\frac{X}{M}\right)}{S} & L = 0. \end{cases}}{
 #' ( (X/M)^L - 1) / (LS) for L != 0; log(X/M) / S for L = 0.}
 #'
-#' @param x quantile or percentile value
+#' @param x quantile or probability value
 #' @param l,m,s the lms values
 #' @param ... pass through
 #'

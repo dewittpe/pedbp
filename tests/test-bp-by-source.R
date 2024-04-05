@@ -178,7 +178,7 @@ fq <-
      p_dbp = flynn2017$bp_percentile/100,
      male  = flynn2017$male,
      age   = flynn2017$age,
-     height_percentile = flynn2017$height_percentile/100,
+     height_percentile = flynn2017$height_percentile,
      source = "flynn2017")
 
 fp <-
@@ -187,7 +187,7 @@ fp <-
      q_dbp = flynn2017$dbp,
      male  = flynn2017$male,
      age   = flynn2017$age,
-     height_percentile = flynn2017$height_percentile/100,
+     height_percentile = flynn2017$height_percentile,
      source = "flynn2017")
 
 nq <-
@@ -196,7 +196,7 @@ nq <-
      p_dbp = nhlbi_bp_norms$bp_percentile/100,
      male  = nhlbi_bp_norms$male,
      age   = nhlbi_bp_norms$age,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     height_percentile = nhlbi_bp_norms$height_percentile,
      source = "nhlbi")
 
 np <-
@@ -205,7 +205,7 @@ np <-
      q_dbp = nhlbi_bp_norms$dbp,
      male  = nhlbi_bp_norms$male,
      age   = nhlbi_bp_norms$age,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     height_percentile = nhlbi_bp_norms$height_percentile,
      source = "nhlbi")
 
 flynn2017 <-
@@ -231,6 +231,7 @@ stopifnot(max(abs(flynn2017$pedbp_sbp_percentile - flynn2017$bp_percentile)) < 2
 stopifnot(max(abs(flynn2017$pedbp_dbp_percentile - flynn2017$bp_percentile)) < 2)
 stopifnot(max(abs(nhlbi_bp_norms$pedbp_sbp - nhlbi_bp_norms$sbp)) < 2)
 stopifnot(max(abs(nhlbi_bp_norms$pedbp_dbp - nhlbi_bp_norms$dbp)) < 2)
+
 stopifnot(max(abs(nhlbi_bp_norms$pedbp_sbp_percentile - nhlbi_bp_norms$bp_percentile)) < 2)
 stopifnot(max(abs(nhlbi_bp_norms$pedbp_dbp_percentile - nhlbi_bp_norms$bp_percentile)) < 2)
 

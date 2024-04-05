@@ -10,18 +10,19 @@ using namespace Rcpp;
 // -------------------------------------------------------------------------- //
 // cpp Blood Pressure Function 1
 //
-// Find the percentile or quantile for one observation of age, male, height
+// Find the probability or quantile for one observation of age, male, height
 //
 // args:
-//    sbp: the quantile or percentile systolic blood pressure
-//    dbp: the quantile or percentile diastolic blood pressure
+//    sbp: the quantile or probability (distribution funtion value) systolic blood pressure
+//    dbp: the quantile or probability (distribution funtion value) diastolic blood pressure
 //    age: in months
 //    male: 0 = female, 1 = male
 //    known_height: 0 = height is not known; 1 = height is known
 //    height_percentile: the height percentile to use in the look up table.
-//                       This is only relevant to nhlbi and flynn2017 data
+//                       This is only relevant to nhlbi and flynn2017 data.
+//                       Expected input range [0, 100]
 //    source: the data source or method defining the look up table
-//    type: percentile or quantile
+//    type: distribution or quantile
 //
 //  return:
 //
@@ -38,8 +39,10 @@ using namespace Rcpp;
 //          2 = lo2013
 //          3 = nhlbi
 //          4 = flynn2017
-//      (7) systolic blood pressure - quantile or percentile; as defined by type
-//      (8) diastolic blood pressure - quantile or percentile; as defined by type
+//      (7) systolic blood pressure - quantile or probability (distribution
+//          funtion value); as defined by type
+//      (8) diastolic blood pressure - quantile or probability (distribution
+//          funtion value); as defined by type
 //
 Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     known_height, double height_percentile, std::string source, std::string
@@ -106,7 +109,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     Rf_error("Unknown source");
   }
 
-  arma::uvec aindex = arma::find((LUT.col(0) <= age) && (abs(LUT.col(5) - height_percentile*100)) == arma::min(abs(LUT.col(5) - height_percentile*100)));
+  arma::uvec aindex = arma::find((LUT.col(0) <= age) && (abs(LUT.col(5) - height_percentile)) == arma::min(abs(LUT.col(5) - height_percentile)));
 
   if (aindex.n_elem == 0 || age > 216.0 || (source == "gemelli1990" && age > 12)) {
     Rcpp::NumericVector rtn (9);
@@ -136,7 +139,8 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 
 //' @title Pediatric Blood Pressure
 //'
-//' @description Pediatric Blood Pressure quantiles and percentiles
+//' @description Pediatric Blood Pressure quantile and probability
+//' (distribution function) values
 //'
 //' @details
 //'
@@ -146,8 +150,8 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 //' \code{source} can be one of \code{"gemelli1990"}, \code{"lo2013"},
 //' \code{"nhlbi"}, \code{"flynn2017"}, or \code{"martin2022"}.
 //'
-//' @param qp_sbp the quantile(s) or percentile(s) for systolic blood pressure
-//' @param qp_dbp the quantile(s) or percentile(s) for diastolic blood pressure
+//' @param qp_sbp the quantile(s) or probability(s) for systolic blood pressure
+//' @param qp_dbp the quantile(s) or probability(s) for diastolic blood pressure
 //' @param age numeric vector, in months
 //' @param male integer vector; 0 = female, 1 = male
 //' @param height numeric vector of stature
@@ -155,13 +159,13 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
 //'        values between 0 and 1.
 //' @param default_height_percentile default height percentile to use if \code{height} is missing
 //' @param source the method, or data set, to use as the reference.
-//' @param type quantile or percentile to return
+//' @param type quantile or distribution to return
 //'
 //' @return
 //' A list:
 //'
-//' [[1]] systolic blood pressure quantiles or percentiles (defined by the input value of \code{type}).
-//' [[2]] diastolic blood pressure quantiles or percentiles (defined by the input value of \code{type}).
+//' [[1]] systolic blood pressure quantiles or probability (defined by the input value of \code{type}).
+//' [[2]] diastolic blood pressure quantiles or probability (defined by the input value of \code{type}).
 //'
 //' \code{attr(, "bp_params")} is a \code{data.frame} with the values for the
 //' look up table(s) needed to inform the sbp and dbp values.

@@ -39,7 +39,7 @@ bp_cdf(...)
 
 \item{height}{numeric, in centimeters, can be missing. See Details.}
 
-\item{height_percentile}{height percentile to use. See Details.}
+\item{height_percentile}{height percentile to use; range from [0, 100]. See Details.}
 
 \item{source}{the method, or data set, to use as the reference.  See Details.}
 

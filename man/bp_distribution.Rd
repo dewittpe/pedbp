@@ -4,7 +4,7 @@
 \alias{bp_distribution}
 \alias{p_bp}
 \alias{q_bp}
-\title{Estimate Pediatric Blood Pressure Distribution}
+\title{Pediatric Blood Pressure Distribution}
 \usage{
 p_bp(
   q_sbp,
@@ -13,7 +13,7 @@ p_bp(
   male,
   height = NA,
   height_percentile = NA,
-  default_height_percentile = 0.5,
+  default_height_percentile = 50,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -25,7 +25,7 @@ q_bp(
   male,
   height = NA,
   height_percentile = NA,
-  default_height_percentile = 0.5,
+  default_height_percentile = 50,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -41,18 +41,18 @@ q_bp(
 
 \item{height}{numeric, in centimeters, can be missing. See Details.}
 
-\item{height_percentile}{height percentile to use. See Details.}
+\item{height_percentile}{height percentile to use; range from [0, 100]. See Details.}
 
 \item{default_height_percentile}{default height percentile to use if \code{height} is
-missing.}
+missing; range (0, 100).}
 
 \item{source}{the method, or data set, to use as the reference.  See Details.}
 
 \item{...}{not currently used}
 
-\item{p_sbp}{a vector of systolic blood percentiles}
+\item{p_sbp}{a vector of systolic blood probabilities; range from [0, 1].}
 
-\item{p_dbp}{a vector of diastolic blood percentiles}
+\item{p_dbp}{a vector of diastolic blood probabilities; range from [0, 1].}
 }
 \value{
 a \code{pedbp_bp} object.  This is a list of two numeric vectors:
@@ -62,7 +62,7 @@ provides details on the data source and parameters used in the percentile
 estimates.
 }
 \description{
-Percentile and quantile functions for pediatric blood pressure.
+Distribution and quantile functions for pediatric blood pressure.
 }
 \details{
 \code{source} is used to specify the method or source data sets by which the

@@ -22,10 +22,10 @@ pressures are plotted}
 
 \item{height}{numeric, in centimeters, can be missing. See Details.}
 
-\item{height_percentile}{height percentile to use. See Details.}
+\item{height_percentile}{height percentile to use; range from [0, 100]. See Details.}
 
 \item{default_height_percentile}{default height percentile to use if \code{height} is
-missing.}
+missing; range (0, 100).}
 
 \item{p}{a numeric vector of the percentiles, provided in values between 0
 and 1, to plot}

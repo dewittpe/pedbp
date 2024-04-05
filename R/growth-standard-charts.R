@@ -5,7 +5,7 @@
 #'
 #' @inherit growth-standards
 #' @param metric character string, one of the growth standards
-#' @param p a numeric vector of the percentiles, provided in values between 0
+#' @param p a numeric vector of the probabilities, provided in values between 0
 #' and 1, to plot
 #'
 #' @return

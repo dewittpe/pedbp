@@ -20,7 +20,7 @@ gs_chart(
 parameters needed for the estimate.  Valid values are "CDC" and "WHO".  This
 can be set explicitly, or by using the \code{pedbp_pgs_source} option.}
 
-\item{p}{a numeric vector of the percentiles, provided in values between 0
+\item{p}{a numeric vector of the probabilities, provided in values between 0
 and 1, to plot}
 }
 \value{

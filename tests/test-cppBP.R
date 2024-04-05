@@ -296,7 +296,7 @@ nq <-
      male   = nhlbi_bp_norms$male,
      age    = nhlbi_bp_norms$age,
      height = NA,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     height_percentile = nhlbi_bp_norms$height_percentile,
      default_height_percentile = 0.5,
      source = "nhlbi",
      type = "quantile"
@@ -309,7 +309,7 @@ np <-
      male   = nhlbi_bp_norms$male,
      age    = nhlbi_bp_norms$age,
      height = NA,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     height_percentile = nhlbi_bp_norms$height_percentile,
      default_height_percentile = 0.5,
      source = "nhlbi",
      type = "percentile"
@@ -341,7 +341,7 @@ nq <-
      male   = flynn2017$male,
      age    = flynn2017$age,
      height = NA,
-     height_percentile = flynn2017$height_percentile/100,
+     height_percentile = flynn2017$height_percentile,
      default_height_percentile = 0.5,
      source = "flynn2017",
      type = "quantile"
@@ -354,7 +354,7 @@ np <-
      male   = flynn2017$male,
      age    = flynn2017$age,
      height = NA,
-     height_percentile = flynn2017$height_percentile/100,
+     height_percentile = flynn2017$height_percentile,
      default_height_percentile = 0.5,
      source = "flynn2017",
      type = "percentile"
