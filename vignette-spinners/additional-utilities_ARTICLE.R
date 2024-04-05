@@ -4,7 +4,11 @@
 #'  rmarkdown::html_vignette:
 #'    toc: true
 #'    number_sections: true
-#'bibliography: references.bib
+#'bibliography: ../references.bib
+#'vignette: >
+#'  %\VignetteIndexEntry{Additional Utilities}
+#'  %\VignetteEngine{knitr::rmarkdown}
+#'  %\VignetteEncoding{UTF-8}
 #'---
 #'
 #+ label = "setup", include = FALSE

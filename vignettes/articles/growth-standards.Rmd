@@ -1,20 +1,18 @@
-#'---
-#'title: "Growth Standards"
-#'output:
-#'  rmarkdown::html_vignette:
-#'    toc: true
-#'    number_sections: true
-#'bibliography: ../references.bib
-#'vignette: >
-#'  %\VignetteIndexEntry{Growth Standards}
-#'  %\VignetteEngine{knitr::rmarkdown}
-#'  %\VignetteEncoding{UTF-8}
-#'---
-#'
-#+ label = "setup", include = FALSE
-#/*
-devtools::load_all() # load the dev version while editing
-#*/
+---
+title: "Growth Standards"
+output:
+ rmarkdown::html_vignette:
+   toc: true
+   number_sections: true
+bibliography: ../references.bib
+vignette: >
+ %\VignetteIndexEntry{Growth Standards}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
+---
+
+
+```{r label = "setup", include = FALSE}
 ################################################################################
 #                        !!! DO NOT EDIT .Rmd files !!!                        #
 #                                                                              #
@@ -24,57 +22,59 @@ devtools::load_all() # load the dev version while editing
 ################################################################################
 knitr::opts_chunk$set(collapse = TRUE, fig.align = "center")
 library(pedbp)
+```
 
-#'
-#' # Growth Charts
-#'
-#' Using the [Percentile Data Files with LMS values](https://www.cdc.gov/growthcharts/percentile_data_files.htm)
-#' provided by the CDC, and [Child Growth
-#' Standards](https://www.who.int/tools/child-growth-standards/standards)
-#' provided by the World Health Organization (WHO),
-#' we provide tools for finding quantiles, percentiles, or z-scores, for:
-#'
-#' 1. BMI for age,
-#' 2. head circumference for age,
-#' 3. stature for age,
-#' 4. weight for age, and
-#' 5, weight for stature.
-#'
-#' All lengths/heights are in centimeters, ages in months, and weights in
-#' kilograms.  Stature is used to refer both hegith and length; Specific
-#' methods are provided for each.
-#'
-#' # Method - LMS
-#'
-#' All methods use the published LMS parameters to define z-scores,
-#' percentiles, and quantiles for skewed distributions.  L is a $\lambda$
-#' parameter, the Box-Cox transformation power; $M$ the median value, and $S$ a
-#' generalized coefficient of variation.  For a given percentile or z-score, the
-#' corresponding physical measurement, $X,$ is defined as
-#'
-#' $$X = \begin{cases}
-#'    M \left(1 + \lambda S Z \right)^{\frac{1}{\lambda}} & \lambda \neq 0 \\
-#'    M \exp\left( S Z \right) & \lambda = 0.
-#' \end{cases}$$
-#'
-#' From this we can get the z-score for a given measurement $X:$
-#'
-#' $$ Z = \begin{cases}
-#'   \frac{\left(\frac{X}{M}\right)^{\lambda} - 1}{\lambda S} & \lambda \neq 0 \\
-#'   \frac{\log\left(\frac{X}{M}\right) }{ S } & \lambda = 0.
-#'   \end{cases}$$
-#'
-#' Percentiles are determined using the standard normal distribution of z-scores.
-#'
-#' For all eight of the noted methods we provide a distribution function,
-#' quantile function, and function that returns z-scores.
-#'
-#' # Growth Standards
-#'
-#' All the growth standard functions have a quantile, percentile, and z-scores
-#' version.
-#'
-#+ echo = FALSE, results = "hide"
+
+# Growth Charts
+
+Using the [Percentile Data Files with LMS values](https://www.cdc.gov/growthcharts/percentile_data_files.htm)
+provided by the CDC, and [Child Growth
+Standards](https://www.who.int/tools/child-growth-standards/standards)
+provided by the World Health Organization (WHO),
+we provide tools for finding quantiles, percentiles, or z-scores, for:
+
+1. BMI for age,
+2. head circumference for age,
+3. stature for age,
+4. weight for age, and
+5, weight for stature.
+
+All lengths/heights are in centimeters, ages in months, and weights in
+kilograms.  Stature is used to refer both hegith and length; Specific
+methods are provided for each.
+
+# Method - LMS
+
+All methods use the published LMS parameters to define z-scores,
+percentiles, and quantiles for skewed distributions.  L is a $\lambda$
+parameter, the Box-Cox transformation power; $M$ the median value, and $S$ a
+generalized coefficient of variation.  For a given percentile or z-score, the
+corresponding physical measurement, $X,$ is defined as
+
+$$X = \begin{cases}
+   M \left(1 + \lambda S Z \right)^{\frac{1}{\lambda}} & \lambda \neq 0 \\
+   M \exp\left( S Z \right) & \lambda = 0.
+\end{cases}$$
+
+From this we can get the z-score for a given measurement $X:$
+
+$$ Z = \begin{cases}
+  \frac{\left(\frac{X}{M}\right)^{\lambda} - 1}{\lambda S} & \lambda \neq 0 \\
+  \frac{\log\left(\frac{X}{M}\right) }{ S } & \lambda = 0.
+  \end{cases}$$
+
+Percentiles are determined using the standard normal distribution of z-scores.
+
+For all eight of the noted methods we provide a distribution function,
+quantile function, and function that returns z-scores.
+
+# Growth Standards
+
+All the growth standard functions have a quantile, percentile, and z-scores
+version.
+
+
+```{r echo = FALSE, results = "hide"}
 GS_DATA <-
   pedbp:::lms_data |>
   lapply(lapply, data.table::rbindlist) |>
@@ -101,16 +101,15 @@ build_metric_plotting_data <- function(metric) {
   rtn[]
   rtn
 }
+```
 
-#'
-#' ## BMI for Age
-#'
-#+ echo = FALSE, fig.width = 7, fig.height = 5
+
+## BMI for Age
+
+
+```{r echo = FALSE, fig.width = 7, fig.height = 5}
 bmi_for_age_data <- build_metric_plotting_data("bmi_for_age")
 bmi_for_age_data[, q := q_bmi_for_age(p = p, male = male, age = age, source = source)]
-# /*
-dev.new(width = 7, height = 5)
-# */
 ggplot2::ggplot(data = bmi_for_age_data) +
   ggplot2::theme_bw() +
   ggplot2::aes(x = age, y = q, linetype = source, color = plab) +
@@ -128,31 +127,39 @@ ggplot2::ggplot(data = bmi_for_age_data) +
   ggplot2::scale_y_continuous(name = "BMI") +
   ggplot2::scale_linetype(name = "Source") +
   ggplot2::theme(legend.position = "bottom")
+```
 
-#'
-#' The median BMI quantile for a 48 month old female is:
+
+The median BMI quantile for a 48 month old female is:
+
+```{r}
 q_bmi_for_age(p = 0.5, male = 0, age = 48) # default is CDC
 q_bmi_for_age(p = 0.5, male = 0, age = 48, source = c("CDC", "WHO"))
+```
 
-#'
-#' A BMI of 17.2 for a 149 month old male is in the following percentiles by
-#' source:
+
+A BMI of 17.2 for a 149 month old male is in the following percentiles by
+source:
+
+```{r}
 p_bmi_for_age(q = 17.2, male = 1, age = 149, source = c("CDC", "WHO"))
+```
 
-#'
-#' If you would prefer to have the z-score for a BMI of 17.2 for a 149 month old
-#' male is in the following percentiles by source:
+
+If you would prefer to have the z-score for a BMI of 17.2 for a 149 month old
+male is in the following percentiles by source:
+
+```{r}
 z_bmi_for_age(q = 17.2, male = 1, age = 149, source = c("CDC", "WHO"))
+```
 
-#'
-#' ## Head Circumference for Age
-#'
-#+ echo = FALSE, fig.width = 7, fig.height = 5
+
+## Head Circumference for Age
+
+
+```{r echo = FALSE, fig.width = 7, fig.height = 5}
 head_circumference_for_age_data <- build_metric_plotting_data("head_circumference_for_age")
 head_circumference_for_age_data[, q := q_head_circumference_for_age(p = p, male = male, age = age, source = source)]
-# /*
-dev.new(width = 7, height = 5)
-# */
 ggplot2::ggplot(data = head_circumference_for_age_data) +
   ggplot2::theme_bw() +
   ggplot2::aes(x = age, y = q, linetype = source, color = plab) +
@@ -170,18 +177,20 @@ ggplot2::ggplot(data = head_circumference_for_age_data) +
   ggplot2::scale_y_continuous(name = "Head Circumference (cm)") +
   ggplot2::scale_linetype(name = "Source") +
   ggplot2::theme(legend.position = "bottom")
+```
 
-#'
-#'
-#'
-#' ## Stature for Age
-#'
-#' Stature is either height or length.  Functions for both are provided.
-#'
-#' The image below is the growth chart by data source and by height or
-#' length.
-#'
-#+ echo = FALSE, fig.width = 7, fig.height = 7
+
+
+
+## Stature for Age
+
+Stature is either height or length.  Functions for both are provided.
+
+The image below is the growth chart by data source and by height or
+length.
+
+
+```{r echo = FALSE, fig.width = 7, fig.height = 7}
 lfa <- build_metric_plotting_data("length_for_age")
 lfa[, q := q_length_for_age(p = p, male = male, age = age, source = source)]
 hfa <- build_metric_plotting_data("height_for_age")
@@ -189,9 +198,6 @@ hfa[, q := q_height_for_age(p = p, male = male, age = age, source = source)]
 sfa <- rbind(lfa, hfa)
 sfa[, metriclab := factor(metric, c("height_for_age", "length_for_age"), c("Height for Age", "Length for Age"))]
 
-# /*
-dev.new(width = 7, height = 7)
-# */
 ggplot2::ggplot(data = sfa) +
   ggplot2::theme_bw() +
   ggplot2::aes(x = age, y = q, linetype = source, color = plab) +
@@ -209,12 +215,14 @@ ggplot2::ggplot(data = sfa) +
   ggplot2::scale_y_continuous(name = "Stature (cm)") +
   ggplot2::scale_linetype(name = "Source") +
   ggplot2::theme(legend.position = "bottom")
+```
 
-#'
-#' The following image shows the diffrence in the quantile values between height
-#' and length for the same age.
-#'
-#+ echo = FALSE, fig.width = 7, fig.height = 7
+
+The following image shows the diffrence in the quantile values between height
+and length for the same age.
+
+
+```{r echo = FALSE, fig.width = 7, fig.height = 7}
 ggplot2::ggplot(data = sfa[age <= 72]) +
   ggplot2::theme_bw() +
   ggplot2::aes(x = age, y = q, linetype = metriclab, color = plab) +
@@ -232,57 +240,71 @@ ggplot2::ggplot(data = sfa[age <= 72]) +
   ggplot2::scale_y_continuous(name = "Stature (cm)") +
   ggplot2::scale_linetype(name = "Metric") +
   ggplot2::theme(legend.position = "bottom")
+```
 
 
-#'
-#' ### Legnth for Age
-#'
-#' Length for age quantiles are found via
-{{ paste0(qwraps2::backtick(q_length_for_age), ".") }}
-#' For example, the median length for a 1.5 year old male, based on CDC data is:
-#+
+### Legnth for Age
+
+Length for age quantiles are found via
+`r  paste0(qwraps2::backtick(q_length_for_age), ".")  `
+For example, the median length for a 1.5 year old male, based on CDC data is:
+
+```{r}
 q_length_for_age(p = 0.5, age = 1.5 * 12, male = 1, source = "CDC")
+```
 
-#'
-#' A 90 cm long 28 month old female is in the
-{{ paste0(qwraps2::frmt(p_length_for_age(q = 90, age = 28, male = 0, source = "CDC") * 100, 0), "th") }}
-#' percentile:
+
+A 90 cm long 28 month old female is in the
+`r  paste0(qwraps2::frmt(p_length_for_age(q = 90, age = 28, male = 0, source = "CDC") * 100, 0), "th")  `
+percentile:
+
+```{r}
 p_length_for_age(q = 90, age = 28, male = 0, source = "CDC")
+```
 
-#'
-#' or the equivalent z-score:
+
+or the equivalent z-score:
+
+```{r}
 z_length_for_age(q = 90, age = 28, male = 0, source = "CDC")
+```
 
-#'
-#' ### Height for Age
-#'
-#' Height for age quantiles are found via
-{{ paste0(qwraps2::backtick(q_height_for_age), ".") }}
-#' For example, the median height for a 11 year old male, based on CDC data is:
-#+
+
+### Height for Age
+
+Height for age quantiles are found via
+`r  paste0(qwraps2::backtick(q_height_for_age), ".")  `
+For example, the median height for a 11 year old male, based on CDC data is:
+
+```{r}
 q_height_for_age(p = 0.5, age = 11 * 12, male = 1, source = "CDC")
+```
 
-#'
-#' A 125 cm tall 108 month old female is in the
-{{ paste0(qwraps2::frmt(p_height_for_age(q = 125, age = 108, male = 0, source = "CDC") * 100, 0), "th") }}
-#' percentile:
+
+A 125 cm tall 108 month old female is in the
+`r  paste0(qwraps2::frmt(p_height_for_age(q = 125, age = 108, male = 0, source = "CDC") * 100, 0), "th")  `
+percentile:
+
+```{r}
 p_height_for_age(q = 125, age = 108, male = 0, source = "CDC")
+```
 
-#'
-#' or the equivalent z-score:
+
+or the equivalent z-score:
+
+```{r}
 z_height_for_age(q = 125, age = 108, male = 0, source = "CDC")
+```
 
-#'
-#'
-#' ## Weight for Age
-#'
-#+ echo = FALSE, fig.width = 7, fig.height = 7
+
+
+## Weight for Age
+
+
+```{r echo = FALSE, fig.width = 7, fig.height = 7}
 wfa <- build_metric_plotting_data("weight_for_age")
 wfa[, q := q_weight_for_age(p = p, male = male, age = age, source = source)]
 
-# /*
-dev.new(width = 7, height = 4)
-# */
 ggplot2::ggplot(data = wfa) +
   ggplot2::theme_bw() +
   ggplot2::aes(x = age, y = q, linetype = source, color = plab) +
@@ -300,20 +322,28 @@ ggplot2::ggplot(data = wfa) +
   ggplot2::scale_y_continuous(name = "Weight (kg)") +
   ggplot2::scale_linetype(name = "Source") +
   ggplot2::theme(legend.position = "bottom")
+```
 
-#'
-#' Find the 80th quantile for 56 month old females
+
+Find the 80th quantile for 56 month old females
+
+```{r}
 q_weight_for_age(p = 0.80, age = 56, male = 0, source = c("CDC", "WHO"))
+```
 
-#'
-#' The percentiles for 42 kg 9 year old males:
+
+The percentiles for 42 kg 9 year old males:
+
+```{r}
 p_weight_for_age(q = 42, age = 9 * 12, male = 0, source = c("CDC", "WHO"))
 z_weight_for_age(q = 42, age = 9 * 12, male = 0, source = c("CDC", "WHO"))
+```
 
-#'
-#' ## Weight for Stature
-#'
-#+ echo = FALSE, fig.width = 7, fig.height = 7
+
+## Weight for Stature
+
+
+```{r echo = FALSE, fig.width = 7, fig.height = 7}
 wfl <- build_metric_plotting_data("weight_for_length")
 wfl[, q := q_weight_for_length(p = p, male = male, length = length, source = source)]
 wfh <- build_metric_plotting_data("weight_for_height")
@@ -323,9 +353,6 @@ wfs[, metriclab := factor(metric, c("weight_for_height", "weight_for_length"), c
 wfs[is.na(height), stature := length]
 wfs[is.na(length), stature := height]
 
-# /*
-dev.new(width = 7, height = 7)
-# */
 ggplot2::ggplot(data = wfs) +
   ggplot2::theme_bw() +
   ggplot2::aes(x = stature, y = q, linetype = source, color = plab) +
@@ -336,43 +363,50 @@ ggplot2::ggplot(data = wfs) +
   ggplot2::scale_y_continuous(name = "Weight (kg)") +
   ggplot2::scale_linetype(name = "Source") +
   ggplot2::theme(legend.position = "bottom")
+```
 
-#'
-#' The 60th weight qualtile for a 1.2 meter tall male is
+
+The 60th weight qualtile for a 1.2 meter tall male is
+
+```{r}
 q_weight_for_height(p = 0.60, male = 1, height = 120, source = "CDC")
 q_weight_for_height(p = 0.60, male = 1, height = 120, source = "WHO")
+```
 
-#'
-#' There are slight differences in the quantiles for length and height
+
+There are slight differences in the quantiles for length and height
+
+```{r}
 q_weight_for_length(p = 0.60, male = 1, length = 97, source = "CDC")
 q_weight_for_height(p = 0.60, male = 1, height = 97, source = "WHO")
+```
 
 
-#'
+
+```{r}
 q_weight_for_length(p = 0.60, male = 1, length = 97, source = "CDC")
 q_weight_for_length(p = 0.60, male = 1, length = 97, source = "WHO")
+```
 
-#'
-#' Percentiles and standard scores for a 14 kg, 88 cm tall/long male
+
+Percentiles and standard scores for a 14 kg, 88 cm tall/long male
+
+```{r}
 p_weight_for_height(q = 14, male = 1, height = 88, source = "CDC")
 p_weight_for_height(q = 14, male = 1, height = 88, source = "WHO")
 p_weight_for_length(q = 14, male = 1, length = 88, source = "CDC")
 p_weight_for_length(q = 14, male = 1, length = 88, source = "WHO")
+```
 
-#'
-#' Correseponding standard scores
+
+Correseponding standard scores
+
+```{r}
 z_weight_for_height(q = 14, male = 1, height = 88, source = "CDC")
 z_weight_for_height(q = 14, male = 1, height = 88, source = "WHO")
 z_weight_for_length(q = 14, male = 1, length = 88, source = "CDC")
 z_weight_for_length(q = 14, male = 1, length = 88, source = "WHO")
+```
 
-#'
-#'
-#/*
-#' # References
-#'<div id="refs"></div>
-#'
-#' # Session Info
-#+ label = "sessioninfo"
-sessionInfo()
-#*/
+
+

@@ -13,68 +13,67 @@ SHINYAPPS = $(wildcard $(PKG_ROOT)/inst/shinyapps/*)
 # Targets
 #
 ## Vignettes
-VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd
-VIGNETTES += $(PKG_ROOT)/vignettes/growth-standards.Rmd
-VIGNETTES += $(PKG_ROOT)/vignettes/additional-utilities.Rmd
+VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd\
+						 $(PKG_ROOT)/vignettes/growth-standards.Rmd
 
 ## Articles - pkgdown site only
-ARTICLES  = $(PKG_ROOT)/vignettes/articles/bp-distributions.Rmd
-ARTICLES += $(PKG_ROOT)/vignettes/articles/growth-standards.Rmd
-ARTICLES += $(PKG_ROOT)/vignettes/articles/additional-utilities.Rmd
+ARTICLES  = $(PKG_ROOT)/vignettes/articles/bp-distributions.Rmd\
+						$(PKG_ROOT)/vignettes/articles/growth-standards.Rmd\
+						$(PKG_ROOT)/vignettes/articles/additional-utilities.Rmd
 
 ## Data targets
-DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda
-DATATARGETS += $(PKG_ROOT)/data/gemelli1990.rda
-DATATARGETS += $(PKG_ROOT)/data/nhlbi_bp_norms.rda
-DATATARGETS += $(PKG_ROOT)/data/flynn2017.rda
-DATATARGETS += $(PKG_ROOT)/data/bp_parameters.rda
-DATATARGETS += $(PKG_ROOT)/R/sysdata.rda
+DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda\
+							 $(PKG_ROOT)/data/gemelli1990.rda\
+							 $(PKG_ROOT)/data/nhlbi_bp_norms.rda\
+							 $(PKG_ROOT)/data/flynn2017.rda\
+							 $(PKG_ROOT)/data/bp_parameters.rda\
+							 $(PKG_ROOT)/R/sysdata.rda
 
 ## sysdata sources
-SYSDATA_SRCS  = $(PKG_ROOT)/data-raw/cdc2000/bmiagerev.csv
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/hcageinf.csv
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/lenageinf.csv
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/statage.csv
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/wtage.csv
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/wtageinf.csv
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/wtleninf.csv
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/cdc2000/wtstat.csv
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/lhfa-girls-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/lhfa-girls-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/lhfa-boys-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/lhfa-boys-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfl-girls-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfh-girls-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfl-girls-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfh-girls-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfl-boys-zscore.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfh-boys-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfl-boys-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfh-boys-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-girls-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-girls-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-boys-zscore.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-boys-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hfa-girls-5-19-zscores.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hfa-boys-5-19-zscore.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hfa-girls-5-19-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hfa-boys-5-19-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-girls-5-19-zscore.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-boys-5-19-zscore.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-girls-5-19-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/bfa-boys-5-19-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-5-19-zscore.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-5-19-zscore.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-girls-5-19-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/wfa-boys-5-19-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-boys-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-boys-zscore.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-girls-percentiles.xlsx
-SYSDATA_SRCS += $(PKG_ROOT)/data-raw/who/hcfa-girls-zscore.xlsx
+SYSDATA_SRCS  = $(PKG_ROOT)/data-raw/cdc2000/bmiagerev.csv\
+								$(PKG_ROOT)/data-raw/cdc2000/hcageinf.csv\
+								$(PKG_ROOT)/data-raw/cdc2000/lenageinf.csv\
+								$(PKG_ROOT)/data-raw/cdc2000/statage.csv\
+								$(PKG_ROOT)/data-raw/cdc2000/wtage.csv\
+								$(PKG_ROOT)/data-raw/cdc2000/wtageinf.csv\
+								$(PKG_ROOT)/data-raw/cdc2000/wtleninf.csv\
+								$(PKG_ROOT)/data-raw/cdc2000/wtstat.csv\
+								$(PKG_ROOT)/data-raw/who/wfa-girls-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfa-girls-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfa-boys-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfa-boys-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/lhfa-girls-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/lhfa-girls-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/lhfa-boys-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/lhfa-boys-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfl-girls-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfh-girls-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfl-girls-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfh-girls-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfl-boys-zscore.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfh-boys-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfl-boys-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfh-boys-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/bfa-girls-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/bfa-girls-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/bfa-boys-zscore.xlsx\
+								$(PKG_ROOT)/data-raw/who/bfa-boys-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/hfa-girls-5-19-zscores.xlsx\
+								$(PKG_ROOT)/data-raw/who/hfa-boys-5-19-zscore.xlsx\
+								$(PKG_ROOT)/data-raw/who/hfa-girls-5-19-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/hfa-boys-5-19-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/bfa-girls-5-19-zscore.xlsx\
+								$(PKG_ROOT)/data-raw/who/bfa-boys-5-19-zscore.xlsx\
+								$(PKG_ROOT)/data-raw/who/bfa-girls-5-19-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/bfa-boys-5-19-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfa-girls-5-19-zscore.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfa-boys-5-19-zscore.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfa-girls-5-19-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/wfa-boys-5-19-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/hcfa-boys-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/hcfa-boys-zscore.xlsx\
+								$(PKG_ROOT)/data-raw/who/hcfa-girls-percentiles.xlsx\
+								$(PKG_ROOT)/data-raw/who/hcfa-girls-zscore.xlsx
 
 ################################################################################
 # Recipes
@@ -106,7 +105,7 @@ $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNE
 #
 # List the explicit targets above
 
-$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%_CRAN.R $(PKG_ROOT)/vignettes/references.bib | $(PKG_ROOT)/vignettes
+$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%_VIGNETTE.R $(PKG_ROOT)/vignettes/references.bib | $(PKG_ROOT)/vignettes
 	R --vanilla --quiet -e "knitr::spin(hair = '$<', knit = FALSE)"
 	mv $(basename $<).Rmd $@
 
@@ -175,8 +174,10 @@ uninstall :
 shiny: install
 	R -e "shiny::runApp(normalizePath(system.file('shinyapps', 'pedbp', package = 'pedbp')), port = 4492)"
 
-site:
+site: $(ARTICLES)
+	$(RM) $(VIGNETTES)
 	R -e "pkgdown::build_site()"
+	git restore $(VIGNETTES)
 
 clean:
 	$(RM) $(PKG_NAME)_$(PKG_VERSION).tar.gz
