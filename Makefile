@@ -187,6 +187,7 @@ clean:
 	$(RM) *.html
 	$(RM) vignettes/*.html
 	$(RM) src/*.o
-	$(RM) docs
+	$(RM) src/*.so
+	$(RM) -r docs
 	$(RM) -r lib
 
