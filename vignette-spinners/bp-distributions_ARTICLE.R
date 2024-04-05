@@ -4,7 +4,7 @@
 #'  rmarkdown::html_vignette:
 #'    toc: true
 #'    number_sections: true
-#'bibliography: ../references.bib
+#'bibliography: references.bib
 #'resource_files:
 #'  - '../man/figures/flowchart.png'
 #'vignette: >
@@ -69,7 +69,7 @@ library(pedbp)
 #' percentiles are estimated by the NHLBI/CDC data using as a default the median
 #' height for each patient's sex and age.
 #'
-#' <img src = "reference/figures/flowchart.png"/>
+#' <img src = "../man/figures/flowchart.png"/>
 #'
 #' # Estimating Pediatric Blood Pressure Distributions
 #'

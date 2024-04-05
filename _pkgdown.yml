@@ -2,8 +2,7 @@ url: http://www.peteredewitt.com/pedbp/
 template:
   bootstrap: 5
 articles:
-  - title:
+  - title: ""
+    navbar: ~
     contents:
-    - articles/bp-distributions
-    - articles/growth-standards
-    - articles/additional-utilities
+    - additional-utilities_ARTICLE

@@ -1,5 +1,5 @@
 ^vignette-spinners/*
-^vignette/articles/*
+^vignettes/.*_ARTICLE\.Rmd
 ^\.github/*
 ^codecov\.yml$
 ^README.Rmd$

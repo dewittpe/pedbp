@@ -4,7 +4,7 @@
 #'  rmarkdown::html_vignette:
 #'    toc: true
 #'    number_sections: true
-#'bibliography: ../references.bib
+#'bibliography: references.bib
 #'vignette: >
 #'  %\VignetteIndexEntry{Growth Standards}
 #'  %\VignetteEngine{knitr::rmarkdown}

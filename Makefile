@@ -15,11 +15,9 @@ SHINYAPPS = $(wildcard $(PKG_ROOT)/inst/shinyapps/*)
 ## Vignettes
 VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd\
 						 $(PKG_ROOT)/vignettes/growth-standards.Rmd
-
-## Articles - pkgdown site only
-ARTICLES  = $(PKG_ROOT)/vignettes/articles/bp-distributions.Rmd\
-						$(PKG_ROOT)/vignettes/articles/growth-standards.Rmd\
-						$(PKG_ROOT)/vignettes/articles/additional-utilities.Rmd
+ARTICLES = $(PKG_ROOT)/vignettes/bp-distributions_ARTICLE.Rmd\
+					 $(PKG_ROOT)/vignettes/growth-standards_ARTICLE.Rmd\
+					 $(PKG_ROOT)/vignettes/additional-utilities_ARTICLE.Rmd
 
 ## Data targets
 DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda\
@@ -80,7 +78,7 @@ SYSDATA_SRCS  = $(PKG_ROOT)/data-raw/cdc2000/bmiagerev.csv\
 
 .PHONY: all check install clean
 
-all: $(PKG_NAME)_$(PKG_VERSION).tar.gz $(ARTICLES)
+all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 
 $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS) $(SHINYAPPS) $(SRC)
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
@@ -105,16 +103,9 @@ $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNE
 #
 # List the explicit targets above
 
-$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%_VIGNETTE.R $(PKG_ROOT)/vignettes/references.bib | $(PKG_ROOT)/vignettes
+$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R $(PKG_ROOT)/vignettes/references.bib | $(PKG_ROOT)/vignettes
 	R --vanilla --quiet -e "knitr::spin(hair = '$<', knit = FALSE)"
 	mv $(basename $<).Rmd $@
-
-$(PKG_ROOT)/vignettes/articles/%.Rmd : $(PKG_ROOT)/vignette-spinners/%_ARTICLE.R $(PKG_ROOT)/vignettes/references.bib | $(PKG_ROOT)/vignettes/articles
-	R --vanilla --quiet -e "knitr::spin(hair = '$<', knit = FALSE)"
-	mv $(basename $<).Rmd $@
-
-$(PKG_ROOT)/vignettes/articles:
-	mkdir -p $@
 
 $(PKG_ROOT)/vignettes:
 	mkdir -p $@
@@ -174,7 +165,7 @@ uninstall :
 shiny: install
 	R -e "shiny::runApp(normalizePath(system.file('shinyapps', 'pedbp', package = 'pedbp')), port = 4492)"
 
-site: $(ARTICLES)
+site: $(ARTICLES) $(PKG_NAME)_$(PKG_VERSION).tar.gz
 	$(RM) $(VIGNETTES)
 	R -e "pkgdown::build_site()"
 	git restore $(VIGNETTES)
