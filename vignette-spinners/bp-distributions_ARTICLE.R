@@ -38,6 +38,7 @@ percentile_factor <- function(p) {
 #'
 #'
 library(pedbp)
+
 #'
 #' # Introduction
 #'
@@ -88,18 +89,38 @@ args(p_bp)
 
 # Quantile Function
 args(q_bp)
+
 #'
 #'
-#' Both methods expect an age in months and an indicator for sex.  If height is
-#' missing, e.g., NA, then the default height percentile of 50 will be used as
-#' applicable based on the patient's age group.  The end user may modify the
-#' default height percentile.
+#' Both methods expect an age in months and an indicator for sex.
+{{qwraps2::backtick(height) %s% ", "}}
+#' in centimeters, is used preferentially over
+{{qwraps2::backtick(height_percentile) %s% "."}}
+#' The
+{{qwraps2::backtick(default_height_percentile) %s% "."}}
+#' is set to 50 by default to match the flowchart above, but can be adjusted
+#' here to meet the end users needs.
 #'
-#' If height is entered, then the height percentile is determined via an LMS
-#' method for age and sex using corresponding LMS data from the CDC (more
-#' information on LMS methods and data is provided later in this vignette). The
-#' parameters for the blood pressure distribution are found in a look up table
-#' using the nearest age and height percentile.
+#' The reference look up tables for the @nhlbi2011expert and @flynn2017clinical
+#' require height percentiles.
+#' If
+{{qwraps2::backtick(height)}}
+#' is entered, then the height percentile is determined via an LMS
+#' method for age and sex using corresponding LMS data from either the Centers
+#' for Disease control (CDC) or the World Health Organization (WHO) based on
+#' age.  Under 36 months use the WHO data to estimate the height percentile and
+#' for 36 months and over use the CDC data.  The look up table will use the
+#' percentile nearest the calculated value.  Look up height percentiles values
+#' are: 5, 10, 25, 50, 75, 90, and 95.
+#'
+#' If you want to restrict to CDC or WHO values regardless of age, we recommend
+#' using
+{{qwraps2::backtick(p_height_for_age)}}
+#' and
+{{qwraps2::backtick(p_length_for_age)}}
+#' to get height (stature) percentiles and pass the result to the
+{{qwraps2::backtick(height_percentile)}}
+#' argument.
 #'
 #' ## Percentiles
 #'
@@ -107,34 +128,25 @@ args(q_bp)
 #' month old male with unknown height?
 #'
 p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1)
-#'
-#' Those percentiles would be modified if height was 183 cm:
-p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 183)
-#'
-#' The package can also be used to determine the blood pressure percentiles
-#' corresponding to a child of a given height percentile.
-#' First find the height quantile using the q_height_for_age function, and then
-#' use this height measurement (provided in centimeters) as the height input for
-#' the
-{{ qwraps2::backtick(p_bp) }}
-#' function.
-#+
-ht <- q_height_for_age(p = 0.90, age = 44, male = 1)
-ht
 
-p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = ht)
+#'
+#' Those percentiles would be modified if height was 103 cm:
+p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 103)
+
+#'
+#' For the age and sex, the height of 103 is approimately the
+{{ frmt(as.integer(100 * p_height_for_age(103, male = 1, age = 44))) %s% "th" }}
+#' percentile.
+p_height_for_age(103, male = 1, age = 44)
+x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
+x
 
 #'
 #' A plotting method to show where the observed blood pressures are on the
 #' distribution function is also provided.
 #+ fig.width = 5, fig.height = 5
-bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60)
+bp_cdf(sbp = 90, dbp = 55, age = 44, male = 1, height = 103, source = "nhlbi")
 
-#'
-#'
-# /*
-ggplot2::ggsave(file = "inst/images/fig3.svg", plot = bp_cdf(age = 44, male = 1, height = ht, sbp = 100, dbp = 60))
-# */
 #'
 #' Vectors of blood pressures can be used as well.  NA values will return NA.
 bps <-
@@ -143,16 +155,16 @@ bps <-
        , q_dbp  = c(60, 82, 48)
        , age    = 44
        , male   = 1
-       , height = ht
+       , height_percentile = 0.80
       )
 bps
+
 #'
 #' If you want to know which data source was used in computing each of the
 #' percentile estimates you can look at the
 {{ qwraps2::backtick(bp_params) }}
 #' attribute:
 attr(bps, "bp_params")
-str(bps)
 
 #'
 #' ## Quantiles
@@ -165,8 +177,9 @@ q_bp(
      , p_dbp = c(0.85, 0.99, 0.50)
      , age = 44
      , male = 1
-     , height = ht
+     , height_percentile = 0.80
     )
+
 #'
 #'
 #' ## Working With More Than One Patient
@@ -204,6 +217,9 @@ q_bp(
      , height = eg_data$height
      )
 
+
+#'
+#' # EDIT ALL BELOW
 #'
 #' # Blood Pressure Charts
 #'
