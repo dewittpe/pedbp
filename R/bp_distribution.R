@@ -200,10 +200,7 @@ q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = NA, d
 z_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
   stopifnot(!is.null(q_sbp) & !is.null(q_dbp))
   source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
-  rtn <- cppBP(qp_sbp = q_sbp, qp_dbp = q_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "percentile")
-  rtn[[1]] <- stats::qnorm(rtn[[1]])
-  rtn[[2]] <- stats::qnorm(rtn[[2]])
-  names(rtn) <- c("sbp_z", "dbp_z")
+  rtn <- cppBP(qp_sbp = q_sbp, qp_dbp = q_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "zscore")
   class(rtn) <- c("pedbp_bp", "pedbp_p_bp")
   rtn
 }

@@ -127,8 +127,11 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     } else if (type == "quantile") {
       LUT.col(LUT.n_cols - 2) = R::qnorm(sbp, LUT.col(1)(0), LUT.col(2)(0), 1, 0);
       LUT.col(LUT.n_cols - 1) = R::qnorm(dbp, LUT.col(3)(0), LUT.col(4)(0), 1, 0);
+    } else if (type == "zscore") {
+      LUT.col(LUT.n_cols - 2) = (sbp - LUT.col(1)(0)) / LUT.col(2)(0);
+      LUT.col(LUT.n_cols - 1) = (dbp - LUT.col(3)(0)) / LUT.col(4)(0);
     } else {
-      Rf_error("type needs to be either 'percentile' or 'quantile'");
+      Rf_error("type needs to be one of 'percentile', 'quantile', or 'zscore'");
     }
 
     return Rcpp::wrap(LUT);
@@ -285,10 +288,12 @@ Rcpp::List cppBP(
     rtn = Rcpp::List::create(_["sbp_percentile"] = lutbp(_, 7), _["dbp_percentile"] = lutbp(_, 8));
   } else if (type(0) == "quantile") {
     rtn = Rcpp::List::create(_["sbp"] = lutbp(_, 7), _["dbp"] = lutbp(_, 8));
+  } else if (type(0) == "zscore") {
+    rtn = Rcpp::List::create(_["sbp_z"] = lutbp(_, 7), _["dbp_z"] = lutbp(_, 8));
   } else {
     // this is here to be robust but should be impossible to get to as the call
     // to cppBPF1 will error out first
-    Rf_error("type needs to be either 'percentile' or 'quantile'");
+    Rf_error("type needs to be one of 'percentile', 'quantile', or 'zscore'");
   }
 
   Rcpp::CharacterVector src(max_length);

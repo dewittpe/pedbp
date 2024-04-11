@@ -27,7 +27,7 @@ stopifnot(identical(x$message, "Unknown source"))
 # Verify error if type is not percentile or qualtile
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022"), type = "no"), error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
-stopifnot(identical(x$message, "type needs to be either 'percentile' or 'quantile'"))
+stopifnot(identical(x$message, "type needs to be one of 'percentile', 'quantile', or 'zscore'"))
 
 ################################################################################
 # verify error if male is not 0 or 1
