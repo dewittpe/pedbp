@@ -436,7 +436,8 @@ ui <-
             width = 9,
             solidHeader = TRUE,
             status = "info",
-            box(title = "CDF", width = 12, plotOutput("bp_cdf")),
+            box(title = "Blood Pressure by Age with Percentiles", width = 6, plotOutput("bp_chart")),
+            box(title = "CDF", width = 6, plotOutput("bp_cdf")),
             box(title = "Distribution Parameters", width = 9, tableOutput(outputId = "bp_params")),
             box(title = NULL, width = 3, tableOutput(outputId = "bp_mmHg_percentile"))
           )

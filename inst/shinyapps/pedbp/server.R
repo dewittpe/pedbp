@@ -43,7 +43,7 @@ server <- function(input, output, session) {
       cl <- c(cl, other_args)
       x <- eval(as.call(cl))
 
-      output <- list(sbp_mmHg = input$bp_sbp_mmHg,
+      rtn <- list(sbp_mmHg = input$bp_sbp_mmHg,
                      sbp_percentile = x$sbp_percentile,
                      dbp_mmHg = input$bp_dbp_mmHg,
                      dbp_percentile = x$dbp_percentile,
@@ -71,7 +71,7 @@ server <- function(input, output, session) {
 
       stopifnot(isTRUE(all.equal(attr(scl, "bp_params"), attr(dcl, "bp_params"))))
 
-      output <- list(sbp_mmHg = input$bp_sbp_mmHg,
+      rtn <- list(sbp_mmHg = input$bp_sbp_mmHg,
                      sbp_percentile = scl$sbp_percentile / 100,
                      dbp_mmHg = dcl$dbp,
                      dbp_percentile = input$bp_dbp_percentile / 100,
@@ -93,7 +93,7 @@ server <- function(input, output, session) {
 
       stopifnot(isTRUE(all.equal(attr(scl, "bp_params"), attr(dcl, "bp_params"))))
 
-      output <- list(sbp_mmHg = scl$sbp,
+      rtn <- list(sbp_mmHg = scl$sbp,
                      sbp_percentile = input$bp_sbp_percentile / 100,
                      dbp_mmHg = input$bp_dbp_mmHg,
                      dbp_percentile = dcl$dbp_percentile,
@@ -107,27 +107,38 @@ server <- function(input, output, session) {
       cl <- c(cl, other_args)
       x <- eval(as.call(cl))
 
-      output <- list(sbp_mmHg = x$sbp,
+      rtn <- list(sbp_mmHg = x$sbp,
                      sbp_percentile = input$bp_sbp_percentile / 100,
                      dbp_mmHg = x$dbp,
                      dbp_percentile = input$bp_dbp_percentile / 100,
                      bp_params = attr(x, "bp_params"))
     }
 
-    od <- data.frame(mmHg = c(output$sbp_mmHg, output$dbp_mmHg),
+    od <- data.frame(mmHg = c(rtn$sbp_mmHg, rtn$dbp_mmHg),
                      bp   = gl(n = 2, k = 1, labels = c("Systolic", "Diastolic")),
-                     p    = c(output$sbp_percentile, output$dbp_percentile))
+                     p    = c(rtn$sbp_percentile, rtn$dbp_percentile))
     dseg <-
       data.frame(
           bp   = gl(n = 2, k = 2, labels = c('Systolic', 'Diastolic')),
-          p    = c(output$sbp_percentile, output$sbp_percentile, output$dbp_percentile, output$dbp_percentile),
-          pend = c(output$sbp_percentile, -Inf, output$dbp_percentile, -Inf),
-          mmHg = c(-Inf, output$sbp_mmHg, -Inf, output$dbp_mmHg),
-          mmHgend = c(output$sbp_mmHg, output$sbp_mmHg, output$dbp_mmHg, output$dbp_mmHg)
+          p    = c(rtn$sbp_percentile, rtn$sbp_percentile, rtn$dbp_percentile, rtn$dbp_percentile),
+          pend = c(rtn$sbp_percentile, -Inf, rtn$dbp_percentile, -Inf),
+          mmHg = c(-Inf, rtn$sbp_mmHg, -Inf, rtn$dbp_mmHg),
+          mmHgend = c(rtn$sbp_mmHg, rtn$sbp_mmHg, rtn$dbp_mmHg, rtn$dbp_mmHg)
     )
 
-    output$plot <- pedbp:::bpcdfplot(od, dseg, output$bp_params)
-    output
+    rtn$plot <- pedbp:::bpcdfplot(od, dseg, rtn$bp_params)
+
+    od2 <- data.frame(age = other_args$age, bp = factor(c("Systolic", "Diastolic"), levels = c("Systolic", "Diastolic")), male = other_args$male, mmHg = od$mmHg)
+
+    rtn$bp_chart <-
+      do.call(bp_chart, c(other_args[c("male", "height", "height_percentile", "source")], list(p = c(0.05, 0.25, 0.5, 0.75, 0.95)))
+              ) +
+      ggplot2::geom_point(data = od2, mapping = ggplot2::aes(x = age, y = mmHg))
+    rtn
+  })
+
+  output$bp_chart <- renderPlot({
+    bp()$bp_chart
   })
 
   output$bp_cdf <- renderPlot({
