@@ -169,6 +169,7 @@ NULL
 #' @rdname bp_distribution
 #' @export
 p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  stopifnot(!is.null(q_sbp) & !is.null(q_dbp))
   source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
   rtn <- cppBP(qp_sbp = q_sbp, qp_dbp = q_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "percentile")
   class(rtn) <- c("pedbp_bp", "pedbp_p_bp")
@@ -178,6 +179,7 @@ p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, d
 #' @rdname bp_distribution
 #' @export
 q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  stopifnot(!is.null(p_sbp) & !is.null(p_dbp))
   source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
   rtn <- cppBP(qp_sbp = p_sbp, qp_dbp = p_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "quantile")
   class(rtn) <- c("pedbp_bp", "pedbp_q_bp")
