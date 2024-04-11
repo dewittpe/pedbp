@@ -219,258 +219,6 @@ q_bp(
 
 
 #'
-#' # EDIT ALL BELOW
-#'
-#' # Blood Pressure Charts
-#'
-#' ## When Height is Unknown or Irrelevant
-#'
-#' The following graphic shows the percentile curves by age and sex when height
-#' is unknown, or irrelevant (for those under 12 months of age).
-#'
-#+ label = "chart1_setup", echo = FALSE
-d <- data.table::CJ(male = 0:1
-                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
-                    , bp_percentile = c(5, 10, 25, 50, 75, 90, 95) / 100)
-
-x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
-d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
-
-d <- data.table::melt(d
-                      , id.vars = c("source", "male", "age", "bp_percentile")
-                      , measure.vars = c("sbp", "dbp")
-                      )
-d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
-d[, bp_percentile := percentile_factor(bp_percentile)]
-
-bkgrnd <-
-  data.table::data.table(
-      source = c("Gemelli", "NHLBI", "Lo")
-    , xmin   = c(0, 12, 36)
-    , xmax   = c(12, 36, 204)
-    , ymin   = rep(-Inf, 3)
-    , ymax   = rep(Inf, 3)
-    )
-
-g <- function(d) {
-  ggplot2::ggplot(d) +
-    ggplot2::theme_bw() +
-    ggplot2::aes(x = age, y = value, linetype = variable, color = bp_percentile) +
-    ggplot2::geom_rect(data = bkgrnd
-                       , inherit.aes = FALSE
-                       , alpha = 0.3
-                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
-    ggplot2::geom_line() +
-    ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
-    ggplot2::scale_x_continuous(name = "Age"
-                                , breaks = seq(0, max(d$age) + 12, by = 12)
-                                , labels = paste(
-                                                   paste0(seq(0, max(d$age) + 12, by = 12), "m")
-                                                 , paste0(seq(0, max(d$age) + 12, by = 12) / 12, "yr")
-                                                 , sep = "\n")
-                                ) +
-    ggplot2::scale_y_continuous(name = "mmHg",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
-    ggplot2::scale_linetype(name = "") +
-    ggplot2::scale_color_hue(name = "BP\nPercentile") +
-    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
-                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
-                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
-                                                                )) +
-    ggplot2::guides(
-                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
-                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
-                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
-                    ) +
-    ggplot2::theme(
-                   legend.position = "bottom"
-                   )
-}
-#'
-#'
-#+ label = "chart1_female", echo = FALSE, fig.width = 8, fig.height = 6
-g(d[male == 0])
-#'
-# /*
-# output svg for manuscript
-ggplot2::ggsave(file = "inst/images/bp_percentile_female_height_unknown.svg", plot = g(d[male == 0]))
-# */
-#'
-#+ label = "chart1_male", echo = FALSE, fig.width = 8, fig.height = 6
-g(d[male == 1])
-#'
-# /*
-ggplot2::ggsave(file = "inst/images/bp_percentile_male_height_unknown.svg", plot = g(d[male == 1]))
-# */
-#'
-#' ## Median Blood Pressures -- Varying default height percentile
-#'
-#' If height is unknown, there will be no difference in the estimated percentile
-#' for blood pressures when modifying the default height_percentile with the
-#' exception of values for patients between the ages of 12 and 36 months.
-#' Patients under 12 months of age have percentiles estimated using data from
-#' @gemelli1990longitudinal which does not consider height (length).  For
-#' patients over 36 months of age data from @lo2013prehypertension, which also
-#' does not consider height, is used.
-#'
-#' The following graphic shows the median blood pressure in mmHg by age when
-#' varying the default height percentile used.  The colors refer to the height
-#' percentile.
-#'
-#+ label = "chart2_setup", echo = FALSE, results = FALSE
-d <- data.table::CJ(male = 0:1
-                    # , age = unique(bp_parameters$age)
-                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
-                    , bp_percentile = 50 / 100
-                    , height_percentile = unique(na.omit(bp_parameters$height_percentile)) / 100)
-
-x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
-d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
-d <- data.table::melt(d
-                      , id.vars = c("source", "male", "age", "bp_percentile","height_percentile")
-                      , measure.vars = c("sbp", "dbp")
-                      )
-d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
-d[, height_percentile := percentile_factor(height_percentile)]
-d <- subset(d, age <= 84)
-d[, range(age), by = .(source)]
-bkgrnd <-
-  data.table::data.table(
-      source = c("Gemelli", "NHLBI", "Lo")
-    , xmin   = c(0, 12, 36)
-    , xmax   = c(12, 36, max(d$age))
-    , ymin   = rep(-Inf, 3)
-    , ymax   = rep(Inf, 3)
-    )
-
-g <- function(d) {
-  ggplot2::ggplot(d) +
-    ggplot2::theme_bw() +
-    ggplot2::aes(x = age, y = value, linetype = variable, color = height_percentile) +
-    ggplot2::geom_rect(data = bkgrnd
-                       , inherit.aes = FALSE
-                       , alpha = 0.3
-                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
-    ggplot2::geom_line() +
-    ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
-    ggplot2::scale_x_continuous(name = "Age"
-                                , breaks = seq(0, 84, by = 12)
-                                , labels = paste(
-                                                   paste0(seq(0, 84, by = 12), "m")
-                                                 , paste0(seq(0, 84, by = 12) / 12, "yr")
-                                                 , sep = "\n")
-                                ) +
-    ggplot2::scale_y_continuous(name = "Median BP (mmHg)",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
-    ggplot2::scale_linetype(name = "") +
-    ggplot2::scale_color_hue(name = "Height\nPercentile") +
-    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
-                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
-                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
-                                                                )) +
-    ggplot2::guides(
-                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
-                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
-                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
-                    ) +
-    ggplot2::theme(
-                   legend.position = "bottom"
-                   )
-}
-#'
-#'
-#+ label = "chart2_female", echo = FALSE, fig.width = 8, fig.height = 6
-g(d[male == 0])
-#'
-# /*
-ggplot2::ggsave(file = "inst/images/median_bp_female_variable_default_height_percentile.svg", plot = g(d[male == 0]))
-# */
-#'
-#+ label = "chart2_male", echo = FALSE, fig.width = 8, fig.height = 6
-g(d[male == 1])
-#'
-# /*
-ggplot2::ggsave(file = "inst/images/median_bp_male_variable_default_height_percentile.svg", plot = g(d[male == 1]))
-# */
-#'
-#' ## Median Blood Pressures for Children with Known Heights
-#'
-#' The following chart shows the median blood pressure by age for different
-#' heights based on percentiles for age.
-#'
-#+ label = "chart3", echo = FALSE, results = "hide"
-d <- data.table::CJ(male = 0:1
-                    , age = seq(min(bp_parameters$age), max(bp_parameters$age), by = 0.5)
-                    , bp_percentile = 50 / 100
-                    , height_percentile = unique(na.omit(bp_parameters$height_percentile)) / 100)
-
-d[, height := NA_real_]
-d[age < 36, height := q_length_for_age(p = height_percentile, male = male, age = age), by = .(male, age, height_percentile)]
-d[age >= 36, height := q_height_for_age(p = height_percentile, male = male, age = age), by = .(male, age, height_percentile)]
-
-x <- q_bp(d$bp_percentile, d$bp_percentile, age = d$age, male = d$male)
-d <- cbind(d, source = attr(x, "bp_params")$source, sbp = x$sbp, dbp = x$dbp)
-
-d <- data.table::melt(d
-                      , id.vars = c("source", "male", "age", "bp_percentile", "height_percentile")
-                      , measure.vars = c("sbp", "dbp")
-                      )
-
-d[, variable := factor(variable, c("sbp", "dbp"), c("Systolic", "Diastolic"))]
-d[, height_percentile := percentile_factor(height_percentile)]
-
-d[, .(xmin = min(age), xmax = max(age)), by = .(source)]
-bkgrnd <- data.table::data.table(source = c("Gemelli", "NHLBI"), xmin = c(0, 12), xmax = c(12, max(d$age)), ymin = c(-Inf, -Inf), ymax = c(Inf, Inf))
-
-g <- function(d) {
-  ggplot2::ggplot(d) +
-    ggplot2::theme_bw() +
-    ggplot2::geom_rect(data = bkgrnd
-                       , inherit.aes = FALSE
-                       , alpha = 0.3
-                       , mapping = ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = source)) +
-    ggplot2::aes(x = age, y = value, linetype = variable, color = height_percentile) +
-    ggplot2::geom_line() +
-    ggplot2::facet_grid( ~ factor(male, 0:1, c("Female", "Male"))) +
-    ggplot2::scale_x_continuous(name = "Age"
-                                , breaks = seq(0, max(d$age) + 12, by = 12)
-                                , labels = paste(
-                                                   paste0(seq(0, max(d$age) + 12, by = 12), "m")
-                                                 , paste0(seq(0, max(d$age) + 12, by = 12) / 12, "yr")
-                                                 , sep = "\n")
-                                ) +
-    ggplot2::scale_y_continuous(name = "Median BP (mmHg)",breaks=c(0, 30, 60, 90, 120), limits = c(15, 140)) +
-    ggplot2::scale_linetype(name = "") +
-    ggplot2::scale_color_hue(name = "Height\nPercentile") +
-    ggplot2::scale_fill_manual(name = "Data\nSource", values = c("Gemelli" = ggplot2::alpha("#236192", 0.5)
-                                                                , "NHLBI"  = ggplot2::alpha("#6F263D", 0.5)
-                                                                , "Lo"     = ggplot2::alpha("#A2AAAD", 0.5)
-                                                                )) +
-    ggplot2::guides(
-                    linetype = ggplot2::guide_legend(order = 1, ncol = 1),
-                    fill     = ggplot2::guide_legend(order = 2, ncol = 1),
-                    color    = ggplot2::guide_legend(order = 3, ncol = 4)
-                    ) +
-    ggplot2::theme(
-                   legend.position = "bottom"
-                   # , legend.direction = "vertical"
-                   )
-}
-#'
-#'
-#+ label = "chart3_female", echo = FALSE, fig.width = 8, fig.height = 6
-g(d[male == 0])
-# /*
-ggplot2::ggsave(file = "inst/images/median_bp_female_known_height.svg", plot = g(d[male == 0]))
-# */
-
-#'
-#'
-#+ label = "chart3_male", echo = FALSE, fig.width = 8, fig.height = 6
-g(d[male == 1])
-# /*
-ggplot2::ggsave(file = "inst/images/median_bp_male_known_height.svg", plot = g(d[male == 1]))
-# */
-
-#'
 #' # Select Source Data
 #'
 #' The default method for estimating blood pressure percentiles is based on the
@@ -487,7 +235,7 @@ ggplot2::ggsave(file = "inst/images/median_bp_male_known_height.svg", plot = g(d
 # /*
 while (FALSE) {
 # */
-options("pedbp_bp_source", "martin2022")  # default
+options(pedbp_bp_source = "martin2022")  # default
 # /*
 }
 # */
@@ -503,24 +251,34 @@ options("pedbp_bp_source", "martin2022")  # default
 #' major difference.  @flynn2017clinical excluded overweight and obese ( BMI
 #' above the 85th percentile) children.
 #'
-#' For example, the estimated percentile for a blood pressure of 92/60 in a 29.2
+#' For example, the estimated percentile for a blood pressure of 92/60 in a 39.2
 #' month old female in the 95th height percentile are:
 #'
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "martin2022") # default
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "gemelli1990")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "lo2013")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+d <- data.frame(source = c("martin2022", "gemelli1990", "lo2013", "nhlbi", "flynn2017"),
+                p_sbp = NA_real_,
+                p_dbp = NA_real_)
+
+for(i in 1:nrow(d)) {
+  bp <- p_bp(q_sbp = 92, q_dbp = 60, age = 39.2, male = 0, height_percentile = 95, source = d$source[i])
+  d[i, "p_sbp"] <- bp$sbp
+  d[i, "p_dbp"] <- bp$dbp
+}
+d
 
 #'
-#' The estimated 85th quantile SBP/DBP for a 29.2 month old female, who is in
+#' The estimated 85th quantile SBP/DBP for a 39.2 month old female, who is in
 #' the 95th height percentile are:
 #'
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "martin2022") # default
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "gemelli1990")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "lo2013")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "nhlbi")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95, source = "flynn2017")
+d <- data.frame(source = c("martin2022", "gemelli1990", "lo2013", "nhlbi", "flynn2017"),
+                q_sbp = NA_real_,
+                q_dbp = NA_real_)
+
+for(i in 1:nrow(d)) {
+  bp <- q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 39.2, male = 0, height_percentile = 95, source = d$source[i])
+  d[i, "q_sbp"] <- bp$sbp
+  d[i, "q_dbp"] <- bp$dbp
+}
+d
 
 #'
 #'
@@ -530,7 +288,8 @@ q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, height_percentile = 0.95,
 #' used to estimate a Gaussian mean and standard deviation.  This was in part to
 #' be consistent with the values from @gemelli1990longitudinal and
 #' @lo2013prehypertension.  As a result, the calculated percentiles and
-#' quantiles from the pedbp package will be slightly different from the
+#' quantiles from the pedbp package for @nhlbi2011expert and @flynn2017clinical
+#' will be slightly different from the
 #' published values.
 #'
 # /*
@@ -567,14 +326,53 @@ f_bp <-
 
 #'
 #' All the quantile estimates are within 2 mmHg:
+summary(f_bp$pedbp_sbp - f_bp$sbp)
+summary(f_bp$pedbp_dbp - f_bp$dbp)
+
+#+ include = FALSE
 stopifnot(max(abs(f_bp$pedbp_sbp - f_bp$sbp)) < 2)
 stopifnot(max(abs(f_bp$pedbp_dbp - f_bp$dbp)) < 2)
 
 #'
-#' All the percentiles are within 2 percentile points:
+#' All the percentiles estiamtes are within are within 2 percentile points:
 #'
+summary(f_bp$pedbp_sbp_percentile - f_bp$bp_percentile)
+summary(f_bp$pedbp_dbp_percentile - f_bp$bp_percentile)
+
+#'
+#+ include = FALSE
 stopifnot(max(abs(f_bp$pedbp_sbp_percentile - f_bp$bp_percentile)) < 2)
 stopifnot(max(abs(f_bp$pedbp_dbp_percentile - f_bp$bp_percentile)) < 2)
+
+#'
+#' A helpful set of graphics are shown below.  Panels A and C show the estimated
+#' blood pressure quantiles proived by the
+{{ qwraps2::Rpkg(pedbp) }}
+#' package (y-axis) against the published quantiles from @flynn2017clinical for
+#' systolic and diastolic blood pressures respectively.
+#' Panels B and D are Bland-Altman plots showing the difference vs average
+#' between the two estimates.
+#+ echo = FALSE, fig.width = 9, fig.height = 9
+fsbp <- ggplot2::ggplot(f_bp) +
+  ggplot2::theme_bw() +
+  ggplot2::aes(x = sbp, y = pedbp_sbp) +
+  ggplot2::geom_point() +
+  ggplot2::geom_abline(intercept = 0, slope = 1) +
+  ggplot2::ylab("pedbp Package\nSystolic Blood Pressure (mmHg)") +
+  ggplot2::xlab("Published Flynn (2017)\nSystolic Blood Pressure (mmHg)")
+fdbp <- ggplot2::ggplot(f_bp) +
+  ggplot2::theme_bw() +
+  ggplot2::aes(x = dbp, y = pedbp_dbp) +
+  ggplot2::geom_point() +
+  ggplot2::geom_abline(intercept = 0, slope = 1) +
+  ggplot2::ylab("pedbp Package\nDiastolic Blood Pressure (mmHg)") +
+  ggplot2::xlab("Published Flynn (2017)\nDiastolic Blood Pressure (mmHg)")
+
+ggpubr::ggarrange(
+  fsbp, qwraps2::qblandaltman(f_bp[, c("sbp", "pedbp_sbp")]) + ggplot2::theme_bw(),
+  fdbp, qwraps2::qblandaltman(f_bp[, c("dbp", "pedbp_dbp")]) + ggplot2::theme_bw(),
+  labels = LETTERS
+)
 
 
 #'
@@ -610,61 +408,139 @@ nhlbi_bp <-
 #'
 #' All the quantile estimates are within 2 mmHg:
 #'
+summary(nhlbi_bp$pedbp_sbp - nhlbi_bp$sbp)
+summary(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)
+
+#'
+#+ include = FALSE
 stopifnot(max(abs(nhlbi_bp$pedbp_sbp - nhlbi_bp$sbp)) < 2)
 stopifnot(max(abs(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)) < 2)
 
 #'
 #' All the percentiles are within 2 percentile points:
 #'
+summary(nhlbi_bp$pedbp_sbp_percentile - nhlbi_bp$bp_percentile)
+summary(nhlbi_bp$pedbp_dbp_percentile - nhlbi_bp$bp_percentile)
+
+#'
+#+ include = FALSE
 stopifnot(max(abs(nhlbi_bp$pedbp_sbp_percentile - nhlbi_bp$bp_percentile)) < 2)
 stopifnot(max(abs(nhlbi_bp$pedbp_dbp_percentile - nhlbi_bp$bp_percentile)) < 2)
 
 #'
-#'
-#+ echo = FALSE
-fsbp <- ggplot2::ggplot(f_bp) +
+#' A helpful set of graphics are shown below.  Panels A and C show the estimated
+#' blood pressure quantiles proived by the
+{{ qwraps2::Rpkg(pedbp) }}
+#' package (y-axis) against the published quantiles from @nhlbi2011expert for
+#' systolic and diastolic blood pressures respectively.
+#' Panels B and D are Bland-Altman plots showing the difference vs average
+#' between the two estimates.
+#+ echo = FALSE, fig.width = 9, fig.height = 9
+nsbp <- ggplot2::ggplot(nhlbi_bp) +
   ggplot2::theme_bw() +
   ggplot2::aes(x = sbp, y = pedbp_sbp) +
   ggplot2::geom_point() +
-  ggplot2::geom_abline(intercept = 0, slope = 1)
-fdbp <- ggplot2::ggplot(f_bp) +
+  ggplot2::geom_abline(intercept = 0, slope = 1) +
+  ggplot2::ylab("pedbp Package\nSystolic Blood Pressure (mmHg)") +
+  ggplot2::xlab("Published NHLBI\nSystolic Blood Pressure (mmHg)")
+ndbp <- ggplot2::ggplot(nhlbi_bp) +
   ggplot2::theme_bw() +
   ggplot2::aes(x = dbp, y = pedbp_dbp) +
   ggplot2::geom_point() +
-  ggplot2::geom_abline(intercept = 0, slope = 1)
+  ggplot2::geom_abline(intercept = 0, slope = 1) +
+  ggplot2::ylab("pedbp Package\nDiastolic Blood Pressure (mmHg)") +
+  ggplot2::xlab("Published NHLBI (2017)\nDiastolic Blood Pressure (mmHg)")
 
-ggpubr::ggarrange(fsbp, qwraps2::qblandaltman(f_bp[, c("sbp", "pedbp_sbp")]) + ggplot2::theme_bw(),
-                  fdbp, qwraps2::qblandaltman(f_bp[, c("dbp", "pedbp_dbp")]) + ggplot2::theme_bw())
+ggpubr::ggarrange(
+  nsbp, qwraps2::qblandaltman(nhlbi_bp[, c("sbp", "pedbp_sbp")]) + ggplot2::theme_bw(),
+  ndbp, qwraps2::qblandaltman(nhlbi_bp[, c("dbp", "pedbp_dbp")]) + ggplot2::theme_bw(),
+  labels = LETTERS
+)
+
+#'
+#' ## NHLBI vs Flynn 2017
+#'
+#' The NHLBI data included overweight and obsese children whereas Flynn excluded
+#' them.  As a result, the estimates for blood pressures can differ
+#' significantly between the two sources.
+#'
+#' The graphic below shows the estimated systolic and diastolic blood pressures
+#' provided by the
+{{ qwraps2::Rpkg(pedbp) }}
+#' package.  As expected, the values estimated based on Flynn are lower, on
+#' average, than those estimated by data from the NHLBI.
+#'
+#+ echo = FALSE, fig.width = 9, fig.height = 9
+nhlbi_vs_flynn <- f_bp
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "bp_percentile"] <- "flynn_bp_percentile"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "sbp"] <- "flynn_sbp"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "dbp"] <- "flynn_dbp"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp"] <- "pedbp_flynn_sbp"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp"] <- "pedbp_flynn_dbp"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp_percentile"] <- "pedbp_flynn_sbp_percentile"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp_percentile"] <- "pedbp_flynn_dbp_percentile"
+
+nhlbi_vs_flynn <-
+  merge(nhlbi_vs_flynn, nhlbi_bp, all = TRUE, by = c("male", "age", "height_percentile"))
+
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "bp_percentile"] <- "nhlbi_bp_percentile"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "sbp"] <- "nhlbi_sbp"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "dbp"] <- "nhlbi_dbp"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp"] <- "pedbp_nhlbi_sbp"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp"] <- "pedbp_nhlbi_dbp"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp_percentile"] <- "pedbp_nhlbi_sbp_percentile"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp_percentile"] <- "pedbp_nhlbi_dbp_percentile"
+
+pA <- ggplot2::ggplot(nhlbi_vs_flynn) +
+  ggplot2::theme_bw() +
+  ggplot2::aes(x = pedbp_nhlbi_sbp, y = pedbp_flynn_sbp) + #, color = factor(height_percentile), shape = factor(male, 0:1, c("Female", "Male"))) +
+  ggplot2::geom_point() +
+  ggplot2::geom_abline(intercept = 0, slope = 1) +
+  ggplot2::ylab("pedbp NHLBI Systolic BP") +
+  ggplot2::xlab("pedbp Flynn (2017) Systolic BP")
+
+pC <- ggplot2::ggplot(nhlbi_vs_flynn) +
+  ggplot2::theme_bw() +
+  ggplot2::aes(x = pedbp_nhlbi_dbp, y = pedbp_flynn_dbp) + #, color = factor(height_percentile), shape = factor(male, 0:1, c("Female", "Male"))) +
+  ggplot2::geom_point() +
+  ggplot2::geom_abline(intercept = 0, slope = 1) +
+  ggplot2::ylab("pedbp NHLBI Diastolic BP") +
+  ggplot2::xlab("pedbp Flynn (2017) Diastolic BP")
+
+ggpubr::ggarrange(
+  pA, qwraps2::qblandaltman(nhlbi_vs_flynn[, c("pedbp_nhlbi_sbp", "pedbp_flynn_sbp")]) + ggplot2::theme_bw(),
+  pC, qwraps2::qblandaltman(nhlbi_vs_flynn[, c("pedbp_nhlbi_dbp", "pedbp_flynn_dbp")]) + ggplot2::theme_bw(),
+  labels = LETTERS
+)
 
 
-if (interactive()) {
-  par(mfrow = c(1, 2))
-  plot(f_bp$sbp, f_bp$pedbp_sbp); abline(0, 1)
-  plot(f_bp$dbp, f_bp$pedbp_dbp); abline(0, 1)
-  summary(f_bp$pedbp_sbp - f_bp$sbp)
-  summary(f_bp$pedbp_dbp - f_bp$dbp)
-  summary(f_bp$pedbp_sbp_percentile*100 - f_bp$bp_percentile)
-  summary(f_bp$pedbp_dbp_percentile*100 - f_bp$bp_percentile)
 
-  qwraps2::qblandaltman(f_bp[, c("sbp", "pedbp_sbp")])
-  qwraps2::qblandaltman(f_bp[, c("dbp", "pedbp_dbp")])
-  qwraps2::qblandaltman(f_bp[, c("bp_percentile", "pedbp_sbp_percentile")])
-  qwraps2::qblandaltman(f_bp[, c("bp_percentile", "pedbp_dbp_percentile")])
+#'
+#'
+#' # Blood Pressure Charts
+#'
+#' To you can get blood pressure charts for any combination of inputs using
+{{ qwraps2::backtick(bp_chart) %s% "."}}
+#' For example, the blood presure percentiles when using
+{{ qwraps2::backtick("source = 'martin2022'", dequote = TRUE) }}
+#' and height is unknown are:
+#+ fig.height = 7, fig.width = 10
+bp_chart(p = c(0.05, 0.1, 0.25, 0.5, 0.75, 0.90, 0.95), source = "martin2022") # default
 
-  par(mfrow = c(1, 2))
-  plot(nhlbi_bp$sbp, nhlbi_bp$pedbp_sbp); abline(0, 1)
-  plot(nhlbi_bp$dbp, nhlbi_bp$pedbp_dbp); abline(0, 1)
-  summary(nhlbi_bp$pedbp_sbp - nhlbi_bp$sbp)
-  summary(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)
-  summary(nhlbi_bp$pedbp_sbp_percentile*100 - nhlbi_bp$bp_percentile)
-  summary(nhlbi_bp$pedbp_dbp_percentile*100 - nhlbi_bp$bp_percentile)
+#'
+#' And if height is known (say it is the 25th percentile)
+#+ fig.height = 7, fig.width = 10
+bp_chart(p = c(0.05, 0.1, 0.25, 0.5, 0.75, 0.90, 0.95),
+         height_percentile = 25,
+         source = "martin2022")
 
-  qwraps2::qblandaltman(nhlbi_bp[, c("sbp", "pedbp_sbp")])
-  qwraps2::qblandaltman(nhlbi_bp[, c("dbp", "pedbp_dbp")])
-  qwraps2::qblandaltman(nhlbi_bp[, c("bp_percentile", "pedbp_sbp_percentile")])
-  qwraps2::qblandaltman(nhlbi_bp[, c("bp_percentile", "pedbp_dbp_percentile")])
-}
-
+#'
+#' Additionally, charts for each of the specific data sources can be generated
+#+ fig.height = 7, fig.width = 10
+bp_chart(source = "gemelli1990")
+bp_chart(source = "lo2013")
+bp_chart(source = "nhlbi")
+bp_chart(source = "flynn2017")
 
 
 #'
@@ -688,17 +564,11 @@ shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
 #' percentiles for an individual patient and allows for batch processing a set
 #' of patients as well.
 #'
-#' An example input file for batch processing is provided within the package an
-#' can be accessed via:
-#+ label = "shiny_batch_example_file", eval = FALSE
-system.file("example_data", "for_batch.csv", package = "pedbp")
-
-#'
-#'
-#'
 #' # References
 #'<div id="refs"></div>
 #'
+#/*
 #' # Session Info
 #+ label = "sessioninfo"
 sessionInfo()
+#*/
