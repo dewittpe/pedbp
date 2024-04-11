@@ -1,5 +1,6 @@
 library(shiny)
 library(shinydashboard)
+library(shinyBS)
 library(data.table)
 library(markdown)
 library(ggplot2)
@@ -521,16 +522,56 @@ ui <-
         ),
         tabItem(tabName = "batch"
             , h2("Batch Processing")
-            , fluidRow(column(width = 12, "You may use this page to get the blood pressure percentiles for several patients at one time. The expected format the data in the uploaded file is as follows:"))
-            , fluidRow(column(width = 5, plotOutput("csv_for_batch", height = "200px")))
-            , fluidRow(column(width = 12, "That is, each row represents a patient, a column for age in months, sex indicated as a 0 = female, 1 = male, height in centimeters; leave empty cell for unknown height, systolic blood pressure in mmHg, and diastolic blood pressure in mmHg. The actual column names are not important.  The order of the columns is critically important as the batch process code assumes the shown sequence of columns."))
-            , fluidRow(column(width = 12, "You may upload a file here and you'll get an output table to explore in this app along with the option to download a csv file with the blood pressure percentiles."))
-            , fileInput(inputId = "bpfile"
-                      , "Choose a CSV File"
-                      , multiple = FALSE
-                      , accept   = c("text/csv", "text/comma-separated-values,text/plain",".csv")
-                      )
-            , DT::dataTableOutput("batch_results")
+            #, fluidRow(column(width = 12, "You may use this page to get the blood pressure percentiles for several patients at one time. The expected format the data in the uploaded file is as follows:"))
+            #, fluidRow(column(width = 5, plotOutput("csv_for_batch", height = "200px")))
+            #, fluidRow(column(width = 12, "That is, each row represents a patient, a column for age in months, sex indicated as a 0 = female, 1 = male, height in centimeters; leave empty cell for unknown height, systolic blood pressure in mmHg, and diastolic blood pressure in mmHg. The actual column names are not important.  The order of the columns is critically important as the batch process code assumes the shown sequence of columns."))
+            #, fluidRow(column(width = 12, "You may upload a file here and you'll get an output table to explore in this app along with the option to download a csv file with the blood pressure percentiles."))
+            , box(
+                title = "Inputs",
+                width = 3,
+                solidHeader = TRUE,
+                status = "primary",
+                fileInput(inputId = "bpfile"
+                          , "Choose a File"
+                          , multiple = FALSE
+                          , accept   = c("text/plain")
+                ),
+                box(
+                  title = "What to calculate?",
+                  width = 12,
+                  collapsible = TRUE,
+                  selectInput(
+                    inputId = "batch_method1",
+                    label = "Blood Presure or Growth Standard",
+                    choices = c("Blood Pressure", "BMI for Age", "Head Circumference for Age", "Height for Age", "Length for Age", "Weight for Age", "Height for Age", "Length for Age"),
+                    selected = "Blood Pressure",
+                    multiple = FALSE
+                  ),
+                  selectInput(
+                    inputId = "batch_method2",
+                    label = "Calculate",
+                    choices = c("Percentiles", "Quantiles", "Z-scores"),
+                    selected = "Percentiles",
+                    multiple = FALSE
+                  )
+                ),
+                box(
+                  title = list("Inputs",
+                  bsButton(inputId = "batch_inputs_info", label = NULL, icon = icon("info", lib = "font-awesome"))
+                  ),
+                  width = 12,
+                  collapsible = TRUE,
+                  bsPopover(id = "batch_inputs_info", title = "Info", content = "A guess has been made for the columns of the input data for each needed input.  Select the correct column name if needed.  Select '_ignore_' to use NA as the default value.  Select '_Default: ..._' to select data sources, etc, if not specified in the input data set."),
+                  uiOutput(outputId = "batch_name_mapping")
+                )
+              )
+            , box(
+                title = "Output",
+                width = 9,
+                solidHeader = TRUE,
+                status = "info",
+                DT::dataTableOutput("batch_results")
+              )
             , uiOutput("download_button")
         )
       )

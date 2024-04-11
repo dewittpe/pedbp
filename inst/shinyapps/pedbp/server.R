@@ -1,8 +1,10 @@
 library(shiny)
 library(shinydashboard)
+library(shinyBS)
 library(data.table)
 library(markdown)
 library(ggplot2)
+library(DT)
 library(pedbp)
 
 server <- function(input, output, session) {
@@ -269,12 +271,250 @@ server <- function(input, output, session) {
     DT
   })
 
+  ##############################################################################
+  # Batch processing
+
+  batch_data <- reactive({
+    data.table::fread(input$bpfile$datapath)
+  })
+
+  batch_method <- reactive({
+
+    if (input$batch_method1 == "Blood Pressure") {
+      m <- "bp"
+    } else {
+      m <- input$batch_method1
+    }
+
+    gsub(" ", "_", tolower(paste(substr(input$batch_method2, 1, 1), m)))
+
+  })
+
+  output$batch_name_mapping <- renderUI({
+    req(input$bpfile)
+    data_names <- names(batch_data())
+
+    map <- list()
+
+    if ("q_sbp" %in% data_names) {
+      map$q_sbp <- "q_sbp"
+    } else if (length(i <- grep("sbp", data_names)) > 0) {
+      map$q_sbp <- data_names[min(i)]
+    } else {
+      map$q_sbp <- "_ignore_"
+    }
+
+    if ("q_sbp" %in% data_names) {
+      map$q_sbp <- "q_sbp"
+    } else if (length(i <- grep("sbp", data_names)) > 0) {
+      map$q_sbp <- data_names[min(i)]
+    } else {
+      map$q_sbp <- "_ignore_"
+    }
+
+    if ("q_dbp" %in% data_names) {
+      map$q_dbp <- "q_dbp"
+    } else if (length(i <- grep("dbp", data_names)) > 0) {
+      map$q_dbp <- data_names[min(i)]
+    } else {
+      map$q_dbp <- "_ignore_"
+    }
+
+    if ("q_dbp" %in% data_names) {
+      map$q_dbp <- "q_dbp"
+    } else if (length(i <- grep("dbp", data_names)) > 0) {
+      map$q_dbp <- data_names[min(i)]
+    } else {
+      map$q_dbp <- "_ignore_"
+    }
+    
+    if ("age" %in% data_names) {
+      map$age <- "age"
+    } else if (length(i <- grep("age", data_names)) > 0) {
+      map$age <- data_names[min(i)]
+    } else {
+      map$age <- "_Select Default_"
+    }
+
+    if ("male" %in% data_names) {
+      map$male <- "male"
+    } else if (length(i <- grep("male", data_names)) > 0) {
+      map$male <- data_names[min(i)]
+    } else {
+      map$male <- "_Select Default_"
+    }
+
+    if ("height" %in% data_names) {
+      map$height <- "height"
+    } else if (length(i <- grep("height", data_names)) > 0) {
+      map$height <- data_names[min(i)]
+    } else {
+      map$height <- "_ignore_"
+    }
+
+    if ("height_percentile" %in% data_names) {
+      map$height_percentile <- "height_percentile"
+    } else if (length(i <- grep("height_percentile", data_names)) > 0) {
+      map$height_percentile <- data_names[min(i)]
+    } else {
+      map$height_percentile <- "_ignore_"
+    }
+
+    if ("source" %in% data_names) {
+      map$source <- "source"
+    } else if (length(i <- grep("source", data_names)) > 0) {
+      map$source <- data_names[min(i)]
+    } else {
+      map$source <- "_Select Default_"
+    }
+ 
+    if (input$batch_method1 == "Blood Pressure") {
+      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+        list(
+          selectInput(
+            inputId = "batch_q_sbp",
+            label = "SBP Quantile",
+            choices = c("_ignore_", data_names),
+            selected = map$q_sbp,
+            multiple = FALSE
+          ),
+          selectInput(
+            inputId = "batch_q_dbp",
+            label = "DBP Quantile",
+            choices = c("_ignore_", data_names),
+            selected = map$q_dbp,
+            multiple = FALSE
+          ),
+          selectInput(
+            inputId = "batch_age",
+            label = "Age (months)",
+            choices = c("_Select Default_", data_names),
+            selected = map$age,
+            multiple = FALSE
+          ),
+          conditionalPanel(
+            condition = "input.batch_age == '_Select Default_'",
+            sliderInput(inputId = "batch_age_default",
+                        label = NULL,
+                        min = 1,
+                        max = 18*12,
+                        value = 8, step = 0.5)
+          ),
+          selectInput(
+            inputId = "batch_male",
+            label = list("Male", bsButton(inputId = "batch_male_info", label = NULL, icon = icon("info"))),
+            choices = c("_Select Default_", data_names),
+            selected = map$male,
+            multiple = FALSE
+          ),
+          bsPopover(id = "batch_male_info", title = "", content = "Column with 0 = female, 1 = male"),
+          conditionalPanel(
+            condition = "input.batch_male == '_Select Default_'",
+            radioButtons(inputId = "batch_male_default", label = NULL, choices = c("Female", "Male"), selected = "Female", inline = TRUE)
+          ),
+          selectInput(
+            inputId = "batch_height",
+            label = "Height (cm)",
+            choices = c("_ignore_", data_names),
+            selected = map$height,
+            multiple = FALSE
+          ),
+          selectInput(
+            inputId = "batch_height_percentile",
+            label = "Height Percentile",
+            choices = c("_ignore_", data_names),
+            selected = map$height_percentile,
+            multiple = FALSE
+          ),
+          selectInput(
+            inputId = "batch_source",
+            label = "Data Source",
+            choices = c("_Select Default_", data_names),
+            selected = map$source,
+            multiple = FALSE
+          ),
+          conditionalPanel(
+            condition = "input.batch_source == '_Select Default_'",
+            radioButtons(inputId = "batch_source_default",
+                         label = NULL,
+                         choices = c("martin2022", "gemelli1990", "lo2013", "nhlbi", "flynn2017"),
+                         selected = "martin2022",
+                         inline = TRUE)
+          )
+        )
+      } else {
+        selectInput(
+          inputId = "batch_p_sbp",
+          label = "SBP Percentile",
+          choices = c("_ignore_", data_names),
+          selected = ifelse("p_sbp" %in% data_names, "p_sbp", "_ignore_"),
+          multiple = FALSE
+        )
+      }
+    } else {
+      p("not yet built")
+    }
+  })
 
 
+  output$batch_results <- DT::renderDataTable({
+    req(input$bpfile)
+    d <- data.table::copy(batch_data())
+    if (batch_method() == "p_bp") {
 
+      cl <- list()
+      cl[[1]] <- quote(p_bp)
+      if (input$batch_q_sbp == "_ignore_") {
+        cl[["q_sbp"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["q_sbp"]] <- d[[input$batch_q_sbp]]
+      }
+      if (input$batch_q_dbp == "_ignore_") {
+        cl[["q_dbp"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["q_dbp"]] <- d[[input$batch_q_dbp]]
+      }
+      if (input$batch_age == "_Select Default_") {
+        cl[["age"]] <- input$batch_age_default
+      } else {
+        cl[["age"]] <- d[[input$batch_age]]
+      }
+      if (input$batch_male == "_Select Default_") {
+        cl[["male"]] <- rep(input$batch_male_default, nrow(d))
+      } else {
+        cl[["male"]] <- d[[input$batch_male]]
+      }
+      if (input$batch_height == "_ignore_") {
+        cl[["height"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["height"]] <- d[[input$batch_height]]
+      }
+      if (input$batch_height_percentile == "_ignore_") {
+        cl[["height_percentile"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["height_percentile"]] <- d[[input$batch_height_percentile]]
+      }
+      if (input$batch_source == "_Select Default_") {
+        cl[["source"]] <- input$batch_source_default
+      } else {
+        cl[["source"]] <- d[[input$batch_source]]
+      }
 
+      results <- eval(as.call(cl))
+      d[, pedbp_sbp_percentile := results$sbp * 100]
+      d[, pedbp_dbp_percentile := results$dbp * 100]
+      d[]
+    } else {
+      data.table(x = "not yet built")
+    }
+  })
 
-# OLD STUFF BELOW
+  output$download_button <- renderUI({
+    if(!is.null(input$bpfile)) {
+      downloadButton("download_batch_results", "Download Results")
+    }
+  })
+
 #  output$csv_for_batch <- renderImage({
 #    list(height = "90%", src = normalizePath(system.file("images", "csv_for_batch.png", package = "pedbp")))
 #  }, deleteFile = FALSE)
@@ -290,9 +530,6 @@ server <- function(input, output, session) {
 #   d
 #  })
 #
-#  output$batch_results <- DT::renderDataTable({
-#    batch_results()
-#  })
 #
 #  output$download_batch_results <- downloadHandler(
 #    filename = function() {paste0(input$bpfile, "_with_percentiles.csv")},
@@ -301,11 +538,6 @@ server <- function(input, output, session) {
 #    }
 #  )
 #
-#  output$download_button <- renderUI({
-#    if(!is.null(input$bpfile)) {
-#      downloadButton("download_batch_results", "Download Data With Percentiles (.csv)")
-#    }
-#  })
 #
 #  bp <- reactive({
 #    bp <- p_bp(input$sbp, input$dbp, age = input$age_mo, male = input$sex,
@@ -348,9 +580,6 @@ server <- function(input, output, session) {
 #  , colnames = FALSE
 #  )
 #
-#  output$bp_cdf <- renderPlot({
-#    bp_cdf(input$age_mo, male = input$sex, height = ifelse(input$height_known == 0, NA, input$height_cm), sbp = input$sbp, dbp = input$dbp) +
-#      ggplot2::scale_x_continuous(breaks = seq(30, 140, by = 10))
 #  })
 }
 
