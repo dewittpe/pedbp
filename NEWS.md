@@ -17,6 +17,9 @@
   * complete redo for how the methods are implemented
   * extended data sources
 
+* Add `z_bp` to return z-scores for blood pressure; a completment to the
+  existing `q_bp` and `p_bp` methods.
+
 * Create S3 method for `bp_cdf` plotting [#9](https://github.com/dewittpe/pedbp/issues/9)
 
 * Extended the growth chart distribution data source to include the CDC (v1.0.0)

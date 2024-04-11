@@ -4,6 +4,7 @@
 \alias{bp_distribution}
 \alias{p_bp}
 \alias{q_bp}
+\alias{z_bp}
 \title{Pediatric Blood Pressure Distribution}
 \usage{
 p_bp(
@@ -21,6 +22,18 @@ p_bp(
 q_bp(
   p_sbp,
   p_dbp,
+  age,
+  male,
+  height = NA,
+  height_percentile = NA,
+  default_height_percentile = 50,
+  source = getOption("pedbp_bp_source", "martin2022"),
+  ...
+)
+
+z_bp(
+  q_sbp,
+  q_dbp,
   age,
   male,
   height = NA,
@@ -144,12 +157,21 @@ bp_percentiles <-
     )
 bp_percentiles
 
+# Standard (z) scores:
+z_bp(
+    q_sbp = d$sbp..mmHg.
+  , q_dbp = d$dbp..mmHg.
+  , age   = d$age_months
+  , male  = d$male
+  )
+
 q_bp(
     p_sbp = bp_percentiles$sbp_percentile
   , p_dbp = bp_percentiles$dbp_percentile
   , age   = d$age_months
   , male  = d$male
   )
+
 
 #############################################################################
 # Selecting different source values

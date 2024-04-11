@@ -334,5 +334,25 @@ stopifnot(isTRUE(with(x, all.equal(qnorm(p_sbp, mean = sbp_mean, sd = sbp_sd), q
 stopifnot(isTRUE(with(x, all.equal(qnorm(p_dbp, mean = dbp_mean, sd = dbp_sd), q_dbp))))
 
 ################################################################################
+# verify z_bp is as expected
+yq <-
+  z_bp(q_sbp = yq$sbp,
+       q_dbp = yq$dbp,
+       age = x$age,
+       male = x$male,
+       height = x$height,
+       height_percentile = x$height_percentile,
+       default_height_percentile = 0.8,
+       source = "martin2022")
+
+x$z_sbp <- yq$sbp_z
+x$z_dbp <- yq$dbp_z
+
+stopifnot(isTRUE(with(x, all.equal(pnorm(z_sbp), p_sbp))))
+stopifnot(isTRUE(with(x, all.equal(pnorm(z_dbp), p_dbp))))
+stopifnot(isTRUE(with(x, all.equal(qnorm(p_sbp, mean = sbp_mean, sd = sbp_sd), (z_sbp * sbp_sd) + sbp_mean))))
+stopifnot(isTRUE(with(x, all.equal(qnorm(p_dbp, mean = dbp_mean, sd = dbp_sd), (z_dbp * dbp_sd) + dbp_mean))))
+
+################################################################################
 ##                                End of file                                 ##
 ################################################################################
