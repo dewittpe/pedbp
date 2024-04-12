@@ -6,11 +6,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2-9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2-9004</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,9 +24,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/additional-utilities.html">Additional Utilities</a>
-    <a class="dropdown-item" href="../articles/bp-distributions.html">Pediatric Blood Pressure Distributions</a>
-    <a class="dropdown-item" href="../articles/growth-standards.html">Growth Standards</a>
+    <a class="dropdown-item" href="../articles/bp-distributions_ARTICLE.html">Pediatric Blood Pressure Distributions</a>
+    <a class="dropdown-item" href="../articles/growth-standards_ARTICLE.html">Growth Standards</a>
+    <a class="dropdown-item" href="../articles/additional-utilities_ARTICLE.html">Additional Utilities</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -54,24 +54,33 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.0.0" id="pedbp-200">pedbp 2.0.0<a class="anchor" aria-label="anchor" href="#pedbp-200"></a></h2>
+<div class="section level3">
+<h3 id="potential-breaking-changes-2-0-0">Potential Breaking Changes<a class="anchor" aria-label="anchor" href="#potential-breaking-changes-2-0-0"></a></h3>
+<ul><li>API change to the growth standard distribution functions
+<ul><li>this includes a name change from “vital signs” to “growth standards”</li>
+<li>complete redo for how the methods are implemented</li>
+<li>extended data sources</li>
+</ul></li>
+<li>Use of the terms “percentile”, “distribution”, and “probability” are more robust. In v1 “percentile” could have refered to any of those terms. Now, percentile implies a value between 0 and 100, distribution (value) or probability, denoted with a p, are values between 0 and 1.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="additions-and-major-changes-2-0-0">Additions and Major Changes<a class="anchor" aria-label="anchor" href="#additions-and-major-changes-2-0-0"></a></h3>
 <ul><li>
 <p>Added features to blood pressure distribution functions</p>
 <ul><li>functions gain the argument <code>source</code> to specify the reference values used to generate the percentiles. Default to <code>martin2022</code> to keep the same functionality as version 1.</li>
 <li>Add a new source of blood pressure percentiles called <code>flynn2017</code> referencing Flynn, Joseph T., David C. Kaelber, Carissa M. Baker-Smith, Douglas Blowey, Aaron E. Carroll, Stephen R. Daniels, Sarah D. De Ferranti et al. “Clinical practice guideline for screening and management of high blood pressure in children and adolescents.” Pediatrics 140, no. 3 (2017).</li>
 <li>Implementation has be moved into c++ and the speed improvement compared to version 1 is huge. v2 is more than 200 times faster than v1.</li>
 </ul></li>
-<li>
-<p>API change to the growth standard distribution functions</p>
-<ul><li>this includes a name change from “vital signs” to “growth standards”</li>
-<li>complete redo for how the methods are implemented</li>
-<li>extended data sources</li>
-</ul></li>
+<li><p>Add <code>z_bp</code> to return z-scores for blood pressure; a completment to the existing <code>q_bp</code> and <code>p_bp</code> methods.</p></li>
 <li><p>Create S3 method for <code>bp_cdf</code> plotting <a href="https://github.com/dewittpe/pedbp/issues/9" class="external-link">#9</a></p></li>
 <li><p>Extended the growth chart distribution data source to include the CDC (v1.0.0) and World Health Organization (WHO)</p></li>
 <li><p>New “growth-standards” vignette</p></li>
 <li><p>Add <code>gs_chart</code> for building growth standard charts</p></li>
+<li><p>Add <code>gs_cdf</code> for building growth standard cumulative distribution functions</p></li>
+<li><p>Add <code>bp_chart</code> for building blood pressure charts</p></li>
 <li><p>Rebuild of the Shiny application to use the new features of v2.0.0</p></li>
-</ul><div class="section level3">
+</ul></div>
+<div class="section level3">
 <h3 id="improvements-2-0-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-2-0-0"></a></h3>
 <ul><li>
 <code>est_norm</code> calls <code><a href="https://rdrr.io/r/stats/optim.html" class="external-link">stats::optim</a></code> with <code>method = "L-BFGS-B"</code>, <code>lower = c(-Inf, 0)</code>, and <code>upper = c(Inf, Inf))</code> to make sure the sd estimate is non-negative.</li>
@@ -108,7 +117,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer></div>
