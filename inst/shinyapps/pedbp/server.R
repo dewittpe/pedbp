@@ -46,7 +46,7 @@ server <- function(input, output, session) {
       x <- eval(as.call(cl))
 
       rtn <- list(sbp_mmHg = input$bp_sbp_mmHg,
-                     sbp_percentile = x$sbp_percentile,
+                     sbp_p = x$sbp_p,
                      dbp_mmHg = input$bp_dbp_mmHg,
                      dbp_percentile = x$dbp_percentile,
                      bp_params = attr(x, "bp_params"))
@@ -74,7 +74,7 @@ server <- function(input, output, session) {
       stopifnot(isTRUE(all.equal(attr(scl, "bp_params"), attr(dcl, "bp_params"))))
 
       rtn <- list(sbp_mmHg = input$bp_sbp_mmHg,
-                     sbp_percentile = scl$sbp_percentile / 100,
+                     sbp_p = scl$sbp_p / 100,
                      dbp_mmHg = dcl$dbp,
                      dbp_percentile = input$bp_dbp_percentile / 100,
                      bp_params = attr(scl, "bp_params")
@@ -82,7 +82,7 @@ server <- function(input, output, session) {
 
     } else if (input$bp_sbp_status == "percentile" & input$bp_dbp_status == "mmHg") {
       scl <- list(quote(q_bp))
-      scl[["p_sbp"]] <- input$bp_sbp_percentile / 100
+      scl[["p_sbp"]] <- input$bp_sbp_p / 100
       scl[["p_dbp"]] <- NA_real_
       dcl <- list(quote(p_bp))
       dcl[["q_sbp"]] <- NA_real_
@@ -96,7 +96,7 @@ server <- function(input, output, session) {
       stopifnot(isTRUE(all.equal(attr(scl, "bp_params"), attr(dcl, "bp_params"))))
 
       rtn <- list(sbp_mmHg = scl$sbp,
-                     sbp_percentile = input$bp_sbp_percentile / 100,
+                     sbp_p = input$bp_sbp_p / 100,
                      dbp_mmHg = input$bp_dbp_mmHg,
                      dbp_percentile = dcl$dbp_percentile,
                      bp_params = attr(scl, "bp_params")
@@ -104,13 +104,13 @@ server <- function(input, output, session) {
 
     } else if (input$bp_sbp_status == "percentile" & input$bp_dbp_status == "percentile") {
       cl <- list(quote(q_bp))
-      cl[["p_sbp"]] <- input$bp_sbp_percentile / 100
+      cl[["p_sbp"]] <- input$bp_sbp_p / 100
       cl[["p_dbp"]] <- input$bp_dbp_percentile / 100
       cl <- c(cl, other_args)
       x <- eval(as.call(cl))
 
       rtn <- list(sbp_mmHg = x$sbp,
-                     sbp_percentile = input$bp_sbp_percentile / 100,
+                     sbp_p = input$bp_sbp_p / 100,
                      dbp_mmHg = x$dbp,
                      dbp_percentile = input$bp_dbp_percentile / 100,
                      bp_params = attr(x, "bp_params"))
@@ -118,12 +118,12 @@ server <- function(input, output, session) {
 
     od <- data.frame(mmHg = c(rtn$sbp_mmHg, rtn$dbp_mmHg),
                      bp   = gl(n = 2, k = 1, labels = c("Systolic", "Diastolic")),
-                     p    = c(rtn$sbp_percentile, rtn$dbp_percentile))
+                     p    = c(rtn$sbp_p, rtn$dbp_percentile))
     dseg <-
       data.frame(
           bp   = gl(n = 2, k = 2, labels = c('Systolic', 'Diastolic')),
-          p    = c(rtn$sbp_percentile, rtn$sbp_percentile, rtn$dbp_percentile, rtn$dbp_percentile),
-          pend = c(rtn$sbp_percentile, -Inf, rtn$dbp_percentile, -Inf),
+          p    = c(rtn$sbp_p, rtn$sbp_p, rtn$dbp_percentile, rtn$dbp_percentile),
+          pend = c(rtn$sbp_p, -Inf, rtn$dbp_percentile, -Inf),
           mmHg = c(-Inf, rtn$sbp_mmHg, -Inf, rtn$dbp_mmHg),
           mmHgend = c(rtn$sbp_mmHg, rtn$sbp_mmHg, rtn$dbp_mmHg, rtn$dbp_mmHg)
     )
@@ -155,7 +155,7 @@ server <- function(input, output, session) {
     x <- bp()
     data.table("bp" = c("Systolic", "Diastolic"),
                "mmHg" = c(x$sbp_mmHg, x$dbp_mmHg),
-               "%itle" = 100*c(x$sbp_percentile, x$dbp_percentile))
+               "%itle" = 100*c(x$sbp_p, x$dbp_percentile))
   })
 
   ##############################################################################
@@ -298,7 +298,7 @@ server <- function(input, output, session) {
 
     if ("q_sbp" %in% data_names) {
       map$q_sbp <- "q_sbp"
-    } else if (length(i <- grep("sbp", data_names)) > 0) {
+    } else if (length(i <- grep("^sbp", data_names)) > 0) {
       map$q_sbp <- data_names[min(i)]
     } else {
       map$q_sbp <- "_ignore_"
@@ -306,7 +306,7 @@ server <- function(input, output, session) {
 
     if ("q_sbp" %in% data_names) {
       map$q_sbp <- "q_sbp"
-    } else if (length(i <- grep("sbp", data_names)) > 0) {
+    } else if (length(i <- grep("^sbp", data_names)) > 0) {
       map$q_sbp <- data_names[min(i)]
     } else {
       map$q_sbp <- "_ignore_"
@@ -314,7 +314,7 @@ server <- function(input, output, session) {
 
     if ("q_dbp" %in% data_names) {
       map$q_dbp <- "q_dbp"
-    } else if (length(i <- grep("dbp", data_names)) > 0) {
+    } else if (length(i <- grep("^dbp", data_names)) > 0) {
       map$q_dbp <- data_names[min(i)]
     } else {
       map$q_dbp <- "_ignore_"
@@ -322,15 +322,15 @@ server <- function(input, output, session) {
 
     if ("q_dbp" %in% data_names) {
       map$q_dbp <- "q_dbp"
-    } else if (length(i <- grep("dbp", data_names)) > 0) {
+    } else if (length(i <- grep("^dbp", data_names)) > 0) {
       map$q_dbp <- data_names[min(i)]
     } else {
       map$q_dbp <- "_ignore_"
     }
-    
+
     if ("age" %in% data_names) {
       map$age <- "age"
-    } else if (length(i <- grep("age", data_names)) > 0) {
+    } else if (length(i <- grep("^age", data_names)) > 0) {
       map$age <- data_names[min(i)]
     } else {
       map$age <- "_Select Default_"
@@ -338,7 +338,7 @@ server <- function(input, output, session) {
 
     if ("male" %in% data_names) {
       map$male <- "male"
-    } else if (length(i <- grep("male", data_names)) > 0) {
+    } else if (length(i <- grep("^male", data_names)) > 0) {
       map$male <- data_names[min(i)]
     } else {
       map$male <- "_Select Default_"
@@ -346,7 +346,7 @@ server <- function(input, output, session) {
 
     if ("height" %in% data_names) {
       map$height <- "height"
-    } else if (length(i <- grep("height", data_names)) > 0) {
+    } else if (length(i <- grep("^height", data_names)) > 0) {
       map$height <- data_names[min(i)]
     } else {
       map$height <- "_ignore_"
@@ -354,7 +354,7 @@ server <- function(input, output, session) {
 
     if ("height_percentile" %in% data_names) {
       map$height_percentile <- "height_percentile"
-    } else if (length(i <- grep("height_percentile", data_names)) > 0) {
+    } else if (length(i <- grep("^height_percentile", data_names)) > 0) {
       map$height_percentile <- data_names[min(i)]
     } else {
       map$height_percentile <- "_ignore_"
@@ -362,94 +362,131 @@ server <- function(input, output, session) {
 
     if ("source" %in% data_names) {
       map$source <- "source"
-    } else if (length(i <- grep("source", data_names)) > 0) {
+    } else if (length(i <- grep("^source", data_names)) > 0) {
       map$source <- data_names[min(i)]
     } else {
       map$source <- "_Select Default_"
     }
- 
+
+    if ("length" %in% data_names) {
+      map$length <- "length"
+    } else if (length(i <- grep("^length", data_names)) > 0) {
+      map$length <- data_names[min(i)]
+    } else {
+      map$length <- "_Select Default_"
+    }
+
+    if ("weight" %in% data_names) {
+      map$weight <- "weight"
+    } else if (length(i <- grep("^weight", data_names)) > 0) {
+      map$weight <- data_names[min(i)]
+    } else {
+      map$weight <- "_Select Default_"
+    }
+
+    if ("bmi" %in% data_names) {
+      map$bmi <- "bmi"
+    } else if (length(i <- grep("^bmi", data_names)) > 0) {
+      map$bmi <- data_names[min(i)]
+    } else {
+      map$bmi <- "_ignore_"
+    }
+
+    if ("head_circumference" %in% data_names) {
+      map$head_circumference <- "head_circumference"
+    } else if (length(i <- grep("^head_circumference", data_names)) > 0) {
+      map$head_circumference <- data_names[min(i)]
+    } else {
+      map$head_circumference <- "_ignore_"
+    }
+
+    inputs <- list(
+      p_sbp = selectInput( inputId = "batch_p_sbp", label = "SBP Percentile (expected to be between 0 and 100)", choices = c("_ignore_", data_names), selected = map$p_sbp, multiple = FALSE),
+      p_dbp = selectInput( inputId = "batch_p_dbp", label = "DBP Percentile (expected to be between 0 and 100)", choices = c("_ignore_", data_names), selected = map$p_dbp, multiple = FALSE),
+      p_bmi = list(selectInput(inputId = "batch_p", label = "BMI Percentile (expected to be between 0 and 100)", choices = c("_ignore_", data_names), selected = map$bmi, multiple = FALSE)),
+      p_head_circumference = list(selectInput(inputId = "batch_p", label = "Head Circumference Percentile (expected to be between 0 and 100)", choices = c("_ignore_", data_names), selected = map$head_circumference, multiple = FALSE)),
+      p_height = list(selectInput(inputId = "batch_p", label = "Height Percentile (expected to be between 0 and 100)", choices = c("_ignore_", data_names), selected = map$height, multiple = FALSE)),
+      p_length = list(selectInput(inputId = "batch_p", label = "Lenght Percentile (expected to be between 0 and 100)", choices = c("_ignore_", data_names), selected = map$length, multiple = FALSE)),
+      p_weight = list(selectInput(inputId = "batch_p", label = "Weight Percentile (expected to be between 0 and 100)", choices = c("_ignore_", data_names), selected = map$weight, multiple = FALSE)),
+
+      q_sbp = selectInput(inputId = "batch_q_sbp", label = "SBP (mmHg)", choices = c("_ignore_", data_names), selected = map$q_sbp, multiple = FALSE),
+      q_dbp = selectInput(inputId = "batch_q_dbp", label = "DBP (mmHg)", choices = c("_ignore_", data_names), selected = map$q_dbp, multiple = FALSE),
+      q_bmi = list(selectInput(inputId = "batch_q", label = "BMI", choices = c("_ignore_", data_names), selected = map$bmi, multiple = FALSE)),
+      q_head_circumference = list(selectInput(inputId = "batch_q", label = "Head Circumference (cm)", choices = c("_ignore_", data_names), selected = map$head_circumference, multiple = FALSE)),
+      q_height = list(selectInput(inputId = "batch_q", label = "Height (cm)", choices = c("_ignore_", data_names), selected = map$height, multiple = FALSE)),
+      q_length = list(selectInput(inputId = "batch_q", label = "Lenght (cm)", choices = c("_ignore_", data_names), selected = map$length, multiple = FALSE)),
+      q_weight = list(selectInput(inputId = "batch_q", label = "Weight (kg)", choices = c("_ignore_", data_names), selected = map$weight, multiple = FALSE)),
+
+      age = list(selectInput( inputId = "batch_age", label = "Age (months)", choices = c("_Select Default_", data_names), selected = map$age, multiple = FALSE),
+                 conditionalPanel( condition = "input.batch_age == '_Select Default_'", sliderInput(inputId = "batch_age_default", label = NULL, min = 1, max = 18*12, value = 8, step = 0.5))),
+      male = list(selectInput( inputId = "batch_male", label = list("Male", bsButton(inputId = "batch_male_info", label = NULL, icon = icon("info"))), choices = c("_Select Default_", data_names), selected = map$male, multiple = FALSE),
+                  bsPopover(id = "batch_male_info", title = "", content = "Column with 0 = female, 1 = male"),
+                  conditionalPanel( condition = "input.batch_male == '_Select Default_'", radioButtons(inputId = "batch_male_default", label = NULL, choices = c("Female", "Male"), selected = "Female", inline = TRUE))),
+
+      height = list(selectInput( inputId = "batch_height", label = "Height (cm)", choices = c("_ignore_", data_names), selected = map$height, multiple = FALSE)),
+      height_percentile = list( selectInput( inputId = "batch_height_percentile", label = "Height Percentile", choices = c("_ignore_", data_names), selected = map$height_percentile, multiple = FALSE)),
+      length = list(selectInput( inputId = "batch_length", label = "Length (cm)", choices = c("_ignore_", data_names), selected = map$length, multiple = FALSE)),
+
+      height_with_deafult = list(selectInput( inputId = "batch_height", label = "Height (cm)", choices = c("_Select Default_", data_names), selected = map$height, multiple = FALSE),
+                                 conditionalPanel( condition = "input.batch_height == '_Select Default_'", sliderInput(inputId = "batch_height_default", label = NULL, min = 0, max = 225, value = 100, step = 1))),
+
+      length_with_deafult = list(selectInput( inputId = "batch_length", label = "Length (cm)", choices = c("_Select Default_", data_names), selected = map$length, multiple = FALSE),
+                                 conditionalPanel( condition = "input.batch_length == '_Select Default_'", sliderInput(inputId = "batch_length_default", label = NULL, min = 0, max = 225, value = 100, step = 1))),
+
+
+      bp_source = list(selectInput( inputId = "batch_source", label = "Data Source", choices = c("_Select Default_", data_names), selected = map$source, multiple = FALSE),
+                       conditionalPanel( condition = "input.batch_source == '_Select Default_'", radioButtons(inputId = "batch_source_default", label = NULL, choices = c("martin2022", "gemelli1990", "lo2013", "nhlbi", "flynn2017"), selected = "martin2022", inline = TRUE))),
+      gs_source = list(selectInput(inputId = "batch_source", label = "Data Source", choices = c("_Select Default_", data_names), selected = map$source, multiple = FALSE),
+                       conditionalPanel(condition = "input.batch_source == '_Select Default_'", radioButtons(inputId = "batch_source_default", label = NULL, choices = c("CDC", "WHO"), selected = "CDC", inline = TRUE)))
+    )
+
     if (input$batch_method1 == "Blood Pressure") {
       if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
-        list(
-          selectInput(
-            inputId = "batch_q_sbp",
-            label = "SBP Quantile",
-            choices = c("_ignore_", data_names),
-            selected = map$q_sbp,
-            multiple = FALSE
-          ),
-          selectInput(
-            inputId = "batch_q_dbp",
-            label = "DBP Quantile",
-            choices = c("_ignore_", data_names),
-            selected = map$q_dbp,
-            multiple = FALSE
-          ),
-          selectInput(
-            inputId = "batch_age",
-            label = "Age (months)",
-            choices = c("_Select Default_", data_names),
-            selected = map$age,
-            multiple = FALSE
-          ),
-          conditionalPanel(
-            condition = "input.batch_age == '_Select Default_'",
-            sliderInput(inputId = "batch_age_default",
-                        label = NULL,
-                        min = 1,
-                        max = 18*12,
-                        value = 8, step = 0.5)
-          ),
-          selectInput(
-            inputId = "batch_male",
-            label = list("Male", bsButton(inputId = "batch_male_info", label = NULL, icon = icon("info"))),
-            choices = c("_Select Default_", data_names),
-            selected = map$male,
-            multiple = FALSE
-          ),
-          bsPopover(id = "batch_male_info", title = "", content = "Column with 0 = female, 1 = male"),
-          conditionalPanel(
-            condition = "input.batch_male == '_Select Default_'",
-            radioButtons(inputId = "batch_male_default", label = NULL, choices = c("Female", "Male"), selected = "Female", inline = TRUE)
-          ),
-          selectInput(
-            inputId = "batch_height",
-            label = "Height (cm)",
-            choices = c("_ignore_", data_names),
-            selected = map$height,
-            multiple = FALSE
-          ),
-          selectInput(
-            inputId = "batch_height_percentile",
-            label = "Height Percentile",
-            choices = c("_ignore_", data_names),
-            selected = map$height_percentile,
-            multiple = FALSE
-          ),
-          selectInput(
-            inputId = "batch_source",
-            label = "Data Source",
-            choices = c("_Select Default_", data_names),
-            selected = map$source,
-            multiple = FALSE
-          ),
-          conditionalPanel(
-            condition = "input.batch_source == '_Select Default_'",
-            radioButtons(inputId = "batch_source_default",
-                         label = NULL,
-                         choices = c("martin2022", "gemelli1990", "lo2013", "nhlbi", "flynn2017"),
-                         selected = "martin2022",
-                         inline = TRUE)
-          )
-        )
+        inputs[c("q_sbp", "q_dbp", "age", "male", "height", "height_percentile", "bp_source")]
       } else {
-        selectInput(
-          inputId = "batch_p_sbp",
-          label = "SBP Percentile",
-          choices = c("_ignore_", data_names),
-          selected = ifelse("p_sbp" %in% data_names, "p_sbp", "_ignore_"),
-          multiple = FALSE
-        )
+        inputs[c("p_sbp", "p_dbp", "age", "male", "height", "height_percentile", "bp_source")]
+      }
+    } else if (input$batch_method1 == "BMI for Age") {
+      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+        inputs[c("q_bmi", "male", "age", "gs_source")]
+      } else {
+        inputs[c("p_bmi", "male", "age", "gs_source")]
+      }
+    } else if (input$batch_method1 == "Head Circumference for Age") {
+      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+        inputs[c("q_head_circumference", "male", "age", "gs_source")]
+      } else {
+        inputs[c("p_head_circumference", "male", "age", "gs_source")]
+      }
+    } else if (input$batch_method1 == "Height for Age") {
+      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+        inputs[c("q_height", "male", "age", "gs_source")]
+      } else {
+        inputs[c("p_height", "male", "age", "gs_source")]
+      }
+    } else if (input$batch_method1 == "Length for Age") {
+      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+        inputs[c("q_length", "male", "age", "gs_source")]
+      } else {
+        inputs[c("p_length", "male", "age", "gs_source")]
+      }
+    } else if (input$batch_method1 == "Weight for Age") {
+      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+        inputs[c("q_weight", "male", "age", "gs_source")]
+      } else {
+        inputs[c("p_weight", "male", "age", "gs_source")]
+      }
+    } else if (input$batch_method1 == "Weight for Length") {
+      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+        inputs[c("q_weight", "male", "length_with_deafult", "gs_source")]
+      } else {
+        inputs[c("p_weight", "male", "length_with_deafult", "gs_source")]
+      }
+    } else if (input$batch_method1 == "Weight for Height") {
+      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+        inputs[c("q_weight", "male", "height_with_deafult", "gs_source")]
+      } else {
+        inputs[c("p_weight", "male", "height_with_deafult", "gs_source")]
       }
     } else {
       p("not yet built")
@@ -460,10 +497,13 @@ server <- function(input, output, session) {
   output$batch_results <- DT::renderDataTable({
     req(input$bpfile)
     d <- data.table::copy(batch_data())
-    if (batch_method() == "p_bp") {
+    return(d)
 
-      cl <- list()
-      cl[[1]] <- quote(p_bp)
+    cl <- list()
+    cl[[1]] <- as.name(batch_method())
+
+    if (batch_method() == "p_bp" | batch_method() == "z_bp") {
+      print(input$batch_q_spb)
       if (input$batch_q_sbp == "_ignore_") {
         cl[["q_sbp"]] <- rep(NA_real_, nrow(d))
       } else {
@@ -501,8 +541,54 @@ server <- function(input, output, session) {
       }
 
       results <- eval(as.call(cl))
-      d[, pedbp_sbp_percentile := results$sbp * 100]
-      d[, pedbp_dbp_percentile := results$dbp * 100]
+      if (batch_method() == "p_bp") {
+        d[, pedbp_sbp_p := results$sbp_p * 100]
+        d[, pedbp_dbp_percentile := results$dbp_p * 100]
+      } else {
+        d[, pedbp_sbp_z := results$sbp_z]
+        d[, pedbp_dbp_z := results$dbp_z]
+      }
+      d[]
+    } else if (batch_method() == "q_bp") {
+      if (input$batch_p_sbp == "_ignore_") {
+        cl[["p_sbp"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["p_sbp"]] <- d[[input$batch_p_sbp]] / 100 # expected inputs are 0 to 100
+      }
+      if (input$batch_p_dbp == "_ignore_") {
+        cl[["p_dbp"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["p_dbp"]] <- d[[input$batch_p_dbp]] / 100 # expected inputs are 0 to 100
+      }
+      if (input$batch_age == "_Select Default_") {
+        cl[["age"]] <- input$batch_age_default
+      } else {
+        cl[["age"]] <- d[[input$batch_age]]
+      }
+      if (input$batch_male == "_Select Default_") {
+        cl[["male"]] <- rep(input$batch_male_default, nrow(d))
+      } else {
+        cl[["male"]] <- d[[input$batch_male]]
+      }
+      if (input$batch_height == "_ignore_") {
+        cl[["height"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["height"]] <- d[[input$batch_height]]
+      }
+      if (input$batch_height_percentile == "_ignore_") {
+        cl[["height_percentile"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["height_percentile"]] <- d[[input$batch_height_percentile]]
+      }
+      if (input$batch_source == "_Select Default_") {
+        cl[["source"]] <- input$batch_source_default
+      } else {
+        cl[["source"]] <- d[[input$batch_source]]
+      }
+
+      results <- eval(as.call(cl))
+      d[, pedbp_sbp := results$sbp]
+      d[, pedbp_dbp := results$dbp]
       d[]
     } else {
       data.table(x = "not yet built")
@@ -542,7 +628,7 @@ server <- function(input, output, session) {
 #  bp <- reactive({
 #    bp <- p_bp(input$sbp, input$dbp, age = input$age_mo, male = input$sex,
 #               height = ifelse(input$height_known == 0, NA, input$height_cm))
-#    bp$sbp_percentile <- paste0(round(bp$sbp_percentile * 100, 2), " percentile")
+#    bp$sbp_p <- paste0(round(bp$sbp_p * 100, 2), " percentile")
 #    bp$dbp_percentile <- paste0(round(bp$dbp_percentile * 100, 2), " percentile")
 #    bp
 #  })
@@ -574,7 +660,7 @@ server <- function(input, output, session) {
 #                      ifelse(input$height_known == 0, "", paste0("(", (input$height_cm * 0.393701) %/% 12, "' ", round((input$height_cm * 0.393701) %% 12, 1), "'')")),
 #                      "",
 #                      ""),
-#               V4 = c("", "", hp, bp()$sbp_percentile, bp()$dbp_percentile)
+#               V4 = c("", "", hp, bp()$sbp_p, bp()$dbp_percentile)
 #               )
 #  }
 #  , colnames = FALSE

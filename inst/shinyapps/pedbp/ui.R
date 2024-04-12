@@ -543,7 +543,7 @@ ui <-
                   selectInput(
                     inputId = "batch_method1",
                     label = "Blood Presure or Growth Standard",
-                    choices = c("Blood Pressure", "BMI for Age", "Head Circumference for Age", "Height for Age", "Length for Age", "Weight for Age", "Height for Age", "Length for Age"),
+                    choices = c("Blood Pressure", "BMI for Age", "Head Circumference for Age", "Length for Age", "Height for Age", "Weight for Age", "Weight for Length", "Weight for Height"),
                     selected = "Blood Pressure",
                     multiple = FALSE
                   ),
@@ -557,7 +557,7 @@ ui <-
                 ),
                 box(
                   title = list("Inputs",
-                  bsButton(inputId = "batch_inputs_info", label = NULL, icon = icon("info", lib = "font-awesome"))
+                  bsButton(inputId = "batch_inputs_info", label = NULL, icon = icon("info"))
                   ),
                   width = 12,
                   collapsible = TRUE,
