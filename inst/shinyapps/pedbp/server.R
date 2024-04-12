@@ -286,7 +286,8 @@ server <- function(input, output, session) {
       m <- input$batch_method1
     }
 
-    gsub(" ", "_", tolower(paste(substr(input$batch_method2, 1, 1), m)))
+    sub("^d", "p", gsub(" ", "_", tolower(paste(substr(input$batch_method2, 1, 1), m))))
+
 
   })
 
@@ -441,49 +442,49 @@ server <- function(input, output, session) {
     )
 
     if (input$batch_method1 == "Blood Pressure") {
-      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+      if (input$batch_method2 %in% c("Distribution", "Z-scores")) {
         inputs[c("q_sbp", "q_dbp", "age", "male", "height", "height_percentile", "bp_source")]
       } else {
         inputs[c("p_sbp", "p_dbp", "age", "male", "height", "height_percentile", "bp_source")]
       }
     } else if (input$batch_method1 == "BMI for Age") {
-      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+      if (input$batch_method2 %in% c("Distribution", "Z-scores")) {
         inputs[c("q_bmi", "male", "age", "gs_source")]
       } else {
         inputs[c("p_bmi", "male", "age", "gs_source")]
       }
     } else if (input$batch_method1 == "Head Circumference for Age") {
-      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+      if (input$batch_method2 %in% c("Distribution", "Z-scores")) {
         inputs[c("q_head_circumference", "male", "age", "gs_source")]
       } else {
         inputs[c("p_head_circumference", "male", "age", "gs_source")]
       }
     } else if (input$batch_method1 == "Height for Age") {
-      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+      if (input$batch_method2 %in% c("Distribution", "Z-scores")) {
         inputs[c("q_height", "male", "age", "gs_source")]
       } else {
         inputs[c("p_height", "male", "age", "gs_source")]
       }
     } else if (input$batch_method1 == "Length for Age") {
-      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+      if (input$batch_method2 %in% c("Distribution", "Z-scores")) {
         inputs[c("q_length", "male", "age", "gs_source")]
       } else {
         inputs[c("p_length", "male", "age", "gs_source")]
       }
     } else if (input$batch_method1 == "Weight for Age") {
-      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+      if (input$batch_method2 %in% c("Distribution", "Z-scores")) {
         inputs[c("q_weight", "male", "age", "gs_source")]
       } else {
         inputs[c("p_weight", "male", "age", "gs_source")]
       }
     } else if (input$batch_method1 == "Weight for Length") {
-      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+      if (input$batch_method2 %in% c("Distribution", "Z-scores")) {
         inputs[c("q_weight", "male", "length_with_deafult", "gs_source")]
       } else {
         inputs[c("p_weight", "male", "length_with_deafult", "gs_source")]
       }
     } else if (input$batch_method1 == "Weight for Height") {
-      if (input$batch_method2 %in% c("Percentiles", "Z-scores")) {
+      if (input$batch_method2 %in% c("Distribution", "Z-scores")) {
         inputs[c("q_weight", "male", "height_with_deafult", "gs_source")]
       } else {
         inputs[c("p_weight", "male", "height_with_deafult", "gs_source")]
@@ -497,13 +498,47 @@ server <- function(input, output, session) {
   output$batch_results <- DT::renderDataTable({
     req(input$bpfile)
     d <- data.table::copy(batch_data())
-    return(d)
 
     cl <- list()
     cl[[1]] <- as.name(batch_method())
 
-    if (batch_method() == "p_bp" | batch_method() == "z_bp") {
-      print(input$batch_q_spb)
+    if (input$batch_male == "_Select Default_") {
+      cl[["male"]] <- rep(input$batch_male_default, nrow(d))
+    } else {
+      cl[["male"]] <- d[[input$batch_male]]
+    }
+
+    if (input$batch_source == "_Select Default_") {
+      cl[["source"]] <- input$batch_source_default
+    } else {
+      cl[["source"]] <- d[[input$batch_source]]
+    }
+
+    if (grepl("bp$", batch_method()) | grepl("age$", batch_method())) {
+      if (input$batch_age == "_Select Default_") {
+        cl[["age"]] <- rep(input$batch_age_default, nrow(d))
+      } else {
+        cl[["age"]] <- d[[input$batch_age]]
+      }
+    }
+
+    if (grepl("length$", batch_method())) {
+      if (input$batch_length == "_Select Default_") {
+        cl[["length"]] <- rep(input$batch_length_default, nrow(d))
+      } else {
+        cl[["length"]] <- d[[input$batch_length]]
+      }
+    }
+
+    if (grepl("height$", batch_method())) {
+      if (input$batch_height == "_Select Default_") {
+        cl[["height"]] <- rep(input$batch_height_default, nrow(d))
+      } else {
+        cl[["height"]] <- d[[input$batch_height]]
+      }
+    }
+
+    if (batch_method() %in% c("p_bp", "z_bp")) {
       if (input$batch_q_sbp == "_ignore_") {
         cl[["q_sbp"]] <- rep(NA_real_, nrow(d))
       } else {
@@ -513,16 +548,6 @@ server <- function(input, output, session) {
         cl[["q_dbp"]] <- rep(NA_real_, nrow(d))
       } else {
         cl[["q_dbp"]] <- d[[input$batch_q_dbp]]
-      }
-      if (input$batch_age == "_Select Default_") {
-        cl[["age"]] <- input$batch_age_default
-      } else {
-        cl[["age"]] <- d[[input$batch_age]]
-      }
-      if (input$batch_male == "_Select Default_") {
-        cl[["male"]] <- rep(input$batch_male_default, nrow(d))
-      } else {
-        cl[["male"]] <- d[[input$batch_male]]
       }
       if (input$batch_height == "_ignore_") {
         cl[["height"]] <- rep(NA_real_, nrow(d))
@@ -534,21 +559,16 @@ server <- function(input, output, session) {
       } else {
         cl[["height_percentile"]] <- d[[input$batch_height_percentile]]
       }
-      if (input$batch_source == "_Select Default_") {
-        cl[["source"]] <- input$batch_source_default
-      } else {
-        cl[["source"]] <- d[[input$batch_source]]
-      }
 
       results <- eval(as.call(cl))
       if (batch_method() == "p_bp") {
-        d[, pedbp_sbp_p := results$sbp_p * 100]
-        d[, pedbp_dbp_percentile := results$dbp_p * 100]
+        d[, pedbp_sbp_p := results$sbp_p]
+        d[, pedbp_dbp_p := results$dbp_p]
       } else {
         d[, pedbp_sbp_z := results$sbp_z]
         d[, pedbp_dbp_z := results$dbp_z]
       }
-      d[]
+
     } else if (batch_method() == "q_bp") {
       if (input$batch_p_sbp == "_ignore_") {
         cl[["p_sbp"]] <- rep(NA_real_, nrow(d))
@@ -560,16 +580,6 @@ server <- function(input, output, session) {
       } else {
         cl[["p_dbp"]] <- d[[input$batch_p_dbp]] / 100 # expected inputs are 0 to 100
       }
-      if (input$batch_age == "_Select Default_") {
-        cl[["age"]] <- input$batch_age_default
-      } else {
-        cl[["age"]] <- d[[input$batch_age]]
-      }
-      if (input$batch_male == "_Select Default_") {
-        cl[["male"]] <- rep(input$batch_male_default, nrow(d))
-      } else {
-        cl[["male"]] <- d[[input$batch_male]]
-      }
       if (input$batch_height == "_ignore_") {
         cl[["height"]] <- rep(NA_real_, nrow(d))
       } else {
@@ -580,19 +590,34 @@ server <- function(input, output, session) {
       } else {
         cl[["height_percentile"]] <- d[[input$batch_height_percentile]]
       }
-      if (input$batch_source == "_Select Default_") {
-        cl[["source"]] <- input$batch_source_default
+
+      results <- eval(as.call(cl))
+      d[, pedbp_sbp_mmHg := results$sbp]
+      d[, pedbp_dbp_mmHg := results$dbp]
+
+    } else if (grepl("^p_", batch_method()) | grepl("^z_", batch_method())) {
+      if (input$batch_q == "_ignore_") {
+        cl[["q"]] <- rep(NA_real_, nrow(d))
       } else {
-        cl[["source"]] <- d[[input$batch_source]]
+        cl[["q"]] <- d[[input$batch_q]]
       }
 
       results <- eval(as.call(cl))
-      d[, pedbp_sbp := results$sbp]
-      d[, pedbp_dbp := results$dbp]
-      d[]
-    } else {
-      data.table(x = "not yet built")
+      data.table::set(d, j = batch_method(), value = results)
+
+    } else if (grepl("^q_", batch_method())) {
+      if (input$batch_p == "_ignore_") {
+        cl[["p"]] <- rep(NA_real_, nrow(d))
+      } else {
+        cl[["p"]] <- d[[input$batch_p]]
+      }
+
+      results <- eval(as.call(cl))
+      data.table::set(d, j = batch_method(), value = results)
     }
+
+    d[]
+
   })
 
   output$download_button <- renderUI({

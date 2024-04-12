@@ -550,8 +550,8 @@ ui <-
                   selectInput(
                     inputId = "batch_method2",
                     label = "Calculate",
-                    choices = c("Percentiles", "Quantiles", "Z-scores"),
-                    selected = "Percentiles",
+                    choices = c("Distribution", "Quantiles", "Z-scores"),
+                    selected = "Distribution",
                     multiple = FALSE
                   )
                 ),
