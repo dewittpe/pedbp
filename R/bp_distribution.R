@@ -1,9 +1,9 @@
-#' Estimate Pediatric Blood Pressure Distribution
+#' Pediatric Blood Pressure Distribution
 #'
-#' Percentile and quantile functions for pediatric blood pressure.
+#' Distribution and quantile functions for pediatric blood pressure.
 #'
 #' \code{source} is used to specify the method or source data sets by which the
-#' percentiles are generated.  This can be controlled by the option
+#' distribuitons are estimated.  This can be controlled by the option
 #' \code{pedbp_bp_source}.
 #' End users are encouraged to set the option if not using the default so all
 #' calls to these functions will use the same source.
@@ -11,7 +11,7 @@
 #' Options:
 #' \itemize{
 #'   \item \code{martin2022} (default) uses a combination of references to generate
-#'   percentiles ages from 1 months through 18 years, without or without known
+#'   distribution values for ages 1 months through 18 years, without or without known
 #'   stature.  This was the only method implemented in version 1 of the pedbp package.
 #'
 #'   \item \code{gemelli1990} uses only the reference values from Gemelli et al.
@@ -43,14 +43,14 @@
 #'
 #' @param q_sbp a vector of systolic blood pressures
 #' @param q_dbp a vector of diastolic blood pressures
-#' @param p_sbp a vector of systolic blood percentiles
-#' @param p_dbp a vector of diastolic blood percentiles
+#' @param p_sbp a vector of systolic blood probabilities; range from [0, 1].
+#' @param p_dbp a vector of diastolic blood probabilities; range from [0, 1].
 #' @param age numeric age, in months
 #' @param male integer value, 1 = male, 0 = female
 #' @param height numeric, in centimeters, can be missing. See Details.
-#' @param height_percentile height percentile to use. See Details.
+#' @param height_percentile height percentile to use; range from [0, 100]. See Details.
 #' @param default_height_percentile default height percentile to use if \code{height} is
-#' missing.
+#' missing; range (0, 100).
 #' @param source the method, or data set, to use as the reference.  See Details.
 #' @param ... not currently used
 #'
@@ -58,11 +58,15 @@
 #' \code{\link{bp_cdf}} for plotting cumulative distribution functions for the
 #' blood pressures.
 #'
-#' @return a \code{pedbp_bp} object.  This is a list of two numeric vectors:
-#' \code{sbp_percentile} (systolic blood pressure) and \code{dbp_percentile}
-#' (diastolic blood pressure).  Additionally, the \code{bp_params} attribute
-#' provides details on the data source and parameters used in the percentile
-#' estimates.
+#' @return A \code{pedbp_bp} object.  This is a list of two numeric vectors for
+#' the systolic and diastolic pressure respectively. The names for the vectors
+#' depends on the call.  \code{p_bp} returns a list of vectors with the names:
+#' \code{sbp_p} and \code{dbp_p}.  \code{q_bp} returns a list of vectors with
+#' names: \code{sbp} and \code{dbp}.  \code{z_bp} returns a list of vectors with
+#' names: \code{sbp_z} and \code{dbp_z}.
+#'
+#' Additionally, a \code{pedbp_bp} object has a \code{bp_params} attribute which
+#' provides details on the data source and parameters used in the estimates.
 #'
 #' @references
 #'
@@ -129,12 +133,21 @@
 #'     )
 #' bp_percentiles
 #'
-#' q_bp(
-#'     p_sbp = bp_percentiles$sbp_percentile
-#'   , p_dbp = bp_percentiles$dbp_percentile
+#' # Standard (z) scores:
+#' z_bp(
+#'     q_sbp = d$sbp..mmHg.
+#'   , q_dbp = d$dbp..mmHg.
 #'   , age   = d$age_months
 #'   , male  = d$male
 #'   )
+#'
+#' q_bp(
+#'     p_sbp = bp_percentiles$sbp_p
+#'   , p_dbp = bp_percentiles$dbp_p
+#'   , age   = d$age_months
+#'   , male  = d$male
+#'   )
+#'
 #'
 #' #############################################################################
 #' # Selecting different source values
@@ -168,19 +181,31 @@ NULL
 
 #' @rdname bp_distribution
 #' @export
-p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+p_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  stopifnot(!is.null(q_sbp) & !is.null(q_dbp))
   source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
-  rtn <- cppBP(qp_sbp = q_sbp, qp_dbp = q_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "percentile")
+  rtn <- cppBP(qp_sbp = q_sbp, qp_dbp = q_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "distribution")
   class(rtn) <- c("pedbp_bp", "pedbp_p_bp")
   rtn
 }
 
 #' @rdname bp_distribution
 #' @export
-q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+q_bp <- function(p_sbp, p_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  stopifnot(!is.null(p_sbp) & !is.null(p_dbp))
   source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
   rtn <- cppBP(qp_sbp = p_sbp, qp_dbp = p_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "quantile")
   class(rtn) <- c("pedbp_bp", "pedbp_q_bp")
+  rtn
+}
+
+#' @rdname bp_distribution
+#' @export
+z_bp <- function(q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, default_height_percentile = 50, source = getOption("pedbp_bp_source", "martin2022"), ...) {
+  stopifnot(!is.null(q_sbp) & !is.null(q_dbp))
+  source <- match.arg(source, choices = c("martin2022", "gemelli1990", "nhlbi", "lo2013", "flynn2017"), several.ok = FALSE)
+  rtn <- cppBP(qp_sbp = q_sbp, qp_dbp = q_dbp, age = age, male = male, height = height, height_percentile = height_percentile, default_height_percentile = default_height_percentile, source = source, type = "zscore")
+  class(rtn) <- c("pedbp_bp", "pedbp_p_bp")
   rtn
 }
 

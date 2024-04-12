@@ -3,31 +3,31 @@ library(pedbp)
 
 ################################################################################
 # Verify error if more than one source
-x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022", "gemelli1990"), type = "percentile"), error = function(e) e)
+x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022", "gemelli1990"), type = "distribution"), error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "'source' should have length 1"))
 
-x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022", "not-a-source"), type = "percentile"), error = function(e) e)
+x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022", "not-a-source"), type = "distribution"), error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "'source' should have length 1"))
 
 ################################################################################
 # Verify error if more than one type
-x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022"), type = c("quantile", "percentile")), error = function(e) e)
+x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022"), type = c("quantile", "distribution")), error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "'type' should have length 1"))
 
 ################################################################################
 # Verify error if source is not a known source
-x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("not-a-source"), type = "percentile"), error = function(e) e)
+x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("not-a-source"), type = "distribution"), error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "Unknown source"))
 
 ################################################################################
-# Verify error if type is not percentile or qualtile
+# Verify error if type is not distribution, qualtile, nor zscore
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022"), type = "no"), error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
-stopifnot(identical(x$message, "type needs to be either 'percentile' or 'quantile'"))
+stopifnot(identical(x$message, "type needs to be one of 'distribution', 'quantile', or 'zscore'"))
 
 ################################################################################
 # verify error if male is not 0 or 1
@@ -160,7 +160,7 @@ x <- tryCatch(pedbp:::cppBP(
                 height_percentile = numeric(5),
                 default_height_percentile = 0.5,
                 source = c("martin2022"),
-                type = "percentile"),
+                type = "distribution"),
               error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
@@ -174,7 +174,7 @@ x <- tryCatch(pedbp:::cppBP(
                 height_percentile = numeric(2),
                 default_height_percentile = 0.5,
                 source = c("martin2022"),
-                type = "percentile"),
+                type = "distribution"),
               error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
@@ -188,7 +188,7 @@ x <- tryCatch(pedbp:::cppBP(
                 height_percentile = numeric(2),
                 default_height_percentile = 0.5,
                 source = c("martin2022"),
-                type = "percentile"),
+                type = "distribution"),
               error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
@@ -202,7 +202,7 @@ x <- tryCatch(pedbp:::cppBP(
                 height_percentile = numeric(2),
                 default_height_percentile = 0.5,
                 source = c("martin2022"),
-                type = "percentile"),
+                type = "distribution"),
               error = function(e) e)
 stopifnot(identical(class(x), c("simpleError", "error", "condition")))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
@@ -219,7 +219,7 @@ x <-
     , height_percentile = NA
     , default_height_percentile = 0.5
     , source = "gemelli1990"
-    , type = "percentile"
+    , type = "distribution"
   )
 stopifnot(identical(class(x), "list"))
 stopifnot(identical(length(x), 2L))
@@ -259,7 +259,7 @@ x <-
     , height_percentile = NA
     , default_height_percentile = 0.5
     , source = "lo2013"
-    , type = "percentile"
+    , type = "distribution"
   )
 stopifnot(identical(class(x), "list"))
 stopifnot(identical(length(x), 2L))
@@ -296,7 +296,7 @@ nq <-
      male   = nhlbi_bp_norms$male,
      age    = nhlbi_bp_norms$age,
      height = NA,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     height_percentile = nhlbi_bp_norms$height_percentile,
      default_height_percentile = 0.5,
      source = "nhlbi",
      type = "quantile"
@@ -309,18 +309,18 @@ np <-
      male   = nhlbi_bp_norms$male,
      age    = nhlbi_bp_norms$age,
      height = NA,
-     height_percentile = nhlbi_bp_norms$height_percentile/100,
+     height_percentile = nhlbi_bp_norms$height_percentile,
      default_height_percentile = 0.5,
      source = "nhlbi",
-     type = "percentile"
+     type = "distribution"
   )
 
 nhlbi_bp <-
   cbind(nhlbi_bp_norms,
         pedbp_sbp = nq$sbp,
         pedbp_dbp = nq$dbp,
-        pedbp_sbp_percentile = np$sbp_percentile * 100,
-        pedbp_dbp_percentile = np$dbp_percentile * 100
+        pedbp_sbp_p = np$sbp_p * 100,
+        pedbp_dbp_p = np$dbp_p * 100
   )
 
 
@@ -329,8 +329,8 @@ stopifnot(max(abs(nhlbi_bp$pedbp_sbp - nhlbi_bp$sbp)) < 2)
 stopifnot(max(abs(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)) < 2)
 
 # All the percentiles are within 2 percentile points:
-stopifnot(max(abs(nhlbi_bp$pedbp_sbp_percentile - nhlbi_bp$bp_percentile)) < 2)
-stopifnot(max(abs(nhlbi_bp$pedbp_dbp_percentile - nhlbi_bp$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp$pedbp_sbp_p - nhlbi_bp$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp$pedbp_dbp_p - nhlbi_bp$bp_percentile)) < 2)
 
 ################################################################################
 # verify output for flynn2017
@@ -341,7 +341,7 @@ nq <-
      male   = flynn2017$male,
      age    = flynn2017$age,
      height = NA,
-     height_percentile = flynn2017$height_percentile/100,
+     height_percentile = flynn2017$height_percentile,
      default_height_percentile = 0.5,
      source = "flynn2017",
      type = "quantile"
@@ -354,18 +354,18 @@ np <-
      male   = flynn2017$male,
      age    = flynn2017$age,
      height = NA,
-     height_percentile = flynn2017$height_percentile/100,
+     height_percentile = flynn2017$height_percentile,
      default_height_percentile = 0.5,
      source = "flynn2017",
-     type = "percentile"
+     type = "distribution"
   )
 
 flynn2017 <-
   cbind(flynn2017,
         pedbp_sbp = nq$sbp,
         pedbp_dbp = nq$dbp,
-        pedbp_sbp_percentile = np$sbp_percentile * 100,
-        pedbp_dbp_percentile = np$dbp_percentile * 100
+        pedbp_sbp_p = np$sbp_p * 100,
+        pedbp_dbp_p = np$dbp_p * 100
   )
 
 
@@ -374,8 +374,8 @@ stopifnot(max(abs(flynn2017$pedbp_sbp - flynn2017$sbp)) < 2)
 stopifnot(max(abs(flynn2017$pedbp_dbp - flynn2017$dbp)) < 2)
 
 # All the percentiles are within 2 percentile points:
-stopifnot(max(abs(flynn2017$pedbp_sbp_percentile - flynn2017$bp_percentile)) < 2)
-stopifnot(max(abs(flynn2017$pedbp_dbp_percentile - flynn2017$bp_percentile)) < 2)
+stopifnot(max(abs(flynn2017$pedbp_sbp_p - flynn2017$bp_percentile)) < 2)
+stopifnot(max(abs(flynn2017$pedbp_dbp_p - flynn2017$bp_percentile)) < 2)
 
 ################################################################################
 # test output for martin2022
@@ -438,7 +438,7 @@ x <-
     height_percentile = test_martin2022$height_percentile,
     default_height_percentile = 0.8,
     source = "martin2022",
-    type = 'percentile')
+    type = 'distribution')
 
 new_hash <- digest::digest(test_martin2022)
 stopifnot(identical(original_hash, new_hash))

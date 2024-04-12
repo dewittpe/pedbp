@@ -20,7 +20,7 @@ gs_chart(
 parameters needed for the estimate.  Valid values are "CDC" and "WHO".  This
 can be set explicitly, or by using the \code{pedbp_pgs_source} option.}
 
-\item{p}{a numeric vector of the percentiles, provided in values between 0
+\item{p}{a numeric vector of the probabilities, provided in values between 0
 and 1, to plot}
 }
 \value{
@@ -57,13 +57,25 @@ gs_chart("weight_for_height", male = 0:1, p = c(0.10, 0.80))
 }
 \seealso{
 \itemize{
-\item \code{vignette(topic = "growth-standards", package = "pedbp")}
-\item \code{\link{bmi_for_age}}
-\item \code{\link{head_circumference_for_age}}
-\item \code{\link{height_for_age}}
-\item \code{\link{length_for_age}}
-\item \code{\link{weight_for_age}}
-\item \code{\link{weight_for_length}}
-\item \code{\link{weight_for_height}}
+\item Distribuiton functions:
+  \itemize{
+    \item \code{\link{bmi_for_age}}
+    \item \code{\link{head_circumference_for_age}}
+    \item \code{\link{height_for_age}}
+    \item \code{\link{length_for_age}}
+    \item \code{\link{weight_for_age}}
+    \item \code{\link{weight_for_length}}
+    \item \code{\link{weight_for_height}}
+  }
+\item Plotting functions:
+  \itemize{
+    \item \code{\link{gs_chart}}
+    \item \code{\link{gs_cdf}}
+  }
+\item Other things:
+  \itemize{
+    \item \code{vignette(topic = "growth-standards", package = "pedbp")}
+    \item package website \url{https://www.peteredewitt.com/pedbp}
+  }
 }
 }

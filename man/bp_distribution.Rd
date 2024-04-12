@@ -4,7 +4,8 @@
 \alias{bp_distribution}
 \alias{p_bp}
 \alias{q_bp}
-\title{Estimate Pediatric Blood Pressure Distribution}
+\alias{z_bp}
+\title{Pediatric Blood Pressure Distribution}
 \usage{
 p_bp(
   q_sbp,
@@ -13,7 +14,7 @@ p_bp(
   male,
   height = NA,
   height_percentile = NA,
-  default_height_percentile = 0.5,
+  default_height_percentile = 50,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -25,7 +26,19 @@ q_bp(
   male,
   height = NA,
   height_percentile = NA,
-  default_height_percentile = 0.5,
+  default_height_percentile = 50,
+  source = getOption("pedbp_bp_source", "martin2022"),
+  ...
+)
+
+z_bp(
+  q_sbp,
+  q_dbp,
+  age,
+  male,
+  height = NA,
+  height_percentile = NA,
+  default_height_percentile = 50,
   source = getOption("pedbp_bp_source", "martin2022"),
   ...
 )
@@ -41,32 +54,36 @@ q_bp(
 
 \item{height}{numeric, in centimeters, can be missing. See Details.}
 
-\item{height_percentile}{height percentile to use. See Details.}
+\item{height_percentile}{height percentile to use; range from [0, 100]. See Details.}
 
 \item{default_height_percentile}{default height percentile to use if \code{height} is
-missing.}
+missing; range (0, 100).}
 
 \item{source}{the method, or data set, to use as the reference.  See Details.}
 
 \item{...}{not currently used}
 
-\item{p_sbp}{a vector of systolic blood percentiles}
+\item{p_sbp}{a vector of systolic blood probabilities; range from [0, 1].}
 
-\item{p_dbp}{a vector of diastolic blood percentiles}
+\item{p_dbp}{a vector of diastolic blood probabilities; range from [0, 1].}
 }
 \value{
-a \code{pedbp_bp} object.  This is a list of two numeric vectors:
-\code{sbp_percentile} (systolic blood pressure) and \code{dbp_percentile}
-(diastolic blood pressure).  Additionally, the \code{bp_params} attribute
-provides details on the data source and parameters used in the percentile
-estimates.
+A \code{pedbp_bp} object.  This is a list of two numeric vectors for
+the systolic and diastolic pressure respectively. The names for the vectors
+depends on the call.  \code{p_bp} returns a list of vectors with the names:
+\code{sbp_p} and \code{dbp_p}.  \code{q_bp} returns a list of vectors with
+names: \code{sbp} and \code{dbp}.  \code{z_bp} returns a list of vectors with
+names: \code{sbp_z} and \code{dbp_z}.
+
+Additionally, a \code{pedbp_bp} object has a \code{bp_params} attribute which
+provides details on the data source and parameters used in the estimates.
 }
 \description{
-Percentile and quantile functions for pediatric blood pressure.
+Distribution and quantile functions for pediatric blood pressure.
 }
 \details{
 \code{source} is used to specify the method or source data sets by which the
-percentiles are generated.  This can be controlled by the option
+distribuitons are estimated.  This can be controlled by the option
 \code{pedbp_bp_source}.
 End users are encouraged to set the option if not using the default so all
 calls to these functions will use the same source.
@@ -74,7 +91,7 @@ calls to these functions will use the same source.
 Options:
 \itemize{
   \item \code{martin2022} (default) uses a combination of references to generate
-  percentiles ages from 1 months through 18 years, without or without known
+  distribution values for ages 1 months through 18 years, without or without known
   stature.  This was the only method implemented in version 1 of the pedbp package.
 
   \item \code{gemelli1990} uses only the reference values from Gemelli et al.
@@ -144,12 +161,21 @@ bp_percentiles <-
     )
 bp_percentiles
 
-q_bp(
-    p_sbp = bp_percentiles$sbp_percentile
-  , p_dbp = bp_percentiles$dbp_percentile
+# Standard (z) scores:
+z_bp(
+    q_sbp = d$sbp..mmHg.
+  , q_dbp = d$dbp..mmHg.
   , age   = d$age_months
   , male  = d$male
   )
+
+q_bp(
+    p_sbp = bp_percentiles$sbp_p
+  , p_dbp = bp_percentiles$dbp_p
+  , age   = d$age_months
+  , male  = d$male
+  )
+
 
 #############################################################################
 # Selecting different source values

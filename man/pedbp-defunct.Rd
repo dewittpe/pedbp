@@ -31,7 +31,7 @@ q_weight_for_length_inf(p, length, male)
 z_weight_for_length_inf(q, length, male)
 }
 \arguments{
-\item{q, p}{quantile or percentile}
+\item{q, p}{quantile or probability}
 
 \item{age}{age in months}
 

@@ -14,7 +14,7 @@ plms(x, l, m, s, ...)
 qlms(x, l, m, s, ...)
 }
 \arguments{
-\item{x}{quantile or percentile value}
+\item{x}{quantile or probability value}
 
 \item{l, m, s}{the lms values}
 
