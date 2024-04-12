@@ -62,8 +62,8 @@ bp_cdf.pedbp_p_bp <- function(x, ...) {
       , male = attr(x, "bp_params")[["male"]]
       , height_percentile = attr(x, "bp_params")[["height_percentile"]] / 100
       , source = attr(x, "bp_params")[["source"]]
-      , sbp = stats::qnorm(x$sbp_percentile, mean = attr(x, "bp_params")$sbp_mean, sd = attr(x, "bp_params")$sbp_sd)
-      , dbp = stats::qnorm(x$dbp_percentile, mean = attr(x, "bp_params")$dbp_mean, sd = attr(x, "bp_params")$dbp_sd)
+      , sbp = stats::qnorm(x$sbp_p, mean = attr(x, "bp_params")$sbp_mean, sd = attr(x, "bp_params")$sbp_sd)
+      , dbp = stats::qnorm(x$dbp_p, mean = attr(x, "bp_params")$dbp_mean, sd = attr(x, "bp_params")$dbp_sd)
   )
 }
 
@@ -101,14 +101,14 @@ bp_cdf.default <- function(age, male, height = NA, height_percentile = 0.50, sou
 
   od <- data.frame(  mmHg = c(sbp, dbp)
                    , bp   = gl(n = 2, k = length(sbp), labels = c('Systolic', 'Diastolic'))
-                   , p    = c(pbp$sbp_percentile, pbp$dbp_percentile)
+                   , p    = c(pbp$sbp_p, pbp$dbp_p)
                    )
   dseg <- data.frame(
                        bp = gl(n = 2, k = 2, labels = c('Systolic', 'Diastolic'))
-                     , p    = c(pbp$sbp_percentile, pbp$sbp_percentile, pbp$dbp_percentile, pbp$dbp_percentile)
-                     , pend = c(pbp$sbp_percentile, -Inf,               pbp$dbp_percentile, -Inf)
-                     , mmHg = c(-Inf,               sbp,                -Inf,               dbp)
-                     , mmHgend = c(sbp,             sbp,                dbp,                dbp)
+                     , p    = c(pbp$sbp_p, pbp$sbp_p, pbp$dbp_p, pbp$dbp_p)
+                     , pend = c(pbp$sbp_p, -Inf, pbp$dbp_p, -Inf)
+                     , mmHg = c(-Inf, sbp, -Inf, dbp)
+                     , mmHgend = c(sbp, sbp, dbp, dbp)
   )
 
   bpcdfplot(od, dseg, params)

@@ -206,8 +206,8 @@ str(bp_percentiles)
 #'
 #' Going from percentiles back to quantiles:
 q_bp(
-       p_sbp  = bp_percentiles$sbp_percentile
-     , p_dbp  = bp_percentiles$dbp_percentile
+       p_sbp  = bp_percentiles$sbp_p
+     , p_dbp  = bp_percentiles$dbp_p
      , age    = eg_data$age
      , male   = eg_data$male
      , height = eg_data$height

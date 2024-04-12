@@ -1,5 +1,20 @@
 # pedbp 2.0.0
 
+## Potential Breaking Changes
+
+* API change to the growth standard distribution functions
+  * this includes a name change from "vital signs" to "growth standards"
+  * complete redo for how the methods are implemented
+  * extended data sources
+
+* Use of the terms "percentile", "distribution", and "probability" are more
+  robust.  In v1 "percentile" could have refered to any of those terms.  Now,
+  percentile implies a value between 0 and 100, distribution (value) or
+  probability, denoted with a p, are values between 0 and 1.
+
+
+## Additions and Major Changes
+
 * Added features to blood pressure distribution functions
   * functions gain the argument `source` to specify the reference values used
     to generate the percentiles.  Default to `martin2022` to keep the same
@@ -11,11 +26,6 @@
     children and adolescents." Pediatrics 140, no. 3 (2017).
   * Implementation has be moved into c++ and the speed improvement compared to
     version 1 is huge.  v2 is more than 200 times faster than v1.
-
-* API change to the growth standard distribution functions
-  * this includes a name change from "vital signs" to "growth standards"
-  * complete redo for how the methods are implemented
-  * extended data sources
 
 * Add `z_bp` to return z-scores for blood pressure; a completment to the
   existing `q_bp` and `p_bp` methods.

@@ -210,8 +210,8 @@ str(bp_percentiles)
 #'
 #' Going from percentiles back to quantiles:
 q_bp(
-       p_sbp  = bp_percentiles$sbp_percentile
-     , p_dbp  = bp_percentiles$dbp_percentile
+       p_sbp  = bp_percentiles$sbp_p
+     , p_dbp  = bp_percentiles$dbp_p
      , age    = eg_data$age
      , male   = eg_data$male
      , height = eg_data$height
@@ -320,8 +320,8 @@ f_bp <-
   cbind(flynn2017,
         pedbp_sbp = fq$sbp,
         pedbp_dbp = fq$dbp,
-        pedbp_sbp_percentile = fp$sbp_percentile * 100,
-        pedbp_dbp_percentile = fp$dbp_percentile * 100
+        pedbp_sbp_p = fp$sbp_p * 100,
+        pedbp_dbp_p = fp$dbp_p * 100
   )
 
 #'
@@ -336,13 +336,13 @@ stopifnot(max(abs(f_bp$pedbp_dbp - f_bp$dbp)) < 2)
 #'
 #' All the percentiles estiamtes are within are within 2 percentile points:
 #'
-summary(f_bp$pedbp_sbp_percentile - f_bp$bp_percentile)
-summary(f_bp$pedbp_dbp_percentile - f_bp$bp_percentile)
+summary(f_bp$pedbp_sbp_p - f_bp$bp_percentile)
+summary(f_bp$pedbp_dbp_p - f_bp$bp_percentile)
 
 #'
 #+ include = FALSE
-stopifnot(max(abs(f_bp$pedbp_sbp_percentile - f_bp$bp_percentile)) < 2)
-stopifnot(max(abs(f_bp$pedbp_dbp_percentile - f_bp$bp_percentile)) < 2)
+stopifnot(max(abs(f_bp$pedbp_sbp_p - f_bp$bp_percentile)) < 2)
+stopifnot(max(abs(f_bp$pedbp_dbp_p - f_bp$bp_percentile)) < 2)
 
 #'
 #' A helpful set of graphics are shown below.  Panels A and C show the estimated
@@ -400,8 +400,8 @@ nhlbi_bp <-
   cbind(nhlbi_bp_norms,
         pedbp_sbp = nq$sbp,
         pedbp_dbp = nq$dbp,
-        pedbp_sbp_percentile = np$sbp_percentile * 100,
-        pedbp_dbp_percentile = np$dbp_percentile * 100
+        pedbp_sbp_p = np$sbp_p * 100,
+        pedbp_dbp_p = np$dbp_p * 100
   )
 
 
@@ -419,13 +419,13 @@ stopifnot(max(abs(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)) < 2)
 #'
 #' All the percentiles are within 2 percentile points:
 #'
-summary(nhlbi_bp$pedbp_sbp_percentile - nhlbi_bp$bp_percentile)
-summary(nhlbi_bp$pedbp_dbp_percentile - nhlbi_bp$bp_percentile)
+summary(nhlbi_bp$pedbp_sbp_p - nhlbi_bp$bp_percentile)
+summary(nhlbi_bp$pedbp_dbp_p - nhlbi_bp$bp_percentile)
 
 #'
 #+ include = FALSE
-stopifnot(max(abs(nhlbi_bp$pedbp_sbp_percentile - nhlbi_bp$bp_percentile)) < 2)
-stopifnot(max(abs(nhlbi_bp$pedbp_dbp_percentile - nhlbi_bp$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp$pedbp_sbp_p - nhlbi_bp$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp$pedbp_dbp_p - nhlbi_bp$bp_percentile)) < 2)
 
 #'
 #' A helpful set of graphics are shown below.  Panels A and C show the estimated
@@ -477,8 +477,8 @@ names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "sbp"] <- "flynn_sbp"
 names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "dbp"] <- "flynn_dbp"
 names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp"] <- "pedbp_flynn_sbp"
 names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp"] <- "pedbp_flynn_dbp"
-names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp_percentile"] <- "pedbp_flynn_sbp_percentile"
-names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp_percentile"] <- "pedbp_flynn_dbp_percentile"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp_p"] <- "pedbp_flynn_sbp_p"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp_p"] <- "pedbp_flynn_dbp_p"
 
 nhlbi_vs_flynn <-
   merge(nhlbi_vs_flynn, nhlbi_bp, all = TRUE, by = c("male", "age", "height_percentile"))
@@ -488,8 +488,8 @@ names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "sbp"] <- "nhlbi_sbp"
 names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "dbp"] <- "nhlbi_dbp"
 names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp"] <- "pedbp_nhlbi_sbp"
 names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp"] <- "pedbp_nhlbi_dbp"
-names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp_percentile"] <- "pedbp_nhlbi_sbp_percentile"
-names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp_percentile"] <- "pedbp_nhlbi_dbp_percentile"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_sbp_p"] <- "pedbp_nhlbi_sbp_p"
+names(nhlbi_vs_flynn)[names(nhlbi_vs_flynn) == "pedbp_dbp_p"] <- "pedbp_nhlbi_dbp_p"
 
 pA <- ggplot2::ggplot(nhlbi_vs_flynn) +
   ggplot2::theme_bw() +

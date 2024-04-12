@@ -121,7 +121,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     LUT = LUT.row(aindex(aindex.n_elem - 1));
     LUT.resize(LUT.n_rows, LUT.n_cols + 2);
 
-    if (type == "percentile") {
+    if (type == "distribution") {
       LUT.col(LUT.n_cols - 2) = R::pnorm(sbp, LUT.col(1)(0), LUT.col(2)(0), 1, 0);
       LUT.col(LUT.n_cols - 1) = R::pnorm(dbp, LUT.col(3)(0), LUT.col(4)(0), 1, 0);
     } else if (type == "quantile") {
@@ -131,7 +131,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
       LUT.col(LUT.n_cols - 2) = (sbp - LUT.col(1)(0)) / LUT.col(2)(0);
       LUT.col(LUT.n_cols - 1) = (dbp - LUT.col(3)(0)) / LUT.col(4)(0);
     } else {
-      Rf_error("type needs to be one of 'percentile', 'quantile', or 'zscore'");
+      Rf_error("type needs to be one of 'distribution', 'quantile', or 'zscore'");
     }
 
     return Rcpp::wrap(LUT);
@@ -284,8 +284,8 @@ Rcpp::List cppBP(
 
   // Create Return object
   Rcpp::List rtn;
-  if (type(0) == "percentile") {
-    rtn = Rcpp::List::create(_["sbp_percentile"] = lutbp(_, 7), _["dbp_percentile"] = lutbp(_, 8));
+  if (type(0) == "distribution") {
+    rtn = Rcpp::List::create(_["sbp_p"] = lutbp(_, 7), _["dbp_p"] = lutbp(_, 8));
   } else if (type(0) == "quantile") {
     rtn = Rcpp::List::create(_["sbp"] = lutbp(_, 7), _["dbp"] = lutbp(_, 8));
   } else if (type(0) == "zscore") {

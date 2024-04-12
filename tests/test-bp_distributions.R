@@ -151,8 +151,8 @@ nhlbi_bp <-
   cbind(nhlbi_bp_norms,
         pedbp_sbp = nq$sbp,
         pedbp_dbp = nq$dbp,
-        pedbp_sbp_percentile = np$sbp_percentile * 100,
-        pedbp_dbp_percentile = np$dbp_percentile * 100
+        pedbp_sbp_p = np$sbp_p * 100,
+        pedbp_dbp_p = np$dbp_p * 100
   )
 
 # All the quantile estimates are within 2 mmHg:
@@ -160,8 +160,8 @@ stopifnot(max(abs(nhlbi_bp$pedbp_sbp - nhlbi_bp$sbp)) < 2)
 stopifnot(max(abs(nhlbi_bp$pedbp_dbp - nhlbi_bp$dbp)) < 2)
 
 # All the percentiles are within 2 percentile points:
-stopifnot(max(abs(nhlbi_bp$pedbp_sbp_percentile - nhlbi_bp$bp_percentile)) < 2)
-stopifnot(max(abs(nhlbi_bp$pedbp_dbp_percentile - nhlbi_bp$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp$pedbp_sbp_p - nhlbi_bp$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp$pedbp_dbp_p - nhlbi_bp$bp_percentile)) < 2)
 
 ################################################################################
 # verify output for flynn2017
@@ -193,8 +193,8 @@ flynn2017 <-
   cbind(flynn2017,
         pedbp_sbp = nq$sbp,
         pedbp_dbp = nq$dbp,
-        pedbp_sbp_percentile = np$sbp_percentile * 100,
-        pedbp_dbp_percentile = np$dbp_percentile * 100
+        pedbp_sbp_p = np$sbp_p * 100,
+        pedbp_dbp_p = np$dbp_p * 100
   )
 
 
@@ -203,8 +203,8 @@ stopifnot(max(abs(flynn2017$pedbp_sbp - flynn2017$sbp)) < 2)
 stopifnot(max(abs(flynn2017$pedbp_dbp - flynn2017$dbp)) < 2)
 
 # All the percentiles are within 2 percentile points:
-stopifnot(max(abs(flynn2017$pedbp_sbp_percentile - flynn2017$bp_percentile)) < 2)
-stopifnot(max(abs(flynn2017$pedbp_dbp_percentile - flynn2017$bp_percentile)) < 2)
+stopifnot(max(abs(flynn2017$pedbp_sbp_p - flynn2017$bp_percentile)) < 2)
+stopifnot(max(abs(flynn2017$pedbp_dbp_p - flynn2017$bp_percentile)) < 2)
 
 ################################################################################
 # test output for martin2022
@@ -320,8 +320,8 @@ stopifnot(isTRUE(all.equal(bp_params1, bp_params2))) # test needed re #18
 
 x$q_sbp <- yq$sbp
 x$q_dbp <- yq$dbp
-x$p_sbp <- yp$sbp_percentile
-x$p_dbp <- yp$dbp_percentile
+x$p_sbp <- yp$sbp_p
+x$p_dbp <- yp$dbp_p
 
 #names(bp_params1) <- paste0(names(bp_params1), "1")
 #names(bp_params2) <- paste0(names(bp_params2), "2")
