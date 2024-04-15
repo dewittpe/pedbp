@@ -46,10 +46,12 @@ server <- function(input, output, session) {
       x <- eval(as.call(cl))
 
       rtn <- list(sbp_mmHg = input$bp_sbp_mmHg,
-                     sbp_p = x$sbp_p,
-                     dbp_mmHg = input$bp_dbp_mmHg,
-                     dbp_percentile = x$dbp_percentile,
-                     bp_params = attr(x, "bp_params"))
+                  sbp_p = x$sbp_p,
+                  dbp_mmHg = input$bp_dbp_mmHg,
+                  dbp_p = x$dbp_p,
+                  bp_params = attr(x, "bp_params"))
+
+      print(rtn)
 
     } else if (input$bp_sbp_status == "mmHg" & input$bp_dbp_status == "percentile") {
       scl <- list(quote(p_bp))
@@ -64,25 +66,16 @@ server <- function(input, output, session) {
       scl <- eval(as.call(scl))
       dcl <- eval(as.call(dcl))
 
-      print("\n\n......\n\n")
-      print("attr(scl, 'bp_params')")
-      print(attr(scl, 'bp_params'))
-      print("attr(dcl, 'bp_params')")
-      print(attr(dcl, 'bp_params'))
-
-
-      stopifnot(isTRUE(all.equal(attr(scl, "bp_params"), attr(dcl, "bp_params"))))
-
       rtn <- list(sbp_mmHg = input$bp_sbp_mmHg,
-                     sbp_p = scl$sbp_p / 100,
-                     dbp_mmHg = dcl$dbp,
-                     dbp_percentile = input$bp_dbp_percentile / 100,
-                     bp_params = attr(scl, "bp_params")
+                  sbp_p = scl$sbp_p,
+                  dbp_mmHg = dcl$dbp,
+                  dbp_p = input$bp_dbp_percentile / 100,
+                  bp_params = attr(scl, "bp_params")
                      )
 
     } else if (input$bp_sbp_status == "percentile" & input$bp_dbp_status == "mmHg") {
       scl <- list(quote(q_bp))
-      scl[["p_sbp"]] <- input$bp_sbp_p / 100
+      scl[["p_sbp"]] <- input$bp_sbp_percentile / 100
       scl[["p_dbp"]] <- NA_real_
       dcl <- list(quote(p_bp))
       dcl[["q_sbp"]] <- NA_real_
@@ -93,24 +86,22 @@ server <- function(input, output, session) {
       scl <- eval(as.call(scl))
       dcl <- eval(as.call(dcl))
 
-      stopifnot(isTRUE(all.equal(attr(scl, "bp_params"), attr(dcl, "bp_params"))))
-
       rtn <- list(sbp_mmHg = scl$sbp,
-                     sbp_p = input$bp_sbp_p / 100,
+                     sbp_p = input$bp_sbp_percentile / 100,
                      dbp_mmHg = input$bp_dbp_mmHg,
-                     dbp_percentile = dcl$dbp_percentile,
+                     dbp_p = dcl$dbp_p,
                      bp_params = attr(scl, "bp_params")
                      )
 
     } else if (input$bp_sbp_status == "percentile" & input$bp_dbp_status == "percentile") {
       cl <- list(quote(q_bp))
-      cl[["p_sbp"]] <- input$bp_sbp_p / 100
+      cl[["p_sbp"]] <- input$bp_sbp_percentile / 100
       cl[["p_dbp"]] <- input$bp_dbp_percentile / 100
       cl <- c(cl, other_args)
       x <- eval(as.call(cl))
 
       rtn <- list(sbp_mmHg = x$sbp,
-                     sbp_p = input$bp_sbp_p / 100,
+                     sbp_p = input$bp_sbp_percentile / 100,
                      dbp_mmHg = x$dbp,
                      dbp_percentile = input$bp_dbp_percentile / 100,
                      bp_params = attr(x, "bp_params"))
@@ -122,8 +113,8 @@ server <- function(input, output, session) {
     dseg <-
       data.frame(
           bp   = gl(n = 2, k = 2, labels = c('Systolic', 'Diastolic')),
-          p    = c(rtn$sbp_p, rtn$sbp_p, rtn$dbp_percentile, rtn$dbp_percentile),
-          pend = c(rtn$sbp_p, -Inf, rtn$dbp_percentile, -Inf),
+          p    = c(rtn$sbp_p, rtn$sbp_p, rtn$dbp_p, rtn$dbp_p),
+          pend = c(rtn$sbp_p, -Inf, rtn$dbp_p, -Inf),
           mmHg = c(-Inf, rtn$sbp_mmHg, -Inf, rtn$dbp_mmHg),
           mmHgend = c(rtn$sbp_mmHg, rtn$sbp_mmHg, rtn$dbp_mmHg, rtn$dbp_mmHg)
     )
@@ -155,7 +146,7 @@ server <- function(input, output, session) {
     x <- bp()
     data.table("bp" = c("Systolic", "Diastolic"),
                "mmHg" = c(x$sbp_mmHg, x$dbp_mmHg),
-               "%itle" = 100*c(x$sbp_p, x$dbp_percentile))
+               "%itle" = 100*c(x$sbp_p, x$dbp_p))
   })
 
   ##############################################################################
