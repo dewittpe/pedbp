@@ -134,7 +134,7 @@ p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1)
 p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height = 103)
 
 #'
-#' For the age and sex, the height of 103 is approimately the
+#' For the age and sex, the height of 103 is approximately the
 {{ frmt(as.integer(100 * p_height_for_age(103, male = 1, age = 44))) %s% "th" }}
 #' percentile.
 p_height_for_age(103, male = 1, age = 44)
@@ -334,7 +334,7 @@ stopifnot(max(abs(f_bp$pedbp_sbp - f_bp$sbp)) < 2)
 stopifnot(max(abs(f_bp$pedbp_dbp - f_bp$dbp)) < 2)
 
 #'
-#' All the percentiles estiamtes are within are within 2 percentile points:
+#' All the percentiles estimates are within are within 2 percentile points:
 #'
 summary(f_bp$pedbp_sbp_p - f_bp$bp_percentile)
 summary(f_bp$pedbp_dbp_p - f_bp$bp_percentile)
@@ -346,7 +346,7 @@ stopifnot(max(abs(f_bp$pedbp_dbp_p - f_bp$bp_percentile)) < 2)
 
 #'
 #' A helpful set of graphics are shown below.  Panels A and C show the estimated
-#' blood pressure quantiles proived by the
+#' blood pressure quantiles provide by the
 {{ qwraps2::Rpkg(pedbp) }}
 #' package (y-axis) against the published quantiles from @flynn2017clinical for
 #' systolic and diastolic blood pressures respectively.
@@ -429,7 +429,7 @@ stopifnot(max(abs(nhlbi_bp$pedbp_dbp_p - nhlbi_bp$bp_percentile)) < 2)
 
 #'
 #' A helpful set of graphics are shown below.  Panels A and C show the estimated
-#' blood pressure quantiles proived by the
+#' blood pressure quantiles provide by the
 {{ qwraps2::Rpkg(pedbp) }}
 #' package (y-axis) against the published quantiles from @nhlbi2011expert for
 #' systolic and diastolic blood pressures respectively.
@@ -460,7 +460,7 @@ ggpubr::ggarrange(
 #'
 #' ## NHLBI vs Flynn 2017
 #'
-#' The NHLBI data included overweight and obsese children whereas Flynn excluded
+#' The NHLBI data included overweight and obese children whereas Flynn excluded
 #' them.  As a result, the estimates for blood pressures can differ
 #' significantly between the two sources.
 #'
@@ -521,7 +521,7 @@ ggpubr::ggarrange(
 #'
 #' To you can get blood pressure charts for any combination of inputs using
 {{ qwraps2::backtick(bp_chart) %s% "."}}
-#' For example, the blood presure percentiles when using
+#' For example, the blood pressure percentiles when using
 {{ qwraps2::backtick("source = 'martin2022'", dequote = TRUE) }}
 #' and height is unknown are:
 #+ fig.height = 7, fig.width = 10

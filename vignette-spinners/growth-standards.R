@@ -49,7 +49,7 @@ library(pedbp)
 #'    b. weight for length
 #'
 #' All lengths/heights are in centimeters, ages in months, and weights in
-#' kilograms.  Stature is used to refer both hegith and length; specific
+#' kilograms.  Stature is used to refer both height and length; specific
 #' methods are provided for each.
 #'
 #' # Method - LMS
@@ -80,7 +80,7 @@ library(pedbp)
 #' # Growth Standards
 #'
 #' Each of the growth standard metrics have quantile,
-#' distribution, and z-score function with the naming convension of
+#' distribution, and z-score function with the naming convention of
 {{ "(" %s% qwraps2::backtick("q_<metric>", dequote = TRUE) %s% "),"}}
 {{ "(" %s% qwraps2::backtick("p_<metric>", dequote = TRUE) %s% "), and"}}
 {{ "(" %s% qwraps2::backtick("z_<metric>", dequote = TRUE) %s% "),"}}
@@ -90,7 +90,7 @@ library(pedbp)
 {{ qwraps2::backtick(gs_chart) }}
 #' for building growth standard charts with percentile curves, and
 {{ qwraps2::backtick(gs_cdf) }}
-#' for plotting the cummulative distribution function for a given set of inputs.
+#' for plotting the cumulative distribution function for a given set of inputs.
 #'
 #' **Example**
 #'
@@ -105,14 +105,14 @@ p_bmi_for_age(21, male = 1, age = 13 * 12) # default source is CDC
 p_bmi_for_age(21, male = 1, age = 13 * 12, source = c("CDC", "WHO"))
 
 #'
-#' An easy way to visualize the BMI distribuiton is to use the growth standard
+#' An easy way to visualize the BMI distribution is to use the growth standard
 #' chart
 #+ fig.width = 7, fig.height = 5
 gs_chart(metric = "bmi_for_age", male = 1, source = "CDC") +
   ggplot2::geom_point(x = 13 * 12, y = 21, inherit.aes = FALSE)
 
 #'
-#' and a cummulative distribuiton function
+#' and a cumulative distribution function
 #+ fig.width = 7, fig.height = 5
 gs_cdf(metric = "bmi_for_age", male = 1, age = 13*12) +
    ggplot2::geom_point(x = 21, y = p_bmi_for_age(21, male = 1, age = 13*12))

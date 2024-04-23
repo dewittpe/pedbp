@@ -123,7 +123,7 @@ z_length_for_age(q = 88, male = 1, age = 28, source = "WHO")
 }
 \seealso{
 \itemize{
-\item Distribuiton functions:
+\item Distribution functions:
   \itemize{
     \item \code{\link{bmi_for_age}}
     \item \code{\link{head_circumference_for_age}}

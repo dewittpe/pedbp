@@ -81,7 +81,7 @@ legend("bottomright", col = 1:2, pch = 16:17, legend = c("WHO", "CDC"))
 }
 \seealso{
 \itemize{
-\item Distribuiton functions:
+\item Distribution functions:
   \itemize{
     \item \code{\link{bmi_for_age}}
     \item \code{\link{head_circumference_for_age}}

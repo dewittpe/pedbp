@@ -41,7 +41,7 @@ library(pedbp)
 #' 5, weight for stature.
 #'
 #' All lengths/heights are in centimeters, ages in months, and weights in
-#' kilograms.  Stature is used to refer both hegith and length; Specific
+#' kilograms.  Stature is used to refer both height and length; Specific
 #' methods are provided for each.
 #'
 #' # Method - LMS
@@ -211,7 +211,7 @@ ggplot2::ggplot(data = sfa) +
   ggplot2::theme(legend.position = "bottom")
 
 #'
-#' The following image shows the diffrence in the quantile values between height
+#' The following image shows the difference in the quantile values between height
 #' and length for the same age.
 #'
 #+ echo = FALSE, fig.width = 7, fig.height = 7
@@ -235,7 +235,7 @@ ggplot2::ggplot(data = sfa[age <= 72]) +
 
 
 #'
-#' ### Legnth for Age
+#' ### Length for Age
 #'
 #' Length for age quantiles are found via
 {{ paste0(qwraps2::backtick(q_length_for_age), ".") }}
@@ -338,7 +338,7 @@ ggplot2::ggplot(data = wfs) +
   ggplot2::theme(legend.position = "bottom")
 
 #'
-#' The 60th weight qualtile for a 1.2 meter tall male is
+#' The 60th weight quantile for a 1.2 meter tall male is
 q_weight_for_height(p = 0.60, male = 1, height = 120, source = "CDC")
 q_weight_for_height(p = 0.60, male = 1, height = 120, source = "WHO")
 
@@ -360,7 +360,7 @@ p_weight_for_length(q = 14, male = 1, length = 88, source = "CDC")
 p_weight_for_length(q = 14, male = 1, length = 88, source = "WHO")
 
 #'
-#' Correseponding standard scores
+#' Corresponding standard scores
 z_weight_for_height(q = 14, male = 1, height = 88, source = "CDC")
 z_weight_for_height(q = 14, male = 1, height = 88, source = "WHO")
 z_weight_for_length(q = 14, male = 1, length = 88, source = "CDC")

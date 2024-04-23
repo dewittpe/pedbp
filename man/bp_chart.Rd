@@ -15,7 +15,7 @@ bp_chart(
 )
 }
 \arguments{
-\item{bp}{character vector controling if the systolic and/or the diastolic
+\item{bp}{character vector controlling if the systolic and/or the diastolic
 pressures are plotted}
 
 \item{male}{integer value, 1 = male, 0 = female}

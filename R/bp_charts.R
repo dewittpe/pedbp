@@ -4,7 +4,7 @@
 #' height, and source.
 #'
 #' @inheritParams bp_distribution
-#' @param bp character vector controling if the systolic and/or the diastolic
+#' @param bp character vector controlling if the systolic and/or the diastolic
 #' pressures are plotted
 #' @param p a numeric vector of the percentiles, provided in values between 0
 #' and 1, to plot

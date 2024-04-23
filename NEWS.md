@@ -8,7 +8,7 @@
   * extended data sources
 
 * Use of the terms "percentile", "distribution", and "probability" are more
-  robust.  In v1 "percentile" could have refered to any of those terms.  Now,
+  robust.  In v1 "percentile" could have referred to any of those terms.  Now,
   percentile implies a value between 0 and 100, distribution (value) or
   probability, denoted with a p, are values between 0 and 1.
 
@@ -27,7 +27,7 @@
   * Implementation has be moved into c++ and the speed improvement compared to
     version 1 is huge.  v2 is more than 200 times faster than v1.
 
-* Add `z_bp` to return z-scores for blood pressure; a completment to the
+* Add `z_bp` to return z-scores for blood pressure; a complement to the
   existing `q_bp` and `p_bp` methods.
 
 * Create S3 method for `bp_cdf` plotting [#9](https://github.com/dewittpe/pedbp/issues/9)
@@ -47,7 +47,7 @@
 
 ## Improvements
 
-* `est_norm` calls `stats::optim` with `method = "L-BFGS-B"`, `lower = c(-Inf, 0)`, and `upper = c(Inf, Inf))` to make sure the sd estimate is non-negative.
+* `est_norm` calls `stats::optim` with `method = "L-BFGS-B"`, `lower = c(-Inf, 0)`, and `upper = c(Inf, Inf))` to make sure the standard deviation estimate is non-negative.
 * `est_norm` checks for sorted inputs.
 
 # pedbp 1.0.2

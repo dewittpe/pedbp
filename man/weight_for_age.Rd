@@ -83,7 +83,7 @@ z_weight_for_age(q = 42, age = 13 * 12, male = 0, source = "WHO")
 }
 \seealso{
 \itemize{
-\item Distribuiton functions:
+\item Distribution functions:
   \itemize{
     \item \code{\link{bmi_for_age}}
     \item \code{\link{head_circumference_for_age}}

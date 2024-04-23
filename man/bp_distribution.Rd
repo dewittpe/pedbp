@@ -83,7 +83,7 @@ Distribution and quantile functions for pediatric blood pressure.
 }
 \details{
 \code{source} is used to specify the method or source data sets by which the
-distribuitons are estimated.  This can be controlled by the option
+distributions are estimated.  This can be controlled by the option
 \code{pedbp_bp_source}.
 End users are encouraged to set the option if not using the default so all
 calls to these functions will use the same source.

@@ -87,7 +87,7 @@ tryCatch(q_head_circumference_for_age(0.5, male = 0, age = 24, source = "WHO"),
 }
 \seealso{
 \itemize{
-\item Distribuiton functions:
+\item Distribution functions:
   \itemize{
     \item \code{\link{bmi_for_age}}
     \item \code{\link{head_circumference_for_age}}
