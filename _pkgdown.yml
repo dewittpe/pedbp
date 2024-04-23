@@ -8,3 +8,71 @@ articles:
   - bp-distributions_ARTICLE
   - growth-standards_ARTICLE
   - additional-utilities_ARTICLE
+- title: Short Form Overviews
+  desc: Package Vignettes
+  contents:
+  - bp-distributions
+  - growth-standards
+
+reference:
+
+- title: Blood Pressure
+- subtitle: Distribution Functions
+- contents:
+  - p_bp
+  - q_bp
+  - z_bp
+- subtitle: Plotting Methods
+  contents:
+  - bp_cdf
+  - bp_chart
+
+- title: Growth Standards
+- subtitle: Distribution Functions
+- contents:
+  - growth-standards
+  - p_bmi_for_age
+  - q_bmi_for_age
+  - z_bmi_for_age
+  - p_head_circumference_for_age
+  - q_head_circumference_for_age
+  - z_head_circumference_for_age
+  - p_height_for_age
+  - q_height_for_age
+  - z_height_for_age
+  - p_length_for_age
+  - q_length_for_age
+  - z_length_for_age
+  - p_weight_for_age
+  - q_weight_for_age
+  - z_weight_for_age
+  - p_weight_for_height
+  - q_weight_for_height
+  - z_weight_for_height
+  - p_weight_for_length
+  - q_weight_for_length
+  - z_weight_for_length
+- subtitle: Plotting Methods
+  contents:
+  - gs_cdf
+  - gs_chart
+
+- title: Utilities
+  contents:
+  - est_norm
+  - plms
+  - qlms
+  - zlms
+
+- title: Data Sets
+  contents:
+  - bp_parameters
+  - flynn2017
+  - gemelli1990
+  - lo2013
+  - nhlbi_bp_norms
+
+- title: internal
+  contents:
+  - cppBP
+  - cppPGSF

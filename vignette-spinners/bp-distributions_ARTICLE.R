@@ -16,7 +16,6 @@
 #+ label = "setup", include = FALSE
 #/*
 devtools::load_all() # load the dev version while editing
-require("svglite") # needed for saving svg images
 #*/
 ################################################################################
 #                        !!! DO NOT EDIT .Rmd files !!!                        #

@@ -7,6 +7,7 @@
 #' @param male 0 = female; 1 = male
 #' @param length centimeters
 #'
+#' @keywords internal
 #' @rdname pedbp-defunct
 #' @export
 p_length_for_age_inf <- function(q, age, male) {

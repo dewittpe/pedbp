@@ -1,12 +1,12 @@
 #'---
-#'title: "Pediatric Blood Pressure Distributions"
+#'title: "Overview of Pediatric Blood Pressure Distributions"
 #'output:
 #'  rmarkdown::html_vignette:
 #'    toc: true
 #'    number_sections: true
 #'bibliography: references.bib
 #'vignette: >
-#'  %\VignetteIndexEntry{Pediatric Blood Pressure Distributions}
+#'  %\VignetteIndexEntry{Overview of Pediatric Blood Pressure Distributions}
 #'  %\VignetteEngine{knitr::rmarkdown}
 #'  %\VignetteEncoding{UTF-8}
 #'---
@@ -14,7 +14,6 @@
 #+ label = "setup", include = FALSE
 #/*
 devtools::load_all() # load the dev version while editing
-require("svglite") # needed for saving svg images
 #*/
 ################################################################################
 #                        !!! DO NOT EDIT .Rmd files !!!                        #
@@ -226,7 +225,7 @@ bp_chart(male = 1, height_percentile = 75, source = "flynn2017")
 
 #'
 #'
-#' Additional details and examples can be found on the [pacakge
+#' Additional details and examples can be found on the [package
 #' webpage](https://peteredewitt.com/pedbp).
 #'
 #' # References

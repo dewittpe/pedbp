@@ -13,8 +13,8 @@ using namespace Rcpp;
 // Find the probability or quantile for one observation of age, male, height
 //
 // args:
-//    sbp: the quantile or probability (distribution funtion value) systolic blood pressure
-//    dbp: the quantile or probability (distribution funtion value) diastolic blood pressure
+//    sbp: the quantile or distribution funtion value for systolic blood pressure
+//    dbp: the quantile or distribution funtion value for diastolic blood pressure
 //    age: in months
 //    male: 0 = female, 1 = male
 //    known_height: 0 = height is not known; 1 = height is known
@@ -39,10 +39,10 @@ using namespace Rcpp;
 //          2 = lo2013
 //          3 = nhlbi
 //          4 = flynn2017
-//      (7) systolic blood pressure - quantile or probability (distribution
-//          funtion value); as defined by type
-//      (8) diastolic blood pressure - quantile or probability (distribution
-//          funtion value); as defined by type
+//      (7) systolic blood pressure - quantile or distribution funtion value as
+//          defined by type
+//      (8) diastolic blood pressure - quantile or distribution funtion value as
+//          defined by type
 //
 Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     known_height, double height_percentile, std::string source, std::string

@@ -1,12 +1,12 @@
 #'---
-#'title: "Growth Standards"
+#'title: "Overview of Growth Standards"
 #'output:
 #'  rmarkdown::html_vignette:
 #'    toc: true
 #'    number_sections: true
 #'bibliography: references.bib
 #'vignette: >
-#'  %\VignetteIndexEntry{Growth Standards}
+#'  %\VignetteIndexEntry{Overview of Growth Standards}
 #'  %\VignetteEngine{knitr::rmarkdown}
 #'  %\VignetteEncoding{UTF-8}
 #'---

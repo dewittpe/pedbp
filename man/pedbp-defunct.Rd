@@ -42,3 +42,4 @@ z_weight_for_length_inf(q, length, male)
 \description{
 These functions are fully defunct, no longer implemented, and will not work.
 }
+\keyword{internal}

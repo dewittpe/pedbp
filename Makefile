@@ -166,9 +166,7 @@ shiny: install
 	R -e "shiny::runApp(normalizePath(system.file('shinyapps', 'pedbp', package = 'pedbp')), port = 4492)"
 
 site: $(ARTICLES) $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	$(RM) $(VIGNETTES)
 	R -e "pkgdown::build_site()"
-	git restore $(VIGNETTES)
 
 clean:
 	$(RM) $(PKG_NAME)_$(PKG_VERSION).tar.gz
