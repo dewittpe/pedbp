@@ -1,11 +1,13 @@
 pandoc: 3.1.11
-pkgdown: 2.0.8
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   additional-utilities_ARTICLE: additional-utilities_ARTICLE.html
   bp-distributions_ARTICLE: bp-distributions_ARTICLE.html
+  bp-distributions: bp-distributions.html
   growth-standards_ARTICLE: growth-standards_ARTICLE.html
-last_built: 2024-04-15T16:38Z
+  growth-standards: growth-standards.html
+last_built: 2024-04-23T19:21Z
 urls:
   reference: http://www.peteredewitt.com/pedbp/reference
   article: http://www.peteredewitt.com/pedbp/articles
