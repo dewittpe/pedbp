@@ -142,10 +142,9 @@ z_weight_for_length(q = 14, male = 1, length = 88, source = "WHO")
     \item \code{\link{gs_chart}}
     \item \code{\link{gs_cdf}}
   }
-\item Other things:
+\item Vignette:
   \itemize{
     \item \code{vignette(topic = "growth-standards", package = "pedbp")}
-    \item package website \url{https://www.peteredewitt.com/pedbp}
   }
 }
 }

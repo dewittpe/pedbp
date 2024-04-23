@@ -224,10 +224,6 @@ bp_chart()
 bp_chart(male = 1, height_percentile = 75, source = "flynn2017")
 
 #'
-#'
-#' Additional details and examples can be found on the [package
-#' webpage](https://peteredewitt.com/pedbp).
-#'
 #' # References
 #'<div id="refs"></div>
 #'

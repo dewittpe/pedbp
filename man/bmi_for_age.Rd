@@ -96,10 +96,9 @@ legend("bottomright", col = 1:2, pch = 16:17, legend = c("WHO", "CDC"))
     \item \code{\link{gs_chart}}
     \item \code{\link{gs_cdf}}
   }
-\item Other things:
+\item Vignette:
   \itemize{
     \item \code{vignette(topic = "growth-standards", package = "pedbp")}
-    \item package website \url{https://www.peteredewitt.com/pedbp}
   }
 }
 }

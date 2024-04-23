@@ -72,10 +72,9 @@ gs_chart("weight_for_height", male = 0:1, p = c(0.10, 0.80))
     \item \code{\link{gs_chart}}
     \item \code{\link{gs_cdf}}
   }
-\item Other things:
+\item Vignette:
   \itemize{
     \item \code{vignette(topic = "growth-standards", package = "pedbp")}
-    \item package website \url{https://www.peteredewitt.com/pedbp}
   }
 }
 }

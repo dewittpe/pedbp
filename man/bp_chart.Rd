@@ -60,7 +60,11 @@ g +
   ggplot2::theme_bw() +
   ggplot2::geom_rect(
     data = bkgrnd,
-    mapping = ggplot2::aes(xmin = age[, 1], xmax = age[, 2] + 1, ymin = -Inf, ymax = Inf, fill = source)
+    mapping = ggplot2::aes(xmin = age[, 1],
+                           xmax = age[, 2] + 1,
+                           ymin = -Inf,
+                           ymax = Inf,
+                           fill = source)
   ) +
   ggplot2::scale_fill_manual(
     name = "Data\nSource",

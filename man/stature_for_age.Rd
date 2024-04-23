@@ -138,10 +138,9 @@ z_length_for_age(q = 88, male = 1, age = 28, source = "WHO")
     \item \code{\link{gs_chart}}
     \item \code{\link{gs_cdf}}
   }
-\item Other things:
+\item Vignette:
   \itemize{
     \item \code{vignette(topic = "growth-standards", package = "pedbp")}
-    \item package website \url{https://www.peteredewitt.com/pedbp}
   }
 }
 }

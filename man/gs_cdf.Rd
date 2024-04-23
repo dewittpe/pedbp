@@ -59,10 +59,9 @@ gs_cdf(metric = "bmi_for_age", male = 1, age = 13*12) +
     \item \code{\link{gs_chart}}
     \item \code{\link{gs_cdf}}
   }
-\item Other things:
+\item Vignette:
   \itemize{
     \item \code{vignette(topic = "growth-standards", package = "pedbp")}
-    \item package website \url{https://www.peteredewitt.com/pedbp}
   }
 }
 }
