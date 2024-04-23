@@ -1,3 +1,18 @@
+# pedbp 2.0.0
+
+Major update and reimplementation of the package.
+
+## Testing Results
+
+- Local testing R 4.3.3  (Status OK)
+
+- Github actions (Status OK)
+  - Windows R-release
+  - MacOS   R-release
+  - Ubuntu  R-release
+  - Ubuntu  R-devel
+  - Ubuntu  R-oldrelease
+
 # pedbp 1.0.2
 
 ## Testing Results
