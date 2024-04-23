@@ -57,7 +57,7 @@ gs_chart("weight_for_height", male = 0:1, p = c(0.10, 0.80))
 }
 \seealso{
 \itemize{
-\item Distribuiton functions:
+\item Distribution functions:
   \itemize{
     \item \code{\link{bmi_for_age}}
     \item \code{\link{head_circumference_for_age}}

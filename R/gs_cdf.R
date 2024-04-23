@@ -1,4 +1,4 @@
-#' Cummulative Distribution Plots for Pediatric Growth Standards
+#' Cumulative Distribution Plots for Pediatric Growth Standards
 #'
 #' @inheritParams growth-standards
 #' @param metric a character string denoting which growth metric to plot
@@ -6,7 +6,7 @@
 #' @return a \code{ggplot} object
 #'
 #' @seealso \itemize{
-#' \item Distribuiton functions:
+#' \item Distribution functions:
 #'   \itemize{
 #'     \item \code{\link{bmi_for_age}}
 #'     \item \code{\link{head_circumference_for_age}}

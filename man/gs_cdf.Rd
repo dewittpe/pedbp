@@ -2,7 +2,7 @@
 % Please edit documentation in R/gs_cdf.R
 \name{gs_cdf}
 \alias{gs_cdf}
-\title{Cummulative Distribution Plots for Pediatric Growth Standards}
+\title{Cumulative Distribution Plots for Pediatric Growth Standards}
 \usage{
 gs_cdf(
   metric,
@@ -30,7 +30,7 @@ can be set explicitly, or by using the \code{pedbp_pgs_source} option.}
 a \code{ggplot} object
 }
 \description{
-Cummulative Distribution Plots for Pediatric Growth Standards
+Cumulative Distribution Plots for Pediatric Growth Standards
 }
 \examples{
 
@@ -44,7 +44,7 @@ gs_cdf(metric = "bmi_for_age", male = 1, age = 13*12) +
 }
 \seealso{
 \itemize{
-\item Distribuiton functions:
+\item Distribution functions:
   \itemize{
     \item \code{\link{bmi_for_age}}
     \item \code{\link{head_circumference_for_age}}
