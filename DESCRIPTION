@@ -39,10 +39,12 @@ Suggests:
     ggpubr,
     gridExtra,
     knitr,
+    markdown,
     png,
     qwraps2 (>= 0.6.0),
     rmarkdown,
     shiny,
+    shinyBS,
     shinydashboard
 LinkingTo: Rcpp (>= 1.0.11),
     RcppArmadillo

@@ -486,7 +486,7 @@ server <- function(input, output, session) {
   })
 
 
-  output$batch_results <- DT::renderDataTable({
+  batch_results <- reactive({
     req(input$bpfile)
     d <- data.table::copy(batch_data())
 
@@ -608,7 +608,11 @@ server <- function(input, output, session) {
     }
 
     d[]
+  })
 
+  output$batch_results <- DT::renderDataTable({
+    d <- data.table::copy(batch_results())
+    d[]
   })
 
   output$download_button <- renderUI({
@@ -633,12 +637,12 @@ server <- function(input, output, session) {
 #  })
 #
 #
-#  output$download_batch_results <- downloadHandler(
-#    filename = function() {paste0(input$bpfile, "_with_percentiles.csv")},
-#    content  = function(file) {
-#      data.table::fwrite(batch_results(), file)
-#    }
-#  )
+  output$download_batch_results <- downloadHandler(
+    filename = function() {paste0(input$bpfile, "_with_percentiles.csv")},
+    content  = function(file) {
+      data.table::fwrite(batch_results(), file)
+    }
+  )
 #
 #
 #  bp <- reactive({
