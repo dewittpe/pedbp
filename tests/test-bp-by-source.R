@@ -4,7 +4,7 @@ library(pedbp)
 
 # first, verify that the source input options are as expected
 x <- tryCatch(q_bp(p_sbp = 1, p_dbp = 1, male = 1, age = numeric(1), source = "Not a real source"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 
 # the message appears to print in one of two ways, using the unicode \u8220 and
 # \u8221 for the double quotes when in an interactive session, and \u22 when not

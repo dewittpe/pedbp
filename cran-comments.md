@@ -1,3 +1,10 @@
+# pedbp 2.0.1
+
+Fixes to the testing suite to address the errors resulting from a change in
+R-devel
+
+> r87097 | maechler | 2024-09-05 12:18:24 +0200 (Thu, 05 Sep 2024) | 1 line new R_MissingArgError() + ...Error_c() variant
+
 # pedbp 2.0.0
 
 Major update and reimplementation of the package.

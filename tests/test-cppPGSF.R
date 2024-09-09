@@ -16,7 +16,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <-
@@ -31,7 +31,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <-
@@ -46,7 +46,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <-
@@ -61,7 +61,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <-
@@ -76,7 +76,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <-
@@ -91,7 +91,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 ################################################################################
@@ -108,7 +108,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 x <-
@@ -123,7 +123,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 x <-
@@ -138,7 +138,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 
@@ -154,7 +154,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 
@@ -170,7 +170,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 ################################################################################
@@ -187,7 +187,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "male needs to be a 0 or 1"))
 
 ################################################################################
@@ -204,7 +204,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source for bmi_for_age data"))
 
 x <-
@@ -219,7 +219,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source for head_circumference_for_age data"))
 
 x <-
@@ -234,7 +234,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source for height_for_age data"))
 
 x <-
@@ -249,7 +249,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source for weight_for_age data"))
 
 x <-
@@ -264,7 +264,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source for weight_for_height data"))
 
 x <-
@@ -279,7 +279,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source for weight_for_length data"))
 
 x <-
@@ -294,7 +294,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source for length_for_age data"))
 
 ################################################################################
@@ -311,7 +311,7 @@ x <-
       )
     , error = function(e) e
   )
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "type needs to be one of 'quantile', 'distribution', or 'zscore'"))
 
 ################################################################################
@@ -328,7 +328,7 @@ x <-
       )
     , warning = function(w) w
   )
-stopifnot(identical(class(x), c("simpleWarning", "warning", "condition")))
+stopifnot(inherits(x, "warning"))
 stopifnot(identical(x$message, "age/stature below lower limit"))
 
 # verify warning if age is out of bounds
@@ -344,11 +344,8 @@ x <-
       )
     , warning = function(w) w
   )
-stopifnot(identical(class(x), c("simpleWarning", "warning", "condition")))
+stopifnot(inherits(x, "warning"))
 stopifnot(identical(x$message, "age/stature above upper limit"))
-
-
-
 
 ################################################################################
 # check output against published values

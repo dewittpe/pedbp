@@ -4,45 +4,45 @@ library(pedbp)
 ################################################################################
 # Verify error if more than one source
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022", "gemelli1990"), type = "distribution"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'source' should have length 1"))
 
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022", "not-a-source"), type = "distribution"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'source' should have length 1"))
 
 ################################################################################
 # Verify error if more than one type
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022"), type = c("quantile", "distribution")), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'type' should have length 1"))
 
 ################################################################################
 # Verify error if source is not a known source
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("not-a-source"), type = "distribution"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source"))
 
 ################################################################################
 # Verify error if type is not distribution, qualtile, nor zscore
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022"), type = "no"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "type needs to be one of 'distribution', 'quantile', or 'zscore'"))
 
 ################################################################################
 # verify error if male is not 0 or 1
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 2, NA, NA, 0.5, source = c("martin2022"), type = "no"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "male needs to be a 0 or 1"))
 
 ################################################################################
 # verify error if length of qp_sbp and qp_dbp differ
 x <- tryCatch(pedbp:::cppBP(0.5, c(0.5, 0.5), 34, 0, NA, NA, 0.5, source = c("martin2022"), type = "no"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "qp_sbp and qp_dbp lengths are not equal"))
 
 x <- tryCatch(pedbp:::cppBP(c(0.5, 0.5), 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022"), type = "no"), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "qp_sbp and qp_dbp lengths are not equal"))
 
 ################################################################################
@@ -58,7 +58,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "no"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <- tryCatch(pedbp:::cppBP(
@@ -72,7 +72,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "no"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <- tryCatch(pedbp:::cppBP(
@@ -86,7 +86,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "no"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <- tryCatch(pedbp:::cppBP(
@@ -100,7 +100,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "no"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 x <- tryCatch(pedbp:::cppBP(
@@ -114,7 +114,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "no"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "zero length vector"))
 
 ################################################################################
@@ -162,7 +162,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "distribution"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 x <- tryCatch(pedbp:::cppBP(
@@ -176,7 +176,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "distribution"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 x <- tryCatch(pedbp:::cppBP(
@@ -190,7 +190,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "distribution"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 x <- tryCatch(pedbp:::cppBP(
@@ -204,7 +204,7 @@ x <- tryCatch(pedbp:::cppBP(
                 source = c("martin2022"),
                 type = "distribution"),
               error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "all input vectors need to be of equal length, or length 1."))
 
 ################################################################################

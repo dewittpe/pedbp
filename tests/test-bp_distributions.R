@@ -16,33 +16,33 @@ stopifnot(
 ################################################################################
 # Verify error if Unknown source
 x <- tryCatch(p_bp(q_sbp = 0.5, q_dbp = 0.5, male = 0, age = 55, source = c("not-a-source")), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'arg' should be one of “martin2022”, “gemelli1990”, “nhlbi”, “lo2013”, “flynn2017”") |
           identical(x$message, "'arg' should be one of \"martin2022\", \"gemelli1990\", \"nhlbi\", \"lo2013\", \"flynn2017\""))
 
 x <- tryCatch(q_bp(p_sbp = 0.5, p_dbp = 0.5, male = 0, age = 55, source = c("not-a-source")), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'arg' should be one of “martin2022”, “gemelli1990”, “nhlbi”, “lo2013”, “flynn2017”") |
           identical(x$message, "'arg' should be one of \"martin2022\", \"gemelli1990\", \"nhlbi\", \"lo2013\", \"flynn2017\""))
 
 x <- tryCatch(p_bp(q_sbp = 0.5, q_dbp = 0.5, male = 0, age = 55, source = character(0)), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'arg' should be one of “martin2022”, “gemelli1990”, “nhlbi”, “lo2013”, “flynn2017”") |
           identical(x$message, "'arg' should be one of \"martin2022\", \"gemelli1990\", \"nhlbi\", \"lo2013\", \"flynn2017\""))
 
 x <- tryCatch(q_bp(p_sbp = 0.5, p_dbp = 0.5, male = 0, age = 55, source = character(0)), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'arg' should be one of “martin2022”, “gemelli1990”, “nhlbi”, “lo2013”, “flynn2017”") |
           identical(x$message, "'arg' should be one of \"martin2022\", \"gemelli1990\", \"nhlbi\", \"lo2013\", \"flynn2017\""))
 
 ################################################################################
 # Verify error if more than one source
 x <- tryCatch(p_bp(q_sbp = 0.5, q_dbp = 0.5, male = 0, age = 55, source = c("martin2022", "nhlbi")), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'arg' must be of length 1"))
 
 x <- tryCatch(q_bp(p_sbp = 0.5, p_dbp = 0.5, male = 0, age = 55, source = c("martin2022", "nhlbi")), error = function(e) e)
-stopifnot(identical(class(x), c("simpleError", "error", "condition")))
+stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "'arg' must be of length 1"))
 
 ################################################################################

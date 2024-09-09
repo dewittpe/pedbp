@@ -22,14 +22,14 @@
 
 If you use this package in your research please cite the package
 
-```r
+``` r
 citation("pedbp", auto = TRUE)
 ```
 
 And the research letter:
 
 
-```r
+``` r
 citation("pedbp")
 ```
 
@@ -89,14 +89,14 @@ End users may opt to use any single data source.
 Example: A 28 month old female with a stature of 92 cm has a recorded blood
 pressure of 95/50.  Find the percentiles.
 
-```r
+``` r
 library(pedbp)
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92)
 ```
 
 Selecting the source data is also possible
 
-```r
+``` r
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "martin2022")  # Default
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "gemelli1990")
 p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "lo2013")
@@ -107,13 +107,13 @@ p_bp(q_sbp = 95, q_dbp = 50, male = 0, age = 28, height = 92, source = "flynn201
 You can also find the quantile values.  Example: what is the SBP/DBP values for
 the 42nd percentile of 13 year (156 month) old males in the 90th height percentile?
 
-```r
+``` r
 q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90)
 ```
 
 More examples can be found in the vignette.
 
-```r
+``` r
 vignette("bp-distributions", package = "pedbp")
 ```
 
@@ -122,7 +122,7 @@ vignette("bp-distributions", package = "pedbp")
 Growth standards based on both CDC and WHO data are provided in this package.
 Read more in the vignette
 
-```r
+``` r
 vignette(topic = "growth-standards", package = "pedbp")
 ```
 
@@ -138,7 +138,7 @@ Growth standards implemented in the package are:
   * `weight_for_height`
 
 
-```r
+``` r
 # Example: what is the percentile for a BMI of 23 in a 14.5 year old male?
 p_bmi_for_age(q = 23, male = 1, age = 14.5*12, source = "CDC")
 ```
@@ -147,7 +147,7 @@ p_bmi_for_age(q = 23, male = 1, age = 14.5*12, source = "CDC")
 ## [1] 0.8502674
 ```
 
-```r
+``` r
 p_bmi_for_age(q = 23, male = 1, age = 14.5*12, source = "WHO")
 ```
 
@@ -160,13 +160,13 @@ p_bmi_for_age(q = 23, male = 1, age = 14.5*12, source = "WHO")
 Install from CRAN:
 
 
-```r
+``` r
 install.packages("pedbp")
 ```
 
 Install the developmental version:
 
-```r
+``` r
 remotes::install_github("dewittpe/pedbp", dependencies = TRUE)
 ```
 
@@ -180,7 +180,7 @@ After installing the pedbp package and the suggested
 packages, you can run the app locally via
 
 
-```r
+``` r
 shiny::runApp(system.file("shinyapps", "pedbp", package = "pedbp"))
 ```
 
