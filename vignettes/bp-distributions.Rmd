@@ -73,7 +73,7 @@ height for each patient's sex and age.
 
 
 ```{r echo = FALSE, results = "asis"}
-knitr::include_graphics("../man/figures/flowchart.png")
+knitr::include_graphics(system.file("images", "flowchart.png", package = "pedbp"))
 ```
 
 

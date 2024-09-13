@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 * improve testing suite to address changes in r-devel
+* fix file paths for graphics in vignettes
 
 # pedbp 2.0.0
 

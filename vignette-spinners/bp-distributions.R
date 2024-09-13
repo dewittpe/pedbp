@@ -71,7 +71,7 @@ library(pedbp)
 #/*
 while(FALSE) {
 #*/
-knitr::include_graphics("../man/figures/flowchart.png")
+knitr::include_graphics(system.file("images", "flowchart.png", package = "pedbp"))
 #/*
 }
 #*/
