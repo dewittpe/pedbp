@@ -1,90 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/404.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/articles/additional-utilities_ARTICLE.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/articles/bp-distributions.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/articles/bp-distributions_ARTICLE.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/articles/growth-standards.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/articles/growth-standards_ARTICLE.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/authors.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/index.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/news/index.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/bmi_for_age.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/bp_cdf.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/bp_chart.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/bp_distribution.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/bpdata.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/cppBP.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/cppPGSF.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/distribution-quantile-zscores-by-lms.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/est_norm.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/growth-standards.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/gs_cdf.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/gs_chart.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/head_circumference_for_age.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/pedbp-defunct.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/pedbp-package.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/stature_for_age.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/weight_for_age.html</loc>
-  </url>
-  <url>
-    <loc>http://www.peteredewitt.com/pedbp/reference/weight_for_stature.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>http://www.peteredewitt.com/pedbp/404.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/articles/additional-utilities_ARTICLE.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/articles/bp-distributions.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/articles/bp-distributions_ARTICLE.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/articles/growth-standards.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/articles/growth-standards_ARTICLE.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/articles/index.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/authors.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/index.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/news/index.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/bmi_for_age.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/bp_cdf.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/bp_chart.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/bp_distribution.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/bpdata.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/cppBP.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/cppPGSF.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/distribution-quantile-zscores-by-lms.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/est_norm.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/growth-standards.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/gs_cdf.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/gs_chart.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/head_circumference_for_age.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/index.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/pedbp-defunct.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/pedbp-package.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/stature_for_age.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/weight_for_age.html</loc></url>
+<url><loc>http://www.peteredewitt.com/pedbp/reference/weight_for_stature.html</loc></url>
 </urlset>
+
