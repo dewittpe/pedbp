@@ -51,7 +51,6 @@ jobs:
       image: ${{ matrix.config.container }}
 
     steps:
-      - uses: r-lib/actions/setup-pandoc@v2
       - uses: r-hub/actions/checkout@v1
       - uses: r-hub/actions/platform-info@v1
         with:
