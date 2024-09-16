@@ -5,6 +5,10 @@ R-devel
 
 > r87097 | maechler | 2024-09-05 12:18:24 +0200 (Thu, 05 Sep 2024) | 1 line new R_MissingArgError() + ...Error_c() variant
 
+## Testing Results
+- Local Testing and Rhub - all tests either result in Status OK or error due to
+  issues with installing imported or suggestest packages.
+
 # pedbp 2.0.0
 
 Major update and reimplementation of the package.
