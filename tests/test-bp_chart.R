@@ -31,21 +31,12 @@ stopifnot(identical(x$message, "length(height_percentile) == 1 is not TRUE"))
 
 x <- tryCatch(bp_chart(source = numeric(2)), error = function(e) e)
 stopifnot(inherits(x, "error"))
-stopifnot(identical(x$message, "'arg' must be NULL or a character vector"))
 
 x <- tryCatch(bp_chart(source = "not-a-source"), error = function(e) e)
 stopifnot(inherits(x, "error"))
-stopifnot(
-  identical(x$message, "'arg' should be one of “martin2022”, “gemelli1990”, “nhlbi”, “lo2013”, “flynn2017”") |
-  identical(x$message, "'arg' should be one of \"martin2022\", \"gemelli1990\", \"nhlbi\", \"lo2013\", \"flynn2017\"")
-)
 
 x <- tryCatch(bp_chart(bp = c("not-a-bp")), error = function(e) e)
 stopifnot(inherits(x, "error"))
-stopifnot(
-  identical(x$message, "'arg' should be one of “sbp”, “dbp”") |
-  identical(x$message, "'arg' should be one of \"sbp\", \"dbp\"")
-)
 
 ################################################################################
 # verify defult is a ggplot

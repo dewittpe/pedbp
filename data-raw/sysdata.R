@@ -50,7 +50,7 @@ who_lms_data[, metric := data.table::fcase(metric == "bfa", "bmi_for_age",
                                            metric == "hcfa", "head_circumference_for_age"
                                            )]
 
-print(who_lms_data[, .N, by = .(metric, file)], n = Inf)
+print(who_lms_data[, .N, by = .(metric, file)], nrow = Inf)
 
 who_lms_data[, file := NULL]
 
@@ -161,7 +161,7 @@ cdc_lms_data[, source := "CDC"]
 lms_data <- rbind(who_lms_data, cdc_lms_data, use.names = TRUE, fill = TRUE)
 data.table::setkey(lms_data, source, metric, male, age, height, length)
 
-lms_data[, .N, keyby = .(metric, source)] |> print(n = Inf)
+lms_data[, .N, keyby = .(metric, source)] |> print(nrow = Inf)
 
 lms_data <- as.data.frame(lms_data)
 

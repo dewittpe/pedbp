@@ -1,3 +1,7 @@
+# pedbp 2.0.2
+
+* improve testing suite to address changes in r-devel
+
 # pedbp 2.0.1
 
 ## Bug Fixes

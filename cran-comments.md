@@ -1,3 +1,8 @@
+# pedbp 2.0.2
+
+Fixes to the testing suite to address the errors resulting from a change in
+R-devel.  No changes to the underlying code.
+
 # pedbp 2.0.1
 
 Fixes to the testing suite to address the errors resulting from a change in
