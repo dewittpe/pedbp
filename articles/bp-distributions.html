@@ -8,8 +8,8 @@
 <title>Overview of Pediatric Blood Pressure Distributions • pedbp</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Overview of Pediatric Blood Pressure Distributions">
 </head>
 <body>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,7 +108,7 @@ then data from <span class="citation">Lo et al. (2013)</span> is used.
 Lastly, for children between one and three years of age with unknown
 height, blood pressure percentiles are estimated by the NHLBI/CDC data
 using as a default the median height for each patient’s sex and age.</p>
-<p><img src="../../../_temp/Library/pedbp/images/flowchart.png" width="334" style="display: block; margin: auto;"></p>
+<p><img src="..%2F..%2F..%2F_temp%2FLibrary%2Fpedbp%2Fimages%2Fflowchart.png" width="334" style="display: block; margin: auto;"></p>
 <p>With version 2.0.0 and later, the option to select the specific
 reference source data was introduced along with the additional <span class="citation">Flynn et al. (2017)</span> reference.</p>
 <p>The sources are:</p>
@@ -201,7 +201,9 @@ you can use that instead:</p>
 <p>A plotting method to show where the observed blood pressures are on
 the distribution function is also provided.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/bp_cdf.html">bp_cdf</a></span><span class="op">(</span>sbp <span class="op">=</span> <span class="fl">100</span>, dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span>, height_percentile <span class="op">=</span> <span class="fl">0.80</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bp_cdf.html">bp_cdf</a></span><span class="op">(</span>sbp <span class="op">=</span> <span class="fl">100</span>, dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span>, height_percentile <span class="op">=</span> <span class="fl">0.80</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span>
+<span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
+<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre></div>
 <p><img src="bp-distributions_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Vectors of blood pressures can be used as well. <code>NA</code>
 values will return <code>NA</code>.</p>
@@ -384,7 +386,7 @@ Pediatrics</em> 12 (6): 590–603. https://doi.org/<a href="https://doi.org/10.1
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
