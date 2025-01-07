@@ -1,5 +1,6 @@
 library(pedbp)
 library(data.table)
+setDTthreads(threads = 1L) # to prevent CPU time exceeding elapsed time on CRAN
 
 ################################################################################
 ##                    Testing against the published values                    ##

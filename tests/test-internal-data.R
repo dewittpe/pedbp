@@ -1,3 +1,5 @@
+library(data.table)
+setDTthreads(threads = 1L) # to prevent CPU time exceeding elapsed time on CRAN
 library(pedbp)
 internal_lms_data <-
   pedbp:::lms_data |>
