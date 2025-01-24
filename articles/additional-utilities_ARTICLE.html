@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,9 +124,7 @@ percentiles and
 quantiles are plotted as open dots and the fitted distribution function
 is plotted to show the fit.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span> <span class="fu"><a href="../reference/est_norm.html">est_norm</a></span><span class="op">(</span>q <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">dbp</span>, p <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">bp_percentile</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span> <span class="op">)</span></span>
-<span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span> <span class="fu"><a href="../reference/est_norm.html">est_norm</a></span><span class="op">(</span>q <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">dbp</span>, p <span class="op">=</span> <span class="va">d</span><span class="op">$</span><span class="va">bp_percentile</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
 <p><img src="additional-utilities_ARTICLE_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>If you want to emphasize a data point you can do that as well. Here
 is an example from a set of quantiles and percentiles which are not

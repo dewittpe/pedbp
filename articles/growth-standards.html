@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -149,9 +149,7 @@ BMI of 21.</p>
 standard chart</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/gs_chart.html">gs_chart</a></span><span class="op">(</span>metric <span class="op">=</span> <span class="st">"bmi_for_age"</span>, male <span class="op">=</span> <span class="fl">1</span>, source <span class="op">=</span> <span class="st">"CDC"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">13</span> <span class="op">*</span> <span class="fl">12</span>, y <span class="op">=</span> <span class="fl">21</span>, inherit.aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre></div>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">13</span> <span class="op">*</span> <span class="fl">12</span>, y <span class="op">=</span> <span class="fl">21</span>, inherit.aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="growth-standards_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>and a cumulative distribution function</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">

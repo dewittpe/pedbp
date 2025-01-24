@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,16 +176,16 @@ using the <code>lo2013</code> source.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/bp_distribution.html">p_bp</a></span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">100</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span>, height <span class="op">=</span> <span class="fl">103</span><span class="op">)</span></span>
 <span><span class="co">## $sbp_p</span></span>
-<span><span class="co">## [1] 0.9000536</span></span>
+<span><span class="co">## [1] 0.7434636</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $dbp_p</span></span>
-<span><span class="co">## [1] 0.9152593</span></span>
+<span><span class="co">## [1] 0.8678361</span></span>
 <span><span class="fu"><a href="../reference/bp_distribution.html">p_bp</a></span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">100</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span>, height <span class="op">=</span> <span class="fl">103</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span>
 <span><span class="co">## $sbp_p</span></span>
-<span><span class="co">## [1] 0.9000536</span></span>
+<span><span class="co">## [1] 0.7434636</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $dbp_p</span></span>
-<span><span class="co">## [1] 0.9152593</span></span></code></pre></div>
+<span><span class="co">## [1] 0.8678361</span></span></code></pre></div>
 <p>If you don’t have the height, but you do have the height percentiles
 you can use that instead:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -201,9 +201,7 @@ you can use that instead:</p>
 <p>A plotting method to show where the observed blood pressures are on
 the distribution function is also provided.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/bp_cdf.html">bp_cdf</a></span><span class="op">(</span>sbp <span class="op">=</span> <span class="fl">100</span>, dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span>, height_percentile <span class="op">=</span> <span class="fl">0.80</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span>
-<span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/bp_cdf.html">bp_cdf</a></span><span class="op">(</span>sbp <span class="op">=</span> <span class="fl">100</span>, dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span>, height_percentile <span class="op">=</span> <span class="fl">0.80</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="bp-distributions_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Vectors of blood pressures can be used as well. <code>NA</code>
 values will return <code>NA</code>.</p>
@@ -289,24 +287,24 @@ argument to be length 1 or all the same length.</p>
 <span>       <span class="op">)</span></span>
 <span><span class="va">bp_percentiles</span></span>
 <span><span class="co">## $sbp_p</span></span>
-<span><span class="co">## [1] 0.5533069 0.8480961 0.2622697 0.6195685 0.8200583</span></span>
+<span><span class="co">## [1] 0.5533069 0.7680539 0.2622697 0.6195685 0.6101919</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $dbp_p</span></span>
-<span><span class="co">## [1] 0.4120704        NA 0.1356661 0.8028518 0.9389043</span></span>
+<span><span class="co">## [1] 0.4120704        NA 0.1356661 0.8028518 0.9011250</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">bp_percentiles</span><span class="op">)</span></span>
 <span><span class="co">## List of 2</span></span>
-<span><span class="co">##  $ sbp_p: num [1:5] 0.553 0.848 0.262 0.62 0.82</span></span>
-<span><span class="co">##  $ dbp_p: num [1:5] 0.412 NA 0.136 0.803 0.939</span></span>
+<span><span class="co">##  $ sbp_p: num [1:5] 0.553 0.768 0.262 0.62 0.61</span></span>
+<span><span class="co">##  $ dbp_p: num [1:5] 0.412 NA 0.136 0.803 0.901</span></span>
 <span><span class="co">##  - attr(*, "bp_params")='data.frame':    5 obs. of  8 variables:</span></span>
 <span><span class="co">##   ..$ source           : chr [1:5] "lo2013" "nhlbi" "gemelli1990" "lo2013" ...</span></span>
 <span><span class="co">##   ..$ male             : int [1:5] 1 0 0 1 1</span></span>
 <span><span class="co">##   ..$ age              : num [1:5] 96 144 3 36 36</span></span>
-<span><span class="co">##   ..$ sbp_mean         : num [1:5] 100.7 102 89 93.2 86</span></span>
-<span><span class="co">##   ..$ sbp_sd           : num [1:5] 9.7 10.7 11 9.2 10.9</span></span>
-<span><span class="co">##   ..$ dbp_mean         : num [1:5] 59.8 61 54 55.1 44</span></span>
+<span><span class="co">##   ..$ sbp_mean         : num [1:5] 100.7 105 89 93.2 93</span></span>
+<span><span class="co">##   ..$ sbp_sd           : num [1:5] 9.7 10.9 11 9.2 10.7</span></span>
+<span><span class="co">##   ..$ dbp_mean         : num [1:5] 59.8 62 54 55.1 47</span></span>
 <span><span class="co">##   ..$ dbp_sd           : num [1:5] 8.1 10.9 10 8.1 11.6</span></span>
-<span><span class="co">##   ..$ height_percentile: num [1:5] NA 5 NA NA 5</span></span>
+<span><span class="co">##   ..$ height_percentile: num [1:5] NA 50 NA NA 75</span></span>
 <span><span class="co">##  - attr(*, "class")= chr [1:2] "pedbp_bp" "pedbp_p_bp"</span></span></code></pre></div>
 <p>Going from percentiles back to quantiles:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
