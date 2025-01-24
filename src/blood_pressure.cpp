@@ -109,7 +109,10 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
     Rf_error("Unknown source");
   }
 
-  arma::uvec aindex = arma::find((LUT.col(0) <= age) && (abs(LUT.col(5) - height_percentile)) == arma::min(abs(LUT.col(5) - height_percentile)));
+  arma::uvec aindex = arma::find(
+      (LUT.col(0) <= age) &&
+      (abs(LUT.col(5) - height_percentile)) == (arma::min(abs(LUT.col(5) - height_percentile)))
+  );
 
   if (aindex.n_elem == 0 || age > 216.0 || (source == "gemelli1990" && age > 12)) {
     Rcpp::NumericVector rtn (9);
@@ -259,10 +262,10 @@ Rcpp::List cppBP(
 
   for (i = 0; i < max_length; ++i) {
     if (known_height(i)) {
-      if (age(i) < 36) {
-        hp(i) = cppPGSF1("length_for_age", "WHO", male(i), age(i), height(i), "distribution");
+      if (age(i) < 36.0) {
+        hp(i) = 100.0 * cppPGSF1("length_for_age", "WHO", male(i), age(i), height(i), "distribution");
       } else {
-        hp(i) = cppPGSF1("height_for_age", "CDC", male(i), age(i), height(i), "distribution");
+        hp(i) = 100.0 * cppPGSF1("height_for_age", "CDC", male(i), age(i), height(i), "distribution");
       }
     } else {
       if (known_heightp(i)) {
