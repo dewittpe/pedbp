@@ -4,6 +4,9 @@
 * correct a bug in the process of looking up the correct row based on derived
   percentiles.  See commit dd02d8c.
 
+## Other changes
+* Modify the testing scripts to account for changes in ggplot2 (re #23)
+
 # pedbp 2.0.2
 
 * improve testing suite to address changes in r-devel

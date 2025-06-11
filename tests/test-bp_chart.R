@@ -41,7 +41,7 @@ stopifnot(inherits(x, "error"))
 ################################################################################
 # verify defult is a ggplot
 x <- bp_chart()
-stopifnot(identical(class(x), c("gg", "ggplot")))
+stopifnot(isTRUE(inherits(x, "ggplot")))
 
 ################################################################################
 #                                 End of File                                  #

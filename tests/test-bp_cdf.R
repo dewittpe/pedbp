@@ -2,7 +2,7 @@ library(pedbp)
 
 ################################################################################
 x <- bp_cdf(age = 96, male = 1, sbp = 103, dbp = 55)
-stopifnot(identical(class(x), c("gg", "ggplot")))
+stopifnot(isTRUE(inherits(x, "ggplot")))
 
 x <- p_bp(q_sbp = rep(100, 2),
           q_dbp = rep( 60, 2),
@@ -12,8 +12,8 @@ x <- p_bp(q_sbp = rep(100, 2),
 x <- bp_cdf(x)
 stopifnot(identical(class(x), "list"))
 stopifnot(identical(length(x), 2L))
-stopifnot(identical(class(x[[1]]), c("gg", "ggplot")))
-stopifnot(identical(class(x[[2]]), c("gg", "ggplot")))
+stopifnot(isTRUE(inherits(x[[1]], "ggplot")))
+stopifnot(isTRUE(inherits(x[[2]], "ggplot")))
 
 
 x <- q_bp(p_sbp = 0.85, p_dbp = 0.95,
@@ -22,7 +22,7 @@ x <- q_bp(p_sbp = 0.85, p_dbp = 0.95,
 x <- bp_cdf(x)
 stopifnot(identical(class(x), "list"))
 stopifnot(identical(length(x), 1L))
-stopifnot(identical(class(x[[1]]), c("gg", "ggplot")))
+stopifnot(isTRUE(inherits(x[[1]], "ggplot")))
 
 ################################################################################
 #                                 End of File                                  #
