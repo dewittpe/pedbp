@@ -1,3 +1,17 @@
+# pedbp 2.0.3
+
+One end user visable bug fix and updates to the testing suite which would break
+upon release of the next version of ggplot2.
+
+## Testing Results
+- Local Testing 
+  - Status OK
+- Local Testing as CRAN
+  - Status OK
+- Rhub 
+  - all tests either result in Status OK or error due to issues with installing
+    imported or suggestest packages.
+
 # pedbp 2.0.2
 
 Fixes to the testing suite to address the errors resulting from a change in
