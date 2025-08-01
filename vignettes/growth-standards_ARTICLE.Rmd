@@ -335,8 +335,8 @@ q_weight_for_age(p = 0.80, age = 56, male = 0, source = c("CDC", "WHO"))
 The percentiles for 42 kg 9 year old males:
 
 ```{r}
-p_weight_for_age(q = 42, age = 9 * 12, male = 0, source = c("CDC", "WHO"))
-z_weight_for_age(q = 42, age = 9 * 12, male = 0, source = c("CDC", "WHO"))
+p_weight_for_age(q = 42, age = 9 * 12, male = 1, source = c("CDC", "WHO"))
+z_weight_for_age(q = 42, age = 9 * 12, male = 1, source = c("CDC", "WHO"))
 ```
 
 
