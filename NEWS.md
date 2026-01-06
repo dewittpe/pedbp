@@ -1,3 +1,8 @@
+# pedbp 2.0.4
+
+## Bug Fixes
+* Replace use of `Rf_error()` with `Rcpp::stop()` (#24)
+
 # pedbp 2.0.3
 
 ## Bug Fixes

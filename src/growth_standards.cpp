@@ -31,7 +31,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
   arma::mat LUT;
 
   if (!(male == 0 || male == 1)) {
-    Rf_error("male needs to be a 0 or 1");
+    Rcpp::stop("male needs to be a 0 or 1");
   }
 
   if (metric == "bmi_for_age") {
@@ -48,7 +48,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
         LUT = bmi_for_age_cdc_female();
       }
     } else {
-      Rf_error("Unknown source for bmi_for_age data");
+      Rcpp::stop("Unknown source for bmi_for_age data");
     }
   } else if (metric == "head_circumference_for_age") {
     if (source == "WHO") {
@@ -64,7 +64,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
         LUT = head_circumference_for_age_cdc_female();
       }
     } else {
-      Rf_error("Unknown source for head_circumference_for_age data");
+      Rcpp::stop("Unknown source for head_circumference_for_age data");
     }
   } else if (metric == "height_for_age") {
     if (source == "WHO") {
@@ -80,7 +80,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
         LUT = height_for_age_cdc_female();
       }
     } else {
-      Rf_error("Unknown source for height_for_age data");
+      Rcpp::stop("Unknown source for height_for_age data");
     }
   } else if (metric == "weight_for_age") {
     if (source == "WHO") {
@@ -96,7 +96,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
         LUT = weight_for_age_cdc_female();
       }
     } else {
-      Rf_error("Unknown source for weight_for_age data");
+      Rcpp::stop("Unknown source for weight_for_age data");
     }
   } else if (metric == "weight_for_height") {
     if (source == "WHO") {
@@ -112,7 +112,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
         LUT = weight_for_height_cdc_female();
       }
     } else {
-      Rf_error("Unknown source for weight_for_height data");
+      Rcpp::stop("Unknown source for weight_for_height data");
     }
   } else if (metric == "length_for_age") {
     if (source == "WHO") {
@@ -128,7 +128,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
         LUT = length_for_age_cdc_female();
       }
     } else {
-      Rf_error("Unknown source for length_for_age data");
+      Rcpp::stop("Unknown source for length_for_age data");
     }
   } else if (metric == "weight_for_length") {
     if (source == "WHO") {
@@ -144,10 +144,10 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
         LUT = weight_for_length_cdc_female();
       }
     } else {
-      Rf_error("Unknown source for weight_for_length data");
+      Rcpp::stop("Unknown source for weight_for_length data");
     }
   } else {
-    Rf_error("Unknown metric");
+    Rcpp::stop("Unknown metric");
   }
 
   // use a binary search to get the row of LUT needed
@@ -194,7 +194,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
 
     ++i;
     if (i > LUT.n_rows) {
-      Rf_error("something very bad has happended - a binary search when n steps.");
+      Rcpp::stop("something very bad has happended - a binary search when n steps.");
     }
   }
 
@@ -232,7 +232,7 @@ double cppPGSF1(std::string metric, std::string source, int male, double x, doub
       // distribution value
       return R::pnorm(z, 0, 1, 1, 0);
     } else {
-      Rf_error("type needs to be one of 'quantile', 'distribution', or 'zscore'");
+      Rcpp::stop("type needs to be one of 'quantile', 'distribution', or 'zscore'");
     }
   }
 }
@@ -267,7 +267,7 @@ Rcpp::NumericVector cppPGSF(
   int min_length = std::min({metric.length(), source.length(), male.length(), x.length(), qp.length(), type.length()});
 
   if (min_length == 0) {
-    Rf_error("zero length vector");
+    Rcpp::stop("zero length vector");
   }
 
   if (max_length > 1) {
@@ -280,7 +280,7 @@ Rcpp::NumericVector cppPGSF(
         (qp.length()     > 1 && qp.length()     < max_length) ||
         (type.length()   > 1 && type.length()   < max_length)
        ) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
+      Rcpp::stop("all input vectors need to be of equal length, or length 1.");
     }
 
     if (metric.length() == 1) {

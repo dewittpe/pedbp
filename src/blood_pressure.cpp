@@ -50,7 +50,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
   arma::mat LUT;
 
   if (!(male == 0 || male == 1)) {
-    Rf_error("male needs to be a 0 or 1");
+    Rcpp::stop("male needs to be a 0 or 1");
   }
 
   if (source == "gemelli1990") {
@@ -106,7 +106,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
       }
     }
   } else {
-    Rf_error("Unknown source");
+    Rcpp::stop("Unknown source");
   }
 
   arma::uvec aindex = arma::find(
@@ -134,7 +134,7 @@ Rcpp::NumericVector cppBPF1(double sbp, double dbp, double age, int male, int
       LUT.col(LUT.n_cols - 2) = (sbp - LUT.col(1)(0)) / LUT.col(2)(0);
       LUT.col(LUT.n_cols - 1) = (dbp - LUT.col(3)(0)) / LUT.col(4)(0);
     } else {
-      Rf_error("type needs to be one of 'distribution', 'quantile', or 'zscore'");
+      Rcpp::stop("type needs to be one of 'distribution', 'quantile', or 'zscore'");
     }
 
     return Rcpp::wrap(LUT);
@@ -191,21 +191,21 @@ Rcpp::List cppBP(
 
   // input length of qp_sbp and qp_dbp need to be the same
   if (qp_sbp.length() != qp_dbp.length()) {
-    Rf_error("qp_sbp and qp_dbp lengths are not equal");
+    Rcpp::stop("qp_sbp and qp_dbp lengths are not equal");
   }
 
   if (source.length() != 1) {
-    Rf_error("'source' should have length 1");
+    Rcpp::stop("'source' should have length 1");
   }
   if (type.length() != 1) {
-    Rf_error("'type' should have length 1");
+    Rcpp::stop("'type' should have length 1");
   }
   // vector length - either length 1, or equal length.
   int max_length = std::max({qp_sbp.length(), qp_dbp.length(), age.length(), male.length(), height.length(), height_percentile.length()});
   int min_length = std::min({qp_sbp.length(), qp_dbp.length(), age.length(), male.length(), height.length(), height_percentile.length()});
 
   if (min_length == 0) {
-    Rf_error("zero length vector");
+    Rcpp::stop("zero length vector");
   }
 
   if (max_length > 1) {
@@ -215,7 +215,7 @@ Rcpp::List cppBP(
          (male.length()              > 1 && male.length()              < max_length) ||
          (height.length()            > 1 && height.length()            < max_length) ||
          (height_percentile.length() > 1 && height_percentile.length() < max_length)) {
-      Rf_error("all input vectors need to be of equal length, or length 1.");
+      Rcpp::stop("all input vectors need to be of equal length, or length 1.");
     }
 
     if (qp_sbp.length() == 1) {
@@ -296,7 +296,7 @@ Rcpp::List cppBP(
   } else {
     // this is here to be robust but should be impossible to get to as the call
     // to cppBPF1 will error out first
-    Rf_error("type needs to be one of 'percentile', 'quantile', or 'zscore'");
+    Rcpp::stop("type needs to be one of 'percentile', 'quantile', or 'zscore'");
   }
 
   Rcpp::CharacterVector src(max_length);
@@ -315,7 +315,7 @@ Rcpp::List cppBP(
     } else {
       // this is here to be robust but should be impossible to get to as the
       // call to cppBPF1 will error out first
-      Rf_error("unknown source");
+      Rcpp::stop("unknown source");
     }
     if (lutbp(i, 5) == 101) {
       hp(i) = NA_REAL;
