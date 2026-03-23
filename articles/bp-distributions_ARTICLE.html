@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@
       <h1>Pediatric Blood Pressure Distributions</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/dewittpe/pedbp/blob/main/vignettes/bp-distributions_ARTICLE.Rmd" class="external-link"><code>vignettes/bp-distributions_ARTICLE.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/dewittpe/pedbp/blob/main/vignettes/articles/bp-distributions_ARTICLE.Rmd" class="external-link"><code>vignettes/articles/bp-distributions_ARTICLE.Rmd</code></a></small>
       <div class="d-none name"><code>bp-distributions_ARTICLE.Rmd</code></div>
     </div>
 
@@ -108,7 +108,7 @@ then data from <span class="citation">Lo et al. (2013)</span> is used.
 Lastly, for children between one and three years of age with unknown
 height, blood pressure percentiles are estimated by the NHLBI/CDC data
 using as a default the median height for each patient’s sex and age.</p>
-<p><img src="../reference/figures/flowchart.png"></p>
+<p><img src="../../reference/figures/flowchart.png"></p>
 </div>
 <div class="section level2">
 <h2 id="estimating-pediatric-blood-pressure-distributions">Estimating Pediatric Blood Pressure Distributions<a class="anchor" aria-label="anchor" href="#estimating-pediatric-blood-pressure-distributions"></a>
@@ -123,6 +123,10 @@ distribution quantiles is minimized. The provided functions, a
 distribution function and a quantile function, follow a similar naming
 convention to the distribution functions found in the stats library in
 R.</p>
+<p>Arguments named <code>p_sbp</code> and <code>p_dbp</code> are
+probabilities on the 0 to 1 scale. Arguments named
+<code>height_percentile</code> and displayed percentiles in text or
+plots use percentile points on the 0 to 100 scale.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/args.html" class="external-link">args</a></span><span class="op">(</span><span class="va">p_bp</span><span class="op">)</span></span>
 <span><span class="co">## function (q_sbp, q_dbp, age, male, height = NA, height_percentile = NA, </span></span>
@@ -182,13 +186,13 @@ percentile.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stature_for_age.html">p_height_for_age</a></span><span class="op">(</span><span class="fl">103</span>, male <span class="op">=</span> <span class="fl">1</span>, age <span class="op">=</span> <span class="fl">44</span><span class="op">)</span></span>
 <span><span class="co">## [1] 0.795653</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bp_distribution.html">p_bp</a></span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">100</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span>, height_percentile <span class="op">=</span> <span class="fl">0.80</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bp_distribution.html">p_bp</a></span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">100</span>, q_dbp <span class="op">=</span> <span class="fl">60</span>, age <span class="op">=</span> <span class="fl">44</span>, male <span class="op">=</span> <span class="fl">1</span>, height_percentile <span class="op">=</span> <span class="fl">80</span>, source <span class="op">=</span> <span class="st">"nhlbi"</span><span class="op">)</span></span>
 <span><span class="va">x</span></span>
 <span><span class="co">## $sbp_p</span></span>
-<span><span class="co">## [1] 0.9000536</span></span>
+<span><span class="co">## [1] 0.7434636</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $dbp_p</span></span>
-<span><span class="co">## [1] 0.9152593</span></span></code></pre></div>
+<span><span class="co">## [1] 0.8678361</span></span></code></pre></div>
 <p>A plotting method to show where the observed blood pressures are on
 the distribution function is also provided.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -203,23 +207,23 @@ NA.</p>
 <span>       , q_dbp  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">82</span>, <span class="fl">48</span><span class="op">)</span></span>
 <span>       , age    <span class="op">=</span> <span class="fl">44</span></span>
 <span>       , male   <span class="op">=</span> <span class="fl">1</span></span>
-<span>       , height_percentile <span class="op">=</span> <span class="fl">0.80</span></span>
+<span>       , height_percentile <span class="op">=</span> <span class="fl">80</span></span>
 <span>      <span class="op">)</span></span>
 <span><span class="va">bps</span></span>
 <span><span class="co">## $sbp_p</span></span>
-<span><span class="co">## [1] 0.9000536        NA 0.6428859</span></span>
+<span><span class="co">## [1] 0.7434636        NA 0.3891471</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $dbp_p</span></span>
-<span><span class="co">## [1] 0.9152593 0.9994494 0.6343003</span></span></code></pre></div>
+<span><span class="co">## [1] 0.8678361 0.9986750 0.5341129</span></span></code></pre></div>
 <p>If you want to know which data source was used in computing each of
 the percentile estimates you can look at the <code>bp_params</code>
 attribute:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">bps</span>, <span class="st">"bp_params"</span><span class="op">)</span></span>
 <span><span class="co">##   source male age sbp_mean   sbp_sd dbp_mean   dbp_sd height_percentile</span></span>
-<span><span class="co">## 1  nhlbi    1  36 86.00094 10.92093 44.00316 11.64362                 5</span></span>
-<span><span class="co">## 2  nhlbi    1  36 86.00094 10.92093 44.00316 11.64362                 5</span></span>
-<span><span class="co">## 3  nhlbi    1  36 86.00094 10.92093 44.00316 11.64362                 5</span></span></code></pre></div>
+<span><span class="co">## 1  nhlbi    1  36 93.00921 10.68829 47.00316 11.64362                75</span></span>
+<span><span class="co">## 2  nhlbi    1  36 93.00921 10.68829 47.00316 11.64362                75</span></span>
+<span><span class="co">## 3  nhlbi    1  36 93.00921 10.68829 47.00316 11.64362                75</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="quantiles">Quantiles<a class="anchor" aria-label="anchor" href="#quantiles"></a>
@@ -232,13 +236,13 @@ systolic and diastolic blood pressures:</p>
 <span>     , p_dbp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="fl">0.99</span>, <span class="fl">0.50</span><span class="op">)</span></span>
 <span>     , age <span class="op">=</span> <span class="fl">44</span></span>
 <span>     , male <span class="op">=</span> <span class="fl">1</span></span>
-<span>     , height_percentile <span class="op">=</span> <span class="fl">0.80</span></span>
+<span>     , height_percentile <span class="op">=</span> <span class="fl">80</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="co">## $sbp</span></span>
-<span><span class="co">## [1] 91.75931       NA 82.08624</span></span>
+<span><span class="co">## [1] 98.64492       NA 89.17790</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $dbp</span></span>
-<span><span class="co">## [1] 56.07099 71.09026 44.00316</span></span></code></pre></div>
+<span><span class="co">## [1] 59.07099 74.09026 47.00316</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="working-with-more-than-one-patient">Working With More Than One Patient<a class="anchor" aria-label="anchor" href="#working-with-more-than-one-patient"></a>

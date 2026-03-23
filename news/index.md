@@ -1,11 +1,25 @@
 # Changelog
 
-## pedbp 2.0.4
+## pedbp 2.1.0
 
 ### Bug Fixes
 
 - Replace use of `Rf_error()` with `Rcpp::stop()`
   ([\#24](https://github.com/dewittpe/pedbp/issues/24))
+- Standardize blood pressure `height_percentile` inputs to use
+  percentile points on a 0 to 100 scale throughout the R interface.
+  ([\#25](https://github.com/dewittpe/pedbp/issues/25))
+  - Fix `bp_cdf` and `bp_chart` handling of blood pressure height
+    percentiles so plotting helpers no longer rescale or default to
+    decimal-style values.
+  - Align the Shiny blood pressure workflow with the package API so
+    entered height percentiles are passed through on the 0 to 100 scale.
+
+### Other changes
+
+- Extend documentation and examples.
+- Add warnings, regression tests, and reproducible examples for
+  ambiguous decimal-style blood pressure height percentile inputs.
 
 ## pedbp 2.0.3
 

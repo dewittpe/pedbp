@@ -171,6 +171,10 @@ al. "Clinical practice guideline for screening and management of high
 blood pressure in children and adolescents." Pediatrics 140, no. 3
 (2017).
 
+Height percentiles are expressed in percentile points on a 0 to 100
+scale. For example, use `95` for the 95th percentile. Values such as
+`0.95` are treated as the 0.95th percentile, not the 95th percentile.
+
 ## See also
 
 [`vignette("bp-distributions", package = "pedbp")`](http://www.peteredewitt.com/pedbp/articles/bp-distributions.md),
@@ -344,15 +348,15 @@ q_bp(
 # Selecting different source values
 
 # default
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "martin2022")
 #> $sbp_p
-#> [1] 0.7534673
+#> [1] 0.536445
 #> 
 #> $dbp_p
-#> [1] 0.9398825
+#> [1] 0.8830337
 #> 
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "gemelli1990")
 #> $sbp_p
 #> [1] NA
@@ -360,7 +364,7 @@ p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0
 #> $dbp_p
 #> [1] NA
 #> 
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "lo2013")
 #> $sbp_p
 #> [1] NA
@@ -368,32 +372,32 @@ p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0
 #> $dbp_p
 #> [1] NA
 #> 
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "nhlbi")
 #> $sbp_p
-#> [1] 0.7534673
+#> [1] 0.536445
 #> 
 #> $dbp_p
-#> [1] 0.9398825
+#> [1] 0.8830337
 #> 
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "flynn2017")
 #> $sbp_p
-#> [1] 0.6797595
+#> [1] 0.5345658
 #> 
 #> $dbp_p
-#> [1] 0.9290757
+#> [1] 0.8480019
 #> 
 
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "martin2022") # default
 #> $sbp
-#> [1] 95.58685
+#> [1] 102.3197
 #> 
 #> $dbp
-#> [1] 54.33901
+#> [1] 58.31975
 #> 
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "gemelli1990")
 #> $sbp
 #> [1] NA
@@ -401,7 +405,7 @@ q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile
 #> $dbp
 #> [1] NA
 #> 
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "lo2013")
 #> $sbp
 #> [1] NA
@@ -409,21 +413,21 @@ q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile
 #> $dbp
 #> [1] NA
 #> 
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "nhlbi")
 #> $sbp
-#> [1] 95.58685
+#> [1] 102.3197
 #> 
 #> $dbp
-#> [1] 54.33901
+#> [1] 58.31975
 #> 
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "flynn2017")
 #> $sbp
-#> [1] 98.08443
+#> [1] 102.8184
 #> 
 #> $dbp
-#> [1] 55.5823
+#> [1] 60.07481
 #> 
 
 ```

@@ -73,6 +73,15 @@ and standard deviations based on published percentiles. Growth standards
 are based on LMS approximations. All the methods get parameters based on
 lookup tables.
 
+## Notation
+
+Throughout the package, arguments named `p` or beginning with `p_` are
+probabilities on the 0 to 1 scale. Arguments or values named
+`percentile` are percentile points on the 0 to 100 scale.
+
+For example, use `p_sbp = 0.42` for the 42nd percentile as a probability
+input, and use `height_percentile = 90` for the 90th height percentile.
+
 ## Blood Pressure
 
 There are several data sources used to inform the blood pressure
@@ -113,7 +122,7 @@ values for the 42nd percentile of 13 year (156 month) old males in the
 90th height percentile?
 
 ``` r
-q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90)
+q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 90)
 ```
 
 More examples can be found in the vignette.

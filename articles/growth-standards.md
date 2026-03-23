@@ -53,6 +53,10 @@ z-scores.
 For all eight of the noted methods we provide a distribution function,
 quantile function, and function that returns z-scores.
 
+Arguments named `p` are probabilities on the 0 to 1 scale. When
+percentiles are described in text, tables, or figures, they are
+expressed as percentile points on the 0 to 100 scale.
+
 ## Growth Standards
 
 Each of the growth standard metrics have quantile, distribution, and

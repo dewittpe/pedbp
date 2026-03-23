@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,6 +113,12 @@
 <p>Blood pressure percentiles are based on Gaussian distributions defined by published values for the mean and standard deviation, or derived mean and standard deviations based on published percentiles. Growth standards are based on LMS approximations. All the methods get parameters based on lookup tables.</p>
 </div>
 <div class="section level2">
+<h2 id="notation">Notation<a class="anchor" aria-label="anchor" href="#notation"></a>
+</h2>
+<p>Throughout the package, arguments named <code>p</code> or beginning with <code>p_</code> are probabilities on the 0 to 1 scale. Arguments or values named <code>percentile</code> are percentile points on the 0 to 100 scale.</p>
+<p>For example, use <code>p_sbp = 0.42</code> for the 42nd percentile as a probability input, and use <code>height_percentile = 90</code> for the 90th height percentile.</p>
+</div>
+<div class="section level2">
 <h2 id="blood-pressure">Blood Pressure<a class="anchor" aria-label="anchor" href="#blood-pressure"></a>
 </h2>
 <p>There are several data sources used to inform the blood pressure percentiles estimates:</p>
@@ -138,7 +144,7 @@
 <span><span class="fu"><a href="reference/bp_distribution.html">p_bp</a></span><span class="op">(</span>q_sbp <span class="op">=</span> <span class="fl">95</span>, q_dbp <span class="op">=</span> <span class="fl">50</span>, male <span class="op">=</span> <span class="fl">0</span>, age <span class="op">=</span> <span class="fl">28</span>, height <span class="op">=</span> <span class="fl">92</span>, source <span class="op">=</span> <span class="st">"flynn2017"</span><span class="op">)</span></span></code></pre></div>
 <p>You can also find the quantile values. Example: what is the SBP/DBP values for the 42nd percentile of 13 year (156 month) old males in the 90th height percentile?</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/bp_distribution.html">q_bp</a></span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.42</span>, p_dbp <span class="op">=</span> <span class="fl">0.42</span>, age <span class="op">=</span> <span class="fl">156</span>, male <span class="op">=</span> <span class="fl">1</span>, height_percentile <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/bp_distribution.html">q_bp</a></span><span class="op">(</span>p_sbp <span class="op">=</span> <span class="fl">0.42</span>, p_dbp <span class="op">=</span> <span class="fl">0.42</span>, age <span class="op">=</span> <span class="fl">156</span>, male <span class="op">=</span> <span class="fl">1</span>, height_percentile <span class="op">=</span> <span class="fl">90</span><span class="op">)</span></span></code></pre></div>
 <p>More examples can be found in the vignette.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"bp-distributions"</span>, package <span class="op">=</span> <span class="st">"pedbp"</span><span class="op">)</span></span></code></pre></div>

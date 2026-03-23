@@ -38,7 +38,7 @@ between one and three years of age with unknown height, blood pressure
 percentiles are estimated by the NHLBI/CDC data using as a default the
 median height for each patient’s sex and age.
 
-![](../reference/figures/flowchart.png)
+![](../../reference/figures/flowchart.png)
 
 ## Estimating Pediatric Blood Pressure Distributions
 
@@ -52,6 +52,10 @@ distribution quantiles is minimized. The provided functions, a
 distribution function and a quantile function, follow a similar naming
 convention to the distribution functions found in the stats library in
 R.
+
+Arguments named `p_sbp` and `p_dbp` are probabilities on the 0 to 1
+scale. Arguments named `height_percentile` and displayed percentiles in
+text or plots use percentile points on the 0 to 100 scale.
 
 ``` r
 args(p_bp)
@@ -120,13 +124,13 @@ percentile.
 ``` r
 p_height_for_age(103, male = 1, age = 44)
 ## [1] 0.795653
-x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
+x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 80, source = "nhlbi")
 x
 ## $sbp_p
-## [1] 0.9000536
+## [1] 0.7434636
 ## 
 ## $dbp_p
-## [1] 0.9152593
+## [1] 0.8678361
 ```
 
 A plotting method to show where the observed blood pressures are on the
@@ -148,14 +152,14 @@ bps <-
        , q_dbp  = c(60, 82, 48)
        , age    = 44
        , male   = 1
-       , height_percentile = 0.80
+       , height_percentile = 80
       )
 bps
 ## $sbp_p
-## [1] 0.9000536        NA 0.6428859
+## [1] 0.7434636        NA 0.3891471
 ## 
 ## $dbp_p
-## [1] 0.9152593 0.9994494 0.6343003
+## [1] 0.8678361 0.9986750 0.5341129
 ```
 
 If you want to know which data source was used in computing each of the
@@ -164,9 +168,9 @@ percentile estimates you can look at the `bp_params` attribute:
 ``` r
 attr(bps, "bp_params")
 ##   source male age sbp_mean   sbp_sd dbp_mean   dbp_sd height_percentile
-## 1  nhlbi    1  36 86.00094 10.92093 44.00316 11.64362                 5
-## 2  nhlbi    1  36 86.00094 10.92093 44.00316 11.64362                 5
-## 3  nhlbi    1  36 86.00094 10.92093 44.00316 11.64362                 5
+## 1  nhlbi    1  36 93.00921 10.68829 47.00316 11.64362                75
+## 2  nhlbi    1  36 93.00921 10.68829 47.00316 11.64362                75
+## 3  nhlbi    1  36 93.00921 10.68829 47.00316 11.64362                75
 ```
 
 ### Quantiles
@@ -180,13 +184,13 @@ q_bp(
      , p_dbp = c(0.85, 0.99, 0.50)
      , age = 44
      , male = 1
-     , height_percentile = 0.80
+     , height_percentile = 80
     )
 ## $sbp
-## [1] 91.75931       NA 82.08624
+## [1] 98.64492       NA 89.17790
 ## 
 ## $dbp
-## [1] 56.07099 71.09026 44.00316
+## [1] 59.07099 74.09026 47.00316
 ```
 
 ### Working With More Than One Patient

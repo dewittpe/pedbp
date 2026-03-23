@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,10 +41,19 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.0.4" id="pedbp-204">pedbp 2.0.4<a class="anchor" aria-label="anchor" href="#pedbp-204"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.1.0" id="pedbp-210">pedbp 2.1.0<a class="anchor" aria-label="anchor" href="#pedbp-210"></a></h2>
 <div class="section level3">
-<h3 id="bug-fixes-2-0-4">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-4"></a></h3>
+<h3 id="bug-fixes-2-1-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-1-0"></a></h3>
 <ul><li>Replace use of <code>Rf_error()</code> with <code>Rcpp::stop()</code> (<a href="https://github.com/dewittpe/pedbp/issues/24" class="external-link">#24</a>)</li>
+<li>Standardize blood pressure <code>height_percentile</code> inputs to use percentile points on a 0 to 100 scale throughout the R interface. (<a href="https://github.com/dewittpe/pedbp/issues/25" class="external-link">#25</a>)
+<ul><li>Fix <code>bp_cdf</code> and <code>bp_chart</code> handling of blood pressure height percentiles so plotting helpers no longer rescale or default to decimal-style values.</li>
+<li>Align the Shiny blood pressure workflow with the package API so entered height percentiles are passed through on the 0 to 100 scale.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="other-changes-2-1-0">Other changes<a class="anchor" aria-label="anchor" href="#other-changes-2-1-0"></a></h3>
+<ul><li>Extend documentation and examples.</li>
+<li>Add warnings, regression tests, and reproducible examples for ambiguous decimal-style blood pressure height percentile inputs.</li>
 </ul></div>
 </div>
     <div class="section level2">

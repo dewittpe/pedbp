@@ -75,6 +75,10 @@ distribution function and a quantile function, follow a similar naming
 convention to the distribution functions found in the stats library in
 R.
 
+Arguments named `p_sbp` and `p_dbp` are probabilities on the 0 to 1
+scale. Arguments named `height_percentile` and displayed percentiles in
+text or plots use percentile points on the 0 to 100 scale.
+
 ### Percentiles
 
 What percentile for systolic and diastolic blood pressure is 100/60 for
@@ -125,20 +129,20 @@ can use that instead:
 ``` r
 p_height_for_age(103, male = 1, age = 44)
 ## [1] 0.795653
-x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
+x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 80, source = "nhlbi")
 x
 ## $sbp_p
-## [1] 0.9000536
+## [1] 0.7434636
 ## 
 ## $dbp_p
-## [1] 0.9152593
+## [1] 0.8678361
 ```
 
 A plotting method to show where the observed blood pressures are on the
 distribution function is also provided.
 
 ``` r
-bp_cdf(sbp = 100, dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
+bp_cdf(sbp = 100, dbp = 60, age = 44, male = 1, height_percentile = 80, source = "nhlbi")
 ```
 
 ![](bp-distributions_files/figure-html/unnamed-chunk-7-1.png)

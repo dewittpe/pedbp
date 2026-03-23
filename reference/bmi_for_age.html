@@ -9,7 +9,7 @@ from the CDC and WHO."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">pedbp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@ can be set explicitly, or by using the <code>pedbp_pgs_source</code> option.</p>
 
 
 <dt id="arg-p">p<a class="anchor" aria-label="anchor" href="#arg-p"></a></dt>
-<dd><p>a vector of probabilities</p></dd>
+<dd><p>a vector of probabilities on the 0 to 1 scale</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -98,6 +98,14 @@ can be set explicitly, or by using the <code>pedbp_pgs_source</code> option.</p>
     <p>CDC Recommends using WHO growth charts for infants and
 children ages 0 to 2 years of age in the U.S. and CDC growth charts to
 monitor growth for children age 2 years and older in the U.S.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="notation">Notation<a class="anchor" aria-label="anchor" href="#notation"></a></h2>
+
+
+<p>Arguments named <code>p</code> denote probabilities on the 0 to 1 scale. When
+percentiles are discussed in text, tables, or figures, they are expressed as
+percentile points on the 0 to 100 scale.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

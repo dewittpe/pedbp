@@ -1,22 +1,16 @@
 # PEDBP
 
-Data and utilities for estimating pediatric blood pressure percentiles
-by sex, age, and optionally height (stature) as described in Martin
-et.al. (2022)
-[doi:10.1001/jamanetworkopen.2022.36918](https://doi.org/10.1001/jamanetworkopen.2022.36918)
-. Blood pressure percentiles for children under one year of age come
-from Gemelli et.al. (1990)
-[doi:10.1007/BF02171556](https://doi.org/10.1007/BF02171556) . Estimates
-of blood pressure percentiles for children at least one year of age are
-informed by data from the National Heart, Lung, and Blood Institute
-(NHLBI) and the Centers for Disease Control and Prevention (CDC)
-[doi:10.1542/peds.2009-2107C](https://doi.org/10.1542/peds.2009-2107C)
-or from Lo et.al. (2013)
-[doi:10.1542/peds.2012-1292](https://doi.org/10.1542/peds.2012-1292) .
-The flowchart for selecting the informing data source comes from Martin
-et.al. (2022)
-[doi:10.1542/hpeds.2021-005998](https://doi.org/10.1542/hpeds.2021-005998)
-.
+Tools for pediatric blood pressure distributions and growth standards.
+
+## Notation
+
+Across the package, arguments named `p` or beginning with `p_` denote
+probabilities on the 0 to 1 scale. Arguments or values named
+`percentile` denote percentile points on the 0 to 100 scale.
+
+For example, use `p_sbp = 0.85` for the 85th percentile as a probability
+input, and use `height_percentile = 85` for the 85th height percentile
+as percentile points.
 
 ## See also
 
