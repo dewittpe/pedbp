@@ -324,12 +324,12 @@ server <- function(input, output, session) {
 
     map <- list()
 
-    if ("q_sbp" %in% data_names) {
-      map$q_sbp <- "q_sbp"
-    } else if (length(i <- grep("^sbp", data_names)) > 0) {
-      map$q_sbp <- data_names[min(i)]
+    if ("p_sbp" %in% data_names) {
+      map$p_sbp <- "p_sbp"
+    } else if (length(i <- grep("^p_sbp|^sbp_p|^sbp_percentile", data_names)) > 0) {
+      map$p_sbp <- data_names[min(i)]
     } else {
-      map$q_sbp <- "_ignore_"
+      map$p_sbp <- "_ignore_"
     }
 
     if ("q_sbp" %in% data_names) {
@@ -340,12 +340,12 @@ server <- function(input, output, session) {
       map$q_sbp <- "_ignore_"
     }
 
-    if ("q_dbp" %in% data_names) {
-      map$q_dbp <- "q_dbp"
-    } else if (length(i <- grep("^dbp", data_names)) > 0) {
-      map$q_dbp <- data_names[min(i)]
+    if ("p_dbp" %in% data_names) {
+      map$p_dbp <- "p_dbp"
+    } else if (length(i <- grep("^p_dbp|^dbp_p|^dbp_percentile", data_names)) > 0) {
+      map$p_dbp <- data_names[min(i)]
     } else {
-      map$q_dbp <- "_ignore_"
+      map$p_dbp <- "_ignore_"
     }
 
     if ("q_dbp" %in% data_names) {
