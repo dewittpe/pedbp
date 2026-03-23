@@ -197,12 +197,15 @@ gs_head_circ_box <-
     ),
     conditionalPanel(
       condition = "input.gs_head_circ_units == 'inches'",
+      # Keep the slider in inches because server.R converts inches to cm before
+      # calling pedbp. The 30 to 60 cm clinical range is converted here to
+      # roughly 12 to 24 inches, and 18 inches is a reasonable default.
       sliderInput(
         inputId = "gs_head_circ_inches",
         label = NULL,
-        min = floor(30 * 2.54),
-        max = ceiling(60 * 2.54),
-        value = 114,
+        min = floor(30 / 2.54),
+        max = ceiling(60 / 2.54),
+        value = 18,
         step = 0.25
       )
     )
