@@ -228,6 +228,10 @@ Flynn, Joseph T., David C. Kaelber, Carissa M. Baker-Smith, Douglas Blowey,
 Aaron E. Carroll, Stephen R. Daniels, Sarah D. De Ferranti et al. "Clinical
 practice guideline for screening and management of high blood pressure in
 children and adolescents." Pediatrics 140, no. 3 (2017).
+
+Height percentiles are expressed in percentile points on a 0 to 100 scale.
+For example, use \code{95} for the 95th percentile. Values such as
+\code{0.95} are treated as the 0.95th percentile, not the 95th percentile.
 }
 \seealso{
 \code{vignette("bp-distributions", package = "pedbp")},

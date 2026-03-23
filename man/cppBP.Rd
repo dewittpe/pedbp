@@ -28,7 +28,8 @@ cppBP(
 \item{height}{numeric vector of stature}
 
 \item{height_percentile}{numeric vector for height percentiles, expected
-values between 0 and 1.}
+values between 0 and 100. That is, 0.95 would be the 0.95th
+percentile, and 95 is the 95th percentile.}
 
 \item{default_height_percentile}{default height percentile to use if \code{height} is missing}
 

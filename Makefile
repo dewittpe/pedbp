@@ -13,11 +13,8 @@ SHINYAPPS = $(wildcard $(PKG_ROOT)/inst/shinyapps/*)
 # Targets
 #
 ## Vignettes
-VIGNETTES  = $(PKG_ROOT)/vignettes/bp-distributions.Rmd\
-						 $(PKG_ROOT)/vignettes/growth-standards.Rmd
-ARTICLES = $(PKG_ROOT)/vignettes/bp-distributions_ARTICLE.Rmd\
-					 $(PKG_ROOT)/vignettes/growth-standards_ARTICLE.Rmd\
-					 $(PKG_ROOT)/vignettes/additional-utilities_ARTICLE.Rmd
+VIGNETTES = $(wildcard $(PKG_ROOT)/vignettes/*.Rmd)
+ARTICLES  = $(wildcard $(PKG_ROOT)/vignettes/articles/*.Rmd)
 
 ## Data targets
 DATATARGETS  = $(PKG_ROOT)/data/lo2013.rda\
@@ -80,7 +77,7 @@ SYSDATA_SRCS  = $(PKG_ROOT)/data-raw/cdc2000/bmiagerev.csv\
 
 all: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 
-$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(TESTS) $(DATATARGETS) $(SHINYAPPS) $(SRC)
+$(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNETTES) $(ARTICLES) $(TESTS) $(DATATARGETS) $(SHINYAPPS) $(SRC)
 	R CMD build --md5 $(build-options) $(PKG_ROOT)
 
 .install_dev_deps.Rout : $(PKG_ROOT)/DESCRIPTION
@@ -95,20 +92,6 @@ $(PKG_NAME)_$(PKG_VERSION).tar.gz: .install_dev_deps.Rout .document.Rout $(VIGNE
 		-e "devtools::document('$(PKG_ROOT)')"\
 		-e "knitr::knit('$(PKG_ROOT)/README.Rmd', output = 'README.md')"
 	touch $@
-
-################################################################################
-# Recipes for Vignettes
-#
-# Expecting that the vignettes are built via knitr::spin
-#
-# List the explicit targets above
-
-$(PKG_ROOT)/vignettes/%.Rmd : $(PKG_ROOT)/vignette-spinners/%.R $(PKG_ROOT)/vignettes/references.bib | $(PKG_ROOT)/vignettes
-	R --vanilla --quiet -e "knitr::spin(hair = '$<', knit = FALSE)"
-	mv $(basename $<).Rmd $@
-
-$(PKG_ROOT)/vignettes:
-	mkdir -p $@
 
 ################################################################################
 # Data Sets
@@ -163,10 +146,10 @@ uninstall :
 	R --vanilla --quiet -e "try(remove.packages('pedalfast.data'), silent = TRUE)"
 
 shiny: install
-	R -e "shiny::runApp(normalizePath(system.file('shinyapps', 'pedbp', package = 'pedbp')), port = 4492)"
+	R --vanilla -e "shiny::runApp(normalizePath(system.file('shinyapps', 'pedbp', package = 'pedbp')), port = 4492)"
 
 site: $(ARTICLES) $(PKG_NAME)_$(PKG_VERSION).tar.gz
-	R -e "pkgdown::build_site()"
+	R --vanilla -e "pkgdown::build_site()"
 
 clean:
 	$(RM) $(PKG_NAME)_$(PKG_VERSION).tar.gz
@@ -175,8 +158,8 @@ clean:
 	$(RM) *.Rout
 	$(RM) *.html
 	$(RM) vignettes/*.html
+	$(RM) vignettes/articles/*.html
 	$(RM) src/*.o
 	$(RM) src/*.so
 	$(RM) -r docs
 	$(RM) -r lib
-
