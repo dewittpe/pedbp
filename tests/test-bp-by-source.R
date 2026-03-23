@@ -200,7 +200,7 @@ np <-
      height_percentile = nhlbi_bp_norms$height_percentile,
      source = "nhlbi")
 
-flynn2017 <-
+flynn2017_with_pedbp_results <-
   cbind(flynn2017,
         pedbp_sbp = fq$sbp,
         pedbp_dbp = fq$dbp,
@@ -208,7 +208,7 @@ flynn2017 <-
         pedbp_dbp_p = fp$dbp_p * 100
   )
 
-nhlbi_bp_norms <-
+nhlbi_bp_norms_with_pedbp_results <-
   cbind(nhlbi_bp_norms,
         pedbp_sbp = nq$sbp,
         pedbp_dbp = nq$dbp,
@@ -217,43 +217,15 @@ nhlbi_bp_norms <-
   )
 
 # all estimates within 2 mmHg or 2 percentage points
-stopifnot(max(abs(flynn2017$pedbp_sbp - flynn2017$sbp)) < 2)
-stopifnot(max(abs(flynn2017$pedbp_dbp - flynn2017$dbp)) < 2)
-stopifnot(max(abs(flynn2017$pedbp_sbp_p - flynn2017$bp_percentile)) < 2)
-stopifnot(max(abs(flynn2017$pedbp_dbp_p - flynn2017$bp_percentile)) < 2)
-stopifnot(max(abs(nhlbi_bp_norms$pedbp_sbp - nhlbi_bp_norms$sbp)) < 2)
-stopifnot(max(abs(nhlbi_bp_norms$pedbp_dbp - nhlbi_bp_norms$dbp)) < 2)
+stopifnot(max(abs(flynn2017_with_pedbp_results$pedbp_sbp - flynn2017_with_pedbp_results$sbp)) < 2)
+stopifnot(max(abs(flynn2017_with_pedbp_results$pedbp_dbp - flynn2017_with_pedbp_results$dbp)) < 2)
+stopifnot(max(abs(flynn2017_with_pedbp_results$pedbp_sbp_p - flynn2017_with_pedbp_results$bp_percentile)) < 2)
+stopifnot(max(abs(flynn2017_with_pedbp_results$pedbp_dbp_p - flynn2017_with_pedbp_results$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp_norms_with_pedbp_results$pedbp_sbp - nhlbi_bp_norms_with_pedbp_results$sbp)) < 2)
+stopifnot(max(abs(nhlbi_bp_norms_with_pedbp_results$pedbp_dbp - nhlbi_bp_norms_with_pedbp_results$dbp)) < 2)
 
-stopifnot(max(abs(nhlbi_bp_norms$pedbp_sbp_p - nhlbi_bp_norms$bp_percentile)) < 2)
-stopifnot(max(abs(nhlbi_bp_norms$pedbp_dbp_p - nhlbi_bp_norms$bp_percentile)) < 2)
-
-if (interactive()) {
-  par(mfrow = c(1, 2))
-  plot(flynn2017$sbp, flynn2017$pedbp_sbp); abline(0, 1)
-  plot(flynn2017$dbp, flynn2017$pedbp_dbp); abline(0, 1)
-  summary(flynn2017$pedbp_sbp - flynn2017$sbp)
-  summary(flynn2017$pedbp_dbp - flynn2017$dbp)
-  summary(flynn2017$pedbp_sbp_p*100 - flynn2017$bp_percentile)
-  summary(flynn2017$pedbp_dbp_p*100 - flynn2017$bp_percentile)
-
-  qwraps2::qblandaltman(flynn2017[, c("sbp", "pedbp_sbp")])
-  qwraps2::qblandaltman(flynn2017[, c("dbp", "pedbp_dbp")])
-  qwraps2::qblandaltman(flynn2017[, c("bp_percentile", "pedbp_sbp_p")])
-  qwraps2::qblandaltman(flynn2017[, c("bp_percentile", "pedbp_dbp_p")])
-
-  par(mfrow = c(1, 2))
-  plot(nhlbi_bp_norms$sbp, nhlbi_bp_norms$pedbp_sbp); abline(0, 1)
-  plot(nhlbi_bp_norms$dbp, nhlbi_bp_norms$pedbp_dbp); abline(0, 1)
-  summary(nhlbi_bp_norms$pedbp_sbp - nhlbi_bp_norms$sbp)
-  summary(nhlbi_bp_norms$pedbp_dbp - nhlbi_bp_norms$dbp)
-  summary(nhlbi_bp_norms$pedbp_sbp_p*100 - nhlbi_bp_norms$bp_percentile)
-  summary(nhlbi_bp_norms$pedbp_dbp_p*100 - nhlbi_bp_norms$bp_percentile)
-
-  qwraps2::qblandaltman(nhlbi_bp_norms[, c("sbp", "pedbp_sbp")])
-  qwraps2::qblandaltman(nhlbi_bp_norms[, c("dbp", "pedbp_dbp")])
-  qwraps2::qblandaltman(nhlbi_bp_norms[, c("bp_percentile", "pedbp_sbp_p")])
-  qwraps2::qblandaltman(nhlbi_bp_norms[, c("bp_percentile", "pedbp_dbp_p")])
-}
+stopifnot(max(abs(nhlbi_bp_norms_with_pedbp_results$pedbp_sbp_p - nhlbi_bp_norms_with_pedbp_results$bp_percentile)) < 2)
+stopifnot(max(abs(nhlbi_bp_norms_with_pedbp_results$pedbp_dbp_p - nhlbi_bp_norms_with_pedbp_results$bp_percentile)) < 2)
 
 ################################################################################
 # Verify that the expected median is returned from q_bp calls for gemelli1990
