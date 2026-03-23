@@ -103,13 +103,13 @@ server <- function(input, output, session) {
       rtn <- list(sbp_mmHg = x$sbp,
                      sbp_p = input$bp_sbp_percentile / 100,
                      dbp_mmHg = x$dbp,
-                     dbp_percentile = input$bp_dbp_percentile / 100,
+                     dbp_p = input$bp_dbp_percentile / 100,
                      bp_params = attr(x, "bp_params"))
     }
 
     od <- data.frame(mmHg = c(rtn$sbp_mmHg, rtn$dbp_mmHg),
                      bp   = gl(n = 2, k = 1, labels = c("Systolic", "Diastolic")),
-                     p    = c(rtn$sbp_p, rtn$dbp_percentile))
+                     p    = c(rtn$sbp_p, rtn$dbp_p))
     dseg <-
       data.frame(
           bp   = gl(n = 2, k = 2, labels = c('Systolic', 'Diastolic')),
@@ -688,6 +688,5 @@ server <- function(input, output, session) {
 #
 #  })
 }
-
 
 
