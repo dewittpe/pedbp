@@ -72,6 +72,10 @@ Percentiles are determined using the standard normal distribution of z-scores.
 For all eight of the noted methods we provide a distribution function,
 quantile function, and function that returns z-scores.
 
+Arguments named `p` are probabilities on the 0 to 1 scale. When percentiles
+are described in text, tables, or figures, they are expressed as percentile
+points on the 0 to 100 scale.
+
 # Growth Standards
 
 Each of the growth standard metrics have quantile,
@@ -129,5 +133,4 @@ Find the median BMI quantile for a 48 month old female is:
 q_bmi_for_age(p = 0.5, male = 0, age = 48) # default is CDC
 q_bmi_for_age(p = 0.5, male = 0, age = 48, source = c("CDC", "WHO"))
 ```
-
 

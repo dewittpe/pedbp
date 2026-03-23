@@ -5,14 +5,14 @@ articles:
 - title:
   navbar: ~
   contents:
-  - bp-distributions_ARTICLE
-  - growth-standards_ARTICLE
-  - additional-utilities_ARTICLE
+  - "`articles/bp-distributions_ARTICLE`"
+  - "`articles/growth-standards_ARTICLE`"
+  - "`articles/additional-utilities_ARTICLE`"
 - title: Short Form Overviews
   desc: Package Vignettes
   contents:
-  - bp-distributions
-  - growth-standards
+  - "`bp-distributions`"
+  - "`growth-standards`"
 
 reference:
 

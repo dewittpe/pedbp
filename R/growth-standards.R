@@ -7,8 +7,13 @@
 #' children ages 0 to 2 years of age in the U.S. and CDC growth charts to
 #' monitor growth for children age 2 years and older in the U.S.
 #'
+#' @section Notation:
+#' Arguments named \code{p} denote probabilities on the 0 to 1 scale. When
+#' percentiles are discussed in text, tables, or figures, they are expressed as
+#' percentile points on the 0 to 100 scale.
+#'
 #' @param q a vector of quantiles
-#' @param p a vector of probabilities
+#' @param p a vector of probabilities on the 0 to 1 scale
 #' @param male integer value, 1 = male, 0 = female
 #' @param age numeric age, in months
 #' @param length,height in centimeters
