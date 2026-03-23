@@ -154,10 +154,12 @@ server <- function(input, output, session) {
 
   gs_male <- reactive({as.integer(input$gs_sex == "Male")})
   gs_age  <- reactive({
+    # pedbp growth-standard helpers expect age in months, regardless of how the
+    # user enters age in the UI, so normalize days and years before calling them.
     switch(input$gs_age_units,
-           "days"   = input$gs_age_days * 365.25 / 12,
+           "days"   = input$gs_age_days * 12 / 365.25,
            "months" = input$gs_age_months,
-           "years"  = input$gs_age_years / 12)
+           "years"  = input$gs_age_years * 12)
   })
   gs_stature <- reactive({
     if (grepl("Height", input$gs_stature_units)) {
@@ -688,4 +690,3 @@ server <- function(input, output, session) {
 #
 #  })
 }
-
