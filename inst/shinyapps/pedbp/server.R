@@ -663,7 +663,7 @@ server <- function(input, output, session) {
 #
 #  batch_results <- reactive({
 #    req(input$bpfile)
-#    d <- data.table::fread(input$bpfile$datapath)
+#    d <- data.table::fread(input$bpfile[["datapath"]])
 #    names(d) <- c("pid", "age_months", "male", "height_cm", "sbp_mmHg", "dbp_mmHg")
 #    d <- d[
 #           , as.list(p_bp(sbp_mmHg, dbp_mmHg, age_months, male, height_cm))
@@ -684,8 +684,8 @@ server <- function(input, output, session) {
 #  bp <- reactive({
 #    bp <- p_bp(input$sbp, input$dbp, age = input$age_mo, male = input$sex,
 #               height = ifelse(input$height_known == 0, NA, input$height_cm))
-#    bp$sbp_p <- paste0(round(bp$sbp_p * 100, 2), " percentile")
-#    bp$dbp_percentile <- paste0(round(bp$dbp_percentile * 100, 2), " percentile")
+#    bp[["sbp_p"]] <- paste0(round(bp[["sbp_p"]] * 100, 2), " percentile")
+#    bp[["dbp_p"]] <- paste0(round(bp[["dbp_p"]] * 100, 2), " percentile")
 #    bp
 #  })
 #
@@ -716,7 +716,7 @@ server <- function(input, output, session) {
 #                      ifelse(input$height_known == 0, "", paste0("(", (input$height_cm * 0.393701) %/% 12, "' ", round((input$height_cm * 0.393701) %% 12, 1), "'')")),
 #                      "",
 #                      ""),
-#               V4 = c("", "", hp, bp()$sbp_p, bp()$dbp_percentile)
+#               V4 = c("", "", hp, bp()[["sbp_p"]], bp()[["dbp_p"]])
 #               )
 #  }
 #  , colnames = FALSE
