@@ -20,7 +20,7 @@ bp_cdf(...)
   age,
   male,
   height = NA,
-  height_percentile = 0.5,
+  height_percentile = 50,
   source = getOption("pedbp_bp_source", "martin2022"),
   sbp = NA,
   dbp = NA,
@@ -76,7 +76,7 @@ bp_cdf(x)
 
 # Plotting a cdf from a call to q_bp
 x <- q_bp(p_sbp = 0.85, p_dbp = 0.95,
-          age = 29.2, male = 0, height_percentile = 0.95,
+          age = 29.2, male = 0, height_percentile = 95,
           source = "flynn2017")
 
 bp_cdf(x)

@@ -31,7 +31,7 @@
 #'
 #' # Plotting a cdf from a call to q_bp
 #' x <- q_bp(p_sbp = 0.85, p_dbp = 0.95,
-#'           age = 29.2, male = 0, height_percentile = 0.95,
+#'           age = 29.2, male = 0, height_percentile = 95,
 #'           source = "flynn2017")
 #'
 #' bp_cdf(x)
@@ -60,7 +60,7 @@ bp_cdf.pedbp_p_bp <- function(x, ...) {
   Map(bp_cdf
       , age = attr(x, "bp_params")[["age"]]
       , male = attr(x, "bp_params")[["male"]]
-      , height_percentile = attr(x, "bp_params")[["height_percentile"]] / 100
+      , height_percentile = attr(x, "bp_params")[["height_percentile"]]
       , source = attr(x, "bp_params")[["source"]]
       , sbp = stats::qnorm(x$sbp_p, mean = attr(x, "bp_params")$sbp_mean, sd = attr(x, "bp_params")$sbp_sd)
       , dbp = stats::qnorm(x$dbp_p, mean = attr(x, "bp_params")$dbp_mean, sd = attr(x, "bp_params")$dbp_sd)
@@ -74,7 +74,7 @@ bp_cdf.pedbp_q_bp <- function(x, ...) {
   Map(bp_cdf
       , age = attr(x, "bp_params")[["age"]]
       , male = attr(x, "bp_params")[["male"]]
-      , height_percentile = attr(x, "bp_params")[["height_percentile"]] / 100
+      , height_percentile = attr(x, "bp_params")[["height_percentile"]]
       , source = attr(x, "bp_params")[["source"]]
       , sbp = x$sbp
       , dbp = x$dbp
@@ -86,7 +86,7 @@ bp_cdf.pedbp_q_bp <- function(x, ...) {
 #' @inheritParams bp_distribution
 #' @param sbp the observed systolic blood pressure
 #' @param dbp the observed diastolic blood pressure
-bp_cdf.default <- function(age, male, height = NA, height_percentile = 0.50, source = getOption("pedbp_bp_source", "martin2022"), sbp = NA, dbp = NA, ...) {
+bp_cdf.default <- function(age, male, height = NA, height_percentile = 50, source = getOption("pedbp_bp_source", "martin2022"), sbp = NA, dbp = NA, ...) {
 
   stopifnot(length(age) == 1L)
   stopifnot(length(male) == 1L)
@@ -131,4 +131,3 @@ bpcdfplot <- function(od, dseg, params) {
     ggplot2::scale_linetype(guide = ggplot2::guide_legend(reverse = TRUE))  +
     ggplot2::theme(legend.position = "bottom", legend.title = ggplot2::element_blank())
 }
-

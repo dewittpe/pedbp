@@ -17,7 +17,7 @@ stopifnot(isTRUE(inherits(x[[2]], "ggplot")))
 
 
 x <- q_bp(p_sbp = 0.85, p_dbp = 0.95,
-          age = 29.2, male = 0, height_percentile = 0.95,
+          age = 29.2, male = 0, height_percentile = 95,
           source = "flynn2017")
 x <- bp_cdf(x)
 stopifnot(identical(class(x), "list"))

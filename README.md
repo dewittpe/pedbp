@@ -108,7 +108,7 @@ You can also find the quantile values.  Example: what is the SBP/DBP values for
 the 42nd percentile of 13 year (156 month) old males in the 90th height percentile?
 
 ``` r
-q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 0.90)
+q_bp(p_sbp = 0.42, p_dbp = 0.42, age = 156, male = 1, height_percentile = 90)
 ```
 
 More examples can be found in the vignette.

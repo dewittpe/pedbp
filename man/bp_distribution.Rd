@@ -181,26 +181,26 @@ q_bp(
 # Selecting different source values
 
 # default
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "martin2022")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "gemelli1990")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "lo2013")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "nhlbi")
-p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 0.95,
+p_bp(q_sbp = 92, q_dbp = 60, age = 29.2, male = 0, default_height_percentile = 95,
      source = "flynn2017")
 
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "martin2022") # default
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "gemelli1990")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "lo2013")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "nhlbi")
-q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 0.95,
+q_bp(p_sbp = 0.85, p_dbp = 0.85, age = 29.2, male = 0, default_height_percentile = 95,
      source = "flynn2017")
 
 

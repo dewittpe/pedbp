@@ -47,7 +47,7 @@
 #'                ))
 #'
 #' @export
-bp_chart <- function(bp = c("sbp", "dbp"), male = 0:1, height = NA, height_percentile = NA, default_height_percentile = 0.5, p = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.90, 0.95, 0.99), source = getOption("pedbp_bp_source", "martin2022")) {
+bp_chart <- function(bp = c("sbp", "dbp"), male = 0:1, height = NA, height_percentile = NA, default_height_percentile = 50, p = c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.90, 0.95, 0.99), source = getOption("pedbp_bp_source", "martin2022")) {
   stopifnot(length(male) %in% c(1L, 2L))
   stopifnot(male == 1 | male == 0)
   stopifnot(length(height) == 1)

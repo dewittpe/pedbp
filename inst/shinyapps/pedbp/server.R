@@ -35,7 +35,7 @@ server <- function(input, output, session) {
                                   input$bp_height_inch * 2.54,
                                   NA_real_)),
            height_percentile = ifelse(input$bp_height_status == "Known (percentile)",
-                                      input$bp_height_percentile / 100, NA_real_)
+                                      input$bp_height_percentile, NA_real_)
       )
 
     if (input$bp_sbp_status == "mmHg" & input$bp_dbp_status == "mmHg") {

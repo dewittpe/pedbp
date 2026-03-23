@@ -141,7 +141,7 @@ use that instead:
 
 ```{r}
 p_height_for_age(103, male = 1, age = 44)
-x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
+x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 80, source = "nhlbi")
 x
 ```
 
@@ -150,7 +150,7 @@ A plotting method to show where the observed blood pressures are on the
 distribution function is also provided.
 
 ```{r fig.width = 5, fig.height = 5}
-bp_cdf(sbp = 100, dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
+bp_cdf(sbp = 100, dbp = 60, age = 44, male = 1, height_percentile = 80, source = "nhlbi")
 ```
 
 
@@ -260,4 +260,3 @@ bp_chart(male = 1, height_percentile = 75, source = "flynn2017")
 
 # References
 <div id="refs"></div>
-

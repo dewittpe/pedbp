@@ -151,7 +151,7 @@ percentile.
 
 ```{r}
 p_height_for_age(103, male = 1, age = 44)
-x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 0.80, source = "nhlbi")
+x <- p_bp(q_sbp = 100, q_dbp = 60, age = 44, male = 1, height_percentile = 80, source = "nhlbi")
 x
 ```
 
@@ -173,7 +173,7 @@ bps <-
        , q_dbp  = c(60, 82, 48)
        , age    = 44
        , male   = 1
-       , height_percentile = 0.80
+       , height_percentile = 80
       )
 bps
 ```
@@ -201,7 +201,7 @@ q_bp(
      , p_dbp = c(0.85, 0.99, 0.50)
      , age = 44
      , male = 1
-     , height_percentile = 0.80
+     , height_percentile = 80
     )
 ```
 
@@ -624,4 +624,3 @@ of patients as well.
 
 # References
 <div id="refs"></div>
-

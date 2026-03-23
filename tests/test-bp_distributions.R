@@ -45,7 +45,7 @@ x <-
     , male   = gemelli1990$male
     , height = NA
     , height_percentile = NA
-    , default_height_percentile = 0.5
+    , default_height_percentile = 50
     , source = "gemelli1990"
   )
 stopifnot(identical(class(x), c("pedbp_bp", "pedbp_p_bp")))
@@ -63,7 +63,7 @@ x <-
     , male   = gemelli1990$male
     , height = NA
     , height_percentile = NA
-    , default_height_percentile = 0.5
+    , default_height_percentile = 50
     , source = "gemelli1990"
   )
 stopifnot(identical(class(x), c("pedbp_bp", "pedbp_q_bp")))
@@ -83,7 +83,7 @@ x <-
     , male   = lo2013$male
     , height = NA
     , height_percentile = NA
-    , default_height_percentile = 0.5
+    , default_height_percentile = 50
     , source = "lo2013"
   )
 stopifnot(identical(class(x), c('pedbp_bp', 'pedbp_p_bp')))
@@ -101,7 +101,7 @@ x <-
     , male   = lo2013$male
     , height = NA
     , height_percentile = NA
-    , default_height_percentile = 0.5
+    , default_height_percentile = 50
     , source = "lo2013"
   )
 stopifnot(identical(class(x), c('pedbp_bp', 'pedbp_q_bp')))
@@ -121,7 +121,7 @@ nq <-
      age    = nhlbi_bp_norms$age,
      height = NA,
      height_percentile = nhlbi_bp_norms$height_percentile,
-     default_height_percentile = 0.5,
+     default_height_percentile = 50,
      source = "nhlbi"
   )
 
@@ -133,7 +133,7 @@ np <-
      age    = nhlbi_bp_norms$age,
      height = NA,
      height_percentile = nhlbi_bp_norms$height_percentile,
-     default_height_percentile = 0.5,
+     default_height_percentile = 50,
      source = "nhlbi"
   )
 
@@ -163,7 +163,7 @@ nq <-
      age    = flynn2017$age,
      height = NA,
      height_percentile = flynn2017$height_percentile,
-     default_height_percentile = 0.5,
+     default_height_percentile = 50,
      source = "flynn2017"
   )
 
@@ -175,7 +175,7 @@ np <-
      age    = flynn2017$age,
      height = NA,
      height_percentile = flynn2017$height_percentile,
-     default_height_percentile = 0.5,
+     default_height_percentile = 50,
      source = "flynn2017"
   )
 
@@ -203,7 +203,7 @@ test_martin2022 <-
   expand.grid(age = seq(0, 217, by = 1),
               male = 0:1,
               height = c(NA, seq(75, 160, by = 10)),
-              height_percentile = c(NA, seq(0.01, 0.99, by = 0.1)),
+              height_percentile = c(NA, seq(1, 91, by = 10)),
               source = NA_character_,
               stringsAsFactors = FALSE
   )
@@ -238,7 +238,7 @@ x <-
     male = test_martin2022$male,
     height = test_martin2022$height,
     height_percentile = test_martin2022$height_percentile,
-    default_height_percentile = 0.8,
+    default_height_percentile = 80,
     source = "martin2022"
     )
 
@@ -256,7 +256,7 @@ x <-
     male = test_martin2022$male,
     height = test_martin2022$height,
     height_percentile = test_martin2022$height_percentile,
-    default_height_percentile = 0.8,
+    default_height_percentile = 80,
     source = "martin2022"
     )
 
@@ -272,7 +272,7 @@ x <-
   expand.grid(age = seq(1, 216, by = 1),
               male = 0:1,
               height = c(NA, seq(75, 160, by = 10)),
-              height_percentile = c(NA, seq(0.01, 0.99, by = 0.1)),
+              height_percentile = c(NA, seq(1, 91, by = 10)),
               p = seq(0, 1, by = 0.05),
               stringsAsFactors = FALSE)
 
@@ -285,7 +285,7 @@ yq <-
        male = x$male,
        height = x$height,
        height_percentile = x$height_percentile,
-       default_height_percentile = 0.8,
+       default_height_percentile = 80,
        source = "martin2022")
 
 new_hash <- digest::digest(x)
@@ -298,7 +298,7 @@ yp <-
        male = x$male,
        height = x$height,
        height_percentile = x$height_percentile,
-       default_height_percentile = 0.8,
+       default_height_percentile = 80,
        source = "martin2022")
 
 new_hash <- digest::digest(x)
@@ -332,7 +332,7 @@ yq <-
        male = x$male,
        height = x$height,
        height_percentile = x$height_percentile,
-       default_height_percentile = 0.8,
+       default_height_percentile = 80,
        source = "martin2022")
 
 x$z_sbp <- yq$sbp_z
