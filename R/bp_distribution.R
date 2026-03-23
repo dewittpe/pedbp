@@ -113,11 +113,11 @@
 #'
 #' #############################################################################
 #' # compare results when height is known or unknown
-#' p_bp(q_sbp = rep(100, 2),
-#'      q_dbp = rep( 60, 2),
-#'      age   = rep(35.75, 2),
-#'      male  = c(0, 0),
-#'      height = c(NA, 100))
+#' p_bp(q_sbp = rep(100, 2),   # mmHg
+#'      q_dbp = rep( 60, 2),   # mmHg
+#'      age   = rep(35.75, 2), # months
+#'      male  = c(0, 0),       # female
+#'      height = c(NA, 100))   # centimeters
 #'
 #' #############################################################################
 #' # Working with multiple patients records
