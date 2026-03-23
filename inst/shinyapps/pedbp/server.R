@@ -195,6 +195,41 @@ server <- function(input, output, session) {
     }
   })
 
+  observe({
+    # Weight-for-stature charts are only defined over the LMS support in pedbp,
+    # so tighten the stature sliders to the source-specific chartable domain.
+    if (input$gs_standard == "Weight for Stature") {
+      if (grepl("Height", input$gs_stature_units)) {
+        limits_cm <- switch(input$gs_source,
+                            "CDC" = c(77, 121.5),
+                            "WHO" = c(65, 120))
+        limits_in <- limits_cm / 2.54
+        updateSliderInput(session, "gs_stature_height_cm",
+                          min = limits_cm[1], max = limits_cm[2],
+                          value = min(max(input$gs_stature_height_cm, limits_cm[1]), limits_cm[2]))
+        updateSliderInput(session, "gs_stature_height_inches",
+                          min = floor(limits_in[1]), max = ceiling(limits_in[2]),
+                          value = min(max(input$gs_stature_height_inches, floor(limits_in[1])), ceiling(limits_in[2])))
+      } else {
+        limits_cm <- switch(input$gs_source,
+                            "CDC" = c(45, 103.5),
+                            "WHO" = c(45, 110))
+        limits_in <- limits_cm / 2.54
+        updateSliderInput(session, "gs_stature_length_cm",
+                          min = limits_cm[1], max = limits_cm[2],
+                          value = min(max(input$gs_stature_length_cm, limits_cm[1]), limits_cm[2]))
+        updateSliderInput(session, "gs_stature_length_inches",
+                          min = floor(limits_in[1]), max = ceiling(limits_in[2]),
+                          value = min(max(input$gs_stature_length_inches, floor(limits_in[1])), ceiling(limits_in[2])))
+      }
+    } else {
+      updateSliderInput(session, "gs_stature_height_cm", min = 0, max = 225)
+      updateSliderInput(session, "gs_stature_height_inches", min = 0, max = 100)
+      updateSliderInput(session, "gs_stature_length_cm", min = 0, max = 225)
+      updateSliderInput(session, "gs_stature_length_inches", min = 0, max = 100)
+    }
+  })
+
   gs <- reactive({
     cdf_data <- data.table(p = seq(0.001, 0.999, length.out = 200))
 
@@ -245,8 +280,7 @@ server <- function(input, output, session) {
       ggplot2::xlab(qplabel)
 
     chart_point <- switch(input$gs_standard,
-                  "Weight for Height" = ggplot2::geom_point(x = gs_stature(), y = observed[["q"]]),
-                  "Weight for Length" = ggplot2::geom_point(x = gs_stature(), y = observed[["q"]]),
+                  "Weight for Stature" = ggplot2::geom_point(x = gs_stature(), y = observed[["q"]]),
                   ggplot2::geom_point(x = gs_age(), y = observed[["q"]]))
 
     chart <- gs_chart(metric = gs_metric(), male = gs_male()) + chart_point
