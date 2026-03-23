@@ -27,7 +27,7 @@ who_lms_data <- data.table::rbindlist(who_lms_data, idcol = "file", use.names = 
 
 # WHO report age in days, convert to months
 # One month = 365.25 / 12 = 30.4375 days
-# conversion is also given in the instructions from the WHO on using there data
+# conversion is also given in the instructions from the WHO on using their data
 who_lms_data[, age := age / ( 365.25 / 12) ]
 stopifnot(identical(who_lms_data[!is.na(age) & !is.na(Month), .N], 0L))
 who_lms_data[is.na(age) & !is.na(Month), age := Month]
@@ -54,9 +54,9 @@ print(who_lms_data[, .N, by = .(metric, file)], nrow = Inf)
 
 who_lms_data[, file := NULL]
 
-# because percentiles a zscores where provided in seperate files the metric,
-# age, stature, L, M, S values are duplicated as there are columns for the
-# percentiles and for the zscores.  Melt the data and recast it so that the
+# because percentiles and zscores were provided in separate files, the metric,
+# age, stature, L, M, and S values are duplicated because there are columns for
+# the percentiles and for the zscores. Melt the data and recast it so that the
 # percentiles and zscores for a set of the id.vars will be on one row instead of
 # two.
 who_lms_data <-

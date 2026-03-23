@@ -16,7 +16,7 @@
 #'    \item{dbp:}{diastolic blood pressure; mmHg}
 #' }
 #'
-#' Columns with a name such as \code{sbp} is a point observations.  Summary
+#' Columns with a name such as \code{sbp} are point observations. Summary
 #' statistics are appended to the variable as needed, e.g., \code{sbp_mean} and
 #' \code{sbp_sd} for the reported mean and standard deviation of systolic blood
 #' pressure.
@@ -42,7 +42,7 @@
 #' study of blood pressure during the 1st year of life. European journal of
 #' pediatrics, 149(5), 318-320.
 #'
-#' Lo, Joan C., et.al. "Prehypertension and hypertension in community-based
+#' Lo, Joan C., et al. "Prehypertension and hypertension in community-based
 #' pediatric practice." Pediatrics 131.2 (2013): e415-e424.
 #'
 #' The Fourth Report on the Diagnosis, Evaluation, and Treatment of High Blood
@@ -73,4 +73,3 @@ NULL
 
 #' @rdname bpdata
 "bp_parameters"
-

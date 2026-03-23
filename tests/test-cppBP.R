@@ -24,7 +24,7 @@ stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "Unknown source"))
 
 ################################################################################
-# Verify error if type is not distribution, qualtile, nor zscore
+# Verify error if type is not distribution, quantile, or zscore
 x <- tryCatch(pedbp:::cppBP(0.5, 0.5, 34, 0, NA, NA, 0.5, source = c("martin2022"), type = "no"), error = function(e) e)
 stopifnot(inherits(x, "error"))
 stopifnot(identical(x$message, "type needs to be one of 'distribution', 'quantile', or 'zscore'"))
@@ -150,7 +150,7 @@ stopifnot(identical(length(x[[1]]), 2L))
 stopifnot(identical(length(x[[2]]), 2L))
 
 ################################################################################
-# verify error if inputs are not lenght 1 or equal
+# verify error if inputs are not length 1 or equal
 x <- tryCatch(pedbp:::cppBP(
                 qp_sbp = numeric(2),
                 qp_dbp = numeric(2),

@@ -11,7 +11,7 @@
 #' Options:
 #' \itemize{
 #'   \item \code{martin2022} (default) uses a combination of references to generate
-#'   distribution values for ages 1 months through 18 years, without or without known
+#'   distribution values for ages 1 month through 18 years, with or without known
 #'   stature.  This was the only method implemented in version 1 of the pedbp package.
 #'
 #'   \item \code{gemelli1990} uses only the reference values from Gemelli et al.
@@ -25,12 +25,12 @@
 #'   \item \code{nhlbi} uses only reference values from the National Heart,
 #'   Lung, and Blood Institute [NHLBI] and the Centers for Disease Control and
 #'   Prevention [CDC] published in 2011.  These are for patients of at least one
-#'   year of age and with a known stature.  These values were publish
+#'   year of age and with a known stature. These values were published in 2011.
 #'
 #'   \item \code{flynn2017} uses only reference values from Flynn et al. (2017).
-#'   These values are similar to the nhlbi values _but_ "do not include children
+#'   These values are similar to the nhlbi values but "do not include children
 #'   and adolescents with overweight and obesity (ie, those with a BMI >= 85th
-#'   percentile).
+#'   percentile)."
 #' }
 #'
 #' There is a hierarchy for the use of the \code{height},

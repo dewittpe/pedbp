@@ -1,5 +1,5 @@
 # Check for consistency in pedbp results between pedbp and the Age-based
-# Pediatric Blook Pressure Reference Charts from Baylor College of Medicine.
+# Pediatric Blood Pressure Reference Charts from Baylor College of Medicine.
 #
 # https://www.bcm.edu/bodycomplab/BPappZjs/BPvAgeAPPz.html
 #
@@ -469,4 +469,3 @@ bp_bcm <- function(
    sbp=104,
    dbp=62
  )
-

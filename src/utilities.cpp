@@ -8,7 +8,7 @@
 //
 // Args:
 //   x  the vector to resize
-//   lenght the size of the resulting vector
+//   length the size of the resulting vector
 //
 // Return:
 //    a vector of the same type as x

@@ -106,7 +106,7 @@ percentile points on the 0 to 100 scale.
 }
 
 \examples{
-# The 60th weight qualtile for a 1.2 meter tall male is
+# The 60th weight quantile for a 1.2 meter tall male is
 q_weight_for_height(p = 0.60, male = 1, height = 120, source = "CDC")
 q_weight_for_height(p = 0.60, male = 1, height = 120, source = "WHO")
 

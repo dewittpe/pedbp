@@ -1,7 +1,7 @@
 # pedbp Raw Data
 
-pedbp requires a lot of source data.  This file documents when source data was
-accquired and what target data sets are built from the soruce data.
+pedbp requires a lot of source data. This file documents when source data was
+acquired and what target data sets are built from the source data.
 
 ## "Exported" Data
 
@@ -24,13 +24,13 @@ Data objects written into the file `R/sysdata.rda`
 
  | File                                  | Source                |
  | :------------------------------------ | :-------------------- |
- | `flynn2017_bp_boys.txt`               | Flynn et.al. (2017)   |
- | `flynn2017_bp_girls.txt`              | Flynn et.al. (2017)   |
- | `gemelli1990_male.txt`                | Gemelli et.al. (1990) |
- | `gemelli1990_female.txt`              | Gemelli et.al. (1990) |
+ | `flynn2017_bp_boys.txt`               | Flynn et al. (2017)   |
+ | `flynn2017_bp_girls.txt`              | Flynn et al. (2017)   |
+ | `gemelli1990_male.txt`                | Gemelli et al. (1990) |
+ | `gemelli1990_female.txt`              | Gemelli et al. (1990) |
  | `nhlbi_bp_norms_boys.csv`             | Expert Panel (2011)   |
  | `nhlbi_bp_norms_girls.csv`            | Expert Panel (2011)   |
- | `lo2013_bp_weight_height_bmi.txt`     | Lo et.al. (2013)      |
+ | `lo2013_bp_weight_height_bmi.txt`     | Lo et al. (2013)      |
 
 ### CDC Growth Charts
 
@@ -60,4 +60,3 @@ the growth charts.
 ### WHO data
 
 See the `data-raw/who/` directory and the `download.sh` script.
-
