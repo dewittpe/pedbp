@@ -674,7 +674,7 @@ server <- function(input, output, session) {
 #
 #
   output$download_batch_results <- downloadHandler(
-    filename = function() {paste0(input$bpfile, "_with_percentiles.csv")},
+    filename = function() {paste0(input$bpfile[["name"]], "_with_percentiles.csv")},
     content  = function(file) {
       data.table::fwrite(batch_results(), file)
     }
