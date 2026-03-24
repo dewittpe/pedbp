@@ -202,7 +202,7 @@ The shiny app is also live on
   of Pediatrics 149 (5): 318–20.
 
 - Lo, Joan C, Alan Sinaiko, Malini Chandra, Matthew F Daley, Louise C
-  Greenspan, Emily D Parker, Elyse O Kharbanda, et.al. 2013.
+  Greenspan, Emily D Parker, Elyse O Kharbanda, et al. 2013.
   “Prehypertension and Hypertension in Community-Based Pediatric
   Practice.” Pediatrics 131 (2): e415–24.
 

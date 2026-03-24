@@ -152,7 +152,7 @@ distributions are estimated.  This can be controlled by the option
 End users are encouraged to set the option if not using the default so all
 calls to these functions will use the same source.</p>
 <p>Options:</p><ul><li><p><code>martin2022</code> (default) uses a combination of references to generate
-  distribution values for ages 1 months through 18 years, without or without known
+  distribution values for ages 1 month through 18 years, with or without known
   stature.  This was the only method implemented in version 1 of the pedbp package.</p></li>
 <li><p><code>gemelli1990</code> uses only the reference values from Gemelli et al.
   (1990).  These values are applicable to patients from 1 month to 12 months
@@ -163,11 +163,11 @@ calls to these functions will use the same source.</p>
 <li><p><code>nhlbi</code> uses only reference values from the National Heart,
   Lung, and Blood Institute [NHLBI] and the Centers for Disease Control and
   Prevention [CDC] published in 2011.  These are for patients of at least one
-  year of age and with a known stature.  These values were publish</p></li>
+  year of age and with a known stature. These values were published in 2011.</p></li>
 <li><p><code>flynn2017</code> uses only reference values from Flynn et al. (2017).
-  These values are similar to the nhlbi values _but_ "do not include children
+  These values are similar to the nhlbi values but "do not include children
   and adolescents with overweight and obesity (ie, those with a BMI &gt;= 85th
-  percentile).</p></li>
+  percentile)."</p></li>
 </ul><p>There is a hierarchy for the use of the <code>height</code>,
 <code>height_percentile</code>, and <code>default_height_percentile</code>.  If
 <code>height</code> is provided, it takes precedence over the other two arguments.

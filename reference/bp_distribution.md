@@ -113,9 +113,9 @@ source.
 Options:
 
 - `martin2022` (default) uses a combination of references to generate
-  distribution values for ages 1 months through 18 years, without or
-  without known stature. This was the only method implemented in version
-  1 of the pedbp package.
+  distribution values for ages 1 month through 18 years, with or without
+  known stature. This was the only method implemented in version 1 of
+  the pedbp package.
 
 - `gemelli1990` uses only the reference values from Gemelli et al.
   (1990). These values are applicable to patients from 1 month to 12
@@ -129,12 +129,12 @@ Options:
   Blood Institute \[NHLBI\] and the Centers for Disease Control and
   Prevention \[CDC\] published in 2011. These are for patients of at
   least one year of age and with a known stature. These values were
-  publish
+  published in 2011.
 
 - `flynn2017` uses only reference values from Flynn et al. (2017). These
-  values are similar to the nhlbi values \_but\_ "do not include
-  children and adolescents with overweight and obesity (ie, those with a
-  BMI \>= 85th percentile).
+  values are similar to the nhlbi values but "do not include children
+  and adolescents with overweight and obesity (ie, those with a BMI \>=
+  85th percentile)."
 
 There is a hierarchy for the use of the `height`, `height_percentile`,
 and `default_height_percentile`. If `height` is provided, it takes
